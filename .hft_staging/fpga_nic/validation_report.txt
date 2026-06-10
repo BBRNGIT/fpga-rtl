@@ -1,0 +1,48 @@
+FPGA SPECIALIZATION VALIDATION REPORT
+=====================================
+
+Generated for: NIC
+Primary Clock: 125 MHz MAC clock (external_phy)
+Total Cells: 8,625
+Total BRAM: 64
+
+--- ADDRESS ALLOCATION ---
+
+Allocations (sorted by address):
+
+  adapter         @ 0x00000000–0x00001000 (0x001000 bytes, 4 KB) clock=mac
+  wire            @ 0x00001000–0x00002000 (0x001000 bytes, 4 KB) clock=none
+  mac             @ 0x00002000–0x00003000 (0x001000 bytes, 4 KB) clock=mac
+  taiosc          @ 0x00003000–0x00004000 (0x001000 bytes, 4 KB) clock=taiosc
+  tai             @ 0x00004000–0x00005000 (0x001000 bytes, 4 KB) clock=taiosc
+  tai_cdc         @ 0x00005000–0x00006000 (0x001000 bytes, 4 KB) clock=mac_to_internal_crossing
+  nic             @ 0x00006000–0x00007000 (0x001000 bytes, 4 KB) clock=mac
+  fifo_rx         @ 0x00007000–0x0002b000 (0x024000 bytes, 144 KB) clock=mac_to_internal_crossing
+
+Total allocated: 0x0002b000 bytes (172 KB)
+CDC region base: 0x0ff00000
+Free space before CDC: 0x0fed5000 bytes (260948 KB)
+
+Utilization: 0.1% of module space
+
+--- VALIDATION ---
+
+✓ PASS: All constraints satisfied
+  ✓ No address overlaps
+  ✓ No overflow into CDC region
+  ✓ All modules fit
+
+--- ARCHITECTURAL CONSTRAINTS ---
+
+  ✓ Single-writer law (enforced at module level by validate.py)
+  ✓ Gate-level arithmetic (enforced at module level by gate.sh)
+  ✓ Branchless device logic (enforced at module level by gate.sh)
+  ✓ Address alignment: 0x1000 boundaries
+  ✓ CDC region reserved: 0x0ff00000 – 0x10000000
+
+--- NEXT STEPS ---
+
+1. Review the address map in FPGA_NIC.md
+2. Implement cross-module wiring in gen_fpga_nic_net.py
+3. Run: python3 gen_fpga_nic_net.py > fpga_nic.net.json
+4. Validate: python3 validate.py fpga_nic.net.json

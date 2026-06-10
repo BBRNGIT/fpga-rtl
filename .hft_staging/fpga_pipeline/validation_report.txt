@@ -1,0 +1,54 @@
+FPGA SPECIALIZATION VALIDATION REPORT
+=====================================
+
+Generated for: PIPELINE
+Primary Clock: 250 MHz internal clock (pll_2x)
+Total Cells: 1,022
+Total BRAM: 52
+
+--- ADDRESS ALLOCATION ---
+
+Allocations (sorted by address):
+
+  internal        @ 0x00000000–0x00001000 (0x001000 bytes, 4 KB) clock=internal
+  timeframe       @ 0x00001000–0x00002000 (0x001000 bytes, 4 KB) clock=internal
+  dom             @ 0x00002000–0x0000b000 (0x009000 bytes, 36 KB) clock=internal
+  candle          @ 0x0000b000–0x0000e000 (0x003000 bytes, 12 KB) clock=internal
+  footprint       @ 0x0000e000–0x00011000 (0x003000 bytes, 12 KB) clock=internal
+  tpo             @ 0x00011000–0x00014000 (0x003000 bytes, 12 KB) clock=internal
+  fractal         @ 0x00014000–0x00015000 (0x001000 bytes, 4 KB) clock=internal
+  cbr             @ 0x00015000–0x00016000 (0x001000 bytes, 4 KB) clock=internal
+  pip_resolver    @ 0x00016000–0x00017000 (0x001000 bytes, 4 KB) clock=internal
+  strategy        @ 0x00017000–0x0001c000 (0x005000 bytes, 20 KB) clock=internal
+  risk            @ 0x0001c000–0x0001f000 (0x003000 bytes, 12 KB) clock=internal
+  oms             @ 0x0001f000–0x00024000 (0x005000 bytes, 20 KB) clock=internal
+  sor             @ 0x00024000–0x00027000 (0x003000 bytes, 12 KB) clock=internal
+  outbound        @ 0x00027000–0x00028000 (0x001000 bytes, 4 KB) clock=internal
+
+Total allocated: 0x00028000 bytes (160 KB)
+CDC region base: 0x0ff00000
+Free space before CDC: 0x0fed8000 bytes (260960 KB)
+
+Utilization: 0.1% of module space
+
+--- VALIDATION ---
+
+✓ PASS: All constraints satisfied
+  ✓ No address overlaps
+  ✓ No overflow into CDC region
+  ✓ All modules fit
+
+--- ARCHITECTURAL CONSTRAINTS ---
+
+  ✓ Single-writer law (enforced at module level by validate.py)
+  ✓ Gate-level arithmetic (enforced at module level by gate.sh)
+  ✓ Branchless device logic (enforced at module level by gate.sh)
+  ✓ Address alignment: 0x1000 boundaries
+  ✓ CDC region reserved: 0x0ff00000 – 0x10000000
+
+--- NEXT STEPS ---
+
+1. Review the address map in FPGA_PIPELINE.md
+2. Implement cross-module wiring in gen_fpga_pipeline_net.py
+3. Run: python3 gen_fpga_pipeline_net.py > fpga_pipeline.net.json
+4. Validate: python3 validate.py fpga_pipeline.net.json
