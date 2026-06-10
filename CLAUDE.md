@@ -1,3 +1,102 @@
+---
+title: CLAUDE.md
+subtitle: Project Instructions for Claude Code (claude.ai/code)
+description: >-
+  Complete guidance for the C-as-RTL hardware design framework. Specifies the
+  emitter-first pipeline for generating complete C hardware models for any device
+  type (FPGA, ASIC, PCB, MCU). Covers architecture enforcement, development
+  workflow, and immutable architectural laws.
+version: "2.0.0"
+status: "Active"
+type: "Architectural Guidance"
+language: "Markdown"
+audience: "Claude Code agents, hardware engineers, RTL designers"
+
+immutable_laws:
+  - name: "C IS THE RTL"
+    number: 9
+    reference: "memory/c_is_rtl_immutable_law.md"
+    enforcement: "skills/c_is_rtl_enforcement.md"
+    summary: "C code IS the hardware specification. All device types (FPGA, ASIC, PCB, MCU) output C only. Device type is a parameter, not hardcoded."
+  
+  - name: "Immutability of .hft (Write-Once Vault)"
+    number: 8
+    summary: "Graduated components are byte-identical and immutable. Updates require new versioned paths."
+  
+  - name: "Self-Running Clocks, No External Step"
+    number: 7
+    summary: "Clocks advance from internal power, not from replay/testbench. No replay/CSV tokens in device registers."
+  
+  - name: "Data Law: Price-Only at Wire"
+    number: 6
+    summary: "Bid/ask only at boundaries. Derived metrics are read-only and non-blocking."
+  
+  - name: "No Floats, No Heap, No Function Pointers, No Ghost Values"
+    number: 5
+    summary: "Fixed integers, static arrays only. Every operand explicit in netlist."
+  
+  - name: "Single-Writer Law"
+    number: 4
+    summary: "Each register written by exactly one module. Placement = wiring."
+  
+  - name: "Build-Sequence Law"
+    number: 3
+    summary: "Device logic is generated, never hand-written. Netlist → gennet → C code."
+  
+  - name: "Gate-Level Arithmetic"
+    number: 2
+    summary: "Structural cells only. No native +/-/* in device tick. Use cell_addsub, cell_mux, etc."
+  
+  - name: "Flip-Flop Level & Branchless Device Logic"
+    number: 1
+    summary: "Every signal is a register. Device data path is entirely branchless."
+
+memory_references:
+  immutable_law: "memory/c_is_rtl_immutable_law.md"
+  enforcement: "skills/c_is_rtl_enforcement.md"
+  fileset_pattern: "memory/fileset_pattern_universal_device_types.md"
+  separation_law: "memory/fpga_device_module_separation_law.md"
+  address_allocation: "memory/address_allocation_must_be_programmatic.md"
+  memory_index: "memory/MEMORY.md"
+
+canonical_references:
+  - "FOUNDER_VISION.md"
+  - ".hft/README.md"
+  - ".hft_staging/DESIGN_GUIDE.md"
+
+repository_structure:
+  staging: ".hft_staging/ (development, cloned & specialized)"
+  vault: ".hft/ (immutable, write-once)"
+  graduate_workflow: "develop → validate → commit → graduate"
+
+key_commands:
+  validate_component: ".hft_staging/gate.sh .hft_staging/<module>"
+  generate_c: "cd .hft_staging/<module> && make gen"
+  run_test: "cd .hft_staging/<module> && make test"
+  graduate: ".hft_staging/graduate.sh <module>"
+  specialize_device: "python3 gen_device_specialization.py --type <type> <spec> <modules> <output>"
+
+tags:
+  - "C-as-RTL"
+  - "hardware-design"
+  - "emitter-first"
+  - "netlist-generation"
+  - "architecture-enforcement"
+  - "immutable-laws"
+  - "FPGA"
+  - "ASIC"
+  - "PCB"
+  - "MCU"
+  - "gate-level"
+  - "flip-flop-level"
+  - "universal-device-generation"
+
+created: "2025-06-10"
+updated: "2025-06-10"
+author: "Founder Vision"
+maintainers: ["Claude Code agents", "Hardware architects"]
+---
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
@@ -188,17 +287,17 @@ Reference documents: `.hft_staging/SPEC_REGISTERS.md`, `.hft_staging/ARCHITECTUR
 - **Netlist** (`<module>.net.json`) — Generated JSON specification (COMMITTED to git). Defines registers, gates, and wiring. Validate with: `python3 validate.py <module>.net.json`
 - **Generator** (`gennet.py`) — Hand-written Python script that converts netlist to device C: `python3 gennet.py <module>.net.json > <module>_gen.h`. Output (`<module>_gen.h`) is committed as a validation artifact — it proves the netlist was generated deterministically.
 
-**FPGA Specialization Workflow:** FPGA device implementations use a **meta tool** to eliminate hand-wired address allocation:
-- **Blank template** (`FPGA_DESIGN.md`) — Pure device reference (VU9P specs, generic structure, no modules/addresses)
-- **Module list** (YAML: `fpga_nic_modules.yaml`, `fpga_pipeline_modules.yaml`) — Which modules go where, cell counts, BRAM requirements
-- **Meta tool** (`gen_fpga_specialization.py`) — Reads blank template + module list, generates:
-  1. Specialized FPGA doc (`FPGA_NIC.md`) with programmatic address allocation
-  2. Emitter skeleton (`gen_fpga_nic_net.py`) with hardcoded MODULE_WINDOWS
-  3. Validation report (no overlaps, resource budgets respected)
-- **Emitter** (`gen_fpga_nic_net.py`) — User fills in wiring logic, generates composite netlist
-- **Netlist** (`fpga_nic.net.json`) — Device-level netlist (all modules + interconnect + CDC regions)
+**Device Specialization Workflow:** Device implementations use a **meta tool** to eliminate hand-wired allocation:
+- **Blank template** (`DEVICE_DESIGN.md`) — Pure device reference (specs, generic structure, no device-specific allocation)
+- **Module list** (YAML) — Which modules go where, cell counts, requirements
+- **Meta tool** (`gen_device_specialization.py --type <type>`) — Parametrized by device type, generates:
+  1. Specialized device doc (`DEVICE_<TYPE>_<NAME>.md`) with programmatic allocation
+  2. Emitter skeleton (`gen_device_<type>_<name>_net.py`) with hardcoded resource allocation
+  3. Validation report (constraints satisfied)
+- **Emitter** — User fills in wiring logic, generates composite netlist
+- **Netlist** — Device-level netlist (all modules + interconnect + CDC regions)
 
-**Key principle:** No manual address assignment. All addresses are allocated by the meta tool algorithm, then hardcoded into the emitter skeleton for reproducibility.
+**Key principle:** All allocation is programmatic. Device type is a parameter. All outputs are C.
 
 ### 2. Template & Scaffold
 
@@ -272,25 +371,30 @@ HFT_ALLOW_REGRADUATE=1 .hft_staging/graduate.sh adapter
 cd .hft_staging/<module> && make clean
 ```
 
-### FPGA Specialization
+### Device Specialization
 
 ```sh
-# Specialize a blank FPGA template with programmatic address allocation
-python3 .hft_staging/gen_fpga_specialization.py \
-  .hft_staging/FPGA_DESIGN.md \
-  .hft_staging/fpga_nic_modules.yaml \
-  .hft_staging/fpga_nic/
+# Specialize a blank device template with programmatic allocation (parametrized by device type)
+python3 gen_device_specialization.py --type fpga \
+  DEVICE_DESIGN.md \
+  fpga_nic_modules.yaml \
+  device_fpga_nic/
+
+# Or ASIC, PCB, MCU:
+python3 gen_device_specialization.py --type asic ...
+python3 gen_device_specialization.py --type pcb ...
+python3 gen_device_specialization.py --type mcu ...
 
 # Output:
-#   .hft_staging/fpga_nic/FPGA_NIC.md (design doc with allocated addresses)
-#   .hft_staging/fpga_nic/gen_fpga_nic_net.py (emitter skeleton)
-#   .hft_staging/fpga_nic/validation_report.txt (constraint check)
+#   device_<type>_<name>/DEVICE_<TYPE>_<NAME>.md (design doc with allocated resources)
+#   device_<type>_<name>/gen_device_<type>_<name>_net.py (emitter skeleton)
+#   device_<type>_<name>/validation_report.txt (constraint check)
 
-# Then build the FPGA netlist (user fills in gen_fpga_nic_net.py wiring)
-cd .hft_staging/fpga_nic && python3 gen_fpga_nic_net.py > fpga_nic.net.json
+# Then build the device netlist (user fills in gen_device_<type>_<name>_net.py wiring)
+cd device_<type>_<name> && python3 gen_device_<type>_<name>_net.py > device_<type>_<name>.net.json
 
-# Validate the FPGA netlist
-python3 /path/to/validate_device.py .hft_staging/fpga_nic/fpga_nic.net.json
+# Validate the device netlist
+python3 validate_device.py device_<type>_<name>.net.json
 ```
 
 ### Makefile Targets (within a component directory)
@@ -339,12 +443,8 @@ The netlist is the source of truth; gennet generates the device C.
 - **`.hft_staging/INDICATOR_ARCHITECTURE_TEMPLATE.md`** — Template for indicator specs
 - **`.hft_staging/ARCHITECTURE_CLARIFICATIONS.md`** — System-wide cross-module connections
 - **`.hft_staging/BLOCK_DIAGRAM_DETAILED.md`** — Data flow diagram
-- **`.hft_staging/FPGA_DESIGN.md`** — Blank FPGA device template (reference only)
-- **`.hft_staging/THREE_FPGA_SEPARATION.md`** — Architecture philosophy (3-device separation)
-- **`.hft_staging/GEN_FPGA_SPECIALIZATION_QUICKSTART.md`** — FPGA specialization guide (5-minute intro)
-- **`.hft_staging/FPGA_SPECIALIZATION_GUIDE.md`** — Complete FPGA specialization reference
-- **`.hft_staging/fpga_nic_modules.yaml`** — Example NIC FPGA module list
-- **`.hft_staging/fpga_pipeline_modules.yaml`** — Example Pipeline FPGA module list
+- **`.hft_staging/DEVICE_DESIGN.md`** — Blank device template (reference only)
+- **`.hft_staging/GEN_DEVICE_SPECIALIZATION_QUICKSTART.md`** — Device specialization guide (5-minute intro)
 - **Adapter component (`adapter/`)** — Proven reference implementation
 
 ## Common Pitfalls
