@@ -1,0 +1,93 @@
+{
+  "device": "adapter",
+  "window_base": "0x1700000",
+  "comment": "The adapter device — its own address window. Every node is an addressed register; every op is a cell between registers. The clock is a power-bit-gated dff counter; the pacer comparator is a gate netlist (bit-serial), not a C compare. Selection is mask algebra. No if/switch/?: anywhere in the generated data path.",
+
+  "config_nodes": [
+    {"name": "ADP_POWER",       "comment": "power bit — set once; the clock self-runs while 1"},
+    {"name": "SPEED",           "comment": "static per-adapter config (connector/init, like pip): real-world-clock rate scale; ADP_CLK advances SPEED units/tick. Default 1 = 1 real-world unit/tick. Local to the adapter; never touches a system clock; never advanced by source timestamps."},
+    {"name": "WIRE_SYMBOL",     "comment": "static per-source config (offline prep / connector)"},
+    {"name": "WIRE_PIP",        "comment": "static fixed-point pip value"},
+    {"name": "WIRE_COMMISSION", "comment": "static fixed-point commission"}
+  ],
+
+  "buffer_nodes": [
+    {"name": "RAW_BID", "comment": "buffer presents records[POS].bid"},
+    {"name": "RAW_ASK", "comment": "buffer presents records[POS].ask"},
+    {"name": "RX_TS",   "comment": "buffer presents records[POS].ts (source timestamp)"},
+    {"name": "RX_SEQ",  "comment": "buffer presents records[POS].seq"},
+    {"name": "IN_RANGE","comment": "buffer asserts (POS < count), bit0"}
+  ],
+
+  "dff_nodes": [
+    {"name": "ADP_CLK",  "comment": "real-world-time counter; +1 per tick while powered"},
+    {"name": "POS",      "comment": "record cursor; += DUE each tick"},
+    {"name": "WIRE_BID_PX",  "comment": "latched bid price on the wire (en=DUE)"},
+    {"name": "WIRE_ASK_PX",  "comment": "latched ask price on the wire (en=DUE)"},
+    {"name": "WIRE_TIME",    "comment": "latched source time on the wire (en=DUE)"},
+    {"name": "WIRE_SEQ",     "comment": "latched source seq on the wire (en=DUE)"},
+    {"name": "WIRE_SYMBOL_O","comment": "latched symbol on the wire (en=DUE)"},
+    {"name": "WIRE_PIP_O",   "comment": "latched pip on the wire (en=DUE)"},
+    {"name": "WIRE_COMMISSION_O","comment": "latched commission on the wire (en=DUE)"},
+    {"name": "WIRE_VALID",   "comment": "1 when a packet was emitted this tick (en=ADP_POWER, d=DUE)"}
+  ],
+
+  "comb_nodes": [
+    {"name": "TS_LE_NOW", "cell": "cmp_le", "inputs": ["RX_TS", "ADP_CLK"],
+     "comment": "gate-netlist comparator: 1 (bit0) iff RX_TS <= ADP_CLK now"},
+    {"name": "DUE",       "cell": "and",    "inputs": ["TS_LE_NOW", "IN_RANGE"],
+     "comment": "this record's real-world time has arrived and a record exists"},
+    {"name": "CLK_STEP",  "cell": "gate",   "inputs": ["SPEED", "ADP_POWER"],
+     "comment": "clock advance amount this tick: SPEED while powered, 0 while off (register-backed power-gate, no literal). ADP_CLK += CLK_STEP."}
+  ],
+
+  "clock": {
+    "counter": "ADP_CLK",
+    "power":   "ADP_POWER",
+    "step":    "CLK_STEP",
+    "comment": "ADP_CLK += CLK_STEP every tick (CLK_STEP = SPEED while ADP_POWER bit0 == 1, else 0). Free-running, real-world rate scaled by SPEED."
+  },
+
+  "pos": {
+    "counter": "POS",
+    "increment": "DUE",
+    "comment": "POS += DUE (0 or 1) each tick — consumes the record on emit"
+  },
+
+  "writeout": {
+    "enable": "DUE",
+    "valid":  "WIRE_VALID",
+    "lanes": [
+      {"out": "WIRE_BID_PX",       "from": "RAW_BID"},
+      {"out": "WIRE_ASK_PX",       "from": "RAW_ASK"},
+      {"out": "WIRE_TIME",         "from": "RX_TS"},
+      {"out": "WIRE_SEQ",          "from": "RX_SEQ"},
+      {"out": "WIRE_SYMBOL_O",     "from": "WIRE_SYMBOL"},
+      {"out": "WIRE_PIP_O",        "from": "WIRE_PIP"},
+      {"out": "WIRE_COMMISSION_O", "from": "WIRE_COMMISSION"}
+    ],
+    "comment": "gated dffs (en=DUE) form the adapter's registered output flops holding the price-only packet (the record + static config); WIRE_VALID <= DUE (en=ADP_POWER). These flops are the bus DRIVER — their values are deposited into the wire bus window (see deposit), where the WIRE_* lanes actually live and the NIC samples them."
+  },
+
+  "deposit": {
+    "comment": "The adapter DRIVES the passive wire bus: in the WRITE phase it deposits its registered output flops directly into the wire window (INGRESS_FLOW.md s2/s3). The WIRE_* lanes live in the wire, not in a private copy the NIC reaches into; the adapter is the bus's sole writer. Branchless: plain register writes of already-computed gated values. Target lane names are the wire window's (wire_gen.h, the wire's canonical generated seam map — single source ../wire/wire.net.json).",
+    "target": "wire_bus",
+    "lanes": [
+      {"bus": "WIRE_BID_PX",     "from": "bid_next"},
+      {"bus": "WIRE_ASK_PX",     "from": "ask_next"},
+      {"bus": "WIRE_TIME",       "from": "time_next"},
+      {"bus": "WIRE_SYMBOL",     "from": "sym_next"},
+      {"bus": "WIRE_PIP",        "from": "pip_next"},
+      {"bus": "WIRE_COMMISSION", "from": "com_next"},
+      {"bus": "WIRE_SEQ",        "from": "seq_next"},
+      {"bus": "WIRE_VALID",      "from": "valid_next"}
+    ]
+  },
+
+  "display_ring": {
+    "depth": 16,
+    "fields": ["WIRE_VALID", "WIRE_BID_PX", "WIRE_ASK_PX", "WIRE_TIME", "ADP_CLK_AT_EMIT", "WIRE_SEQ"],
+    "count": "DISP_EMIT_COUNT",
+    "comment": "display-out lanes: a non-blocking snapshot ring the device appends to on each emit (en=DUE), wrapping at depth (slot = emit_cnt & (depth-1), a power-of-two mask cell — no %), so the newest `depth` emits are retained. An external display scans raw off-clock and windows to the most-recent `depth`. depth MUST stay a power of two for the mask. ADP_CLK_AT_EMIT records now at emit to prove now==timestamp. This is a display surface (addressed registers), not data-path logic."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "device": "tai",
+  "window_base": "0x1C00000",
+  "kind": "counter",
+  "comment": "tai \u2014 the authoritative TAI timestamp. A 64-bit counter CLOCKED BY taisoc (one taisoc edge = one tick = TAI_NS += 1). NO discipline/PPS/PI loop: taisoc is the reference by definition. The timestamp VALUE (separate clock from MAC the sample RATE). tai_cdc samples TAI_NS into the MAC domain.",
+  "config_nodes": [
+    {
+      "name": "TAI_POWER",
+      "type": "bit",
+      "comment": "power bit: counter runs on the taisoc clock while bit0 = 1 (set once)"
+    },
+    {
+      "name": "TAI_RUN_UNTIL",
+      "type": "u64",
+      "comment": "configured self-run stop count (set once by starter)"
+    }
+  ],
+  "dff_nodes": [
+    {
+      "name": "TAI_NS",
+      "type": "u64",
+      "comment": "authoritative 64-bit timestamp; += 1 per taisoc edge"
+    }
+  ],
+  "counter": {
+    "reg": "TAI_NS",
+    "power": "TAI_POWER"
+  },
+  "run_power": "TAI_POWER",
+  "run_bound": {
+    "count": "TAI_NS",
+    "limit": "TAI_RUN_UNTIL"
+  }
+}

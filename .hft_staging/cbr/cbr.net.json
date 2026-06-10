@@ -1,0 +1,321 @@
+{
+  "device": "cbr",
+  "window_base": "0x00000000",
+  "kind": "module",
+  "comment": "CBR (Cross-Bar Ratio, WAVE 2): bar-over-bar deltas of committed candle volume/true-range/intrabar + footprint cumulative-delta, with running high-water marks. Flip-flop level, netlist-generated (emitter-first).",
+  "config_nodes": [
+    {
+      "name": "CAND_CURR_BID_VOL",
+      "type": "u64",
+      "comment": "Committed candle bid volume, current bar (from candle seam)"
+    },
+    {
+      "name": "CAND_CURR_ASK_VOL",
+      "type": "u64",
+      "comment": "Committed candle ask volume, current bar"
+    },
+    {
+      "name": "CAND_CURR_BID_TR",
+      "type": "u64",
+      "comment": "Committed candle bid true-range, current bar"
+    },
+    {
+      "name": "CAND_CURR_ASK_TR",
+      "type": "u64",
+      "comment": "Committed candle ask true-range, current bar"
+    },
+    {
+      "name": "CAND_CURR_INTRABAR",
+      "type": "u64",
+      "comment": "Committed candle intrabar qty delta, current bar"
+    },
+    {
+      "name": "FP_CURR_CUM_DELTA",
+      "type": "u64",
+      "comment": "Committed footprint cumulative delta, current bar (footprint seam)"
+    },
+    {
+      "name": "TF_BAR_SEQ_REG",
+      "type": "u64",
+      "comment": "Timeframe bar sequence (bar-boundary detection)"
+    }
+  ],
+  "dff_nodes": [
+    {
+      "name": "CBR_BID_VOL_DELTA_REG",
+      "type": "i64",
+      "comment": "curr_bid_vol - prev_bid_vol (committed candle bid volume delta)"
+    },
+    {
+      "name": "CBR_ASK_VOL_DELTA_REG",
+      "type": "i64",
+      "comment": "curr_ask_vol - prev_ask_vol"
+    },
+    {
+      "name": "CBR_BID_TR_DELTA_REG",
+      "type": "i64",
+      "comment": "curr_bid_tr - prev_bid_tr (bid true-range delta)"
+    },
+    {
+      "name": "CBR_ASK_TR_DELTA_REG",
+      "type": "i64",
+      "comment": "curr_ask_tr - prev_ask_tr"
+    },
+    {
+      "name": "CBR_FOOTPRINT_DELTA_REG",
+      "type": "i64",
+      "comment": "curr_fp_cum - prev_fp_cum (footprint cumulative-delta bar-over-bar)"
+    },
+    {
+      "name": "CBR_INTRABAR_DELTA_REG",
+      "type": "i64",
+      "comment": "curr_intrabar - prev_intrabar (intrabar qty delta bar-over-bar)"
+    },
+    {
+      "name": "CBR_BID_VOL_HW_REG",
+      "type": "i64",
+      "comment": "Running max bid-volume delta observed"
+    },
+    {
+      "name": "CBR_ASK_VOL_HW_REG",
+      "type": "i64",
+      "comment": "Running max ask-volume delta observed"
+    },
+    {
+      "name": "CBR_BID_TR_HW_REG",
+      "type": "i64",
+      "comment": "Running max bid-true-range delta observed"
+    },
+    {
+      "name": "CBR_ASK_TR_HW_REG",
+      "type": "i64",
+      "comment": "Running max ask-true-range delta observed"
+    },
+    {
+      "name": "CBR_PREV_BID_VOL_REG",
+      "type": "u64",
+      "comment": "Prev bar committed bid volume (boundary-gated latch)"
+    },
+    {
+      "name": "CBR_PREV_ASK_VOL_REG",
+      "type": "u64",
+      "comment": "Prev bar committed ask volume"
+    },
+    {
+      "name": "CBR_PREV_BID_TR_REG",
+      "type": "u64",
+      "comment": "Prev bar committed bid true-range"
+    },
+    {
+      "name": "CBR_PREV_ASK_TR_REG",
+      "type": "u64",
+      "comment": "Prev bar committed ask true-range"
+    },
+    {
+      "name": "CBR_LAST_TF_SEQ_REG",
+      "type": "u64",
+      "comment": "Last TF_BAR_SEQ seen (bar-boundary edge detect)"
+    },
+    {
+      "name": "CBR_BAR_BOUNDARY",
+      "type": "u64",
+      "comment": "1 iff timeframe seq changed since last cycle (bar just committed)"
+    }
+  ],
+  "comb_nodes": [
+    {
+      "name": "CBR_BAR_BOUNDARY",
+      "cell": "eqmask",
+      "inputs": [
+        "CBR_LAST_TF_SEQ_REG",
+        "TF_BAR_SEQ_REG"
+      ],
+      "invert": true,
+      "comment": "bar_boundary = eqmask(LAST_TF_SEQ, TF_BAR_SEQ) ^ 1 (seq changed)"
+    },
+    {
+      "name": "CBR_BID_VOL_DELTA_REG_UPDATE",
+      "cell": "addsub",
+      "inputs": [
+        "CAND_CURR_BID_VOL",
+        "CBR_PREV_BID_VOL_REG"
+      ],
+      "sub": 1,
+      "comment": "addsub(curr_bid_vol, prev_bid_vol, 1) = curr - prev"
+    },
+    {
+      "name": "CBR_ASK_VOL_DELTA_REG_UPDATE",
+      "cell": "addsub",
+      "inputs": [
+        "CAND_CURR_ASK_VOL",
+        "CBR_PREV_ASK_VOL_REG"
+      ],
+      "sub": 1,
+      "comment": "addsub(curr_ask_vol, prev_ask_vol, 1)"
+    },
+    {
+      "name": "CBR_BID_TR_DELTA_REG_UPDATE",
+      "cell": "addsub",
+      "inputs": [
+        "CAND_CURR_BID_TR",
+        "CBR_PREV_BID_TR_REG"
+      ],
+      "sub": 1,
+      "comment": "addsub(curr_bid_tr, prev_bid_tr, 1)"
+    },
+    {
+      "name": "CBR_ASK_TR_DELTA_REG_UPDATE",
+      "cell": "addsub",
+      "inputs": [
+        "CAND_CURR_ASK_TR",
+        "CBR_PREV_ASK_TR_REG"
+      ],
+      "sub": 1,
+      "comment": "addsub(curr_ask_tr, prev_ask_tr, 1)"
+    },
+    {
+      "name": "CBR_FOOTPRINT_DELTA_REG_UPDATE",
+      "cell": "addsub",
+      "inputs": [
+        "FP_CURR_CUM_DELTA",
+        "CBR_PREV_BID_VOL_REG"
+      ],
+      "sub": 1,
+      "comment": "addsub(curr_fp_cum, prev (boundary-gated chain), 1) \u2014 \u00a76 note 2"
+    },
+    {
+      "name": "CBR_INTRABAR_DELTA_REG_UPDATE",
+      "cell": "addsub",
+      "inputs": [
+        "CAND_CURR_INTRABAR",
+        "CBR_PREV_ASK_VOL_REG"
+      ],
+      "sub": 1,
+      "comment": "addsub(curr_intrabar, prev (boundary-gated chain), 1) \u2014 \u00a76 note 2"
+    },
+    {
+      "name": "CBR_BID_VOL_HW_SEL",
+      "cell": "cmp_lt",
+      "inputs": [
+        "CBR_BID_VOL_HW_REG",
+        "CBR_BID_VOL_DELTA_REG_UPDATE"
+      ],
+      "comment": "is_new_max = cmp_lt(hw, delta) -> 1 iff hw < delta"
+    },
+    {
+      "name": "CBR_BID_VOL_HW_REG_UPDATE",
+      "cell": "mux",
+      "inputs": [
+        "CBR_BID_VOL_HW_REG",
+        "CBR_BID_VOL_DELTA_REG_UPDATE",
+        "CBR_BID_VOL_HW_SEL"
+      ],
+      "comment": "mux(hw, delta, is_new_max): adopt delta when hw<delta, else hold"
+    },
+    {
+      "name": "CBR_ASK_VOL_HW_SEL",
+      "cell": "cmp_lt",
+      "inputs": [
+        "CBR_ASK_VOL_HW_REG",
+        "CBR_ASK_VOL_DELTA_REG_UPDATE"
+      ],
+      "comment": "is_new_max = cmp_lt(hw, delta)"
+    },
+    {
+      "name": "CBR_ASK_VOL_HW_REG_UPDATE",
+      "cell": "mux",
+      "inputs": [
+        "CBR_ASK_VOL_HW_REG",
+        "CBR_ASK_VOL_DELTA_REG_UPDATE",
+        "CBR_ASK_VOL_HW_SEL"
+      ],
+      "comment": "mux(hw, delta, is_new_max)"
+    },
+    {
+      "name": "CBR_BID_TR_HW_SEL",
+      "cell": "cmp_lt",
+      "inputs": [
+        "CBR_BID_TR_HW_REG",
+        "CBR_BID_TR_DELTA_REG_UPDATE"
+      ],
+      "comment": "is_new_max = cmp_lt(hw, delta)"
+    },
+    {
+      "name": "CBR_BID_TR_HW_REG_UPDATE",
+      "cell": "mux",
+      "inputs": [
+        "CBR_BID_TR_HW_REG",
+        "CBR_BID_TR_DELTA_REG_UPDATE",
+        "CBR_BID_TR_HW_SEL"
+      ],
+      "comment": "mux(hw, delta, is_new_max)"
+    },
+    {
+      "name": "CBR_ASK_TR_HW_SEL",
+      "cell": "cmp_lt",
+      "inputs": [
+        "CBR_ASK_TR_HW_REG",
+        "CBR_ASK_TR_DELTA_REG_UPDATE"
+      ],
+      "comment": "is_new_max = cmp_lt(hw, delta)"
+    },
+    {
+      "name": "CBR_ASK_TR_HW_REG_UPDATE",
+      "cell": "mux",
+      "inputs": [
+        "CBR_ASK_TR_HW_REG",
+        "CBR_ASK_TR_DELTA_REG_UPDATE",
+        "CBR_ASK_TR_HW_SEL"
+      ],
+      "comment": "mux(hw, delta, is_new_max)"
+    },
+    {
+      "name": "CBR_PREV_BID_VOL_REG_UPDATE",
+      "cell": "mux",
+      "inputs": [
+        "CBR_PREV_BID_VOL_REG",
+        "CAND_CURR_BID_VOL",
+        "CBR_BAR_BOUNDARY"
+      ],
+      "comment": "mux(prev, curr, boundary): on bar close adopt curr, else hold prev"
+    },
+    {
+      "name": "CBR_PREV_ASK_VOL_REG_UPDATE",
+      "cell": "mux",
+      "inputs": [
+        "CBR_PREV_ASK_VOL_REG",
+        "CAND_CURR_ASK_VOL",
+        "CBR_BAR_BOUNDARY"
+      ],
+      "comment": "mux(prev, curr, boundary)"
+    },
+    {
+      "name": "CBR_PREV_BID_TR_REG_UPDATE",
+      "cell": "mux",
+      "inputs": [
+        "CBR_PREV_BID_TR_REG",
+        "CAND_CURR_BID_TR",
+        "CBR_BAR_BOUNDARY"
+      ],
+      "comment": "mux(prev, curr, boundary)"
+    },
+    {
+      "name": "CBR_PREV_ASK_TR_REG_UPDATE",
+      "cell": "mux",
+      "inputs": [
+        "CBR_PREV_ASK_TR_REG",
+        "CAND_CURR_ASK_TR",
+        "CBR_BAR_BOUNDARY"
+      ],
+      "comment": "mux(prev, curr, boundary)"
+    },
+    {
+      "name": "CBR_LAST_TF_SEQ_REG_UPDATE",
+      "cell": "buf",
+      "inputs": [
+        "TF_BAR_SEQ_REG"
+      ],
+      "comment": "passthrough \u2014 latch latest TF_BAR_SEQ for next-cycle boundary edge"
+    }
+  ]
+}

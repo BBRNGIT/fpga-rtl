@@ -1,0 +1,10 @@
+# Generated device logic (from gennet.py) and compiled/prepped artifacts — never committed
+adapter_gen.h
+# the wire's canonical seam header, regenerated here from ../wire/wire.net.json
+# (single source of truth) — never a committed hand-maintained copy
+wire_gen.h
+*.bin
+test_synth
+test_xau
+probe
+*.dSYM/

@@ -1,0 +1,43 @@
+{
+  "device": "taisoc",
+  "window_base": "0x1B00000",
+  "kind": "oscillator",
+  "comment": "taisoc \u2014 the TAI oscillator REFERENCE. A free-running counter (the TAI rate) that emits one edge strobe per powered tick. No discipline, no timestamp value: it only produces the rate. tai counts TAISOC_EDGE. Separate oscillator from MAC and internal (CLAUDE.md two-clock model).",
+  "config_nodes": [
+    {
+      "name": "TAISOC_POWER",
+      "type": "bit",
+      "comment": "power bit: counter self-runs while bit0 = 1 (set once by starter)"
+    },
+    {
+      "name": "TAISOC_RUN_UNTIL",
+      "type": "u64",
+      "comment": "configured stop count: self-run bound (set once by starter; the clock self-oscillates while CYCLE < this, like the adapter's buffer bound)"
+    }
+  ],
+  "dff_nodes": [
+    {
+      "name": "TAISOC_CYCLE",
+      "type": "u64",
+      "comment": "free-running cycle count; += 1 per powered tick"
+    },
+    {
+      "name": "TAISOC_EDGE",
+      "type": "bit",
+      "comment": "oscillator edge strobe: 1 every powered tick (tai counts this)"
+    }
+  ],
+  "counter": {
+    "reg": "TAISOC_CYCLE",
+    "power": "TAISOC_POWER"
+  },
+  "edge": {
+    "reg": "TAISOC_EDGE",
+    "power": "TAISOC_POWER"
+  },
+  "run_power": "TAISOC_POWER",
+  "run_bound": {
+    "count": "TAISOC_CYCLE",
+    "limit": "TAISOC_RUN_UNTIL"
+  }
+}

@@ -1,0 +1,327 @@
+{
+  "device": "fractal",
+  "window_base": "0x00000000",
+  "kind": "module",
+  "comment": "5-bar Bill Williams fractal detector (WAVE 2). Pivot = middle bar (cs2/seq-3) of five consecutive completed bars; UP iff its HIGH is strictly above all four neighbours, DN iff its LOW strictly below, both gated by seq>=5. (auto-generated from FRACTAL_ARCHITECTURE.md)",
+  "config_nodes": [
+    {
+      "name": "TF_BAR_SEQ_REG",
+      "type": "u64",
+      "comment": "Timeframe bar sequence (seq>=5 guard + ring index source)"
+    },
+    {
+      "name": "H0",
+      "type": "u64",
+      "comment": "candle HIGH at cs0 (seq-1)"
+    },
+    {
+      "name": "H1",
+      "type": "u64",
+      "comment": "candle HIGH at cs1 (seq-2)"
+    },
+    {
+      "name": "H2",
+      "type": "u64",
+      "comment": "candle HIGH at cs2 (seq-3, pivot)"
+    },
+    {
+      "name": "H3",
+      "type": "u64",
+      "comment": "candle HIGH at cs3 (seq-4)"
+    },
+    {
+      "name": "H4",
+      "type": "u64",
+      "comment": "candle HIGH at cs4 (seq-5)"
+    },
+    {
+      "name": "L0",
+      "type": "u64",
+      "comment": "candle LOW at cs0 (seq-1)"
+    },
+    {
+      "name": "L1",
+      "type": "u64",
+      "comment": "candle LOW at cs1 (seq-2)"
+    },
+    {
+      "name": "L2",
+      "type": "u64",
+      "comment": "candle LOW at cs2 (seq-3, pivot)"
+    },
+    {
+      "name": "L3",
+      "type": "u64",
+      "comment": "candle LOW at cs3 (seq-4)"
+    },
+    {
+      "name": "L4",
+      "type": "u64",
+      "comment": "candle LOW at cs4 (seq-5)"
+    }
+  ],
+  "const_nodes": [
+    {
+      "name": "FRAC_THREE",
+      "type": "u64",
+      "value": 3,
+      "comment": "subtrahend for the pivot write slot cs2 = seq-3"
+    },
+    {
+      "name": "FRAC_FIVE",
+      "type": "u64",
+      "value": 5,
+      "comment": "the seq>=5 guard threshold (need five completed bars)"
+    },
+    {
+      "name": "FRAC_SENTINEL",
+      "type": "u64",
+      "value": 18446744073709551615,
+      "comment": "no-fractal sentinel (0xFFFF...FFFF, renders ---.----)"
+    }
+  ],
+  "dff_nodes": [
+    {
+      "name": "IND_FRAC_UP_PRICE_REG",
+      "type": "u64",
+      "comment": "High-water mark of detected UP fractal pivot highs"
+    },
+    {
+      "name": "IND_FRAC_DN_PRICE_REG",
+      "type": "u64",
+      "comment": "High-water mark of detected DN fractal pivot lows"
+    }
+  ],
+  "history_ring": {
+    "name": "IND_FRAC_HIST",
+    "depth": 256,
+    "fields": [
+      "FRAC_HIST_UP",
+      "FRAC_HIST_DN"
+    ],
+    "index": "CS2",
+    "field_src": {
+      "FRAC_HIST_UP": "NEXT_HU",
+      "FRAC_HIST_DN": "NEXT_HD"
+    },
+    "init": 18446744073709551615,
+    "comment": "Per-bar fractal record; sentinel where no fractal detected"
+  },
+  "comb_nodes": [
+    {
+      "name": "CS2",
+      "cell": "addsub",
+      "inputs": [
+        "TF_BAR_SEQ_REG",
+        "FRAC_THREE"
+      ],
+      "sub": 1,
+      "mask": 255,
+      "comment": "cs2 = (seq-3) & FRAC_HIST_MASK (pivot bar + history write slot)"
+    },
+    {
+      "name": "SEQ_GE5",
+      "cell": "cmp_lt",
+      "inputs": [
+        "TF_BAR_SEQ_REG",
+        "FRAC_FIVE"
+      ],
+      "invert": true,
+      "comment": "SEQ_GE5 = cmp_lt(seq,5) ^ 1 = (seq >= 5)"
+    },
+    {
+      "name": "UP_GT0",
+      "cell": "cmp_lt",
+      "inputs": [
+        "H0",
+        "H2"
+      ],
+      "comment": "h2 > h0"
+    },
+    {
+      "name": "UP_GT1",
+      "cell": "cmp_lt",
+      "inputs": [
+        "H1",
+        "H2"
+      ],
+      "comment": "h2 > h1"
+    },
+    {
+      "name": "UP_GT3",
+      "cell": "cmp_lt",
+      "inputs": [
+        "H3",
+        "H2"
+      ],
+      "comment": "h2 > h3"
+    },
+    {
+      "name": "UP_GT4",
+      "cell": "cmp_lt",
+      "inputs": [
+        "H4",
+        "H2"
+      ],
+      "comment": "h2 > h4"
+    },
+    {
+      "name": "UP_AND_A",
+      "cell": "and",
+      "inputs": [
+        "UP_GT0",
+        "UP_GT1"
+      ],
+      "comment": "(h2>h0) & (h2>h1)"
+    },
+    {
+      "name": "UP_AND_B",
+      "cell": "and",
+      "inputs": [
+        "UP_GT3",
+        "UP_GT4"
+      ],
+      "comment": "(h2>h3) & (h2>h4)"
+    },
+    {
+      "name": "UP_AND_C",
+      "cell": "and",
+      "inputs": [
+        "UP_AND_A",
+        "UP_AND_B"
+      ],
+      "comment": "all four high comparisons"
+    },
+    {
+      "name": "IS_UP",
+      "cell": "and",
+      "inputs": [
+        "UP_AND_C",
+        "SEQ_GE5"
+      ],
+      "comment": "IS_UP = neighbours & (seq>=5)"
+    },
+    {
+      "name": "DN_LT0",
+      "cell": "cmp_lt",
+      "inputs": [
+        "L2",
+        "L0"
+      ],
+      "comment": "l2 < l0"
+    },
+    {
+      "name": "DN_LT1",
+      "cell": "cmp_lt",
+      "inputs": [
+        "L2",
+        "L1"
+      ],
+      "comment": "l2 < l1"
+    },
+    {
+      "name": "DN_LT3",
+      "cell": "cmp_lt",
+      "inputs": [
+        "L2",
+        "L3"
+      ],
+      "comment": "l2 < l3"
+    },
+    {
+      "name": "DN_LT4",
+      "cell": "cmp_lt",
+      "inputs": [
+        "L2",
+        "L4"
+      ],
+      "comment": "l2 < l4"
+    },
+    {
+      "name": "DN_AND_A",
+      "cell": "and",
+      "inputs": [
+        "DN_LT0",
+        "DN_LT1"
+      ],
+      "comment": "(l2<l0) & (l2<l1)"
+    },
+    {
+      "name": "DN_AND_B",
+      "cell": "and",
+      "inputs": [
+        "DN_LT3",
+        "DN_LT4"
+      ],
+      "comment": "(l2<l3) & (l2<l4)"
+    },
+    {
+      "name": "DN_AND_C",
+      "cell": "and",
+      "inputs": [
+        "DN_AND_A",
+        "DN_AND_B"
+      ],
+      "comment": "all four low comparisons"
+    },
+    {
+      "name": "IS_DN",
+      "cell": "and",
+      "inputs": [
+        "DN_AND_C",
+        "SEQ_GE5"
+      ],
+      "comment": "IS_DN = neighbours & (seq>=5)"
+    },
+    {
+      "name": "IND_FRAC_UP_PRICE_REG_UPDATE",
+      "cell": "mux",
+      "inputs": [
+        "IND_FRAC_UP_PRICE_REG",
+        "H2",
+        "IS_UP"
+      ],
+      "comment": "IS_UP -> latch h2, else hold prior UP high-water"
+    },
+    {
+      "name": "IND_FRAC_DN_PRICE_REG_UPDATE",
+      "cell": "mux",
+      "inputs": [
+        "IND_FRAC_DN_PRICE_REG",
+        "L2",
+        "IS_DN"
+      ],
+      "comment": "IS_DN -> latch l2, else hold prior DN high-water"
+    },
+    {
+      "name": "NEXT_HU",
+      "cell": "mux",
+      "inputs": [
+        "FRAC_SENTINEL",
+        "H2",
+        "IS_UP"
+      ],
+      "comment": "IS_UP -> h2, else sentinel -> IND_FRAC_HIST[cs2].UP"
+    },
+    {
+      "name": "NEXT_HD",
+      "cell": "mux",
+      "inputs": [
+        "FRAC_SENTINEL",
+        "L2",
+        "IS_DN"
+      ],
+      "comment": "IS_DN -> l2, else sentinel -> IND_FRAC_HIST[cs2].DN"
+    }
+  ],
+  "seam_nodes": [
+    {
+      "name": "IND_FRAC_UP_PRICE_REG",
+      "comment": "Relayed to strategy/display: latest UP fractal high"
+    },
+    {
+      "name": "IND_FRAC_DN_PRICE_REG",
+      "comment": "Relayed to strategy/display: latest DN fractal low"
+    }
+  ]
+}

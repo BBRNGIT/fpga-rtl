@@ -1,0 +1,395 @@
+{
+  "device": "dom",
+  "window_base": "0x2100000",
+  "kind": "order_book",
+  "clock": "internal",
+  "table_depth": 16384,
+  "relay_levels": 10,
+  "comment": "DOM \u2014 the order book. On the internal edge: sample the fifo_rx head slot (gated by FIFO_RD_FIRE & ~FIFO_EMPTY), detect bid/ask price change vs the PREV registers (branchless eqmask), index the price tables by mask, update the addressed bid/ask/count/time cells (presence model: set 1 / clear 0; count += 1; time latch), eagerly track best bid/ask, accumulate running totals, derive spread/mid (guarded by ask-valid), publish the 10-level relay ladders, bump the diagnostic counters, and latch the feed time + prev prices. Single internal domain (the MAC->internal CDC is upstream in fifo_rx). Presence model per PARTS_LIST: no trade/CVD/qty-accumulation (price-only data law; TRADE_COUNT kept = 0 for API compat).",
+  "fifo_head_lanes": [
+    "BID_PX",
+    "ASK_PX",
+    "TIME",
+    "SRC_TIME",
+    "SYMBOL",
+    "PIP",
+    "COMMISSION",
+    "SEQ"
+  ],
+  "fifo_head_ofs": {
+    "BID_PX": 0,
+    "ASK_PX": 1,
+    "TIME": 2,
+    "SRC_TIME": 3,
+    "SYMBOL": 4,
+    "PIP": 5,
+    "COMMISSION": 6,
+    "SEQ": 7
+  },
+  "fifo_fire": "FIFO_FIFO_RD_FIRE",
+  "fifo_empty": "FIFO_FIFO_EMPTY",
+  "config_nodes": [
+    {
+      "name": "DOM_POWER",
+      "type": "bit",
+      "comment": "power/enable: DOM self-runs on its clock edge while bit0 = 1 (set once)"
+    },
+    {
+      "name": "DOM_RUN_UNTIL",
+      "type": "u64",
+      "comment": "configured self-run tick budget (set once by starter)"
+    },
+    {
+      "name": "DOM_SESSION_BASE",
+      "type": "u64",
+      "comment": "session base price: idx = (price - SESSION_BASE) & (depth-1). Config (set once)."
+    },
+    {
+      "name": "DOM_PIP_RES",
+      "type": "u64",
+      "comment": "pip resolution for the relay ladder step (best +/- (i+1)*PIP_RES). Config."
+    }
+  ],
+  "dff_nodes": [
+    {
+      "name": "DOM_TICKS",
+      "type": "u64",
+      "comment": "self-run tick counter (run-loop bookkeeping; bounds the self-run)"
+    },
+    {
+      "name": "DOM_BEST_BID_PRICE_REG",
+      "type": "u64",
+      "comment": "scalar order-book register (PARTS_LIST \u00a73-\u00a79)"
+    },
+    {
+      "name": "DOM_BEST_BID_QTY_REG",
+      "type": "u64",
+      "comment": "scalar order-book register (PARTS_LIST \u00a73-\u00a79)"
+    },
+    {
+      "name": "DOM_BEST_ASK_PRICE_REG",
+      "type": "u64",
+      "comment": "scalar order-book register (PARTS_LIST \u00a73-\u00a79)"
+    },
+    {
+      "name": "DOM_BEST_ASK_QTY_REG",
+      "type": "u64",
+      "comment": "scalar order-book register (PARTS_LIST \u00a73-\u00a79)"
+    },
+    {
+      "name": "DOM_TOTAL_BID_QTY_REG",
+      "type": "u64",
+      "comment": "scalar order-book register (PARTS_LIST \u00a73-\u00a79)"
+    },
+    {
+      "name": "DOM_TOTAL_ASK_QTY_REG",
+      "type": "u64",
+      "comment": "scalar order-book register (PARTS_LIST \u00a73-\u00a79)"
+    },
+    {
+      "name": "DOM_PKT_COUNT_REG",
+      "type": "u64",
+      "comment": "scalar order-book register (PARTS_LIST \u00a73-\u00a79)"
+    },
+    {
+      "name": "DOM_ADD_COUNT_REG",
+      "type": "u64",
+      "comment": "scalar order-book register (PARTS_LIST \u00a73-\u00a79)"
+    },
+    {
+      "name": "DOM_CANCEL_COUNT_REG",
+      "type": "u64",
+      "comment": "scalar order-book register (PARTS_LIST \u00a73-\u00a79)"
+    },
+    {
+      "name": "DOM_TRADE_COUNT_REG",
+      "type": "u64",
+      "comment": "scalar order-book register (PARTS_LIST \u00a73-\u00a79)"
+    },
+    {
+      "name": "DOM_LAST_FEED_TIME_REG",
+      "type": "u64",
+      "comment": "scalar order-book register (PARTS_LIST \u00a73-\u00a79)"
+    },
+    {
+      "name": "DOM_PREV_BID_PRICE",
+      "type": "u64",
+      "comment": "scalar order-book register (PARTS_LIST \u00a73-\u00a79)"
+    },
+    {
+      "name": "DOM_PREV_ASK_PRICE",
+      "type": "u64",
+      "comment": "scalar order-book register (PARTS_LIST \u00a73-\u00a79)"
+    },
+    {
+      "name": "DOM_REL_BID_PRICE_0",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_PRICE_1",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_PRICE_2",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_PRICE_3",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_PRICE_4",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_PRICE_5",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_PRICE_6",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_PRICE_7",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_PRICE_8",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_PRICE_9",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_QTY_0",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_QTY_1",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_QTY_2",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_QTY_3",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_QTY_4",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_QTY_5",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_QTY_6",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_QTY_7",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_QTY_8",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_BID_QTY_9",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_PRICE_0",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_PRICE_1",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_PRICE_2",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_PRICE_3",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_PRICE_4",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_PRICE_5",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_PRICE_6",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_PRICE_7",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_PRICE_8",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_PRICE_9",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_QTY_0",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_QTY_1",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_QTY_2",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_QTY_3",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_QTY_4",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_QTY_5",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_QTY_6",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_QTY_7",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_QTY_8",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    },
+    {
+      "name": "DOM_REL_ASK_QTY_9",
+      "type": "u64",
+      "comment": "relay ladder lane (PARTS_LIST \u00a78)"
+    }
+  ],
+  "comb_nodes": [
+    {
+      "name": "DOM_SPREAD_REG",
+      "type": "u64",
+      "comment": "derived register (PARTS_LIST \u00a75)"
+    },
+    {
+      "name": "DOM_MID_PRICE_REG",
+      "type": "u64",
+      "comment": "derived register (PARTS_LIST \u00a75)"
+    }
+  ],
+  "tables": [
+    {
+      "name": "DOM_BID_QTY",
+      "depth": 16384,
+      "fed_by": "addsub",
+      "comment": "per-level bid presence/qty: 1 when the new bid index, else 0 (PARTS_LIST \u00a72)"
+    },
+    {
+      "name": "DOM_ASK_QTY",
+      "depth": 16384,
+      "fed_by": "addsub",
+      "comment": "per-level ask presence/qty: 1 when the new ask index, else 0 (PARTS_LIST \u00a72)"
+    },
+    {
+      "name": "DOM_COUNT",
+      "depth": 16384,
+      "fed_by": "addsub",
+      "comment": "per-level event counter: += 1 when level i touched (PARTS_LIST \u00a72)"
+    },
+    {
+      "name": "DOM_TIME",
+      "depth": 16384,
+      "fed_by": "mux",
+      "comment": "per-level timestamp latch: latch head TAI when level i touched (PARTS_LIST \u00a72)"
+    }
+  ],
+  "wiring": {
+    "head_bid": "BID_PX",
+    "head_ask": "ASK_PX",
+    "head_tai": "TIME",
+    "prev_bid": "DOM_PREV_BID_PRICE",
+    "prev_ask": "DOM_PREV_ASK_PRICE",
+    "best_bid_price": "DOM_BEST_BID_PRICE_REG",
+    "best_bid_qty": "DOM_BEST_BID_QTY_REG",
+    "best_ask_price": "DOM_BEST_ASK_PRICE_REG",
+    "best_ask_qty": "DOM_BEST_ASK_QTY_REG",
+    "total_bid": "DOM_TOTAL_BID_QTY_REG",
+    "total_ask": "DOM_TOTAL_ASK_QTY_REG",
+    "spread": "DOM_SPREAD_REG",
+    "mid": "DOM_MID_PRICE_REG",
+    "pkt_count": "DOM_PKT_COUNT_REG",
+    "add_count": "DOM_ADD_COUNT_REG",
+    "cancel_count": "DOM_CANCEL_COUNT_REG",
+    "trade_count": "DOM_TRADE_COUNT_REG",
+    "last_feed_time": "DOM_LAST_FEED_TIME_REG",
+    "bid_qty_table": "DOM_BID_QTY",
+    "ask_qty_table": "DOM_ASK_QTY",
+    "count_table": "DOM_COUNT",
+    "time_table": "DOM_TIME",
+    "session_base": "DOM_SESSION_BASE",
+    "pip_res": "DOM_PIP_RES"
+  },
+  "power": "DOM_POWER",
+  "run": {
+    "power": "DOM_POWER",
+    "count": "DOM_TICKS",
+    "limit": "DOM_RUN_UNTIL"
+  }
+}

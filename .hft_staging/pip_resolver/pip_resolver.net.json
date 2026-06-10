@@ -1,0 +1,71 @@
+{
+  "device": "pip_resolver",
+  "window_base": "0x2000000",
+  "kind": "lookup",
+  "clock": "mac",
+  "comment": "PIP_RESOLVER \u2014 per-symbol pip-resolution lookup. On the MAC edge: sample the NIC seam's SEAM_SYMBOL (gated by SEAM_VALID), index a STATIC pip-config table by addr = symbol*8 bytes (= the symbol-th 64-bit slot; word index = symbol, reduced by a power-of-two mask \u2014 no %, no bounds if), read the resolved pip value (branchless eqmask-gate-OR slot select), and publish it on PIP_RESOLUTION_REG. Pure combinational address arithmetic + table select; the table is config-only (written once at init, never per-tick). Same-domain hop (MAC) with the NIC seam; no CDC.",
+  "config_nodes": [
+    {
+      "name": "PIP_POWER",
+      "type": "bit",
+      "comment": "power/enable: the device self-runs on the mac edge while bit0 = 1 (set once)"
+    },
+    {
+      "name": "PIP_RUN_UNTIL",
+      "type": "u64",
+      "comment": "configured self-run tick budget (set once by starter)"
+    }
+  ],
+  "table": {
+    "depth": 16,
+    "prefix": "PIP_CFG_TABLE",
+    "index_from": "SEAM_SYMBOL",
+    "comment": "static pip-config table: index = SEAM_SYMBOL & (depth-1) (power-of-two mask). Slot i holds the pip resolution for symbol i (addr = symbol*8 bytes = the symbol-th 64-bit slot). Config-only: written once at init, never mutated in the tick."
+  },
+  "nic_inputs": [
+    "SEAM_SYMBOL",
+    "SEAM_VALID"
+  ],
+  "dff_nodes": [
+    {
+      "name": "PIP_TICKS",
+      "type": "u64",
+      "comment": "self-run tick counter (run-loop bookkeeping; bounds the self-run)"
+    }
+  ],
+  "compute": {
+    "symbol": "SEAM_SYMBOL",
+    "valid": "SEAM_VALID",
+    "comment": "idx = symbol & (depth-1); res = OR-reduce over i of (eqmask(idx,i) ? table[i] : 0). en = SEAM_VALID. The resolved register latches on en=valid; PIP_VALID latches SEAM_VALID."
+  },
+  "out_nodes": [
+    {
+      "name": "PIP_RESOLUTION_REG",
+      "from": "res",
+      "type": "u64",
+      "en": "valid",
+      "comment": "resolved pip resolution for the sampled symbol (the unified Y-axis authority)"
+    },
+    {
+      "name": "PIP_SYMBOL",
+      "from": "symbol",
+      "type": "u64",
+      "en": "valid",
+      "comment": "the symbol id that was resolved (latched for display/trace)"
+    }
+  ],
+  "out_status": [
+    {
+      "name": "PIP_VALID",
+      "from": "valid",
+      "type": "bit",
+      "comment": "1 iff a symbol was sampled (= SEAM_VALID) this cycle"
+    }
+  ],
+  "power": "PIP_POWER",
+  "run": {
+    "power": "PIP_POWER",
+    "count": "PIP_TICKS",
+    "limit": "PIP_RUN_UNTIL"
+  }
+}

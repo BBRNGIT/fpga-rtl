@@ -1,0 +1,7 @@
+# Generated device logic (from gennet.py) and compiled artifacts — never committed
+wire_gen.h
+*.bin
+test_synth
+probe
+*.dSYM/
+</content>

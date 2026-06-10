@@ -1,0 +1,123 @@
+{
+  "device": "tpo",
+  "window_base": "0x00000000",
+  "kind": "market-data",
+  "comment": "Hardware specification for building the Tpo (Indicator) component flip-flop-level from the netlist-generator (emitter-first workflow). (auto-generated from PARTS_LIST)",
+  "config_nodes": [
+    {
+      "name": "DOM_BID_QTY",
+      "type": "u64",
+      "comment": "Bid quantity per price level (indexed by PRICE_IDX)"
+    },
+    {
+      "name": "DOM_ASK_QTY",
+      "type": "u64",
+      "comment": "Ask quantity per price level (indexed by PRICE_IDX)"
+    },
+    {
+      "name": "DOM_TIME",
+      "type": "u64",
+      "comment": "Latest TAI timestamp per price level"
+    },
+    {
+      "name": "DOM_COUNT",
+      "type": "u64",
+      "comment": "Event count per price level"
+    },
+    {
+      "name": "TF_BAR_SEQ_REG",
+      "type": "u64",
+      "comment": "Timeframe bar sequence (for bar-boundary detection)"
+    },
+    {
+      "name": "FIFO_RX_TAI",
+      "type": "u64",
+      "comment": "TAI timestamp from ingress"
+    }
+  ],
+  "dff_nodes": [
+    {
+      "name": "TPO_PREV_TAI",
+      "type": "u64",
+      "comment": "last TAI processed (subtrahend for elapsed-time, arch \u00a72)"
+    },
+    {
+      "name": "TPO_BAR_POC_TOTAL",
+      "type": "u64",
+      "comment": "total accumulated time at the running POC level (arch \u00a72)"
+    },
+    {
+      "name": "TPO_BID_TIME",
+      "type": "u64",
+      "comment": "cumulative bid-side time at the active price level (arch \u00a72)"
+    },
+    {
+      "name": "TPO_ASK_TIME",
+      "type": "u64",
+      "comment": "cumulative ask-side time at the active price level (arch \u00a72)"
+    },
+    {
+      "name": "TPO_LAST_TF_SEQ",
+      "type": "u64",
+      "comment": "last timeframe bar sequence seen (bar-boundary detect, arch \u00a72)"
+    },
+    {
+      "name": "TPO_BAR_PARITY",
+      "type": "u64",
+      "comment": "virtual-reset parity tag (flips on bar close, arch \u00a72)"
+    },
+    {
+      "name": "TPO_STATE",
+      "type": "u64",
+      "comment": "module state register"
+    }
+  ],
+  "comb_nodes": [
+    {
+      "name": "TPO_TIME_DELTA",
+      "cell": "addsub",
+      "inputs": [
+        "fifo_rx_tai",
+        "tpo_prev_tai",
+        "1ULL"
+      ],
+      "comment": "elapsed = FIFO_RX_TAI - TPO_PREV_TAI (sub) \u2014 ns since previous edge (arch \u00a73.1)"
+    },
+    {
+      "name": "TPO_BAR_CLOSED",
+      "cell": "eqmask",
+      "inputs": [
+        "tf_bar_seq_reg",
+        "tpo_last_tf_seq"
+      ],
+      "comment": "bar_same = (TF_BAR_SEQ == TPO_LAST_TF_SEQ); boundary when 0 (arch \u00a73.4)"
+    },
+    {
+      "name": "TPO_MIN_MAX",
+      "cell": "eqmask",
+      "inputs": [
+        "dom_time",
+        "fifo_rx_tai"
+      ],
+      "comment": "active = (DOM_TIME == FIFO_RX_TAI); selects the live price level (arch \u00a73.2/\u00a73.3)"
+    },
+    {
+      "name": "TPO_TIME_ACCUMULATE",
+      "cell": "gate",
+      "inputs": [
+        "tpo_time_delta",
+        "tpo_min_max"
+      ],
+      "comment": "charge = elapsed if level active this tick, else 0 (arch \u00a73.2)"
+    },
+    {
+      "name": "BID_ASK_SPLIT",
+      "cell": "gate",
+      "inputs": [
+        "tpo_time_accumulate",
+        "dom_bid_qty"
+      ],
+      "comment": "bid_charge = charge if bid event, else 0; ask = complement (arch \u00a73.5)"
+    }
+  ]
+}

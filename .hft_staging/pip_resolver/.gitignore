@@ -1,0 +1,15 @@
+# This device's OWN generated header IS COMMITTED (build-sequence law): the netlist
+# is its validation spec; the pre-commit hook byte-matches it against gennet output.
+# (So pip_resolver_gen.h is intentionally NOT ignored.)
+#
+# SIBLING seam headers, regenerated here from their single sources
+# (../nic/nic.net.json, ../wire/wire.net.json, ../tai_cdc/tai_cdc.net.json) —
+# never committed copies (they are other devices' circuits).
+nic_gen.h
+wire_gen.h
+tai_cdc_gen.h
+# compiled artifacts
+*.bin
+test_synth
+probe
+*.dSYM/

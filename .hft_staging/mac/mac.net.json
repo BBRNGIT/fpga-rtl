@@ -1,0 +1,43 @@
+{
+  "device": "mac",
+  "window_base": "0x1D00000",
+  "kind": "oscillator",
+  "comment": "mac \u2014 the 125 MHz MAC sample clock. A free-running counter (the NIC sample/copy RATE) emitting one edge strobe per powered tick. MAC = the sample RATE, a SEPARATE clock from TAI (the timestamp VALUE) and from internal (the pipeline metronome). The NIC samples on MAC_EDGE.",
+  "config_nodes": [
+    {
+      "name": "MAC_POWER",
+      "type": "bit",
+      "comment": "power bit: counter self-runs while bit0 = 1 (set once by starter)"
+    },
+    {
+      "name": "MAC_RUN_UNTIL",
+      "type": "u64",
+      "comment": "configured self-run stop count (set once by starter)"
+    }
+  ],
+  "dff_nodes": [
+    {
+      "name": "MAC_CYCLE",
+      "type": "u64",
+      "comment": "free-running 125 MHz cycle count; += 1 per powered tick"
+    },
+    {
+      "name": "MAC_EDGE",
+      "type": "bit",
+      "comment": "MAC sample edge: 1 every powered tick (the NIC samples on it)"
+    }
+  ],
+  "counter": {
+    "reg": "MAC_CYCLE",
+    "power": "MAC_POWER"
+  },
+  "edge": {
+    "reg": "MAC_EDGE",
+    "power": "MAC_POWER"
+  },
+  "run_power": "MAC_POWER",
+  "run_bound": {
+    "count": "MAC_CYCLE",
+    "limit": "MAC_RUN_UNTIL"
+  }
+}

@@ -1,0 +1,583 @@
+{
+  "device": "footprint",
+  "window_base": "0x00000000",
+  "kind": "market-data",
+  "comment": "Hardware specification for building the Footprint (Indicator) component flip-flop-level from the netlist-generator (emitter-first workflow). (auto-generated from PARTS_LIST)",
+  "config_nodes": [
+    {
+      "name": "DOM_ASK_QTY",
+      "type": "u64",
+      "comment": "Ask quantity per price level (indexed by PRICE_IDX)"
+    },
+    {
+      "name": "DOM_BID_QTY",
+      "type": "u64",
+      "comment": "Bid quantity per price level (indexed by PRICE_IDX)"
+    },
+    {
+      "name": "DOM_COUNT",
+      "type": "u64",
+      "comment": "Event count per price level"
+    },
+    {
+      "name": "DOM_TIME",
+      "type": "u64",
+      "comment": "Latest TAI timestamp per price level"
+    },
+    {
+      "name": "TF_BAR_SEQ_REG",
+      "type": "u64",
+      "comment": "Timeframe bar sequence (for bar-boundary detection)"
+    }
+  ],
+  "dff_nodes": [
+    {
+      "name": "FP_POC_PRICE",
+      "type": "u64",
+      "comment": "Price index of the max-volume level (Point of Control)"
+    },
+    {
+      "name": "FP_POC_VOL",
+      "type": "u64",
+      "comment": "Total volume at POC level (running maximum)"
+    },
+    {
+      "name": "FP_POC_ASK_VOL",
+      "type": "u64",
+      "comment": "Ask-side volume at POC level"
+    },
+    {
+      "name": "FP_POC_BID_VOL",
+      "type": "u64",
+      "comment": "Bid-side volume at POC level"
+    },
+    {
+      "name": "FP_DELTA",
+      "type": "u64",
+      "comment": "POC-level delta = ask_vol - bid_vol"
+    },
+    {
+      "name": "FP_VAH_PRICE",
+      "type": "u64",
+      "comment": "Value Area High \u2014 highest price where ask > bid"
+    },
+    {
+      "name": "FP_VAL_PRICE",
+      "type": "u64",
+      "comment": "Value Area Low \u2014 lowest price where bid > ask"
+    },
+    {
+      "name": "FP_ASK_IMB_PRICE",
+      "type": "u64",
+      "comment": "Strongest ask-imbalanced level (HVN)"
+    },
+    {
+      "name": "FP_ASK_IMB_MAG",
+      "type": "u64",
+      "comment": "Running-strongest ask imbalance magnitude (HVN tracker)"
+    },
+    {
+      "name": "FP_BID_IMB_PRICE",
+      "type": "u64",
+      "comment": "Strongest bid-imbalanced level (LVN)"
+    },
+    {
+      "name": "FP_BID_IMB_MAG",
+      "type": "u64",
+      "comment": "Running-strongest bid imbalance magnitude (LVN tracker)"
+    },
+    {
+      "name": "FP_MIN_PRICE",
+      "type": "u64",
+      "comment": "Lowest price index touched this bar"
+    },
+    {
+      "name": "FP_MAX_PRICE",
+      "type": "u64",
+      "comment": "Highest price index touched this bar"
+    },
+    {
+      "name": "FP_BAR_CUM_DELTA",
+      "type": "u64",
+      "comment": "Cumulative Volume Delta (CVD), continuous accumulation"
+    },
+    {
+      "name": "FP_BAR_TOTAL_VOL",
+      "type": "u64",
+      "comment": "Total bar volume (running ask+bid)"
+    },
+    {
+      "name": "FP_BAR_PARITY",
+      "type": "u64",
+      "comment": "Virtual-reset parity tag (toggles each bar close)"
+    },
+    {
+      "name": "FP_LAST_TF_SEQ",
+      "type": "u64",
+      "comment": "Last TF_BAR_SEQ observed \u2014 bar-boundary edge detector"
+    },
+    {
+      "name": "FP_BAR_SEQ",
+      "type": "u64",
+      "comment": "Footprint's own bar sequence counter"
+    },
+    {
+      "name": "FP_STACKED_IMB_BUY",
+      "type": "u64",
+      "comment": "Count of consecutive ask-imbalanced levels above POC"
+    },
+    {
+      "name": "FP_STACKED_IMB_SELL",
+      "type": "u64",
+      "comment": "Count of consecutive bid-imbalanced levels below POC"
+    }
+  ],
+  "comb_nodes": [
+    {
+      "name": "new_ask",
+      "cell": "addsub",
+      "inputs": [
+        "fp_poc_ask_vol",
+        "dom_ask_qty",
+        "0"
+      ],
+      "comment": "LEVEL_ASK_ACCUM: held_ask + DOM_ASK_QTY (sub=0, add)"
+    },
+    {
+      "name": "new_bid",
+      "cell": "addsub",
+      "inputs": [
+        "fp_poc_bid_vol",
+        "dom_bid_qty",
+        "0"
+      ],
+      "comment": "LEVEL_BID_ACCUM: held_bid + DOM_BID_QTY (sub=0, add)"
+    },
+    {
+      "name": "level_vol",
+      "cell": "addsub",
+      "inputs": [
+        "new_ask",
+        "new_bid",
+        "0"
+      ],
+      "comment": "LEVEL_TOTAL: ask+bid total level volume"
+    },
+    {
+      "name": "level_delta",
+      "cell": "addsub",
+      "inputs": [
+        "new_ask",
+        "new_bid",
+        "1"
+      ],
+      "comment": "LEVEL_DELTA: ask-bid (sub=1)"
+    },
+    {
+      "name": "is_new_max",
+      "cell": "cmp_lt",
+      "inputs": [
+        "fp_poc_vol",
+        "level_vol"
+      ],
+      "comment": "POC_PRICE_UPDATE: 1 iff current POC < this level"
+    },
+    {
+      "name": "new_poc_price",
+      "cell": "mux",
+      "inputs": [
+        "fp_poc_price",
+        "dom_count",
+        "is_new_max"
+      ],
+      "comment": "POC_PRICE_UPDATE: hold | take cur_idx on new max"
+    },
+    {
+      "name": "new_poc_vol",
+      "cell": "mux",
+      "inputs": [
+        "fp_poc_vol",
+        "level_vol",
+        "is_new_max"
+      ],
+      "comment": "POC_PRICE_UPDATE: hold | take level_vol on new max"
+    },
+    {
+      "name": "new_poc_ask",
+      "cell": "mux",
+      "inputs": [
+        "fp_poc_ask_vol",
+        "new_ask",
+        "is_new_max"
+      ],
+      "comment": "POC_SIDE_VOL_UPDATE: ask vol at POC"
+    },
+    {
+      "name": "new_poc_bid",
+      "cell": "mux",
+      "inputs": [
+        "fp_poc_bid_vol",
+        "new_bid",
+        "is_new_max"
+      ],
+      "comment": "POC_SIDE_VOL_UPDATE: bid vol at POC"
+    },
+    {
+      "name": "new_delta",
+      "cell": "mux",
+      "inputs": [
+        "fp_delta",
+        "level_delta",
+        "is_new_max"
+      ],
+      "comment": "POC_DELTA: latch level delta only when new POC"
+    },
+    {
+      "name": "ask_dom",
+      "cell": "cmp_lt",
+      "inputs": [
+        "new_bid",
+        "new_ask"
+      ],
+      "comment": "IMBALANCE_CLASSIFY: 1 iff ask > bid (ask-imbalanced)"
+    },
+    {
+      "name": "bid_dom",
+      "cell": "cmp_lt",
+      "inputs": [
+        "new_ask",
+        "new_bid"
+      ],
+      "comment": "IMBALANCE_CLASSIFY: 1 iff bid > ask (bid-imbalanced)"
+    },
+    {
+      "name": "vah_higher",
+      "cell": "cmp_lt",
+      "inputs": [
+        "fp_vah_price",
+        "dom_count"
+      ],
+      "comment": "VAH_PRICE_UPDATE: 1 iff cur_idx > current VAH"
+    },
+    {
+      "name": "take_vah",
+      "cell": "and",
+      "inputs": [
+        "ask_dom",
+        "vah_higher"
+      ],
+      "comment": "VAH_PRICE_UPDATE: ask-dominant AND higher"
+    },
+    {
+      "name": "new_vah",
+      "cell": "mux",
+      "inputs": [
+        "fp_vah_price",
+        "dom_count",
+        "take_vah"
+      ],
+      "comment": "VAH_PRICE_UPDATE: extend value-area high"
+    },
+    {
+      "name": "val_lower",
+      "cell": "cmp_lt",
+      "inputs": [
+        "dom_count",
+        "fp_val_price"
+      ],
+      "comment": "VAL_PRICE_UPDATE: 1 iff cur_idx < current VAL"
+    },
+    {
+      "name": "take_val",
+      "cell": "and",
+      "inputs": [
+        "bid_dom",
+        "val_lower"
+      ],
+      "comment": "VAL_PRICE_UPDATE: bid-dominant AND lower"
+    },
+    {
+      "name": "new_val",
+      "cell": "mux",
+      "inputs": [
+        "fp_val_price",
+        "dom_count",
+        "take_val"
+      ],
+      "comment": "VAL_PRICE_UPDATE: extend value-area low"
+    },
+    {
+      "name": "ask_mag",
+      "cell": "gate",
+      "inputs": [
+        "level_delta",
+        "ask_dom"
+      ],
+      "comment": "ASK_IMB_PRICE_UPDATE: delta if ask-dom else 0"
+    },
+    {
+      "name": "ask_stronger",
+      "cell": "cmp_lt",
+      "inputs": [
+        "fp_ask_imb_mag",
+        "ask_mag"
+      ],
+      "comment": "ASK_IMB_PRICE_UPDATE: 1 iff new ask mag stronger"
+    },
+    {
+      "name": "take_hvn",
+      "cell": "and",
+      "inputs": [
+        "ask_dom",
+        "ask_stronger"
+      ],
+      "comment": "ASK_IMB_PRICE_UPDATE: ask-dom AND stronger"
+    },
+    {
+      "name": "new_ask_price",
+      "cell": "mux",
+      "inputs": [
+        "fp_ask_imb_price",
+        "dom_count",
+        "take_hvn"
+      ],
+      "comment": "ASK_IMB_PRICE_UPDATE: HVN price"
+    },
+    {
+      "name": "new_ask_mag",
+      "cell": "mux",
+      "inputs": [
+        "fp_ask_imb_mag",
+        "ask_mag",
+        "take_hvn"
+      ],
+      "comment": "ASK_IMB_PRICE_UPDATE: HVN magnitude"
+    },
+    {
+      "name": "bid_excess_raw",
+      "cell": "addsub",
+      "inputs": [
+        "new_bid",
+        "new_ask",
+        "1"
+      ],
+      "comment": "BID_IMB_PRICE_UPDATE: bid-ask"
+    },
+    {
+      "name": "bid_excess",
+      "cell": "gate",
+      "inputs": [
+        "bid_excess_raw",
+        "bid_dom"
+      ],
+      "comment": "BID_IMB_PRICE_UPDATE: (bid-ask) if bid-dom else 0"
+    },
+    {
+      "name": "bid_stronger",
+      "cell": "cmp_lt",
+      "inputs": [
+        "fp_bid_imb_mag",
+        "bid_excess"
+      ],
+      "comment": "BID_IMB_PRICE_UPDATE: 1 iff new bid mag stronger"
+    },
+    {
+      "name": "take_lvn",
+      "cell": "and",
+      "inputs": [
+        "bid_dom",
+        "bid_stronger"
+      ],
+      "comment": "BID_IMB_PRICE_UPDATE: bid-dom AND stronger"
+    },
+    {
+      "name": "new_bid_price",
+      "cell": "mux",
+      "inputs": [
+        "fp_bid_imb_price",
+        "dom_count",
+        "take_lvn"
+      ],
+      "comment": "BID_IMB_PRICE_UPDATE: LVN price"
+    },
+    {
+      "name": "new_bid_mag",
+      "cell": "mux",
+      "inputs": [
+        "fp_bid_imb_mag",
+        "bid_excess",
+        "take_lvn"
+      ],
+      "comment": "BID_IMB_PRICE_UPDATE: LVN magnitude"
+    },
+    {
+      "name": "quote_delta",
+      "cell": "addsub",
+      "inputs": [
+        "dom_ask_qty",
+        "dom_bid_qty",
+        "1"
+      ],
+      "comment": "BAR_CUM_DELTA: ask-bid quote delta"
+    },
+    {
+      "name": "new_cvd",
+      "cell": "addsub",
+      "inputs": [
+        "fp_bar_cum_delta",
+        "quote_delta",
+        "0"
+      ],
+      "comment": "BAR_CUM_DELTA: continuous accumulate into CVD"
+    },
+    {
+      "name": "quote_vol",
+      "cell": "addsub",
+      "inputs": [
+        "dom_ask_qty",
+        "dom_bid_qty",
+        "0"
+      ],
+      "comment": "BAR_TOTAL_VOL: ask+bid quote volume"
+    },
+    {
+      "name": "new_total",
+      "cell": "addsub",
+      "inputs": [
+        "fp_bar_total_vol",
+        "quote_vol",
+        "0"
+      ],
+      "comment": "BAR_TOTAL_VOL: accumulate bar total"
+    },
+    {
+      "name": "is_lower",
+      "cell": "cmp_lt",
+      "inputs": [
+        "dom_count",
+        "fp_min_price"
+      ],
+      "comment": "MIN_PRICE_UPDATE: 1 iff cur_idx < current min"
+    },
+    {
+      "name": "new_min",
+      "cell": "mux",
+      "inputs": [
+        "fp_min_price",
+        "dom_count",
+        "is_lower"
+      ],
+      "comment": "MIN_PRICE_UPDATE: running minimum price"
+    },
+    {
+      "name": "is_higher",
+      "cell": "cmp_lt",
+      "inputs": [
+        "fp_max_price",
+        "dom_count"
+      ],
+      "comment": "MAX_PRICE_UPDATE: 1 iff cur_idx > current max"
+    },
+    {
+      "name": "new_max",
+      "cell": "mux",
+      "inputs": [
+        "fp_max_price",
+        "dom_count",
+        "is_higher"
+      ],
+      "comment": "MAX_PRICE_UPDATE: running maximum price"
+    },
+    {
+      "name": "above_poc",
+      "cell": "cmp_lt",
+      "inputs": [
+        "fp_poc_price",
+        "dom_count"
+      ],
+      "comment": "STACKED_IMB_BUY: 1 iff cur_idx > POC"
+    },
+    {
+      "name": "buy_qualifies",
+      "cell": "and",
+      "inputs": [
+        "ask_dom",
+        "above_poc"
+      ],
+      "comment": "STACKED_IMB_BUY: ask-dom AND above POC"
+    },
+    {
+      "name": "buy_inc",
+      "cell": "addsub",
+      "inputs": [
+        "fp_stacked_imb_buy",
+        "1",
+        "0"
+      ],
+      "comment": "STACKED_IMB_BUY: count + 1"
+    },
+    {
+      "name": "new_buy",
+      "cell": "gate",
+      "inputs": [
+        "buy_inc",
+        "buy_qualifies"
+      ],
+      "comment": "STACKED_IMB_BUY: qualifies ? count+1 : 0 (reset-on-miss)"
+    },
+    {
+      "name": "below_poc",
+      "cell": "cmp_lt",
+      "inputs": [
+        "dom_count",
+        "fp_poc_price"
+      ],
+      "comment": "STACKED_IMB_SELL: 1 iff cur_idx < POC"
+    },
+    {
+      "name": "sell_qualifies",
+      "cell": "and",
+      "inputs": [
+        "bid_dom",
+        "below_poc"
+      ],
+      "comment": "STACKED_IMB_SELL: bid-dom AND below POC"
+    },
+    {
+      "name": "sell_inc",
+      "cell": "addsub",
+      "inputs": [
+        "fp_stacked_imb_sell",
+        "1",
+        "0"
+      ],
+      "comment": "STACKED_IMB_SELL: count + 1"
+    },
+    {
+      "name": "new_sell",
+      "cell": "gate",
+      "inputs": [
+        "sell_inc",
+        "sell_qualifies"
+      ],
+      "comment": "STACKED_IMB_SELL: qualifies ? count+1 : 0 (reset-on-miss)"
+    },
+    {
+      "name": "seq_same",
+      "cell": "eqmask",
+      "inputs": [
+        "fp_last_tf_seq",
+        "tf_bar_seq_reg"
+      ],
+      "comment": "BAR_BOUNDARY_DETECTED: 1 iff seq unchanged"
+    },
+    {
+      "name": "bar_pulse",
+      "cell": "not",
+      "inputs": [
+        "seq_same"
+      ],
+      "comment": "BAR_BOUNDARY_DETECTED: 1 iff bar boundary (seq changed)"
+    }
+  ]
+}

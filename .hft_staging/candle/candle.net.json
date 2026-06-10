@@ -1,0 +1,319 @@
+{
+  "device": "candle",
+  "window_base": "0x00000000",
+  "kind": "module",
+  "comment": "Hardware specification for building the Candle (Indicator) component flip-flop-level from the netlist-generator (emitter-first workflow). (auto-generated from PARTS_LIST)",
+  "config_nodes": [
+    {
+      "name": "DOM_BID_PRICE",
+      "type": "u64",
+      "comment": "Best bid price (highest bid level)"
+    },
+    {
+      "name": "DOM_ASK_PRICE",
+      "type": "u64",
+      "comment": "Best ask price (lowest ask level)"
+    },
+    {
+      "name": "DOM_BID_QTY",
+      "type": "u64",
+      "comment": "Bid quantity per price level (indexed by PRICE_IDX)"
+    },
+    {
+      "name": "DOM_ASK_QTY",
+      "type": "u64",
+      "comment": "Ask quantity per price level (indexed by PRICE_IDX)"
+    },
+    {
+      "name": "TF_BAR_SEQ_REG",
+      "type": "u64",
+      "comment": "Timeframe bar sequence (for bar-boundary detection)"
+    }
+  ],
+  "dff_nodes": [
+    {
+      "name": "CANDLE_BID_OPEN",
+      "type": "u64",
+      "comment": "First bid price of bar"
+    },
+    {
+      "name": "CANDLE_BID_HIGH",
+      "type": "u64",
+      "comment": "Running max bid price"
+    },
+    {
+      "name": "CANDLE_BID_LOW",
+      "type": "u64",
+      "comment": "Running min bid price"
+    },
+    {
+      "name": "CANDLE_BID_CLOSE",
+      "type": "u64",
+      "comment": "Most recent bid price (also = previous-bid for tick detect)"
+    },
+    {
+      "name": "CANDLE_ASK_OPEN",
+      "type": "u64",
+      "comment": "First ask price of bar"
+    },
+    {
+      "name": "CANDLE_ASK_HIGH",
+      "type": "u64",
+      "comment": "Running max ask price"
+    },
+    {
+      "name": "CANDLE_ASK_LOW",
+      "type": "u64",
+      "comment": "Running min ask price"
+    },
+    {
+      "name": "CANDLE_ASK_CLOSE",
+      "type": "u64",
+      "comment": "Most recent ask price (also = previous-ask for tick detect)"
+    },
+    {
+      "name": "CANDLE_VOLUME_BID",
+      "type": "u64",
+      "comment": "Cumulative bid ticks this bar"
+    },
+    {
+      "name": "CANDLE_VOLUME_ASK",
+      "type": "u64",
+      "comment": "Cumulative ask ticks this bar"
+    },
+    {
+      "name": "CANDLE_TRUE_RANGE_BID",
+      "type": "u64",
+      "comment": "bid_high - bid_low"
+    },
+    {
+      "name": "CANDLE_TRUE_RANGE_ASK",
+      "type": "u64",
+      "comment": "ask_high - ask_low"
+    },
+    {
+      "name": "CANDLE_INTRABAR_QTY_DELTA",
+      "type": "u64",
+      "comment": "Cumulative (ask_qty - bid_qty) over the bar"
+    },
+    {
+      "name": "CANDLE_MID",
+      "type": "u64",
+      "comment": "Convenience (bid_high + ask_low) >> 1 (read-only)"
+    },
+    {
+      "name": "CANDLE_OPEN_SET",
+      "type": "u64",
+      "comment": "Flag: first tick of bar processed (1) / fresh bar (0)"
+    },
+    {
+      "name": "CANDLE_LAST_TF_SEQ",
+      "type": "u64",
+      "comment": "Last TF_BAR_SEQ seen (bar-boundary edge detect)"
+    },
+    {
+      "name": "CANDLE_BID_TICK",
+      "type": "u64",
+      "comment": "1 iff bid price differs from last latched bid (tick detect)"
+    },
+    {
+      "name": "CANDLE_ASK_TICK",
+      "type": "u64",
+      "comment": "1 iff ask price differs from last latched ask (tick detect)"
+    },
+    {
+      "name": "CANDLE_BAR_BOUNDARY",
+      "type": "u64",
+      "comment": "1 iff timeframe seq changed since last cycle (bar closed)"
+    }
+  ],
+  "comb_nodes": [
+    {
+      "name": "CANDLE_BID_TICK",
+      "cell": "eqmask",
+      "inputs": [
+        "DOM_BID_PRICE",
+        "CANDLE_BID_CLOSE"
+      ],
+      "invert": true,
+      "comment": "bid_changed = eqmask(DOM_BID_PRICE, CANDLE_BID_CLOSE) ^ 1 (no native !=)"
+    },
+    {
+      "name": "CANDLE_ASK_TICK",
+      "cell": "eqmask",
+      "inputs": [
+        "DOM_ASK_PRICE",
+        "CANDLE_ASK_CLOSE"
+      ],
+      "invert": true,
+      "comment": "ask_changed = eqmask(DOM_ASK_PRICE, CANDLE_ASK_CLOSE) ^ 1"
+    },
+    {
+      "name": "CANDLE_BID_OPEN_UPDATE",
+      "cell": "mux",
+      "inputs": [
+        "DOM_BID_PRICE",
+        "CANDLE_BID_OPEN",
+        "CANDLE_OPEN_SET"
+      ],
+      "comment": "OPEN_SET=0 fresh bar -> latch DOM_BID_PRICE; 1 -> hold CANDLE_BID_OPEN"
+    },
+    {
+      "name": "CANDLE_BID_HIGH_UPDATE",
+      "cell": "cmp_lt",
+      "inputs": [
+        "CANDLE_BID_HIGH",
+        "DOM_BID_PRICE"
+      ],
+      "comment": "is_new_high = cmp_lt(CANDLE_BID_HIGH, DOM_BID_PRICE); running max seed override"
+    },
+    {
+      "name": "CANDLE_BID_LOW_UPDATE",
+      "cell": "cmp_lt",
+      "inputs": [
+        "DOM_BID_PRICE",
+        "CANDLE_BID_LOW"
+      ],
+      "comment": "is_new_low = cmp_lt(DOM_BID_PRICE, CANDLE_BID_LOW); running min seed override"
+    },
+    {
+      "name": "CANDLE_BID_CLOSE_UPDATE",
+      "cell": "buf",
+      "inputs": [
+        "DOM_BID_PRICE"
+      ],
+      "comment": "passthrough \u2014 always latch most recent bid"
+    },
+    {
+      "name": "CANDLE_ASK_OPEN_UPDATE",
+      "cell": "mux",
+      "inputs": [
+        "DOM_ASK_PRICE",
+        "CANDLE_ASK_OPEN",
+        "CANDLE_OPEN_SET"
+      ],
+      "comment": "OPEN_SET=0 fresh bar -> latch DOM_ASK_PRICE; 1 -> hold CANDLE_ASK_OPEN"
+    },
+    {
+      "name": "CANDLE_ASK_HIGH_UPDATE",
+      "cell": "cmp_lt",
+      "inputs": [
+        "CANDLE_ASK_HIGH",
+        "DOM_ASK_PRICE"
+      ],
+      "comment": "is_new_high = cmp_lt(CANDLE_ASK_HIGH, DOM_ASK_PRICE)"
+    },
+    {
+      "name": "CANDLE_ASK_LOW_UPDATE",
+      "cell": "cmp_lt",
+      "inputs": [
+        "DOM_ASK_PRICE",
+        "CANDLE_ASK_LOW"
+      ],
+      "comment": "is_new_low = cmp_lt(DOM_ASK_PRICE, CANDLE_ASK_LOW)"
+    },
+    {
+      "name": "CANDLE_ASK_CLOSE_UPDATE",
+      "cell": "buf",
+      "inputs": [
+        "DOM_ASK_PRICE"
+      ],
+      "comment": "passthrough \u2014 always latch most recent ask"
+    },
+    {
+      "name": "CANDLE_VOLUME_BID_UPDATE",
+      "cell": "addsub",
+      "inputs": [
+        "CANDLE_VOLUME_BID",
+        "CANDLE_BID_TICK"
+      ],
+      "sub": 0,
+      "comment": "addsub(CANDLE_VOLUME_BID, bid_tick, 0): +1 on bid tick, else +0"
+    },
+    {
+      "name": "CANDLE_VOLUME_ASK_UPDATE",
+      "cell": "addsub",
+      "inputs": [
+        "CANDLE_VOLUME_ASK",
+        "CANDLE_ASK_TICK"
+      ],
+      "sub": 0,
+      "comment": "addsub(CANDLE_VOLUME_ASK, ask_tick, 0): +1 on ask tick, else +0"
+    },
+    {
+      "name": "CANDLE_TRUE_RANGE_BID_UPDATE",
+      "cell": "addsub",
+      "inputs": [
+        "CANDLE_BID_HIGH",
+        "CANDLE_BID_LOW"
+      ],
+      "sub": 1,
+      "comment": "addsub(bid_high, bid_low, 1) = bid_high - bid_low (no native -)"
+    },
+    {
+      "name": "CANDLE_TRUE_RANGE_ASK_UPDATE",
+      "cell": "addsub",
+      "inputs": [
+        "CANDLE_ASK_HIGH",
+        "CANDLE_ASK_LOW"
+      ],
+      "sub": 1,
+      "comment": "addsub(ask_high, ask_low, 1) = ask_high - ask_low"
+    },
+    {
+      "name": "CANDLE_INTRABAR_QTY_DELTA_UPDATE",
+      "cell": "addsub",
+      "inputs": [
+        "DOM_ASK_QTY",
+        "DOM_BID_QTY"
+      ],
+      "sub": 1,
+      "comment": "quote_delta = addsub(DOM_ASK_QTY, DOM_BID_QTY, 1) = ask - bid (DECISIONS \u00a7A)"
+    },
+    {
+      "name": "CANDLE_MID_UPDATE",
+      "cell": "addsub",
+      "inputs": [
+        "CANDLE_BID_HIGH",
+        "CANDLE_ASK_LOW"
+      ],
+      "sub": 0,
+      "shift_right": 1,
+      "comment": "addsub(bid_high, ask_low, 0) >> 1 = (bid_high + ask_low)/2 (power-of-two /2)"
+    },
+    {
+      "name": "CANDLE_BAR_BOUNDARY",
+      "cell": "eqmask",
+      "inputs": [
+        "CANDLE_LAST_TF_SEQ",
+        "TF_BAR_SEQ_REG"
+      ],
+      "invert": true,
+      "comment": "bar_boundary = eqmask(CANDLE_LAST_TF_SEQ, TF_BAR_SEQ_REG) ^ 1 (seq changed)"
+    },
+    {
+      "name": "CANDLE_OPEN_SET_UPDATE",
+      "cell": "mux",
+      "inputs": [
+        "CANDLE_OPEN_SET_HOLD",
+        "CANDLE_OPEN_SET_FRESH",
+        "CANDLE_BAR_BOUNDARY"
+      ],
+      "comment": "mux(1, 0, bar_boundary): boundary -> 0 (force seed), else hold 1 (open)"
+    }
+  ],
+  "const_nodes": [
+    {
+      "name": "CANDLE_OPEN_SET_HOLD",
+      "type": "u64",
+      "value": 1,
+      "comment": "mux arm a for OPEN_SET (steady-state value held off-boundary)"
+    },
+    {
+      "name": "CANDLE_OPEN_SET_FRESH",
+      "type": "u64",
+      "value": 0,
+      "comment": "mux arm b for OPEN_SET (fresh-bar value latched on boundary)"
+    }
+  ]
+}

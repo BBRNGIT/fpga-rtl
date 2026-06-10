@@ -1,0 +1,11 @@
+# Generated device logic (from gennet.py) — never committed (build-sequence law)
+nic_gen.h
+# sibling seam headers, regenerated here from their single sources
+# (../wire/wire.net.json, ../tai_cdc/tai_cdc.net.json) — never committed copies
+wire_gen.h
+tai_cdc_gen.h
+# compiled artifacts
+*.bin
+test_synth
+probe
+*.dSYM/

@@ -1,0 +1,13 @@
+# This device's OWN generated header IS COMMITTED (build-sequence law): the netlist
+# is its validation spec; the pre-commit hook byte-matches it against gennet output.
+# (So timeframe_gen.h is intentionally NOT ignored.)
+#
+# SIBLING seam headers, regenerated here from their single sources — never committed
+# (they are other devices' circuits).
+# (timeframe has no sibling seam dependencies for now)
+
+# compiled artifacts
+*.bin
+test_synth
+probe
+*.dSYM/

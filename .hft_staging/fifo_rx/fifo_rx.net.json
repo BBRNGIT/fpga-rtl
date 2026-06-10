@@ -1,0 +1,152 @@
+{
+  "device": "fifo_rx",
+  "window_base": "0x2000000",
+  "kind": "cdc_fifo",
+  "depth": 512,
+  "addr_bits": 9,
+  "ptr_bits": 10,
+  "comment": "fifo_rx \u2014 MAC->internal async CDC FIFO (Cummings). Write side (MAC): on the nic SEAM_STROBE, store the re-stamped packet into the slot at the write pointer and advance the write pointer. Read side (internal): on a read-enable while ~EMPTY, advance the read pointer (the consumer samples the slot at the read pointer). Pointers cross domains as gray code through dual 2-FF synchronizers; FULL is derived in the write domain from the synced read pointer, EMPTY in the read domain from the synced write pointer. Packet-wide slots: one slot = one structured re-stamped packet.",
+  "seam_inputs": [
+    "SEAM_BID_PX",
+    "SEAM_ASK_PX",
+    "SEAM_TIME",
+    "SEAM_SRC_TIME",
+    "SEAM_SYMBOL",
+    "SEAM_PIP",
+    "SEAM_COMMISSION",
+    "SEAM_SEQ",
+    "SEAM_STROBE"
+  ],
+  "config_nodes": [
+    {
+      "name": "FIFO_POWER",
+      "type": "bit",
+      "comment": "power/enable: the FIFO self-runs on its clock edge while bit0 = 1 (set once)"
+    },
+    {
+      "name": "FIFO_RUN_UNTIL",
+      "type": "u64",
+      "comment": "configured self-run tick budget (set once by starter)"
+    },
+    {
+      "name": "FIFO_RD_EN",
+      "type": "bit",
+      "comment": "read-enable: the pipeline consumer asserts this to pop one packet (advance the read pointer). Input lane the consumer drives; honoured only while ~EMPTY (no underflow)."
+    }
+  ],
+  "dff_nodes": [
+    {
+      "name": "FIFO_TICKS",
+      "type": "u64",
+      "comment": "self-run tick counter (run-loop bookkeeping; bounds the self-run)"
+    },
+    {
+      "name": "FIFO_WR_BIN",
+      "type": "u64",
+      "comment": "write pointer, BINARY (MAC domain). (n+1)-bit; advances on a honoured write (nic SEAM_STROBE & ~FULL)."
+    },
+    {
+      "name": "FIFO_RD_BIN",
+      "type": "u64",
+      "comment": "read pointer, BINARY (internal domain). (n+1)-bit; advances on a honoured read (FIFO_RD_EN & ~EMPTY)."
+    },
+    {
+      "name": "FIFO_WR_GRAY",
+      "type": "u64",
+      "comment": "write pointer, GRAY (the cross-domain form synced into the read domain). Only 1 bit changes per increment \u2014 metastability-safe."
+    },
+    {
+      "name": "FIFO_RD_GRAY",
+      "type": "u64",
+      "comment": "read pointer, GRAY (the cross-domain form synced into the write domain). Only 1 bit changes per increment."
+    },
+    {
+      "name": "FIFO_WQ1_RGRAY",
+      "type": "u64",
+      "comment": "sync stage 1: read gray pointer captured in the WRITE domain (catches the metastability window). 2-FF: this is FF #1."
+    },
+    {
+      "name": "FIFO_WQ2_RGRAY",
+      "type": "u64",
+      "comment": "sync stage 2: stable read gray pointer in the WRITE domain. FULL is derived from this (the only safe read-side pointer here)."
+    },
+    {
+      "name": "FIFO_RQ1_WGRAY",
+      "type": "u64",
+      "comment": "sync stage 1: write gray pointer captured in the READ domain. 2-FF FF #1."
+    },
+    {
+      "name": "FIFO_RQ2_WGRAY",
+      "type": "u64",
+      "comment": "sync stage 2: stable write gray pointer in the READ domain. EMPTY is derived from this (the only safe write-side pointer here)."
+    }
+  ],
+  "comb_nodes": [
+    {
+      "name": "FIFO_FULL",
+      "type": "bit",
+      "comment": "FULL (write domain): wr_gray == rq-of-rd_gray with the top TWO bits inverted (Cummings). High => no honoured write this edge."
+    },
+    {
+      "name": "FIFO_EMPTY",
+      "type": "bit",
+      "comment": "EMPTY (read domain): rd_gray == synced write gray (cell_eqmask). High => no honoured read this edge."
+    },
+    {
+      "name": "FIFO_WR_FIRE",
+      "type": "bit",
+      "comment": "1 iff a write was honoured this edge (SEAM_STROBE & ~FULL) \u2014 diagnostic/display."
+    },
+    {
+      "name": "FIFO_RD_FIRE",
+      "type": "bit",
+      "comment": "1 iff a read was honoured this edge (FIFO_RD_EN & ~EMPTY) \u2014 diagnostic/display. The popped slot index is rd_bin & (depth-1)."
+    }
+  ],
+  "ram": {
+    "depth": 512,
+    "addr_bits": 9,
+    "slot_prefix": "FIFO_SLOT",
+    "lanes": [
+      "BID_PX",
+      "ASK_PX",
+      "TIME",
+      "SRC_TIME",
+      "SYMBOL",
+      "PIP",
+      "COMMISSION",
+      "SEQ"
+    ],
+    "wr_index_from": "FIFO_WR_BIN",
+    "rd_index_from": "FIFO_RD_BIN",
+    "comment": "packet-wide dual-port RAM: one slot = the 8 nic-seam packet lanes. Write port (MAC): slot[wr_bin & mask] <= seam lanes on wr_fire. Read port (internal): the consumer samples slot[rd_bin & mask]. Single-writer per slot (write side only); the read side never writes the RAM."
+  },
+  "write_side": {
+    "bin": "FIFO_WR_BIN",
+    "gray": "FIFO_WR_GRAY",
+    "fire_from": "SEAM_STROBE",
+    "full": "FIFO_FULL",
+    "sync1": "FIFO_WQ1_RGRAY",
+    "sync2": "FIFO_WQ2_RGRAY",
+    "sync_from": "FIFO_RD_GRAY"
+  },
+  "read_side": {
+    "bin": "FIFO_RD_BIN",
+    "gray": "FIFO_RD_GRAY",
+    "fire_from": "FIFO_RD_EN",
+    "empty": "FIFO_EMPTY",
+    "sync1": "FIFO_RQ1_WGRAY",
+    "sync2": "FIFO_RQ2_WGRAY",
+    "sync_from": "FIFO_WR_GRAY"
+  },
+  "fire": {
+    "write": "FIFO_WR_FIRE",
+    "read": "FIFO_RD_FIRE"
+  },
+  "power": "FIFO_POWER",
+  "run": {
+    "power": "FIFO_POWER",
+    "count": "FIFO_TICKS",
+    "limit": "FIFO_RUN_UNTIL"
+  }
+}

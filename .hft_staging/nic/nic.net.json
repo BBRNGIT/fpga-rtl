@@ -1,0 +1,127 @@
+{
+  "device": "nic",
+  "window_base": "0x1A00000",
+  "kind": "gateway",
+  "clock": "mac",
+  "comment": "NIC \u2014 the wire->fifo gateway. On the MAC edge: sample the wire bus (gated by WIRE_VALID), dedup by WIRE_SEQ via a history ring (full-seq key + valid tag), re-stamp the survivor with TAI_MAC (the MAC-domain TAI value from tai_cdc; never a raw cross-domain tai read), and deposit the structured re-stamped packet into the nic->fifo seam on a 1-cycle write strobe. Same-domain hop (MAC); the FIFO CDC is downstream (fifo_rx).",
+  "config_nodes": [
+    {
+      "name": "NIC_POWER",
+      "type": "bit",
+      "comment": "power/enable: the NIC self-runs on the mac edge while bit0 = 1 (set once)"
+    },
+    {
+      "name": "NIC_RUN_UNTIL",
+      "type": "u64",
+      "comment": "configured self-run tick budget (set once by starter)"
+    }
+  ],
+  "wire_inputs": [
+    "WIRE_BID_PX",
+    "WIRE_ASK_PX",
+    "WIRE_TIME",
+    "WIRE_SYMBOL",
+    "WIRE_PIP",
+    "WIRE_COMMISSION",
+    "WIRE_SEQ",
+    "WIRE_VALID"
+  ],
+  "tai_input": "TAI_MAC",
+  "dff_nodes": [
+    {
+      "name": "NIC_TICKS",
+      "type": "u64",
+      "comment": "self-run tick counter (run-loop bookkeeping; bounds the self-run)"
+    }
+  ],
+  "ring": {
+    "depth": 16,
+    "seq_prefix": "NIC_RING_SEQ",
+    "valid_prefix": "NIC_RING_VALID",
+    "index_from": "WIRE_SEQ",
+    "comment": "dedup ring: index = WIRE_SEQ & (depth-1) (power-of-two mask). Each slot stores the FULL last seq seen there + a valid tag. A packet is a DUP iff slot valid AND slot_seq == WIRE_SEQ (cell_eqmask). Storing the full seq (not a parity bit) makes a wrapped old seq never false-match."
+  },
+  "compute": {
+    "valid": "WIRE_VALID",
+    "seq": "WIRE_SEQ",
+    "stamp": "TAI_MAC",
+    "src_time": "WIRE_TIME",
+    "comment": "dup = valid & slot_valid & eqmask(slot_seq, WIRE_SEQ); pass = valid & ~dup; strobe = pass (1-cycle). Seam flops latch on en=pass; ring slot at idx latches seq + valid=1 on en=pass."
+  },
+  "seam_nodes": [
+    {
+      "name": "SEAM_BID_PX",
+      "from": "WIRE_BID_PX",
+      "type": "u64",
+      "comment": "re-stamped packet: bid price (passthrough)"
+    },
+    {
+      "name": "SEAM_ASK_PX",
+      "from": "WIRE_ASK_PX",
+      "type": "u64",
+      "comment": "re-stamped packet: ask price (passthrough)"
+    },
+    {
+      "name": "SEAM_TIME",
+      "from": "TAI_MAC",
+      "type": "u64",
+      "comment": "TAI stamp = TAI_MAC (authoritative downstream)"
+    },
+    {
+      "name": "SEAM_SRC_TIME",
+      "from": "WIRE_TIME",
+      "type": "u64",
+      "comment": "source time (WIRE_TIME) kept for sync/latency"
+    },
+    {
+      "name": "SEAM_SYMBOL",
+      "from": "WIRE_SYMBOL",
+      "type": "u64",
+      "comment": "symbol id (passthrough)"
+    },
+    {
+      "name": "SEAM_PIP",
+      "from": "WIRE_PIP",
+      "type": "u64",
+      "comment": "pip value (passthrough)"
+    },
+    {
+      "name": "SEAM_COMMISSION",
+      "from": "WIRE_COMMISSION",
+      "type": "u64",
+      "comment": "commission (passthrough)"
+    },
+    {
+      "name": "SEAM_SEQ",
+      "from": "WIRE_SEQ",
+      "type": "u64",
+      "comment": "source sequence number (passthrough; dedup key)"
+    }
+  ],
+  "seam_status": [
+    {
+      "name": "SEAM_VALID",
+      "from": "pass",
+      "type": "bit",
+      "comment": "a re-stamped packet is present on the seam this cycle"
+    },
+    {
+      "name": "SEAM_STROBE",
+      "from": "pass",
+      "type": "bit",
+      "comment": "1-cycle write strobe: high iff a fresh deduped packet was emitted"
+    },
+    {
+      "name": "SEAM_DEDUP_MARK",
+      "from": "dup",
+      "type": "bit",
+      "comment": "1 iff the sampled packet was a DUP (dropped) \u2014 diagnostic/display"
+    }
+  ],
+  "power": "NIC_POWER",
+  "run": {
+    "power": "NIC_POWER",
+    "count": "NIC_TICKS",
+    "limit": "NIC_RUN_UNTIL"
+  }
+}
