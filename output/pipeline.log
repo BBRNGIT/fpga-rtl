@@ -1,0 +1,12 @@
+================================================================================
+FPGA Device Pipeline Execution Log
+================================================================================
+Started: 2026-06-10 16:34:15
+Device: xcvu13p
+PDF: /var/folders/pb/r2wz3p7s7cl4c0yqdtmgltb40000gn/T/tmp.fTn1hV8HU1/test.pdf
+Output: /Users/bbrn/fpga-rtl/output
+================================================================================
+
+[0;36m[Stage 1] Parse Datasheets[0m
+[0;36m→ Running: python3 /Users/bbrn/fpga-rtl/tools/generators/parse_datasheets.py[0m
+[0;31m✗ Tool not found: /Users/bbrn/fpga-rtl/tools/generators/parse_datasheets.py[0m

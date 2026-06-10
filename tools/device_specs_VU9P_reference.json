@@ -1,0 +1,75 @@
+{
+  "device": {
+    "name": "xcvu9p-flga2104-2L",
+    "family": "Virtex UltraScale+",
+    "package": "FLGA2104",
+    "speed_grade": "-2",
+    "temperature_grade": "Commercial (0\u00b0C to 85\u00b0C)"
+  },
+  "resources": {
+    "clbs": 182400,
+    "luts": 1457600,
+    "flip_flops": 2918400,
+    "distributed_ram_bits": 100663296,
+    "bram36": 2160,
+    "bram18": 4320,
+    "bram_total_bits": 81518592,
+    "dsp48e2": 6840,
+    "cmt_tiles": 6,
+    "mmcm": 6,
+    "pll": 6,
+    "gty_transceivers": 32,
+    "gty_max_speed_gbps": 32.75,
+    "gth_transceivers": 0,
+    "io_banks": 44,
+    "xadc": 1
+  },
+  "connectivity": {
+    "lut_inputs": 6,
+    "lut_outputs": 1,
+    "ff_per_clb": 16,
+    "luts_per_clb": 8,
+    "carry_chain_length": 4,
+    "routing_resources": {
+      "local": 9120000,
+      "regional": 2500000,
+      "general": 2000000
+    },
+    "clock_buffers": {
+      "bufg": 32,
+      "bufgctrl": 16
+    },
+    "global_clock_distribution": 150
+  },
+  "structure": {
+    "slices_per_clb": 2,
+    "luts_per_slice": 4,
+    "ffs_per_slice": 8,
+    "carry_chains_per_clb": 1,
+    "bram36_ports": {
+      "address_bits_a": 15,
+      "address_bits_b": 15,
+      "data_width_a": 36,
+      "data_width_b": 36,
+      "connections_per_bram": 120
+    },
+    "dsp48e2_ports": {
+      "a_width": 30,
+      "b_width": 18,
+      "d_width": 25,
+      "c_width": 48,
+      "p_width": 48,
+      "connections_per_dsp": 150
+    },
+    "gty_per_quad": 4,
+    "gty_tx_data_width": 64,
+    "gty_rx_data_width": 64,
+    "io_per_bank": 40
+  },
+  "metadata": {
+    "source": "XILINX_VU9P_SPEC_EXTRACTION.md",
+    "datasheet": "DS922 (Virtex UltraScale+ Datasheet)",
+    "product_guide": "PG252 (Virtex UltraScale+ Product Guide)",
+    "extracted_date": "2026-06-10"
+  }
+}

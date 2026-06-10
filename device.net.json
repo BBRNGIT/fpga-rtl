@@ -1,0 +1,32 @@
+{
+  "device": "xcvu9p",
+  "comment": "Device netlist: partitioned structural components with single-writer law enforced. Every DFF has exactly one incoming edge; every comb node has at least one sink.",
+  "dff_nodes": [],
+  "comb_nodes": [
+    {
+      "name": "ROUTING_SWITCH",
+      "type": "ROUTING_SWITCH",
+      "inputs": 20,
+      "outputs": 4,
+      "count": 250,
+      "comment": "Programmable interconnect (routing switch matrices)"
+    }
+  ],
+  "connections": [
+    {
+      "from": "ROUTING_SWITCH",
+      "to": "LUT6",
+      "type": "data",
+      "count": 1000,
+      "comment": "Programmable interconnect \u2192 LUT inputs"
+    }
+  ],
+  "statistics": {
+    "total_dff_nodes": 0,
+    "total_dff_registers": 0,
+    "total_comb_nodes": 1,
+    "total_comb_elements": 250,
+    "total_connections": 1,
+    "total_wires": 1000
+  }
+}
