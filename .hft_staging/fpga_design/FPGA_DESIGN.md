@@ -1,241 +1,161 @@
-# FPGA Design Module
+# FPGA Design Module (Blank Template)
 
-**Status:** Blank template for 3-way device separation.
+**Status:** Blank reference specification for Xilinx VU9P device.
 
-**Purpose:** High-level specification of the FPGA backplane — device hierarchy, address allocation, module placement, and clock domain boundaries.
+**Purpose:** Provide device-level reference information only. This is NOT an implementation document.
 
-This module will be **cloned and specialized into 3 separate FPGA device specifications**:
-
-1. **NIC FPGA** (`fpga_nic/`) — 125 MHz, ingress chain (adapter → wire → NIC → CDC FIFO)
-2. **Pipeline FPGA** (`fpga_pipeline/`) — 250 MHz, core analytics (DOM → indicators → strategies)
-3. **Control FPGA** (future) — Admin/diagnostics/display control plane
+**Important:** Module placement, specific address allocation, and wiring belong in specialized implementations (e.g., `fpga_nic/`, `fpga_pipeline/`, `fpga_control/`), NOT here.
 
 ---
 
-## Design Phases (Blank → Specialized)
+## Device Reference
 
-### Phase 0: Blank Template (This File)
-- Device-agnostic placeholders
-- Register fabric structure outline
-- Clock domain boundaries defined
-- Module assignment placeholders
+### Target Device
 
-### Phase 1: NIC FPGA Specialization (fpga_nic/)
-- **Target device:** Xilinx Virtex UltraScale+ (VU9P) — reference
-- **Clock:** 125 MHz MAC (primary) + 250 MHz internal (CDC target)
-- **Modules:** adapter, wire, taiosc, tai, mac, tai_cdc, nic, fifo_rx
-- **Transceivers:** 32× GTY @ 32.75 Gbps (for 40G/100G NIC backplane)
-- **BRAM:** Shared register fabric, wire bus, NIC packet buffer
-- **Output seam:** fifo_rx packets → CDC FIFO to Pipeline FPGA
+**Xilinx Virtex UltraScale+ (VU9P)**
+- **Part number:** xcvu9p-flga2104-2L
+- **Package:** FCCGA1156
+- **Speed grade:** -2
+- **Architecture:** UltraScale+
 
-### Phase 2: Pipeline FPGA Specialization (fpga_pipeline/)
-- **Target device:** Xilinx Virtex UltraScale+ (VU9P) — reference
-- **Clock:** 250 MHz internal (primary) + 125 MHz for CDC input from NIC
-- **Modules:** dom, candle, footprint, tpo, timeframe, fractal, cbr
-- **Transceivers:** (optional, for future outbound orders)
-- **BRAM:** Historical rings (candle × 256 bars, footprint history, TPO grids)
-- **Input seam:** CDC FIFO from NIC FPGA
-- **Output seam:** Strategy decisions, order signals (future)
+### Key Specifications
 
-### Phase 3: Control FPGA Specialization (fpga_control/, future)
-- **Clock:** CPU-synchronous (TBD)
-- **Purpose:** Admin interface, display control, real-time diagnostics
-- **Transceivers:** (optional, for control plane uplink)
-- **Interface:** Reads published registers from both NIC and Pipeline FPGAs via AXI/shared memory
+| Resource | Count | Details |
+|----------|-------|---------|
+| CLBs | 182,400 | Configurable Logic Blocks |
+| LUTs | 1,457,600 | 6-input look-up tables |
+| Flip-flops | 2,918,400 | Total FFs (182.4K CLBs × 16 FFs/CLB) |
+| BRAM36 | 2,160 | 36 Kb blocks (77.76 Mb total) |
+| DSP48E2 | 6,840 | 48-bit arithmetic blocks |
+| CMTs | 6 | Clock Management Tiles (MMCM + PLL) |
+| GTY Transceivers | 32 | Up to 32.75 Gbps per lane |
+| I/O Banks | 44 | Standard and high-speed |
+
+**Total addressable connections:** ~99.2 million (from XILINX_VU9P_SPEC_EXTRACTION.md)
 
 ---
 
-## Register Fabric Architecture (Blank)
+## Address Map Template (Blank)
 
-### Address Map (Conceptual)
+This is a generic outline. Specialization fills in actual allocations.
 
 ```
 Backplane Address Space (word_t = 64-bit)
 
 0x0000_0000 — 0x0000_FFFF  Reserved / Boot / Config
-0x0001_0000 — 0x0001_FFFF  Shared Clock Domain (taiosc, tai, mac, internal)
-0x0002_0000 — 0x0002_FFFF  NIC Ingress Chain
-  0x0002_0000 — adapter regs
-  0x0002_1000 — wire bus (passive)
-  0x0002_2000 — nic regs
-  0x0002_3000 — fifo_rx seam
-0x0003_0000 — 0x0003_FFFF  CDC Seams (NIC ↔ Pipeline)
-  0x0003_0000 — fifo_rx_read side (Pipeline reads)
-  0x0003_1000 — tai_cdc (tai into Pipeline domain)
-0x0004_0000 — 0x000F_FFFF  Pipeline Analytics Registers
-  0x0004_0000 — dom regs + tables
-  0x0005_0000 — candle regs + history ring
-  0x0006_0000 — footprint regs + history
-  0x0007_0000 — tpo regs + accumulator
-  0x0008_0000 — timeframe regs
-  0x0009_0000 — fractal regs
-  0x000A_0000 — cbr regs
-0x0010_0000 — 0x00FF_FFFF  Expansion / Future Modules
+0x0001_0000 — 0x0001_FFFF  [Clock domain region]
+0x0002_0000 — 0x0002_FFFF  [Device-specific region A]
+0x0003_0000 — 0x0003_FFFF  [Device-specific region B]
+0x0004_0000 — 0x000F_FFFF  [Device-specific region C]
+0x0010_0000 — 0x00FF_FFFF  [Expansion / Future]
 
 Total addressable: 256 MWords × 64 bits = 2 GB
-(Actual used: ~10 MB for 15 modules + fabric overhead)
+Typical utilization: ~10 MB for logic + BRAM allocation
 ```
 
 ---
 
-## Clock Domains
+## Clock Domains (Template)
 
-### Domain 1: Reference (Shared)
-- **Source:** 156.25 MHz DIFF pair (10G Ethernet standard, external oscillator)
-- **Use:** Input to MMCM/PLL (all devices)
-- **Modules:** taiosc, tai (disciplined off this reference)
+Generic template for independent clock sources:
 
-### Domain 2: MAC (NIC FPGA primary)
-- **Frequency:** 125 MHz
-- **Source:** MMCM/PLL from reference (÷1.25)
-- **Modules:** mac, nic, adapter, wire (input side)
-- **Properties:** Free-running, no external sync
-- **CDC crossing:** tai → tai_cdc → Pipeline
+### Primary Clock Domain
+- **Purpose:** [to be defined by implementation]
+- **Frequency:** [to be defined]
+- **Source:** MMCM/PLL from reference (configuration TBD)
+- **Properties:** Free-running, independent of other domains
 
-### Domain 3: Internal (Pipeline FPGA primary)
-- **Frequency:** 250 MHz
-- **Source:** MMCM/PLL from reference (×1.6)
-- **Modules:** dom, candle, footprint, tpo, timeframe, fractal, cbr
-- **Properties:** Free-running, independent of MAC domain
-- **CDC input:** fifo_rx (from MAC), tai_cdc (from MAC)
+### Secondary Clock Domain (if needed)
+- **Purpose:** [to be defined by implementation]
+- **Frequency:** [to be defined]
+- **Source:** MMCM/PLL from reference (configuration TBD)
+- **Properties:** Free-running, independent of primary domain
+
+### Clock Distribution
+- **Source:** Reference clock input (156.25 MHz typical)
+- **Distribution:** Via global clock buffers (BUFG, BUFGCTRL)
+- **CDC:** Any cross-domain signals use gray-code synchronizers
 
 ---
 
-## Module Placement (Blank → Specialized)
+## Module Placement (Template, NOT IMPLEMENTATION)
 
-### NIC FPGA Placement (fpga_nic/)
-```
-┌─────────────────────────────────────┐
-│     NIC FPGA (Virtex UltraScale+)   │
-├─────────────────────────────────────┤
-│  BLOCK RAM (MAC domain)             │
-│  ├─ wire bus (passive, R/W)         │
-│  ├─ adapter input buffer            │
-│  ├─ nic packet buffer               │
-│  └─ fifo_rx dual-clock FIFO         │
-├─────────────────────────────────────┤
-│  Logic (MAC @ 125 MHz)              │
-│  ├─ adapter (208 cells)             │
-│  ├─ nic (180 cells)                 │
-│  ├─ fifo_rx CDC (gray code 2-FF)    │
-│  └─ shared clocks (taiosc, tai)     │
-├─────────────────────────────────────┤
-│  Transceivers (32× GTY @ 32.75G)    │
-│  ├─ NIC PHY (40G/100G backplane)    │
-│  └─ CDC bridge to Pipeline FPGA     │
-└─────────────────────────────────────┘
+**This section is a placeholder structure only. Actual module assignment belongs in specialized FPGA implementations.**
 
-Output seam to Pipeline:
-  - fifo_rx packets (512-bit wide)
-  - tai_cdc (TAI timestamp in Pipeline clock domain)
-```
-
-### Pipeline FPGA Placement (fpga_pipeline/)
+Generic placement structure:
 ```
 ┌─────────────────────────────────────┐
-│  Pipeline FPGA (Virtex UltraScale+) │
+│     FPGA Device (Xilinx VU9P)       │
 ├─────────────────────────────────────┤
-│  Block RAM (Internal domain)        │
-│  ├─ dom tables (16K entries)        │
-│  ├─ candle history (256 bars)       │
-│  ├─ footprint history               │
-│  ├─ tpo accumulator grid            │
-│  └─ fractal/cbr state               │
+│  Block RAM (register fabric)        │
+│  - Address allocation: [TBD]        │
+│  - Modules: [TBD by implementation] │
 ├─────────────────────────────────────┤
-│  Logic (Internal @ 250 MHz)         │
-│  ├─ dom (212 cells)                 │
-│  ├─ candle (64 cells)               │
-│  ├─ footprint (88 cells)            │
-│  ├─ tpo (72 cells)                  │
-│  ├─ timeframe (8 cells)             │
-│  ├─ fractal (15 cells)              │
-│  ├─ cbr (18 cells)                  │
-│  └─ fifo_rx reader (CDC read side)  │
+│  Logic (combinational + sequential) │
+│  - Cell allocation: [TBD]           │
+│  - Modules: [TBD by implementation] │
 ├─────────────────────────────────────┤
-│  Input seams (from NIC FPGA)        │
-│  ├─ fifo_rx packets (via CDC FIFO)  │
-│  └─ tai_cdc (timestamp, CDC'd)      │
+│  Transceivers (GTY, high-speed I/O) │
+│  - Allocation: [TBD by impl]        │
+│  - Purpose: [TBD by implementation] │
 └─────────────────────────────────────┘
-
-Output seams:
-  - Strategy decisions (future)
-  - Order signals (future)
 ```
 
 ---
 
-## Wiring (Blank, to be filled in Phase 1/2)
+## Resource Budget (VU9P Reference)
 
-### NIC → Pipeline Cross-Device CDC
-- **Packet path:** fifo_rx (NIC domain) → async FIFO → fifo_rx read (Pipeline domain)
-- **Timestamp path:** tai (MAC domain) → gray-code 2-FF → tai_cdc (Pipeline domain)
-- **Handshake:** write_ptr_gray, read_ptr_gray (both gray-coded pointers)
+| Resource | Total | Typical Usage | Available |
+|----------|-------|---------------|-----------|
+| LUTs | 1,457,600 | ~10,000 cells | 1,447,600 |
+| BRAM36 | 2,160 | ~50–100 | 2,060–2,110 |
+| DSP48E2 | 6,840 | 0 (current design) | 6,840 |
+| GTY transceivers | 32 | ~8 (depends on impl) | ~24 |
+| I/O banks | 44 | ~10 (depends on impl) | ~34 |
 
-### Pipeline Internal Wiring (to be detailed in fpga_pipeline/)
-- DOM publishes BID/ASK/QTY registers
-- Candle reads DOM; writes OHLC + history ring
-- Footprint reads DOM; writes profile + history
-- Etc. (order-free execution, no timing dependencies)
-
----
-
-## Resource Budget (Blank Template)
-
-### Xilinx Virtex UltraScale+ (VU9P, target)
-
-| Resource | Total | Used | Available | Notes |
-|----------|-------|------|-----------|-------|
-| LUTs | 1,161,600 | ~10,000 (cells) | 1,151,600 | Abundant |
-| BRAM36 | 2,160 | ~50–100 | 2,060–2,110 | Register fabric + rings |
-| BRAM18 | 4,320 | ~0–50 | 4,270–4,320 | Staging buffers (if needed) |
-| DSP48E2 | 6,840 | 0 | 6,840 | Not used (no arithmetic) |
-| GT (GTY) | 32 | ~8 | 24 | NIC PHY + CDC bridge |
-| MMCM | 6 | ~2–3 | 3–4 | Reference, MAC, Internal |
-
-**Conclusion:** VU9P has abundant headroom for 15 modules + register fabric + future expansion.
+**Conclusion:** VU9P has abundant headroom for diverse implementations.
 
 ---
 
-## Design Flow (Template)
+## Design Flow (Generic)
 
-1. **Device selection** → Reference Xilinx Virtex UltraScale+ (VU9P)
-2. **Clock generation** → Specify MMCM/PLL for MAC (125 MHz) + Internal (250 MHz)
-3. **Address allocation** → Assign register addresses to each module (Phase 1/2)
-4. **Module instantiation** → Include 15 graduated modules + shared infra
-5. **Wiring** → Connect module outputs to inputs (single-writer law)
-6. **CDC specification** → Explicit gray-code synchronizers + async FIFO
-7. **Synthesis** → Run Vivado flow (tech-specific, not in C model)
-8. **Place & Route** → Xilinx PAR, floorplan clock domains
-9. **Bitstream generation** → Program FPGA devices
-10. **Verification** → Gate stage validates C model before synthesis
-
----
-
-## Files to Generate (Specialization Phase)
-
-### Phase 1: NIC FPGA (fpga_nic/)
-- `fpga_nic.md` — Device spec, address map, module list
-- `gen_fpga_nic_net.py` — Emitter (register allocator, module placement)
-- `fpga_nic.net.json` — Netlist (Vivado will consume this for cross-check)
-- `validate.py` — FPGA-specific validator (address overlap, clock domain integrity)
-- `gennet.py` — FPGA backplane generator (fabric_nic_gen.h)
-
-### Phase 2: Pipeline FPGA (fpga_pipeline/)
-- `fpga_pipeline.md` — Device spec, address map, module list
-- `gen_fpga_pipeline_net.py` — Emitter
-- `fpga_pipeline.net.json` — Netlist
-- `validate.py` — FPGA-specific validator
-- `gennet.py` — Backplane generator
-
-### Phase 3: Control FPGA (fpga_control/, future)
-- (Similar structure)
+1. **Reference selection** → Xilinx Virtex UltraScale+ (VU9P)
+2. **Clock source** → 156.25 MHz external oscillator
+3. **MMCM/PLL configuration** → Derive primary + secondary domains [per implementation]
+4. **Address allocation** → Assign register windows [per implementation]
+5. **Module instantiation** → Include [per implementation]
+6. **Wiring** → Connect module outputs to inputs [per implementation]
+7. **CDC specification** → If cross-domain, gray-code synchronizers [per implementation]
+8. **Synthesis** → Vivado flow (technology-specific)
+9. **Validation** → Gate stage validates netlist and resource constraints
+10. **Graduation** → Immutable vault copy
 
 ---
 
 ## References
 
-- **FOUNDER_VISION.md §3** — Devices & The Backplane
-- **FOUNDER_VISION.md §14** — Next Steps (FPGA fabric design)
-- **FPGA_DEVICE_RESEARCH.md** — FPGA device specs and rationale
-- **CLAUDE.md** — Build methodology (emitter-first pipeline applies to FPGA too)
-- **.hft_staging/FABRIC_ARCHITECTURE.md** — High-level fabric design (reference)
+- **XILINX_VU9P_SPEC_EXTRACTION.md** — Complete device specification (parts, connections, ~99.2M total)
+- **FPGA_DEVICE_RESEARCH.md** — Device selection rationale (VU9P, alternatives)
+- **THREE_FPGA_SEPARATION.md** — Architecture philosophy (why 3 separate devices)
+- **CLAUDE.md** — Build methodology (emitter-first pipeline applies to FPGA implementations)
+- **FOUNDER_VISION.md § 3, 5, 14** — System architecture and FPGA role
+
+---
+
+## Next Steps (Specialization)
+
+This blank template will be **cloned and specialized** into concrete FPGA implementations:
+
+1. **fpga_nic/** — Specialize for NIC FPGA (MAC domain, transceiver-heavy)
+2. **fpga_pipeline/** — Specialize for Pipeline FPGA (internal domain, logic-heavy)
+3. **fpga_control/** — Specialize for Control FPGA (future, diagnostics)
+
+Each specialization will document:
+- Specific module list
+- Address allocation and wiring
+- Clock domain configuration
+- CDC specifications (if any)
+- Emitter/generator/validator tools
+- Gate and graduation steps
+
+**Specialization docs are separate** from this blank template. Do not mix device specs with implementation details.
