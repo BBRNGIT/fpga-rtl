@@ -4,11 +4,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **C-as-RTL FPGA module library** — a collection of flip-flop-level digital components specified as pure C code that generates RTL netlists, which then compile to device logic. Components include adapters, indicators (candle, footprint, CBR), data structures (FIFO, wire), and infrastructure (MAC, NIC, timing).
+This is a **C-as-RTL hardware design framework** — a universal system that generates complete C hardware models for any device type (FPGA, ASIC, PCB, MCU, custom silicon). A collection of flip-flop-level digital components, specified as pure C code, deployed to any target technology. Components include adapters, indicators (candle, footprint, CBR), data structures (FIFO, wire), and infrastructure (MAC, NIC, timing).
 
 **Key philosophy:** Architecture is king, not results. A passing binary with the wrong structure is rejected. Always defer to the founder's blueprints and established patterns (especially the adapter pattern).
 
 **Reference:** See FOUNDER_VISION.md for the canonical architecture reference, system model, and design philosophy.
+
+## 🚫 IMMUTABLE ARCHITECTURAL LAW: C IS THE RTL
+
+**C code IS the hardware specification.** Not a generator. Not a simulator. Not a wrapper.
+
+- All device types (FPGA, ASIC, PCB, MCU, custom) output **C only** — no Verilog, no schematics, no firmware images.
+- Device type is a **parameter** in `gen_device_specialization.py`, not hardcoded in separate tools.
+- The fileset pattern is **universal** — same structure for all device types.
+- Output is always `device_<type>_*_gen.h` — a complete C model of the realized hardware.
+- Validation rules (single-writer, no-overlap, no-floating) are **device-agnostic**.
+
+**This is immutable and non-negotiable.** See `memory/c_is_rtl_immutable_law.md` and `skills/c_is_rtl_enforcement.md`.
 
 ## Repository Structure
 
@@ -126,6 +138,37 @@ Bid, ask, time, symbol, pip, commission, seq, valid. Downstream derives spread, 
 - Once a component is graduated into `.hft/`, it is byte-identical and immutable.
 - To update a graduated component, create a new versioned path (e.g., `candle_v2/`) rather than editing in place.
 - Rare re-graduation requires an environment override: `HFT_ALLOW_REGRADUATE=1 git commit ...`
+
+### 9. C IS The RTL (Universal Device Generation — IMMUTABLE)
+
+**C code IS the complete hardware specification.** Not a generator of Verilog. Not a simulator. Not a wrapper.
+
+- **All device types output C only** — no Verilog, no schematics, no firmware images.
+  - FPGA → `device_fpga_*_gen.h` (complete C model of FPGA)
+  - ASIC → `device_asic_*_gen.h` (complete C model of ASIC)
+  - PCB → `device_pcb_*_gen.h` (complete C model of PCB)
+  - MCU → `device_mcu_*_gen.h` (complete C model of MCU)
+  
+- **Device type is a parameter** — not hardcoded in separate tools.
+  - Use: `gen_device_specialization.py --type fpga|asic|pcb|mcu`
+  - Not: `gen_fpga_specialization.py`, `gen_asic_specialization.py`, etc.
+
+- **Fileset pattern is universal** — same structure for all device types.
+  - Same template: `DEVICE_<TYPE>_DESIGN.md`
+  - Same emitter: `gen_device_<type>_*_net.py`
+  - Same netlist: `device_<type>_*.net.json`
+  - Same generator: `gennet_device_<type>_*.py`
+  - Same output: `device_<type>_*_gen.h` (C)
+
+- **Validation is device-agnostic** — single-writer, no-overlap, no-floating apply to all types.
+
+- **Netlist maps to device primitives** — emitter translates modules to technology-specific components.
+  - FPGA: CLB, BRAM, DSP, GTY, I/O banks
+  - ASIC: Standard cells, SRAM, gates
+  - PCB: IC packages, resistors, capacitors
+  - MCU: ARM cores, RAM, GPIO, UART
+
+**This law is immutable.** No deviations permitted. See `memory/c_is_rtl_immutable_law.md` and `skills/c_is_rtl_enforcement.md`.
 
 ## Development Workflow
 
