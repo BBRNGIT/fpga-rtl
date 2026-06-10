@@ -1,0 +1,34 @@
+# Build artifacts (not committed)
+*.o
+*.a
+*.bin
+fpga_*_test
+fpga_*_probe
+
+# Generated files (to be created by emitter)
+fpga_*.net.json
+*_gen.h
+*_gen.c
+
+# Simulation/waveform files
+*.vcd
+*.wdb
+*.fst
+
+# Vivado/Quartus build directories (not in repo)
+.Xil/
+.project/
+db/
+obj/
+output_files/
+
+# Editor backups
+*~
+*.swp
+*.swo
+.DS_Store
+
+# Python artifacts
+__pycache__/
+*.pyc
+.pytest_cache/
