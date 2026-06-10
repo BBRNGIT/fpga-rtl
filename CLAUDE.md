@@ -145,6 +145,18 @@ Reference documents: `.hft_staging/SPEC_REGISTERS.md`, `.hft_staging/ARCHITECTUR
 - **Netlist** (`<module>.net.json`) — Generated JSON specification (COMMITTED to git). Defines registers, gates, and wiring. Validate with: `python3 validate.py <module>.net.json`
 - **Generator** (`gennet.py`) — Hand-written Python script that converts netlist to device C: `python3 gennet.py <module>.net.json > <module>_gen.h`. Output (`<module>_gen.h`) is committed as a validation artifact — it proves the netlist was generated deterministically.
 
+**FPGA Specialization Workflow:** FPGA device implementations use a **meta tool** to eliminate hand-wired address allocation:
+- **Blank template** (`FPGA_DESIGN.md`) — Pure device reference (VU9P specs, generic structure, no modules/addresses)
+- **Module list** (YAML: `fpga_nic_modules.yaml`, `fpga_pipeline_modules.yaml`) — Which modules go where, cell counts, BRAM requirements
+- **Meta tool** (`gen_fpga_specialization.py`) — Reads blank template + module list, generates:
+  1. Specialized FPGA doc (`FPGA_NIC.md`) with programmatic address allocation
+  2. Emitter skeleton (`gen_fpga_nic_net.py`) with hardcoded MODULE_WINDOWS
+  3. Validation report (no overlaps, resource budgets respected)
+- **Emitter** (`gen_fpga_nic_net.py`) — User fills in wiring logic, generates composite netlist
+- **Netlist** (`fpga_nic.net.json`) — Device-level netlist (all modules + interconnect + CDC regions)
+
+**Key principle:** No manual address assignment. All addresses are allocated by the meta tool algorithm, then hardcoded into the emitter skeleton for reproducibility.
+
 ### 2. Template & Scaffold
 
 Copy the adapter structure as a template. Most files (cells.h, Makefile, validate.py, test structure, display.c) are nearly identical across components. Change only:
@@ -192,6 +204,8 @@ Components may depend on sibling published interfaces:
 
 ## Common Commands
 
+### Module Development
+
 ```sh
 # Validate and test a component
 .hft_staging/gate.sh .hft_staging/adapter
@@ -213,6 +227,27 @@ HFT_ALLOW_REGRADUATE=1 .hft_staging/graduate.sh adapter
 
 # Clean build artifacts
 cd .hft_staging/<module> && make clean
+```
+
+### FPGA Specialization
+
+```sh
+# Specialize a blank FPGA template with programmatic address allocation
+python3 .hft_staging/gen_fpga_specialization.py \
+  .hft_staging/FPGA_DESIGN.md \
+  .hft_staging/fpga_nic_modules.yaml \
+  .hft_staging/fpga_nic/
+
+# Output:
+#   .hft_staging/fpga_nic/FPGA_NIC.md (design doc with allocated addresses)
+#   .hft_staging/fpga_nic/gen_fpga_nic_net.py (emitter skeleton)
+#   .hft_staging/fpga_nic/validation_report.txt (constraint check)
+
+# Then build the FPGA netlist (user fills in gen_fpga_nic_net.py wiring)
+cd .hft_staging/fpga_nic && python3 gen_fpga_nic_net.py > fpga_nic.net.json
+
+# Validate the FPGA netlist
+python3 /path/to/validate_device.py .hft_staging/fpga_nic/fpga_nic.net.json
 ```
 
 ### Makefile Targets (within a component directory)
@@ -261,6 +296,12 @@ The netlist is the source of truth; gennet generates the device C.
 - **`.hft_staging/INDICATOR_ARCHITECTURE_TEMPLATE.md`** — Template for indicator specs
 - **`.hft_staging/ARCHITECTURE_CLARIFICATIONS.md`** — System-wide cross-module connections
 - **`.hft_staging/BLOCK_DIAGRAM_DETAILED.md`** — Data flow diagram
+- **`.hft_staging/FPGA_DESIGN.md`** — Blank FPGA device template (reference only)
+- **`.hft_staging/THREE_FPGA_SEPARATION.md`** — Architecture philosophy (3-device separation)
+- **`.hft_staging/GEN_FPGA_SPECIALIZATION_QUICKSTART.md`** — FPGA specialization guide (5-minute intro)
+- **`.hft_staging/FPGA_SPECIALIZATION_GUIDE.md`** — Complete FPGA specialization reference
+- **`.hft_staging/fpga_nic_modules.yaml`** — Example NIC FPGA module list
+- **`.hft_staging/fpga_pipeline_modules.yaml`** — Example Pipeline FPGA module list
 - **Adapter component (`adapter/`)** — Proven reference implementation
 
 ## Common Pitfalls
