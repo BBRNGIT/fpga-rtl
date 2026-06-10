@@ -1,0 +1,202 @@
+device: footprint
+kind: indicator
+comment: Order-flow imprint — POC/VAH/VAL, diagonal imbalance, cumulative delta, stacked imbalance
+
+config_nodes:
+  - name: FP_IMBALANCE_THRESH_BPS
+    type: u64
+    comment: Threshold for diagonal imbalance detection (basis points)
+  - name: FP_TIMEFRAME_SLOTS
+    type: u64
+    comment: History ring depth (power of 2)
+
+cross_module_inputs:
+  - name: DOM_ASK_QTY
+    source: dom
+    type: u64
+    comment: Ask quantity per price level (indexed by PRICE_IDX)
+  - name: DOM_BID_QTY
+    source: dom
+    type: u64
+    comment: Bid quantity per price level (indexed by PRICE_IDX)
+  - name: DOM_COUNT
+    source: dom
+    type: u64
+    comment: Event count per price level
+  - name: DOM_TIME
+    source: dom
+    type: u64
+    comment: Latest TAI timestamp per price level
+  - name: TF_BAR_SEQ_REG
+    source: timeframe
+    type: u64
+    comment: Timeframe bar sequence (for bar-boundary detection)
+
+dff_nodes:
+  # POC tracking (running maximum volume)
+  - name: FP_POC_PRICE
+    type: u64
+    comment: Point of Control price (highest volume level)
+  - name: FP_POC_VOL
+    type: u64
+    comment: POC total volume (bid + ask)
+  - name: FP_POC_ASK_VOL
+    type: u64
+    comment: POC ask-side volume
+  - name: FP_POC_BID_VOL
+    type: u64
+    comment: POC bid-side volume
+  - name: FP_DELTA
+    type: u64
+    comment: POC-level delta (ask_vol - bid_vol at POC)
+
+  # Value area high/low (diagonal imbalance)
+  - name: FP_VAH_PRICE
+    type: u64
+    comment: Value Area High (highest price where ask > bid)
+  - name: FP_VAL_PRICE
+    type: u64
+    comment: Value Area Low (lowest price where bid > ask)
+  - name: FP_ASK_IMB_PRICE
+    type: u64
+    comment: Ask-imbalanced price (HVN — highest value node)
+  - name: FP_BID_IMB_PRICE
+    type: u64
+    comment: Bid-imbalanced price (LVN — lowest value node)
+
+  # Bar state
+  - name: FP_BAR_CUM_DELTA
+    type: u64
+    comment: Cumulative delta (CVD — total ask_qty - total bid_qty)
+  - name: FP_BAR_TOTAL_VOL
+    type: u64
+    comment: Total bar volume (all levels)
+  - name: FP_MIN_PRICE
+    type: u64
+    comment: Bar minimum price touched
+  - name: FP_MAX_PRICE
+    type: u64
+    comment: Bar maximum price touched
+  - name: FP_BAR_PARITY
+    type: u64
+    comment: Virtual-reset parity tag (bit 63 of per-level entries)
+  - name: FP_LAST_TF_SEQ
+    type: u64
+    comment: Last timeframe sequence seen (for bar-boundary sync)
+  - name: FP_BAR_SEQ
+    type: u64
+    comment: Bar sequence number
+
+  # Stacked imbalance (consecutive imbalanced ticks)
+  - name: FP_STACKED_IMB_BUY
+    type: u64
+    comment: Consecutive ask-imbalanced ticks above POC
+  - name: FP_STACKED_IMB_SELL
+    type: u64
+    comment: Consecutive bid-imbalanced ticks below POC
+
+  # DSP division pipeline (4-stage, imbalance ratios)
+  - name: FP_DIV_STAGE
+    type: u64
+    comment: Division pipeline stage counter (0-3)
+  - name: FP_DIV_VALID
+    type: u64
+    comment: Division result valid flag
+  - name: FP_DIV_VA_NUMER
+    type: u64
+    comment: Value-area numerator
+  - name: FP_DIV_VA_DENOM
+    type: u64
+    comment: Value-area denominator
+  - name: FP_DIV_ASK_NUMER
+    type: u64
+    comment: Ask-imbalance numerator
+  - name: FP_DIV_ASK_DENOM
+    type: u64
+    comment: Ask-imbalance denominator
+  - name: FP_DIV_ASK_RESULT
+    type: u64
+    comment: Ask-imbalance result (fixed-point)
+  - name: FP_DIV_BID_NUMER
+    type: u64
+    comment: Bid-imbalance numerator
+  - name: FP_DIV_BID_DENOM
+    type: u64
+    comment: Bid-imbalance denominator
+  - name: FP_DIV_BID_RESULT
+    type: u64
+    comment: Bid-imbalance result (fixed-point)
+  - name: FP_DIV_VA_RESULT
+    type: u64
+    comment: Value-area result (fixed-point)
+
+tables:
+  - name: FP_ASK_VOL
+    type: u64
+    depth: 16384
+    index_from: PRICE_IDX
+    comment: Ask volume accumulator per price level (parity-tagged)
+  - name: FP_BID_VOL
+    type: u64
+    depth: 16384
+    index_from: PRICE_IDX
+    comment: Bid volume accumulator per price level (parity-tagged)
+  - name: FP_PROFILE
+    type: u64
+    depth: 16384
+    index_from: PRICE_IDX
+    comment: Total volume profile per price level
+
+history_ring:
+  depth: 256
+  fields:
+    - name: FP_HIST_POC_PRICE
+      type: u64
+    - name: FP_HIST_VAH_PRICE
+      type: u64
+    - name: FP_HIST_VAL_PRICE
+      type: u64
+    - name: FP_HIST_NET_DELTA
+      type: u64
+    - name: FP_HIST_TOTAL_VOL
+      type: u64
+    - name: FP_HIST_BAR_SEQ
+      type: u64
+    - name: FP_HIST_ASK_IMB_PRICE
+      type: u64
+    - name: FP_HIST_BID_IMB_PRICE
+      type: u64
+    - name: FP_HIST_POC_DELTA
+      type: u64
+    - name: FP_HIST_STK_BUY
+      type: u64
+    - name: FP_HIST_STK_SELL
+      type: u64
+    - name: FP_HIST_MIN_PRICE
+      type: u64
+    - name: FP_HIST_MAX_PRICE
+      type: u64
+    - name: FP_HIST_BAR_TAI
+      type: u64
+
+seam_nodes:
+  - name: FP_POC_OUT
+    from: FP_POC_PRICE
+    type: u64
+    comment: POC price relay output
+  - name: FP_POC_VOL_OUT
+    from: FP_POC_VOL
+    type: u64
+    comment: POC volume relay output
+  - name: FP_VAH_OUT
+    from: FP_VAH_PRICE
+    type: u64
+    comment: Value area high relay output
+  - name: FP_VAL_OUT
+    from: FP_VAL_PRICE
+    type: u64
+    comment: Value area low relay output
+  - name: FP_DELTA_OUT
+    from: FP_BAR_CUM_DELTA
+    type: u64
+    comment: Cumulative delta (CVD) relay output

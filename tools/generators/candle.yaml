@@ -1,0 +1,207 @@
+device: candle
+kind: indicator
+comment: Dual bid/ask OHLC with volume, true range, and intrabar delta
+
+config_nodes:
+  - name: CANDLE_TIMEFRAME_SLOTS
+    type: u64
+    comment: History ring depth (power of 2)
+
+cross_module_inputs:
+  - name: DOM_BID_PRICE
+    source: dom
+    type: u64
+    comment: Best bid price (highest bid level)
+  - name: DOM_ASK_PRICE
+    source: dom
+    type: u64
+    comment: Best ask price (lowest ask level)
+  - name: DOM_BID_QTY
+    source: dom
+    type: u64
+    comment: Bid quantity per price level (indexed by PRICE_IDX)
+  - name: DOM_ASK_QTY
+    source: dom
+    type: u64
+    comment: Ask quantity per price level (indexed by PRICE_IDX)
+  - name: TF_BAR_SEQ_REG
+    source: timeframe
+    type: u64
+    comment: Timeframe bar sequence (for bar-boundary detection)
+
+dff_nodes:
+  # Bid-side OHLC (running during bar)
+  - name: CANDLE_BID_OPEN
+    type: u64
+    comment: First bid price in bar
+  - name: CANDLE_BID_HIGH
+    type: u64
+    comment: Highest bid price in bar
+  - name: CANDLE_BID_LOW
+    type: u64
+    comment: Lowest bid price in bar
+  - name: CANDLE_BID_CLOSE
+    type: u64
+    comment: Most recent bid price
+
+  # Ask-side OHLC (running during bar)
+  - name: CANDLE_ASK_OPEN
+    type: u64
+    comment: First ask price in bar
+  - name: CANDLE_ASK_HIGH
+    type: u64
+    comment: Highest ask price in bar
+  - name: CANDLE_ASK_LOW
+    type: u64
+    comment: Lowest ask price in bar
+  - name: CANDLE_ASK_CLOSE
+    type: u64
+    comment: Most recent ask price
+
+  # Volume tracking
+  - name: CANDLE_VOLUME_BID
+    type: u64
+    comment: Cumulative bid ticks in bar
+  - name: CANDLE_VOLUME_ASK
+    type: u64
+    comment: Cumulative ask ticks in bar
+
+  # True range (per-side)
+  - name: CANDLE_TRUE_RANGE_BID
+    type: u64
+    comment: Bid high - bid low (bid-side range only)
+  - name: CANDLE_TRUE_RANGE_ASK
+    type: u64
+    comment: Ask high - ask low (ask-side range only)
+
+  # Intrabar delta
+  - name: CANDLE_INTRABAR_QTY_DELTA
+    type: u64
+    comment: Cumulative ask_qty - bid_qty over bar
+
+  # Bar control
+  - name: CANDLE_OPEN_SET
+    type: u64
+    comment: Flag—first tick of bar processed
+  - name: CANDLE_LAST_TF_SEQ
+    type: u64
+    comment: Last timeframe sequence seen (for bar-boundary sync)
+  - name: CANDLE_BAR_SEQ
+    type: u64
+    comment: Bar sequence number
+  - name: CANDLE_BAR_PARITY
+    type: u64
+    comment: Virtual-reset parity tag (bit 63)
+  - name: CANDLE_PREV_TRADE_CNT
+    type: u64
+    comment: Last trade count (for delta calculation)
+
+  # Convenience (optional, derived)
+  - name: CANDLE_MID
+    type: u64
+    comment: Mid price ((bid_high + ask_low) / 2, non-blocking convenience)
+
+  # Completed bar snapshot
+  - name: CANDLE_COMP_BID_OPEN
+    type: u64
+    comment: Completed bar bid open
+  - name: CANDLE_COMP_BID_HIGH
+    type: u64
+    comment: Completed bar bid high
+  - name: CANDLE_COMP_BID_LOW
+    type: u64
+    comment: Completed bar bid low
+  - name: CANDLE_COMP_BID_CLOSE
+    type: u64
+    comment: Completed bar bid close
+  - name: CANDLE_COMP_ASK_OPEN
+    type: u64
+    comment: Completed bar ask open
+  - name: CANDLE_COMP_ASK_HIGH
+    type: u64
+    comment: Completed bar ask high
+  - name: CANDLE_COMP_ASK_LOW
+    type: u64
+    comment: Completed bar ask low
+  - name: CANDLE_COMP_ASK_CLOSE
+    type: u64
+    comment: Completed bar ask close
+  - name: CANDLE_COMP_VOLUME_BID
+    type: u64
+    comment: Completed bar bid volume
+  - name: CANDLE_COMP_VOLUME_ASK
+    type: u64
+    comment: Completed bar ask volume
+  - name: CANDLE_COMP_TRUE_RANGE_BID
+    type: u64
+    comment: Completed bar bid true range
+  - name: CANDLE_COMP_TRUE_RANGE_ASK
+    type: u64
+    comment: Completed bar ask true range
+  - name: CANDLE_COMP_INTRABAR_QTY_DELTA
+    type: u64
+    comment: Completed bar intrabar qty delta
+  - name: CANDLE_COMP_TAI
+    type: u64
+    comment: Completed bar TAI timestamp
+  - name: CANDLE_COMP_BAR_SEQ
+    type: u64
+    comment: Completed bar sequence
+
+history_ring:
+  depth: 256
+  fields:
+    - name: CANDLE_HIST_BID_OPEN
+      type: u64
+    - name: CANDLE_HIST_BID_HIGH
+      type: u64
+    - name: CANDLE_HIST_BID_LOW
+      type: u64
+    - name: CANDLE_HIST_BID_CLOSE
+      type: u64
+    - name: CANDLE_HIST_ASK_OPEN
+      type: u64
+    - name: CANDLE_HIST_ASK_HIGH
+      type: u64
+    - name: CANDLE_HIST_ASK_LOW
+      type: u64
+    - name: CANDLE_HIST_ASK_CLOSE
+      type: u64
+    - name: CANDLE_HIST_VOLUME_BID
+      type: u64
+    - name: CANDLE_HIST_VOLUME_ASK
+      type: u64
+    - name: CANDLE_HIST_TRUE_RANGE_BID
+      type: u64
+    - name: CANDLE_HIST_TRUE_RANGE_ASK
+      type: u64
+    - name: CANDLE_HIST_INTRABAR_QTY_DELTA
+      type: u64
+    - name: CANDLE_HIST_TAI
+      type: u64
+    - name: CANDLE_HIST_BAR_SEQ
+      type: u64
+    - name: CANDLE_HIST_PARITY
+      type: u64
+
+seam_nodes:
+  - name: CANDLE_BID_OHLC_OUT
+    from: CANDLE_BID_CLOSE
+    type: u64
+    comment: Bid OHLC relay (read CANDLE_BID_OPEN/HIGH/LOW/CLOSE)
+  - name: CANDLE_ASK_OHLC_OUT
+    from: CANDLE_ASK_CLOSE
+    type: u64
+    comment: Ask OHLC relay (read CANDLE_ASK_OPEN/HIGH/LOW/CLOSE)
+  - name: CANDLE_VOLUME_OUT
+    from: CANDLE_VOLUME_BID
+    type: u64
+    comment: Volume relay (read both VOLUME_BID and VOLUME_ASK)
+  - name: CANDLE_TRUE_RANGE_OUT
+    from: CANDLE_TRUE_RANGE_BID
+    type: u64
+    comment: True range relay (read both TR_BID and TR_ASK)
+  - name: CANDLE_DELTA_OUT
+    from: CANDLE_INTRABAR_QTY_DELTA
+    type: u64
+    comment: Intrabar delta relay output
