@@ -83,6 +83,16 @@ mid-price `cell_sar(bid + ask, 1)`-style halving where the sum comes from
 `cell_addsub`, and power-of-two scaling per the gate-level-arithmetic law
 ("Shifts → cell_sar", CLAUDE.md Law #2).
 
+### cell_shl(a, n)
+RTL: logical shift left by a compile-time constant `n` (0 < n < 64), zero-filling
+the vacated low bits — the structural counterpart to `cell_sar`. At gate level a
+fixed left shift is pure rewiring (each output bit is a wired select of input bit
+`i-n`, low `n` bits tied to 0); no adder, no branch. Canonical use: power-of-two
+scaling so the datapath never uses a native multiply — e.g. an imbalance-ratio
+threshold `cell_shl(v, k)` == `v * 2^k` (footprint's `FP_IMB_RATIO_SHIFT`). Per
+the gate-level-arithmetic law, multiplies/shifts are structural cells, not native
+operators.
+
 ### cell_dff(q, d, en)
 RTL: D flip-flop with clock-enable — the ONE stateful cell.
 `q_next = en ? d : q`, as mask algebra (`q ^ ((q ^ d) & m)`). The device's

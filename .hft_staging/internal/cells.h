@@ -106,6 +106,18 @@ static inline word_t cell_sar(word_t a, unsigned n) {
     return (a >> n) | (sign << (64u - n));
 }
 
+/* ---- shift primitive: logical shift left -----------------------------------
+ * cell_shl(a, n): shift a left by a compile-time constant n (0 < n < 64),
+ * zero-filling the vacated low bits. The structural counterpart to cell_sar.
+ * At gate level a fixed left shift is pure rewiring (bit-selects to higher
+ * positions, low bits tied to 0) — no adder, no branch. Used for power-of-two
+ * scaling (e.g. an imbalance ratio threshold: shl(v, k) == v * 2^k) so the
+ * datapath never uses a native multiply. Shifts are sanctioned in the tick
+ * body (the arithmetic gate strips >> and << before scanning for +,-,*). */
+static inline word_t cell_shl(word_t a, unsigned n) {
+    return a << n;
+}
+
 /* ---- sequential primitive: D flip-flop with enable -------------------------
  * The ONE stateful cell. q_next = en ? d : q  (mask algebra, no branch).
  * The device's clock-edge applies this to every dff node each tick; the value
