@@ -1,0 +1,8 @@
+# Compiled/scratch artifacts — never committed. The committed validation
+# artifacts (candle.net.json, candle_gen.h) are added explicitly.
+test_candle
+selfcheck_ohlc
+probe
+*.bin
+*.err
+*.dSYM/
