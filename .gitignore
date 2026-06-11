@@ -39,3 +39,7 @@ ehthumbs.db
 tools/__pycache__/
 tools/generators/__pycache__/
 tools/*.pyc
+
+# stale agent worktree checkouts — never tracked
+.hft_staging/wt-*
+.claude/worktrees/
