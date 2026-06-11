@@ -214,6 +214,16 @@ stored coordinate.
   internal clock tick**. No price-vs-price offset, no absolute-price anchor — ever.
   **Immutable and enforced at every level** (spec, emitter, gate); a violation halts
   development until corrected.
+- **History is a record store, not an index construct.** A historical module's memory
+  is a bank of stored records in flip-flops; **each record carries its own intrinsic
+  coordinates — commit time and price data — as stored fields.** There is NO index
+  construct: no write-pointer counter, no address decoder, no allocation, no managed slot.
+  A committed bar is stored (e.g. shift-in); its identity is the **time it carries**, not
+  a slot. **Browsing/querying is a separate module** (its own build task) that scans the
+  records in parallel hardware, compares on the intrinsic attribute (e.g. highest high),
+  and names the result by its **time** (the most unique identifier other than price). The
+  "index" is a *reference frame over data already present*, not infrastructure to build —
+  do not import generalist DB/indexing habits.
 - **`pip_resolver` owns nothing** — a per-symbol lookup publishing the pip size (the
   price-index separation unit). `timeframe` is a tick accumulator (the bar stride).
   Neither is an axis authority; **time (tick-count) is the only persistent reference.**

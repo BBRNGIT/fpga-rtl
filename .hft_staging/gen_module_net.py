@@ -47,6 +47,7 @@ spec fails here (loudly) rather than silently producing a stub:
   * there is at least one comb_node (otherwise the device would be a stub)
 """
 import json
+import re
 import sys
 
 try:
@@ -54,6 +55,44 @@ try:
 except ImportError:
     sys.stderr.write("gen_module_net: PyYAML required (pip install pyyaml)\n")
     sys.exit(2)
+
+# --- per-index unrolling -----------------------------------------------------
+# A price-indexed projection (Index Doctrine) declares lane-templated nodes with
+# an `_i` suffix and `unroll: true` (uses the spec-level `width`) or `unroll: N`.
+# Each is expanded into concrete lanes 0..n-1 with `_i` -> `_<k>` everywhere it
+# appears as an identifier suffix (word-boundary, so `_idx`/`_inc` are untouched).
+# Templated nodes must be listed in dependency order; expansion preserves it
+# (all of lane-group A, then all of lane-group B) so B_k still follows A_k.
+_IRE = re.compile(r"_i\b")
+
+
+def _sub_i(s, k):
+    return _IRE.sub(f"_{k}", s) if isinstance(s, str) else s
+
+
+def expand_unroll(items, width):
+    out = []
+    for it in items or []:
+        u = it.get("unroll")
+        if u in (None, False):
+            out.append(it)
+            continue
+        n = width if u is True else int(u)
+        if not n or n <= 0:
+            sys.stderr.write(f"gen_module_net: node {it.get('name')} unroll needs a positive width\n")
+            sys.exit(2)
+        for k in range(n):
+            c = dict(it)
+            c.pop("unroll", None)
+            if "name" in c:
+                c["name"] = _sub_i(c["name"], k)
+            if isinstance(c.get("inputs"), list):
+                c["inputs"] = [_sub_i(x, k) for x in c["inputs"]]
+            for fld in ("fed_by", "enable", "source"):
+                if c.get(fld) is not None:
+                    c[fld] = _sub_i(c[fld], k)
+            out.append(c)
+    return out
 
 KNOWN_CELLS = {"buf", "not", "and", "or", "xor", "mux", "eqmask", "addsub", "cmp_lt"}
 # arg counts per cell (None = variadic/unary handled specially)
@@ -83,11 +122,15 @@ def main():
     # window_base / absolute placement is owned by the assignment phase (registry
     # toolbox), never baked into a module build netlist.
 
-    seam_inputs = spec.get("seam_inputs", []) or []
-    const_nodes_in = spec.get("const_nodes", []) or []
-    dff_nodes_in = spec.get("dff_nodes", []) or []
-    comb_nodes_in = spec.get("comb_nodes", []) or []
+    width = int(spec.get("width", 0) or 0)
+    seam_inputs = expand_unroll(spec.get("seam_inputs", []), width)
+    const_nodes_in = expand_unroll(spec.get("const_nodes", []), width)
+    dff_nodes_in = expand_unroll(spec.get("dff_nodes", []), width)
+    comb_nodes_in = expand_unroll(spec.get("comb_nodes", []), width)
     hist = spec.get("history_ring") or None
+    if hist and hist.get("fields"):
+        hist = dict(hist)
+        hist["fields"] = expand_unroll(hist["fields"], width)
     seam_outputs = spec.get("seam_outputs", []) or []
     wiring = spec.get("wiring", {}) or {}
     clock = spec.get("clock") or None
@@ -216,10 +259,11 @@ def main():
         "wiring": wiring,
     }
     if hist:
+        # History is a record STORE (shift-in), not an index construct (Law #10):
+        # no index register. Each record carries its own coordinates as fields.
         net["history_ring"] = {
             "name": hist["name"],
             "depth": hist["depth"],
-            "index": hist["index"],
             "write_enable": hist.get("write_enable"),
             "fields": [{"name": fl["name"], "source": fl["source"]}
                        for fl in hist["fields"]],

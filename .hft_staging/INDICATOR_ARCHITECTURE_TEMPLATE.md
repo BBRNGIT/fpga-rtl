@@ -29,6 +29,15 @@ NOT a store-and-allocate table. Before specifying any indicator, internalize:
 So: candle = bar pip-extremes; footprint = volume per price; tpo = time-touches per
 price. See `memory/index_doctrine_price_time_as_index.md`.
 
+**History is a record store, NOT an index construct.** The module's history memory is a
+bank of stored records in flip-flops; each record carries its OWN intrinsic coordinates —
+commit time + price data — as stored fields. NO write-pointer counter, NO address
+decoder, NO allocation. A committed bar is stored (shift-in); its identity is the time it
+carries, not a slot. Browsing/querying (e.g. "find the bar with the highest high") is a
+SEPARATE module written later that scans the records in parallel and names the result by
+its time. Do not build index/addressing subsystems — store records with intrinsic
+coordinates and scan when queried.
+
 **DOM is the source payload; the indicator does its OWN counting — never lift DOM's
 aggregates.** The DOM snapshot is the enriched per-internal-tick, all-price payload.
 The indicator keeps its **own** counters and **counts from** that payload into its own

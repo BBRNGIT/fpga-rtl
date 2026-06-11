@@ -1,0 +1,6 @@
+test_footprint
+selfcheck_ohlc
+probe
+*.bin
+*.err
+*.dSYM/

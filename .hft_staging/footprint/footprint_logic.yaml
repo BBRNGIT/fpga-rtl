@@ -1,0 +1,53 @@
+# footprint_logic.yaml — flip-flop-level logic spec (ground-up, doctrine-correct).
+#
+# Index Doctrine (Law #10): price is a DIRECT index. footprint keeps its OWN
+# per-price bid/ask counters, counting from an ABSTRACT per-tick payload into its
+# own registers over the bar; volume = bid+ask, delta = ask-bid per price.
+#
+# Build/Assignment separation: inputs are ABSTRACT ports (a per-tick price-indexed
+# bid/ask activity payload + a bar-boundary pulse). NO DOM/TF binding, NO addresses.
+# Binding to a real producer (DOM/timeframe) and placement happen at assignment.
+#
+# width = number of price-index lanes on the abstract payload (a build parameter).
+#
+# SCOPE (this milestone): per-lane accumulate -> volume/delta + bar reset + history
+# snapshot. POC / VAH / VAL / HVN / LVN are reduction networks added next.
+
+module: footprint
+kind: indicator
+width: 8
+clock: passive   # passive consumer — the fabric clocks it; testbench loops the tick.
+
+# --- ABSTRACT input ports (bound to a real producer only in the assignment phase) ---
+seam_inputs:
+  - {name: IN_BID_ACT_i, type: u64, source: "", unroll: true, comment: "abstract: bid activity at price-index i this tick"}
+  - {name: IN_ASK_ACT_i, type: u64, source: "", unroll: true, comment: "abstract: ask activity at price-index i this tick"}
+  - {name: IN_BAR_BOUNDARY, type: u64, source: "", comment: "abstract: 1 on the first tick of a new bar (prev bar closes)"}
+  - {name: IN_BAR_TIME, type: u64, source: "", comment: "abstract: the committing bar's time (intrinsic record coordinate; bound to the time source at assignment)"}
+
+# --- own state: per-price bid/ask volume counters (reset per bar) ---
+dff_nodes:
+  - {name: FP_BID_VOL_i, type: u64, fed_by: bid_vol_next_i, unroll: true, comment: "own accumulated bid volume at price-index i this bar"}
+  - {name: FP_ASK_VOL_i, type: u64, fed_by: ask_vol_next_i, unroll: true, comment: "own accumulated ask volume at price-index i this bar"}
+
+comb_nodes:
+  # accumulate-then-reset per lane: next = boundary ? this_tick : (current + this_tick)
+  - {name: bid_acc_i,      cell: addsub, inputs: [FP_BID_VOL_i, IN_BID_ACT_i], sub: 0, unroll: true, comment: "current + this tick's bid activity"}
+  - {name: bid_vol_next_i, cell: mux,    inputs: [bid_acc_i, IN_BID_ACT_i, IN_BAR_BOUNDARY], unroll: true, comment: "boundary -> start fresh; else accumulate"}
+  - {name: ask_acc_i,      cell: addsub, inputs: [FP_ASK_VOL_i, IN_ASK_ACT_i], sub: 0, unroll: true}
+  - {name: ask_vol_next_i, cell: mux,    inputs: [ask_acc_i, IN_ASK_ACT_i, IN_BAR_BOUNDARY], unroll: true}
+  # per-price derived measures (own): volume = bid+ask, delta = ask-bid
+  - {name: FP_VOL_i,   cell: addsub, inputs: [FP_BID_VOL_i, FP_ASK_VOL_i], sub: 0, unroll: true, comment: "own volume at price-index i"}
+  - {name: FP_DELTA_i, cell: addsub, inputs: [FP_ASK_VOL_i, FP_BID_VOL_i], sub: 1, unroll: true, comment: "own delta (ask-bid) at price-index i"}
+
+# completed-bar record store (shift-in; NO index construct). Each stored record
+# carries its intrinsic coordinates: TIME (commit time) + the per-price VOL profile.
+# Newest record shifts into slot 0 on the boundary. A future query module browses
+# these records in parallel by their intrinsic time/price.
+history_ring:
+  name: FP_HIST
+  depth: 64
+  write_enable: IN_BAR_BOUNDARY
+  fields:
+    - {name: TIME, source: IN_BAR_TIME}
+    - {name: VOL_i, source: FP_VOL_i, unroll: true}

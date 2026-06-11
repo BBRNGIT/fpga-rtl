@@ -320,6 +320,18 @@ an absolute stored coordinate.
   absolute-price anchor anywhere. This rule is **immutable and enforced at every level**
   (spec, emitter, gate via `checks/check_index_doctrine.py`); a violation blocks
   development.
+- **History is a record store, not an index construct.** A historical module's memory
+  is a bank of stored records in flip-flops; **each record carries its own intrinsic
+  coordinates — its commit time and its price data — as stored fields.** There is NO
+  index construct: no write-pointer counter, no address decoder, no allocation, no
+  "managed slot." A committed bar is stored (e.g. shift-in); its identity is the **time
+  it carries**, not a physical slot. **Browsing/querying is a separate concern** — a
+  query module (written if/when needed, its own build task) scans the records in parallel
+  hardware, compares on the intrinsic attribute (e.g. highest high), and identifies the
+  result by its **time** (the most unique identifier other than price). The "index" is a
+  *reference frame over data already present*, not infrastructure to build. Do not import
+  generalist DB/indexing habits (write-pointers, decoders, B-trees) — this system stores
+  records with intrinsic coordinates and scans them in parallel.
 - **`pip_resolver` owns nothing** — it is a per-symbol lookup that publishes the pip
   size (the price-index separation). `timeframe` is a tick accumulator (the bar stride).
   Neither is an "axis authority"; time (tick-count) is the only persistent reference.
