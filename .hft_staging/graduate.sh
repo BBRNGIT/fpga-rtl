@@ -72,6 +72,14 @@ for GENH in "$SRC"/*_gen.h; do
 done
 echo "    cell_count: $CELL_COUNT — OK (device contains flip-flop logic)"
 
+# 3c) byte-match check — committed *_gen.h must reproduce byte-identically from
+#     the committed netlist via gennet (build-sequence law, closed). A missing
+#     enforcement script is itself a failure: no enforcement, no graduation.
+echo "==> byte-match check: committed *_gen.h reproduces from committed netlist"
+CHECK_GEN="$ROOT/.hft_staging/checks/check_generated.sh"
+[ -x "$CHECK_GEN" ] || { echo "[abort] missing enforcement script: $CHECK_GEN"; exit 1; }
+"$CHECK_GEN" "$SRC" || { echo "[abort] byte-match FAILED — *_gen.h does not reproduce from netlist, not graduating."; exit 1; }
+
 # 4) copy the validated, committed source (tracked files only — no artifacts).
 rm -rf "$DEST"; mkdir -p "$DEST"
 git -C "$ROOT" archive HEAD ".hft_staging/$COMP" | tar -x -C "$DEST" --strip-components=2

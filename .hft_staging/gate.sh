@@ -128,8 +128,14 @@ echo "==> [gate] 2d/3 flip-flop logic content (cell calls in device C)"
 # (cell_addsub, cell_mux, cell_cmp_lt, cell_eqmask, cell_gate, cmp_lt, etc.).
 # Empty COMPUTE phases (register stubs) pass all prior gates but are incomplete
 # architecturally. This check catches incomplete specifications at gate time.
+# Scope: only generated headers OWNED by this component (those with a matching
+# committed netlist here). Sibling seam headers regenerated at build time (e.g.
+# wire_gen.h inside adapter/) are passive register maps by design and are
+# checked in their own component's gate run.
 ( cd "$DIR" && for GENH in *_gen.h; do
     [ -f "$GENH" ] || continue
+    BASE=${GENH%_gen.h}
+    [ -f "$BASE.net.json" ] || { echo "    $GENH: sibling seam header (no local netlist) — skipped"; continue; }
     CELL_COUNT=$(grep -o "cell_[a-z_]*(" "$GENH" 2>/dev/null | wc -l)
     if [ "$CELL_COUNT" -eq 0 ]; then
         echo "    [FAIL] $GENH — no structural cell calls found"
@@ -147,6 +153,27 @@ echo "==> [gate] 2d/3 flip-flop logic content (cell calls in device C)"
         exit 3
     fi
     echo "    $GENH: $CELL_COUNT cell calls — OK"
+done ) || exit 3
+
+# --- Phase-0 enforcement checks (missing check script = missing enforcement = FAIL)
+CHECKS=$(cd "$(dirname "$0")" && pwd)/checks
+
+echo "==> [gate] 2e/3 byte-match: committed *_gen.h reproduces from committed netlist"
+# Build-sequence law, closed: the committed *_gen.h must be EXACTLY what gennet
+# produces from the committed netlist — re-run the generator in a temp copy and
+# cmp byte-for-byte. Any drift (hand-edited gen.h, stale netlist) => FAIL.
+[ -x "$CHECKS/check_generated.sh" ] || { echo "    FAIL — missing enforcement script: $CHECKS/check_generated.sh"; exit 3; }
+"$CHECKS/check_generated.sh" "$DIR" || exit 3
+
+echo "==> [gate] 2f/3 cells.h canon (primitives byte-match the canonical cells.h)"
+[ -x "$CHECKS/check_cells_canon.sh" ] || { echo "    FAIL — missing enforcement script: $CHECKS/check_cells_canon.sh"; exit 3; }
+"$CHECKS/check_cells_canon.sh" "$DIR" || exit 3
+
+echo "==> [gate] 2g/3 clock rule (self-running clock, no external step) per netlist"
+[ -f "$CHECKS/check_clock_rule.py" ] || { echo "    FAIL — missing enforcement script: $CHECKS/check_clock_rule.py"; exit 3; }
+( cd "$DIR" && for NET in *.net.json; do
+    [ -f "$NET" ] || continue
+    python3 "$CHECKS/check_clock_rule.py" "$NET" || exit 3
 done ) || exit 3
 
 echo "==> [gate] 3/3 clean-room build from committed HEAD"

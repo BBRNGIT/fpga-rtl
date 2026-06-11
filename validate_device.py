@@ -8,6 +8,7 @@ on device.net.json (FPGA device or system-level backplane netlist). It checks:
   no-overlap       : no conflicting writes to the same register address
   no-floating      : all combinational nodes have at least one sink
   clock-domains    : TAI and clock generators are independent sources
+  clock-rule       : every owned clock has a power bit and start/stop control
   module-barrier   : cross-module communication respects published windows
   resource-budgets : part counts match known device specs (within tolerance)
   connectivity     : all nodes are reachable from inputs or self-contained
@@ -46,6 +47,7 @@ class DeviceValidator:
         self._check_no_overlap()
         self._check_no_floating()
         self._check_clock_domains()
+        self._check_clock_rule()
         self._check_module_barrier()
         self._check_resource_budgets()
         self._check_connectivity()
@@ -362,6 +364,94 @@ class DeviceValidator:
                         f"clock-domains: TAI reference '{ref}' is not declared"
                     )
 
+    def _check_clock_rule(self):
+        """Founder clock law: every clock the netlist defines or owns must
+        have (a) a power bit it self-runs from and (b) a start/stop control
+        (RUN_UNTIL bound, START/STOP pair, or a bounded run counter)."""
+        net = self.net
+
+        # Does this netlist define or own a clock?
+        reasons = []
+        if isinstance(net.get("clock"), dict):
+            reasons.append("clock generator ('clock' dict)")
+        if isinstance(net.get("counter"), dict):
+            reasons.append("oscillator counter ('counter')")
+        if isinstance(net.get("edge"), dict):
+            reasons.append("oscillator edge ('edge')")
+        if isinstance(net.get("run"), dict):
+            reasons.append("self-run section ('run')")
+        if net.get("run_power") or isinstance(net.get("run_bound"), dict):
+            reasons.append("self-run bound ('run_power'/'run_bound')")
+        if not reasons:
+            return  # No owned clock — nothing to enforce.
+
+        owned = "; ".join(reasons)
+
+        # (a) Power bit.
+        power_candidates = []
+        clk = net.get("clock")
+        if isinstance(clk, dict) and clk.get("power"):
+            power_candidates.append(clk["power"])
+        for sect in ("counter", "edge", "run"):
+            s = net.get(sect)
+            if isinstance(s, dict) and s.get("power"):
+                power_candidates.append(s["power"])
+        if isinstance(net.get("run_power"), str) and net["run_power"]:
+            power_candidates.append(net["run_power"])
+        if isinstance(net.get("power"), str) and net["power"]:
+            power_candidates.append(net["power"])
+
+        power = next((p for p in power_candidates if p in self.declared), None)
+        if power is None:
+            power = next((n for n in self.declared if "POWER" in n.upper()),
+                         None)
+        if power is None:
+            if power_candidates:
+                self.errors.append(
+                    f"clock-rule: clock power bit '{power_candidates[0]}' is "
+                    f"referenced but not declared (clock owned via {owned})"
+                )
+            else:
+                self.errors.append(
+                    f"clock-rule: netlist owns a clock ({owned}) but has no "
+                    f"power register — every clock must self-run from a "
+                    f"POWER bit"
+                )
+
+        # (b) Start/stop control.
+        startstop = None
+        rb = net.get("run_bound")
+        if isinstance(rb, dict) and rb.get("count") and rb.get("limit"):
+            if rb["count"] in self.declared and rb["limit"] in self.declared:
+                startstop = f"run_bound ({rb['count']} < {rb['limit']})"
+        run = net.get("run")
+        if startstop is None and isinstance(run, dict) \
+                and run.get("count") and run.get("limit"):
+            if run["count"] in self.declared and run["limit"] in self.declared:
+                startstop = f"run ({run['count']} < {run['limit']})"
+        if startstop is None:
+            for name in sorted(self.declared):
+                if "RUN_UNTIL" in name.upper():
+                    startstop = f"RUN_UNTIL register ({name})"
+                    break
+        if startstop is None:
+            starts = [n for n in self.declared if "START" in n.upper()]
+            stops = [n for n in self.declared if "STOP" in n.upper()]
+            if starts and stops:
+                startstop = f"START/STOP pair ({starts[0]}, {stops[0]})"
+        if startstop is None:
+            pos = net.get("pos")
+            if isinstance(pos, dict) and pos.get("counter") \
+                    and pos.get("increment"):
+                startstop = (f"consumption-bounded position counter "
+                             f"({pos['counter']} += {pos['increment']})")
+        if startstop is None:
+            self.errors.append(
+                f"clock-rule: netlist owns a clock ({owned}) but has no "
+                f"start/stop control — need RUN_UNTIL bound, START/STOP "
+                f"pair, or run/run_bound count+limit"
+            )
+
     def _check_module_barrier(self):
         """Verify cross-module communication respects published windows."""
         # Skip module-barrier check for single-component devices
@@ -645,6 +735,10 @@ class DeviceValidator:
                     "passed": not any(e.startswith("clock-domains") for e in self.errors),
                     "violations": [e for e in self.errors if e.startswith("clock-domains")],
                 },
+                "clock_rule": {
+                    "passed": not any(e.startswith("clock-rule") for e in self.errors),
+                    "violations": [e for e in self.errors if e.startswith("clock-rule")],
+                },
                 "module_barrier": {
                     "passed": not any(e.startswith("module-barrier") for e in self.errors),
                     "warnings": [w for w in self.warnings if w.startswith("module-barrier")],
@@ -690,6 +784,7 @@ def main():
         • no-overlap     : no duplicate node names
         • no-floating    : all comb outputs have sinks
         • clock-domains  : TAI and clock sources are independent
+        • clock-rule     : owned clocks have power bit + start/stop control
         • module-barrier : cross-module refs use published seams
         • resource-budgets: cell/BRAM counts within device budgets
         • connectivity   : nodes reachable from inputs
