@@ -6,7 +6,6 @@
 #include "cells.h"
 
 #define CANDLE_REG_COUNT 3923u
-#define CANDLE_WINDOW_BASE 0x00000000u
 
 #define CANDLE_DOM_BEST_BID_PRICE_REG 0u
 #define CANDLE_DOM_BEST_ASK_PRICE_REG 1u

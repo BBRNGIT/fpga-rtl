@@ -184,7 +184,8 @@ def main():
     out.append('#include "cells.h"')
     out.append("")
     out.append(f"#define {pfx}_REG_COUNT {count}u")
-    out.append(f"#define {pfx}_WINDOW_BASE {net['window_base']}u")
+    # No WINDOW_BASE: build artifacts carry no addresses (registers are module-local
+    # indices). Absolute placement is assigned later by the registry toolbox.
     out.append("")
     for nm in order:
         out.append(f"#define {pfx}_{nm} {addr[nm]}u")

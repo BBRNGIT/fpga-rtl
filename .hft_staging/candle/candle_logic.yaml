@@ -30,7 +30,8 @@
 
 module: candle
 kind: indicator
-window_base: "0x00000000"
+# No window_base: build artifacts carry no addresses (build-vs-assignment
+# separation). Absolute placement is assigned later by the registry toolbox.
 
 clock: passive
 # Passive consumer (indicator): candle owns no clock. The device fabric clocks
