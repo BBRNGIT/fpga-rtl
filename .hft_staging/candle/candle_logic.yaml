@@ -1,0 +1,150 @@
+# candle_logic.yaml — machine-readable flip-flop-level logic spec (V2)
+# Companion to CANDLE_SPEC_V2.md. Emitter input for the forthcoming
+# gen_device_specialization build mode. SPEC ONLY: no addresses, no placement.
+# Seam inputs are SYMBOLIC names of registers published by dom/timeframe.
+
+module: candle
+kind: indicator
+clock: passive            # owns no clock; no power/run machinery (clock-rule: passes quietly)
+
+seam_inputs:              # config_nodes in the emitted netlist (sampled input lanes)
+  - {name: DOM_BEST_BID_PRICE_REG, from: dom.wiring.best_bid_price}
+  - {name: DOM_BEST_ASK_PRICE_REG, from: dom.wiring.best_ask_price}
+  - {name: DOM_BEST_BID_QTY_REG,   from: dom.wiring.best_bid_qty}
+  - {name: DOM_BEST_ASK_QTY_REG,   from: dom.wiring.best_ask_qty}
+  - {name: TF_BAR_SEQ,             from: timeframe.bar_seq}
+  - {name: TF_BAR_START,           from: timeframe.bar_start}
+
+const_nodes:
+  - {name: CANDLE_ONE,  value: 1}
+  - {name: CANDLE_ZERO, value: 0}
+  - {name: CANDLE_HIST_MASK, value: 255}   # ring depth-1 (OPEN DECISION D1)
+
+dff_nodes:   # register, fed_by = driving comb node (cell type in parens)
+  - {name: CANDLE_BID_OPEN,            fed_by: bid_open_next (mux)}
+  - {name: CANDLE_BID_HIGH,            fed_by: bid_high_next (mux)}
+  - {name: CANDLE_BID_LOW,             fed_by: bid_low_next (mux)}
+  - {name: CANDLE_BID_CLOSE,           fed_by: bid_close_next (buf)}
+  - {name: CANDLE_ASK_OPEN,            fed_by: ask_open_next (mux)}
+  - {name: CANDLE_ASK_HIGH,            fed_by: ask_high_next (mux)}
+  - {name: CANDLE_ASK_LOW,             fed_by: ask_low_next (mux)}
+  - {name: CANDLE_ASK_CLOSE,           fed_by: ask_close_next (buf)}
+  - {name: CANDLE_VOLUME_BID,          fed_by: vol_bid_next (addsub)}
+  - {name: CANDLE_VOLUME_ASK,          fed_by: vol_ask_next (addsub)}
+  - {name: CANDLE_TRUE_RANGE_BID,      fed_by: tr_bid_next (addsub)}
+  - {name: CANDLE_TRUE_RANGE_ASK,      fed_by: tr_ask_next (addsub)}
+  - {name: CANDLE_INTRABAR_QTY_DELTA,  fed_by: delta_next (addsub)}
+  - {name: CANDLE_MID,                 fed_by: mid_next (sar)}     # OPEN DECISION D4
+  - {name: CANDLE_OPEN_SET,            fed_by: open_set_next (mux)}
+  - {name: CANDLE_LAST_TF_SEQ,         fed_by: last_tf_next (buf)}
+  - {name: CANDLE_BID_TICK,            fed_by: bid_tick_now (eqmask+not)}
+  - {name: CANDLE_ASK_TICK,            fed_by: ask_tick_now (eqmask+not)}
+  - {name: CANDLE_BAR_BOUNDARY,        fed_by: bar_boundary_now (not)}
+  - {name: CANDLE_BAR_SEQ,             fed_by: bar_seq_next (mux)}
+  # completed-bar snapshot (en = bar_boundary_now)
+  - {name: CANDLE_COMP_BID_OPEN,   fed_by: CANDLE_BID_OPEN (dff en=bar_boundary_now)}
+  - {name: CANDLE_COMP_BID_HIGH,   fed_by: CANDLE_BID_HIGH (dff en=bar_boundary_now)}
+  - {name: CANDLE_COMP_BID_LOW,    fed_by: CANDLE_BID_LOW (dff en=bar_boundary_now)}
+  - {name: CANDLE_COMP_BID_CLOSE,  fed_by: CANDLE_BID_CLOSE (dff en=bar_boundary_now)}
+  - {name: CANDLE_COMP_ASK_OPEN,   fed_by: CANDLE_ASK_OPEN (dff en=bar_boundary_now)}
+  - {name: CANDLE_COMP_ASK_HIGH,   fed_by: CANDLE_ASK_HIGH (dff en=bar_boundary_now)}
+  - {name: CANDLE_COMP_ASK_LOW,    fed_by: CANDLE_ASK_LOW (dff en=bar_boundary_now)}
+  - {name: CANDLE_COMP_ASK_CLOSE,  fed_by: CANDLE_ASK_CLOSE (dff en=bar_boundary_now)}
+  - {name: CANDLE_COMP_VOLUME_BID, fed_by: CANDLE_VOLUME_BID (dff en=bar_boundary_now)}
+  - {name: CANDLE_COMP_VOLUME_ASK, fed_by: CANDLE_VOLUME_ASK (dff en=bar_boundary_now)}
+  - {name: CANDLE_COMP_TRUE_RANGE_BID, fed_by: CANDLE_TRUE_RANGE_BID (dff en=bar_boundary_now)}
+  - {name: CANDLE_COMP_TRUE_RANGE_ASK, fed_by: CANDLE_TRUE_RANGE_ASK (dff en=bar_boundary_now)}
+  - {name: CANDLE_COMP_INTRABAR_QTY_DELTA, fed_by: CANDLE_INTRABAR_QTY_DELTA (dff en=bar_boundary_now)}
+  - {name: CANDLE_COMP_TAI,        fed_by: TF_BAR_START (dff en=bar_boundary_now)}
+  - {name: CANDLE_COMP_BAR_SEQ,    fed_by: CANDLE_BAR_SEQ (dff en=bar_boundary_now)}
+
+history_ring:
+  name: CANDLE_HIST
+  depth: 256                       # OPEN DECISION D1 (power of two REQUIRED)
+  index: {cell: and, inputs: [CANDLE_BAR_SEQ, CANDLE_HIST_MASK]}   # branchless, no %
+  write_enable: bar_boundary_now   # one-hot slot enable: eqmask(slot_const_i, hist_slot_idx) AND bar_boundary_now
+  fed_by: CANDLE_COMP_* closing values (dff per slot x field)
+  fields: [BID_OPEN, BID_HIGH, BID_LOW, BID_CLOSE,
+           ASK_OPEN, ASK_HIGH, ASK_LOW, ASK_CLOSE,
+           VOLUME_BID, VOLUME_ASK, TRUE_RANGE_BID, TRUE_RANGE_ASK,
+           INTRABAR_QTY_DELTA, TAI, BAR_SEQ]
+
+comb_nodes:
+  # boundary / tick detect
+  - {name: bar_seq_same,     cell: eqmask, inputs: [CANDLE_LAST_TF_SEQ, TF_BAR_SEQ]}
+  - {name: bar_boundary_now, cell: not,    inputs: [bar_seq_same], bit0: true,
+     fed_to: [CANDLE_BAR_BOUNDARY, all boundary muxes/gates]}
+  - {name: not_boundary,     cell: buf,    inputs: [bar_seq_same], bit0: true}
+  - {name: bid_tick_now,     cell: eqmask, inputs: [DOM_BEST_BID_PRICE_REG, CANDLE_BID_CLOSE], invert: true, fed_to: [CANDLE_BID_TICK, bid_tick_bit]}
+  - {name: ask_tick_now,     cell: eqmask, inputs: [DOM_BEST_ASK_PRICE_REG, CANDLE_ASK_CLOSE], invert: true, fed_to: [CANDLE_ASK_TICK, ask_tick_bit]}
+  # bid OHLC
+  - {name: open_seed_bid,  cell: mux, inputs: [DOM_BEST_BID_PRICE_REG, CANDLE_BID_OPEN, CANDLE_OPEN_SET]}
+  - {name: bid_open_next,  cell: mux, inputs: [open_seed_bid, DOM_BEST_BID_PRICE_REG, bar_boundary_now], fed_to: [CANDLE_BID_OPEN]}
+  - {name: is_new_bid_high, cell: cmp_lt, inputs: [CANDLE_BID_HIGH, DOM_BEST_BID_PRICE_REG]}
+  - {name: bid_high_run,   cell: mux, inputs: [CANDLE_BID_HIGH, DOM_BEST_BID_PRICE_REG, is_new_bid_high]}
+  - {name: bid_high_next,  cell: mux, inputs: [bid_high_run, DOM_BEST_BID_PRICE_REG, bar_boundary_now], fed_to: [CANDLE_BID_HIGH, tr_bid_next, mid_sum]}
+  - {name: is_new_bid_low, cell: cmp_lt, inputs: [DOM_BEST_BID_PRICE_REG, CANDLE_BID_LOW]}
+  - {name: bid_low_run,    cell: mux, inputs: [CANDLE_BID_LOW, DOM_BEST_BID_PRICE_REG, is_new_bid_low]}
+  - {name: bid_low_next,   cell: mux, inputs: [bid_low_run, DOM_BEST_BID_PRICE_REG, bar_boundary_now], fed_to: [CANDLE_BID_LOW, tr_bid_next]}
+  - {name: bid_close_next, cell: buf, inputs: [DOM_BEST_BID_PRICE_REG], fed_to: [CANDLE_BID_CLOSE]}
+  # ask OHLC (symmetric)
+  - {name: open_seed_ask,  cell: mux, inputs: [DOM_BEST_ASK_PRICE_REG, CANDLE_ASK_OPEN, CANDLE_OPEN_SET]}
+  - {name: ask_open_next,  cell: mux, inputs: [open_seed_ask, DOM_BEST_ASK_PRICE_REG, bar_boundary_now], fed_to: [CANDLE_ASK_OPEN]}
+  - {name: is_new_ask_high, cell: cmp_lt, inputs: [CANDLE_ASK_HIGH, DOM_BEST_ASK_PRICE_REG]}
+  - {name: ask_high_run,   cell: mux, inputs: [CANDLE_ASK_HIGH, DOM_BEST_ASK_PRICE_REG, is_new_ask_high]}
+  - {name: ask_high_next,  cell: mux, inputs: [ask_high_run, DOM_BEST_ASK_PRICE_REG, bar_boundary_now], fed_to: [CANDLE_ASK_HIGH, tr_ask_next]}
+  - {name: is_new_ask_low, cell: cmp_lt, inputs: [DOM_BEST_ASK_PRICE_REG, CANDLE_ASK_LOW]}
+  - {name: ask_low_run,    cell: mux, inputs: [CANDLE_ASK_LOW, DOM_BEST_ASK_PRICE_REG, is_new_ask_low]}
+  - {name: ask_low_next,   cell: mux, inputs: [ask_low_run, DOM_BEST_ASK_PRICE_REG, bar_boundary_now], fed_to: [CANDLE_ASK_LOW, tr_ask_next, mid_sum]}
+  - {name: ask_close_next, cell: buf, inputs: [DOM_BEST_ASK_PRICE_REG], fed_to: [CANDLE_ASK_CLOSE]}
+  # volume (reset-on-boundary)
+  - {name: vol_bid_base, cell: gate, inputs: [CANDLE_VOLUME_BID, not_boundary]}
+  - {name: bid_tick_bit, cell: and,  inputs: [bid_tick_now, CANDLE_ONE]}
+  - {name: vol_bid_next, cell: addsub, sub: 0, inputs: [vol_bid_base, bid_tick_bit], fed_to: [CANDLE_VOLUME_BID]}
+  - {name: vol_ask_base, cell: gate, inputs: [CANDLE_VOLUME_ASK, not_boundary]}
+  - {name: ask_tick_bit, cell: and,  inputs: [ask_tick_now, CANDLE_ONE]}
+  - {name: vol_ask_next, cell: addsub, sub: 0, inputs: [vol_ask_base, ask_tick_bit], fed_to: [CANDLE_VOLUME_ASK]}
+  # true range
+  - {name: tr_bid_next, cell: addsub, sub: 1, inputs: [bid_high_next, bid_low_next], fed_to: [CANDLE_TRUE_RANGE_BID]}
+  - {name: tr_ask_next, cell: addsub, sub: 1, inputs: [ask_high_next, ask_low_next], fed_to: [CANDLE_TRUE_RANGE_ASK]}
+  # intrabar qty delta (reset-on-boundary)
+  - {name: quote_delta, cell: addsub, sub: 1, inputs: [DOM_BEST_ASK_QTY_REG, DOM_BEST_BID_QTY_REG]}
+  - {name: delta_base,  cell: gate, inputs: [CANDLE_INTRABAR_QTY_DELTA, not_boundary]}
+  - {name: delta_next,  cell: addsub, sub: 0, inputs: [delta_base, quote_delta], fed_to: [CANDLE_INTRABAR_QTY_DELTA]}
+  # mid (shift, no division)
+  - {name: mid_sum,  cell: addsub, sub: 0, inputs: [bid_high_next, ask_low_next]}
+  - {name: mid_next, cell: sar, shift: 1, inputs: [mid_sum], fed_to: [CANDLE_MID]}   # OPEN DECISION D4
+  # bookkeeping
+  - {name: open_set_next, cell: mux, inputs: [CANDLE_ONE, CANDLE_ZERO, bar_boundary_now], fed_to: [CANDLE_OPEN_SET]}
+  - {name: last_tf_next,  cell: buf, inputs: [TF_BAR_SEQ], fed_to: [CANDLE_LAST_TF_SEQ]}
+  - {name: bar_seq_inc,   cell: addsub, sub: 0, inputs: [CANDLE_BAR_SEQ, CANDLE_ONE]}
+  - {name: bar_seq_next,  cell: mux, inputs: [CANDLE_BAR_SEQ, bar_seq_inc, bar_boundary_now], fed_to: [CANDLE_BAR_SEQ]}
+  - {name: hist_slot_idx, cell: and, inputs: [CANDLE_BAR_SEQ, CANDLE_HIST_MASK], fed_to: [CANDLE_HIST ring slot one-hot select]}
+
+wiring:   # signal flow summary (single-writer: one driver per register)
+  inputs:
+    DOM_BEST_BID_PRICE_REG: [bid OHLC comparators, open latch, tick detect]
+    DOM_BEST_ASK_PRICE_REG: [ask OHLC comparators, open latch, tick detect]
+    DOM_BEST_BID_QTY_REG:   [quote_delta]
+    DOM_BEST_ASK_QTY_REG:   [quote_delta]
+    TF_BAR_SEQ:             [bar_seq_same, last_tf_next]
+    TF_BAR_START:           [CANDLE_COMP_TAI latch]
+  on_bar_boundary:
+    - latch all CANDLE_COMP_* from closing live values (en=bar_boundary_now)
+    - write ring slot (CANDLE_BAR_SEQ & CANDLE_HIST_MASK) from COMP values
+    - increment CANDLE_BAR_SEQ; reset CANDLE_OPEN_SET, volumes, delta; re-seed OHLC
+
+seam_outputs:
+  - {group: CANDLE_LIVE_OUT,  lanes: [CANDLE_BID_OPEN, CANDLE_BID_HIGH, CANDLE_BID_LOW, CANDLE_BID_CLOSE, CANDLE_ASK_OPEN, CANDLE_ASK_HIGH, CANDLE_ASK_LOW, CANDLE_ASK_CLOSE, CANDLE_MID]}
+  - {group: CANDLE_VOLUME_OUT, lanes: [CANDLE_VOLUME_BID, CANDLE_VOLUME_ASK]}
+  - {group: CANDLE_TRUE_RANGE_OUT, lanes: [CANDLE_TRUE_RANGE_BID, CANDLE_TRUE_RANGE_ASK]}
+  - {group: CANDLE_DELTA_OUT, lanes: [CANDLE_INTRABAR_QTY_DELTA]}
+  - {group: CANDLE_COMP_OUT,  lanes: [all CANDLE_COMP_*]}
+  - {group: CANDLE_HIST_OUT,  lanes: [CANDLE_HIST ring, CANDLE_BAR_SEQ]}
+
+open_decisions:
+  - {id: D1, topic: history ring depth, default: 256, alternatives: [64, 1024]}
+  - {id: D2, topic: boundary re-seed semantics, default: re-seed OHLC at boundary tick price, alternatives: [hold until first new-bar tick]}
+  - {id: D3, topic: bar-open timestamp source, default: TF_BAR_START, alternatives: [latch DOM_LAST_FEED_TIME_REG at first tick]}
+  - {id: D4, topic: cell_sar canon status for CANDLE_MID, default: add cell_sar to canonical cells.h, alternatives: [drop CANDLE_MID]}
+  - {id: D5, topic: volume definition, default: tick count, alternatives: [qty-weighted]}

@@ -1,0 +1,209 @@
+# footprint_logic.yaml — machine-readable flip-flop-level logic spec (V2)
+# Companion to FOOTPRINT_SPEC_V2.md. SPEC ONLY: no addresses, no placement.
+
+module: footprint
+kind: indicator
+clock: passive    # owns no clock; clock-rule passes quietly
+
+seam_inputs:
+  - {name: DOM_BEST_BID_PRICE_REG, from: dom.wiring.best_bid_price}
+  - {name: DOM_BEST_BID_QTY_REG,   from: dom.wiring.best_bid_qty}
+  - {name: DOM_BEST_ASK_PRICE_REG, from: dom.wiring.best_ask_price}
+  - {name: DOM_BEST_ASK_QTY_REG,   from: dom.wiring.best_ask_qty}
+  - {name: DOM_PREV_BID_PRICE,     from: dom.wiring.prev_bid}
+  - {name: DOM_PREV_ASK_PRICE,     from: dom.wiring.prev_ask}
+  - {name: TF_BAR_SEQ,             from: timeframe.bar_seq}
+  - {name: TF_BAR_START,           from: timeframe.bar_start}
+
+const_nodes:
+  - {name: FP_ONE,  value: 1}
+  - {name: FP_ZERO, value: 0}
+  - {name: FP_LVL_MASK,  value: 31}   # level ring depth-1 (OPEN DECISION F1)
+  - {name: FP_HIST_MASK, value: 63}   # history depth-1 (OPEN DECISION F3)
+  - {name: FP_IMB_RATIO_SHIFT, value: 1}  # OPEN DECISION F4
+
+level_ring:       # per-price-level store — eqmask-bucketed ring of levels
+  name: FP_LVL
+  depth: 32       # OPEN DECISION F1 (power of two)
+  bucketing: eqmask(FP_LVL_PRICE_i, quote_price) AND slot_valid_i (one-hot table select)
+  virtual_reset: parity tag per slot vs FP_BAR_PARITY (flip at bar close)
+  slots:
+    - {name: FP_LVL_PRICE_i,   fed_by: lvl_price_next_i (mux chain)}
+    - {name: FP_LVL_ASK_VOL_i, fed_by: lvl_ask_next_i (addsub)}
+    - {name: FP_LVL_BID_VOL_i, fed_by: lvl_bid_next_i (addsub)}
+    - {name: FP_LVL_PARITY_i,  fed_by: lvl_parity_next_i (mux)}
+
+dff_nodes:
+  - {name: FP_POC_PRICE,        fed_by: poc_price_next (mux)}
+  - {name: FP_POC_VOL,          fed_by: poc_vol_next (mux)}
+  - {name: FP_POC_ASK_VOL,      fed_by: poc_ask_next (mux)}
+  - {name: FP_POC_BID_VOL,      fed_by: poc_bid_next (mux)}
+  - {name: FP_DELTA,            fed_by: poc_delta_next (mux)}
+  - {name: FP_VAH_PRICE,        fed_by: vah_next (mux, sel=take_vah|boundary)}
+  - {name: FP_VAL_PRICE,        fed_by: val_next (mux, seeded via FP_MIN_SET)}
+  - {name: FP_ASK_IMB_PRICE,    fed_by: hvn_price_next (mux)}
+  - {name: FP_ASK_IMB_MAG,      fed_by: hvn_mag_next (mux)}
+  - {name: FP_BID_IMB_PRICE,    fed_by: lvn_price_next (mux)}
+  - {name: FP_BID_IMB_MAG,      fed_by: lvn_mag_next (mux)}
+  - {name: FP_MIN_PRICE,        fed_by: min_price_next (cmp_lt+mux, seeded)}
+  - {name: FP_MAX_PRICE,        fed_by: max_price_next (cmp_lt+mux, seeded)}
+  - {name: FP_MIN_SET,          fed_by: min_set_next (mux)}     # NEW: seed flag
+  - {name: FP_BAR_CUM_DELTA,    fed_by: cvd_next (addsub), reset: never}
+  - {name: FP_BAR_TOTAL_VOL,    fed_by: total_next (addsub), reset: bar}
+  - {name: FP_BAR_PARITY,       fed_by: parity_next (xor+mux)}
+  - {name: FP_LAST_TF_SEQ,      fed_by: last_tf_next (buf)}
+  - {name: FP_BAR_SEQ,          fed_by: bar_seq_next (addsub+mux)}
+  - {name: FP_STACKED_IMB_BUY,  fed_by: new_buy (gate, reset-on-miss)}
+  - {name: FP_STACKED_IMB_SELL, fed_by: new_sell (gate, reset-on-miss)}
+  - {name: FP_ALLOC_CUR,        fed_by: alloc_cur_next (addsub+mux)}  # NEW
+  # completed-bar snapshot, all en=bar_boundary_now
+  - {name: FP_COMP_POC_PRICE,     fed_by: FP_POC_PRICE (dff en=bar_boundary_now)}
+  - {name: FP_COMP_POC_VOL,       fed_by: FP_POC_VOL}
+  - {name: FP_COMP_DELTA,         fed_by: FP_DELTA}
+  - {name: FP_COMP_VAH_PRICE,     fed_by: FP_VAH_PRICE}
+  - {name: FP_COMP_VAL_PRICE,     fed_by: FP_VAL_PRICE}
+  - {name: FP_COMP_ASK_IMB_PRICE, fed_by: FP_ASK_IMB_PRICE}
+  - {name: FP_COMP_ASK_IMB_MAG,   fed_by: FP_ASK_IMB_MAG}
+  - {name: FP_COMP_BID_IMB_PRICE, fed_by: FP_BID_IMB_PRICE}
+  - {name: FP_COMP_BID_IMB_MAG,   fed_by: FP_BID_IMB_MAG}
+  - {name: FP_COMP_MIN_PRICE,     fed_by: FP_MIN_PRICE}
+  - {name: FP_COMP_MAX_PRICE,     fed_by: FP_MAX_PRICE}
+  - {name: FP_COMP_TOTAL_VOL,     fed_by: FP_BAR_TOTAL_VOL}
+  - {name: FP_COMP_CVD,           fed_by: FP_BAR_CUM_DELTA}
+  - {name: FP_COMP_TAI,           fed_by: TF_BAR_START}
+  - {name: FP_COMP_BAR_SEQ,       fed_by: FP_BAR_SEQ}
+
+history_ring:
+  name: FP_HIST
+  depth: 64                       # OPEN DECISION F3 (power of two)
+  index: {cell: and, inputs: [FP_BAR_SEQ, FP_HIST_MASK]}
+  write_enable: bar_boundary_now
+  fed_by: FP_COMP_* closing values
+  fields: [POC_PRICE, POC_VOL, DELTA, VAH_PRICE, VAL_PRICE, ASK_IMB_PRICE,
+           ASK_IMB_MAG, BID_IMB_PRICE, BID_IMB_MAG, MIN_PRICE, MAX_PRICE,
+           TOTAL_VOL, CVD, TAI, BAR_SEQ]
+
+comb_nodes:
+  # boundary / tick detect
+  - {name: bar_seq_same,     cell: eqmask, inputs: [FP_LAST_TF_SEQ, TF_BAR_SEQ]}
+  - {name: bar_boundary_now, cell: not, inputs: [bar_seq_same], bit0: true,
+     fed_to: [COMP latches, parity_next, resets, FP_HIST write enable]}
+  - {name: not_boundary,     cell: buf, inputs: [bar_seq_same], bit0: true}
+  - {name: bid_tick, cell: eqmask, invert: true, inputs: [DOM_BEST_BID_PRICE_REG, DOM_PREV_BID_PRICE]}
+  - {name: ask_tick, cell: eqmask, invert: true, inputs: [DOM_BEST_ASK_PRICE_REG, DOM_PREV_ASK_PRICE]}
+  # per-slot matching (i = 0..31, generator-unrolled)
+  - {name: slot_valid_i, cell: eqmask, inputs: [FP_LVL_PARITY_i, FP_BAR_PARITY], unroll: 32}
+  - {name: match_bid_i,  cell: and, inputs: [eqmask(FP_LVL_PRICE_i, DOM_BEST_BID_PRICE_REG), slot_valid_i], unroll: 32}
+  - {name: match_ask_i,  cell: and, inputs: [eqmask(FP_LVL_PRICE_i, DOM_BEST_ASK_PRICE_REG), slot_valid_i], unroll: 32}
+  - {name: any_match_bid, cell: or, reduce: [match_bid_i], unroll_reduce: 32}
+  - {name: any_match_ask, cell: or, reduce: [match_ask_i], unroll_reduce: 32}
+  # allocation
+  - {name: alloc_bid, cell: and, inputs: [bid_tick, not(any_match_bid)]}
+  - {name: ask_hits_new_bid, cell: and, inputs: [eqmask(DOM_BEST_ASK_PRICE_REG, DOM_BEST_BID_PRICE_REG), alloc_bid]}
+  - {name: alloc_ask, cell: and, inputs: [ask_tick, not(any_match_ask), not(ask_hits_new_bid)]}
+  - {name: cur0, cell: and, inputs: [FP_ALLOC_CUR, FP_LVL_MASK]}
+  - {name: cur1, cell: and, inputs: [addsub(FP_ALLOC_CUR, alloc_bid_bit, 0), FP_LVL_MASK]}
+  - {name: alloc_cur_step, cell: addsub, sub: 0, inputs: [alloc_bid_bit, alloc_ask_bit]}
+  - {name: alloc_cur_next, cell: mux, inputs: [addsub(FP_ALLOC_CUR, alloc_cur_step, 0), FP_ZERO, bar_boundary_now], fed_to: [FP_ALLOC_CUR]}
+  - {name: alloc_sel_bid_i, cell: and, inputs: [eqmask(slot_const_i, cur0), alloc_bid], unroll: 32}
+  - {name: alloc_sel_ask_i, cell: and, inputs: [eqmask(slot_const_i, cur1), alloc_ask], unroll: 32}
+  # per-slot accumulation
+  - {name: en_bid_i, cell: or, inputs: [and(match_bid_i, bid_tick), alloc_sel_bid_i], unroll: 32}
+  - {name: en_ask_i, cell: or, inputs: [and(match_ask_i, ask_tick), alloc_sel_ask_i, and(alloc_sel_bid_i, ask_hits_new_bid)], unroll: 32}
+  - {name: lvl_price_next_i, cell: mux, chain: [hold FP_LVL_PRICE_i, DOM_BEST_BID_PRICE_REG on alloc_sel_bid_i, DOM_BEST_ASK_PRICE_REG on alloc_sel_ask_i], fed_to: [FP_LVL_PRICE_i], unroll: 32}
+  - {name: lvl_bid_base_i, cell: gate, inputs: [FP_LVL_BID_VOL_i, and(slot_valid_i, not_boundary)], unroll: 32}
+  - {name: lvl_bid_inc_i,  cell: gate, inputs: [DOM_BEST_BID_QTY_REG, en_bid_i], unroll: 32}
+  - {name: lvl_bid_next_i, cell: addsub, sub: 0, inputs: [lvl_bid_base_i, lvl_bid_inc_i], fed_to: [FP_LVL_BID_VOL_i], unroll: 32}
+  - {name: lvl_ask_base_i, cell: gate, inputs: [FP_LVL_ASK_VOL_i, and(slot_valid_i, not_boundary)], unroll: 32}
+  - {name: lvl_ask_inc_i,  cell: gate, inputs: [DOM_BEST_ASK_QTY_REG, en_ask_i], unroll: 32}
+  - {name: lvl_ask_next_i, cell: addsub, sub: 0, inputs: [lvl_ask_base_i, lvl_ask_inc_i], fed_to: [FP_LVL_ASK_VOL_i], unroll: 32}
+  - {name: lvl_parity_next_i, cell: mux, inputs: [FP_LVL_PARITY_i, FP_BAR_PARITY, or(alloc_sel_bid_i, alloc_sel_ask_i)], fed_to: [FP_LVL_PARITY_i], unroll: 32}
+  - {name: lvl_vol_i,   cell: addsub, sub: 0, inputs: [lvl_ask_next_i, lvl_bid_next_i], unroll: 32}
+  - {name: lvl_delta_i, cell: addsub, sub: 1, inputs: [lvl_ask_next_i, lvl_bid_next_i], unroll: 32}
+  # active-slot extraction (one-hot gate + or-reduce)
+  - {name: act_vol_b,   cell: or, reduce: [gate(lvl_vol_i, en_bid_i)]}
+  - {name: act_price_b, cell: or, reduce: [gate(lvl_price_next_i, en_bid_i)]}
+  - {name: act_delta_b, cell: or, reduce: [gate(lvl_delta_i, en_bid_i)]}
+  - {name: act_askv_b,  cell: or, reduce: [gate(lvl_ask_next_i, en_bid_i)]}
+  - {name: act_bidv_b,  cell: or, reduce: [gate(lvl_bid_next_i, en_bid_i)]}
+  - {name: act_vol_a / act_price_a / act_delta_a / act_askv_a / act_bidv_a, cell: or, reduce: [gate(lvl_*_i, en_ask_i)]}
+  # POC running max (two candidates per tick, boundary reset)
+  - {name: poc_beat_b, cell: cmp_lt, inputs: [FP_POC_VOL, act_vol_b]}
+  - {name: poc_price_1, cell: mux, inputs: [FP_POC_PRICE, act_price_b, poc_beat_b]}
+  - {name: poc_vol_1,   cell: mux, inputs: [FP_POC_VOL, act_vol_b, poc_beat_b]}
+  - {name: poc_delta_1, cell: mux, inputs: [FP_DELTA, act_delta_b, poc_beat_b]}
+  - {name: poc_ask_1,   cell: mux, inputs: [FP_POC_ASK_VOL, act_askv_b, poc_beat_b]}
+  - {name: poc_bid_1,   cell: mux, inputs: [FP_POC_BID_VOL, act_bidv_b, poc_beat_b]}
+  - {name: poc_beat_a,  cell: cmp_lt, inputs: [poc_vol_1, act_vol_a]}
+  - {name: poc_price_2 .. poc_bid_2, cell: mux, inputs: [poc_*_1, act_*_a, poc_beat_a]}
+  - {name: poc_*_next,  cell: mux, inputs: [poc_*_2, FP_ZERO, bar_boundary_now], fed_to: [FP_POC_PRICE, FP_POC_VOL, FP_DELTA, FP_POC_ASK_VOL, FP_POC_BID_VOL]}
+  # min/max (seeded)
+  - {name: min_seeded, cell: mux, inputs: [act_price_b_or_a, min(cmp_lt+mux over FP_MIN_PRICE), FP_MIN_SET]}
+  - {name: min_price_next, cell: mux, inputs: [min_seeded, FP_ZERO, bar_boundary_now], fed_to: [FP_MIN_PRICE]}
+  - {name: max_price_next, cell: cmp_lt+mux (mirror, seeded), fed_to: [FP_MAX_PRICE]}
+  - {name: min_set_next, cell: mux, inputs: [FP_ONE, FP_ZERO, bar_boundary_now], fed_to: [FP_MIN_SET]}
+  # imbalance / value area (per active candidate; shift-based ratio)
+  - {name: ask_dom, cell: cmp_lt, inputs: [shl(act_bidv, FP_IMB_RATIO_SHIFT), act_askv]}
+  - {name: bid_dom, cell: cmp_lt, inputs: [shl(act_askv, FP_IMB_RATIO_SHIFT), act_bidv]}
+  - {name: take_vah, cell: and, inputs: [ask_dom, cmp_lt(FP_VAH_PRICE, act_price)]}
+  - {name: vah_next, cell: mux, inputs: [FP_VAH_PRICE, act_price, take_vah], boundary_reset: FP_ZERO, fed_to: [FP_VAH_PRICE]}
+  - {name: take_val, cell: and, inputs: [bid_dom, cmp_lt(act_price, FP_VAL_PRICE)]}
+  - {name: val_next, cell: mux, inputs: [FP_VAL_PRICE, act_price, take_val], seed: FP_MIN_SET, fed_to: [FP_VAL_PRICE]}
+  - {name: ask_mag,  cell: gate, inputs: [act_delta, ask_dom]}
+  - {name: take_hvn, cell: and, inputs: [ask_dom, cmp_lt(FP_ASK_IMB_MAG, ask_mag)]}
+  - {name: hvn_price_next, cell: mux, inputs: [FP_ASK_IMB_PRICE, act_price, take_hvn], boundary_reset: FP_ZERO, fed_to: [FP_ASK_IMB_PRICE]}
+  - {name: hvn_mag_next,   cell: mux, inputs: [FP_ASK_IMB_MAG, ask_mag, take_hvn], boundary_reset: FP_ZERO, fed_to: [FP_ASK_IMB_MAG]}
+  - {name: bid_excess, cell: gate, inputs: [addsub(act_bidv, act_askv, 1), bid_dom]}
+  - {name: take_lvn, cell: and, inputs: [bid_dom, cmp_lt(FP_BID_IMB_MAG, bid_excess)]}
+  - {name: lvn_price_next, cell: mux, inputs: [FP_BID_IMB_PRICE, act_price, take_lvn], boundary_reset: FP_ZERO, fed_to: [FP_BID_IMB_PRICE]}
+  - {name: lvn_mag_next,   cell: mux, inputs: [FP_BID_IMB_MAG, bid_excess, take_lvn], boundary_reset: FP_ZERO, fed_to: [FP_BID_IMB_MAG]}
+  # stacked imbalance (reset-on-miss)
+  - {name: buy_qualifies, cell: and, inputs: [ask_dom, cmp_lt(FP_POC_PRICE, act_price)]}
+  - {name: new_buy, cell: gate, inputs: [addsub(FP_STACKED_IMB_BUY, FP_ONE, 0), buy_qualifies], fed_to: [FP_STACKED_IMB_BUY]}
+  - {name: sell_qualifies, cell: and, inputs: [bid_dom, cmp_lt(act_price, FP_POC_PRICE)]}
+  - {name: new_sell, cell: gate, inputs: [addsub(FP_STACKED_IMB_SELL, FP_ONE, 0), sell_qualifies], fed_to: [FP_STACKED_IMB_SELL]}
+  # totals / CVD
+  - {name: quote_delta, cell: addsub, sub: 1, inputs: [gate(DOM_BEST_ASK_QTY_REG, ask_tick), gate(DOM_BEST_BID_QTY_REG, bid_tick)]}
+  - {name: cvd_next, cell: addsub, sub: 0, inputs: [FP_BAR_CUM_DELTA, quote_delta], fed_to: [FP_BAR_CUM_DELTA]}
+  - {name: quote_vol, cell: addsub, sub: 0, inputs: [gate(DOM_BEST_ASK_QTY_REG, ask_tick), gate(DOM_BEST_BID_QTY_REG, bid_tick)]}
+  - {name: total_base, cell: gate, inputs: [FP_BAR_TOTAL_VOL, not_boundary]}
+  - {name: total_next, cell: addsub, sub: 0, inputs: [total_base, quote_vol], fed_to: [FP_BAR_TOTAL_VOL]}
+  # bar close bookkeeping
+  - {name: parity_flip, cell: xor, inputs: [FP_BAR_PARITY, FP_ONE]}
+  - {name: parity_next, cell: mux, inputs: [FP_BAR_PARITY, parity_flip, bar_boundary_now], fed_to: [FP_BAR_PARITY]}
+  - {name: bar_seq_next, cell: mux, inputs: [FP_BAR_SEQ, addsub(FP_BAR_SEQ, FP_ONE, 0), bar_boundary_now], fed_to: [FP_BAR_SEQ]}
+  - {name: last_tf_next, cell: buf, inputs: [TF_BAR_SEQ], fed_to: [FP_LAST_TF_SEQ]}
+  - {name: hist_slot_idx, cell: and, inputs: [FP_BAR_SEQ, FP_HIST_MASK], fed_to: [FP_HIST slot one-hot select]}
+
+wiring:
+  inputs:
+    DOM_BEST_BID_PRICE_REG: [level match/alloc bid key, tick detect]
+    DOM_BEST_ASK_PRICE_REG: [level match/alloc ask key, tick detect]
+    DOM_BEST_BID_QTY_REG:   [lvl_bid_inc, quote_delta, quote_vol]
+    DOM_BEST_ASK_QTY_REG:   [lvl_ask_inc, quote_delta, quote_vol]
+    DOM_PREV_BID_PRICE:     [bid_tick]
+    DOM_PREV_ASK_PRICE:     [ask_tick]
+    TF_BAR_SEQ:             [bar_seq_same, last_tf_next]
+    TF_BAR_START:           [FP_COMP_TAI latch]
+  on_bar_boundary:
+    - latch 15 FP_COMP_* registers; write FP_HIST slot (FP_BAR_SEQ & mask)
+    - flip FP_BAR_PARITY (virtual-resets all level slots)
+    - reset POC/VAH/VAL/imbalance/min-max/total/stacked/alloc-cursor
+    - FP_BAR_CUM_DELTA (CVD) is NOT reset (continuous)
+
+seam_outputs:
+  - {group: FP_POC_OUT, lanes: [FP_POC_PRICE, FP_POC_VOL, FP_POC_ASK_VOL, FP_POC_BID_VOL, FP_DELTA]}
+  - {group: FP_VALUE_AREA_OUT, lanes: [FP_VAH_PRICE, FP_VAL_PRICE]}
+  - {group: FP_IMBALANCE_OUT, lanes: [FP_ASK_IMB_PRICE, FP_ASK_IMB_MAG, FP_BID_IMB_PRICE, FP_BID_IMB_MAG, FP_STACKED_IMB_BUY, FP_STACKED_IMB_SELL]}
+  - {group: FP_RANGE_OUT, lanes: [FP_MIN_PRICE, FP_MAX_PRICE]}
+  - {group: FP_FLOW_OUT, lanes: [FP_BAR_CUM_DELTA, FP_BAR_TOTAL_VOL]}
+  - {group: FP_LEVEL_OUT, lanes: [FP_LVL_PRICE_i, FP_LVL_ASK_VOL_i, FP_LVL_BID_VOL_i, FP_LVL_PARITY_i]}
+  - {group: FP_COMP_OUT, lanes: [all FP_COMP_*]}
+  - {group: FP_HIST_OUT, lanes: [FP_HIST ring, FP_BAR_SEQ]}
+
+open_decisions:
+  - {id: F1, topic: level-ring depth (price granularity), default: 32, alternatives: [16, 64]}
+  - {id: F2, topic: input granularity, default: best-quote seam regs, alternatives: [full DOM 16384 tables + sweep cursor]}
+  - {id: F3, topic: history ring depth, default: 64, alternatives: [16, 256]}
+  - {id: F4, topic: imbalance threshold, default: shift=1 (2x), alternatives: [shift=0, shift=2, cell-multiply 3:1]}
+  - {id: F5, topic: level-ring-full policy, default: drop new levels, alternatives: [evict oldest]}
