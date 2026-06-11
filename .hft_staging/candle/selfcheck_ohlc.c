@@ -93,7 +93,8 @@ int main(void) {
     printf("== History ring slot 0 holds completed bar 0 ==\n");
     chk("HIST_0_BID_HIGH", R[CANDLE_CANDLE_HIST_0_BID_HIGH], 105);
     chk("HIST_0_BID_LOW",  R[CANDLE_CANDLE_HIST_0_BID_LOW],  98);
-    chk("HIST_CNT",        R[CANDLE_CANDLE_HIST_CNT],        1);
+    /* record store: newest at slot 0, identified by its committed TIME (no counter) */
+    chk("HIST_0_TAI",      R[CANDLE_CANDLE_HIST_0_TAI],      2000);
 
     printf(fails ? "\nRESULT: %d FAILURES\n" : "\nRESULT: ALL OHLC CHECKS PASS\n", fails);
     return fails ? 1 : 0;

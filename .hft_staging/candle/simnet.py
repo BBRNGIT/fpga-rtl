@@ -77,7 +77,7 @@ class Sim:
         # history ring storage
         self.hist = net.get("history_ring")
         if self.hist:
-            self.r[self.hist["index"]] = 0
+            # record store (shift-in): no index register; newest at slot 0.
             self.ring = [[0] * len(self.hist["fields"])
                          for _ in range(self.hist["depth"])]
 
@@ -103,15 +103,14 @@ class Sim:
         # seam relays
         for s in net.get("seam_nodes", []):
             new[s["name"]] = env[s["source"]]
-        # history ring
+        # history record store (shift-in): on write_enable, shift down, newest at 0.
         if self.hist:
-            idx = r[self.hist["index"]]
-            slot = idx & (self.hist["depth"] - 1)
             we = env[self.hist["write_enable"]] if self.hist.get("write_enable") is not None else 1
-            for fi, fld in enumerate(self.hist["fields"]):
-                if we & 1:
-                    self.ring[slot][fi] = env[fld["source"]]
-            new[self.hist["index"]] = c_addsub(idx, we, 0)
+            if we & 1:
+                depth = self.hist["depth"]
+                for s in range(depth - 1, 0, -1):
+                    self.ring[s] = list(self.ring[s - 1])
+                self.ring[0] = [env[fld["source"]] for fld in self.hist["fields"]]
         r.update(new)
 
 
@@ -180,7 +179,7 @@ def main():
     fnames = [f["name"] for f in s.hist["fields"]]
     chk("HIST[0].BID_HIGH", s.ring[0][fnames.index("BID_HIGH")], 105)
     chk("HIST[0].BID_LOW", s.ring[0][fnames.index("BID_LOW")], 98)
-    chk("HIST_CNT", r[s.hist["index"]], 1)
+    chk("HIST[0].TAI(record time)", s.ring[0][fnames.index("TAI")], 2000)
 
     print(f"\nRESULT: {'ALL OHLC CHECKS PASS' if FAILS == 0 else str(FAILS)+' FAILURES'}")
     sys.exit(1 if FAILS else 0)

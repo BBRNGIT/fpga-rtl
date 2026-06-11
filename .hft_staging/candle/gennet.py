@@ -137,7 +137,8 @@ def main():
         if depth <= 0 or (depth & (depth - 1)) != 0:
             sys.stderr.write(f"gennet: history_ring.depth ({depth}) not power of two\n")
             sys.exit(2)
-        order.append(hist["index"])
+        # No index register: history is a record STORE, not an index construct
+        # (Law #10). Records shift in; identity is the time each record carries.
         for s in range(depth):
             for fld in hist["fields"]:
                 nm = f"{hist['name']}_{s}_{fld['name']}"
@@ -192,7 +193,6 @@ def main():
     if hist:
         out.append(f"#define {pfx}_HIST_STRIDE {len(hist['fields'])}u")
         out.append(f"#define {pfx}_HIST_DEPTH {hist['depth']}u")
-        out.append(f"#define {pfx}_HIST_MASK ({pfx}_HIST_DEPTH - 1u)")
     out.append("")
 
     if has_cmp_lt:
@@ -241,20 +241,28 @@ def main():
         out.append(f"    r[{pfx}_{s['name']}] = {lc(s['source'])};")
     out.append("")
 
-    # ---- history ring append (branchless slot = idx & (depth-1)) ------------
+    # ---- history record store (shift-in; NO index construct, Law #10) -------
+    # History is a bank of stored records, not an index. On write_enable the
+    # records shift down one slot and the newly-committed record enters slot 0;
+    # otherwise every slot holds. There is NO write-pointer, NO address decoder,
+    # NO managed slot — a record's identity is the time it carries as a stored
+    # field. Browsing is a separate module that scans these records in parallel.
+    # Shift is computed high->low so each r[s] reads slot s-1's OLD value.
     if hist:
-        idx = hist["index"]
         we = hist.get("write_enable")
         we_tok = lc(we) if we is not None else "1ULL"
-        out.append("    /* history ring: append the bar on write_enable, wrapping at depth.")
-        out.append("     * slot = idx & (depth-1) — a branchless mask cell (power-of-two");
-        out.append("     * depth, no %). Each field is a gated dff; idx advances on enable. */")
-        out.append(f"    const word_t hist_idx = r[{pfx}_{idx}];")
-        out.append(f"    const word_t hist_slot = cell_and(hist_idx, {pfx}_HIST_MASK);")
-        for (s, fld, nm) in ring_fields:
-            sel = f"cell_and(cell_eqmask(hist_slot, {s}ULL), {we_tok})"
-            out.append(f"    r[{pfx}_{nm}] = cell_dff(r[{pfx}_{nm}], {lc(fld['source'])}, {sel});")
-        out.append(f"    r[{pfx}_{idx}] = cell_addsub(hist_idx, {we_tok}, 0ULL);")
+        depth = hist["depth"]
+        flds = hist["fields"]
+        out.append("    /* history record store: shift-in on write_enable (newest at slot 0).")
+        out.append("     * Each field is a gated dff; high->low order keeps the shift correct. */")
+        for s in range(depth - 1, 0, -1):
+            for fld in flds:
+                dst = f"{hist['name']}_{s}_{fld['name']}"
+                src = f"{hist['name']}_{s-1}_{fld['name']}"
+                out.append(f"    r[{pfx}_{dst}] = cell_dff(r[{pfx}_{dst}], r[{pfx}_{src}], {we_tok});")
+        for fld in flds:
+            dst = f"{hist['name']}_0_{fld['name']}"
+            out.append(f"    r[{pfx}_{dst}] = cell_dff(r[{pfx}_{dst}], {lc(fld['source'])}, {we_tok});")
         out.append("")
     out.append("}")
     out.append("")

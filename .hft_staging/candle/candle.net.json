@@ -685,7 +685,6 @@
   "history_ring": {
     "name": "CANDLE_HIST",
     "depth": 256,
-    "index": "CANDLE_HIST_CNT",
     "write_enable": "CANDLE_BAR_BOUNDARY",
     "fields": [
       {
