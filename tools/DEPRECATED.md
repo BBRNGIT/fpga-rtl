@@ -45,7 +45,23 @@ This single tool:
 
 - `CLAUDE.md` — Law #3 (Build-Sequence Law) and Law #9 (C IS THE RTL)
 - `memory/c_is_rtl_immutable_law.md` — Why all outputs must be C and generated
-- `.hft_staging/gen_fpga_specialization.py` — FPGA implementation (reference)
+
+## 2026-06-11 — `gen_fpga_specialization.py` Removed (Law #9 Violation)
+
+`.hft_staging/gen_fpga_specialization.py` has been removed per founder directive.
+
+It violated the immutable architectural law:
+
+> **C IS THE RTL (Law #9):** Device type is a **parameter**, never hardcoded in separate per-device tools.
+
+The tool hardcoded FPGA as the device type, which would have forced parallel `gen_asic_*`, `gen_pcb_*`, `gen_mcu_*` clones — exactly the multiple-sources-of-truth drift this directory was deprecated for.
+
+**Successor:** `gen_device_specialization.py` — the digital-circuit-builder meta tool (forthcoming), a single entry point parametrized by device type:
+
+```bash
+python3 gen_device_specialization.py --type <fpga|asic|pcb|mcu> \
+  <blank_spec> <modules_yaml> <output_dir>
+```
 
 ## If You Need Device Tools
 

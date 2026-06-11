@@ -1,0 +1,202 @@
+#!/bin/bash
+# pre-commit hook for fpga-rtl project
+#
+# Enforces:
+# 1. No AI attribution (Co-Authored-By, GENERATED, etc.)
+# 2. Vault immutability (.hft/ files are write-once)
+# 3. Thin test size (≤45 lines)
+# 4. Generated file compliance (gennet output byte-matches committed)
+
+set -e
+
+# ============================================================================
+# 1. CHECK FOR AI ATTRIBUTION IN COMMIT MESSAGE
+# ============================================================================
+
+# Try to read commit message from the temp file (passed by git)
+if [ -f "$1" ]; then
+    commit_msg=$(cat "$1")
+else
+    # Fallback: read from git (for testing)
+    commit_msg=$(git diff --cached --name-only 2>/dev/null | head -1 || echo "")
+    if [ -z "$commit_msg" ]; then
+        # If we can't determine context, skip AI check (to avoid false positives)
+        commit_msg=""
+    fi
+fi
+
+# Check for AI markers (only if we have a message).
+# Policy (FOUNDER_VISION.md §11, .claude/skills/no-ai-attribution.md):
+# commits carry the user's name only — block ANY Co-Authored-By trailer and
+# any AI tool attribution (Claude, Anthropic, Copilot, GPT, OpenAI, Gemini,
+# "Generated with ..."). This applies to the COMMIT MESSAGE only; the
+# GENERATED marker inside *_gen.h file headers is build provenance, not
+# attribution, and is not checked here.
+if [ -n "$commit_msg" ]; then
+    if echo "$commit_msg" | grep -Eqi 'co-authored-by:|generated (with|by)|claude|anthropic|copilot|chatgpt|openai|gemini|[^a-z0-9]gpt-?[0-9o]'; then
+        cat >&2 << 'EOF'
+
+[FAIL] Commit message contains AI attribution.
+       This project rejects AI co-authoring markers (FOUNDER_VISION.md §11).
+
+       Violations detected (any of):
+       - Co-Authored-By: <anyone> (all co-author trailers are rejected)
+       - "Generated with/by ..." markers
+       - AI tool names: Claude, Anthropic, Copilot, GPT, OpenAI, Gemini
+
+       FIX:
+       1. Edit the commit message: git commit --amend
+       2. Remove the Co-Authored-By line completely
+       3. Try commit again
+
+       Example:
+         WRONG: "feat: adapter
+
+         Co-Authored-By: Claude Haiku <noreply@anthropic.com>"
+
+         RIGHT: "feat: add adapter — price feed deserialization"
+
+EOF
+        exit 1
+    fi
+fi
+
+# ============================================================================
+# 2. CHECK FOR VAULT IMMUTABILITY (.hft/ write-once)
+# ============================================================================
+
+# List all modifications to .hft/ (already tracked files)
+modified_in_vault=$(git diff --cached --name-only --diff-filter=M 2>/dev/null | grep "^\.hft/" || true)
+deleted_in_vault=$(git diff --cached --name-only --diff-filter=D 2>/dev/null | grep "^\.hft/" || true)
+
+if [ -n "$modified_in_vault" ] || [ -n "$deleted_in_vault" ]; then
+    cat >&2 << EOF
+
+[FAIL] Cannot modify or delete files in .hft/ (immutable vault).
+       FOUNDER_VISION.md §8 — Write-once vault policy.
+
+       Attempted modifications:
+EOF
+    if [ -n "$modified_in_vault" ]; then
+        echo "$modified_in_vault" | sed 's/^/         (modified) /' >&2
+    fi
+    if [ -n "$deleted_in_vault" ]; then
+        echo "$deleted_in_vault" | sed 's/^/         (deleted) /' >&2
+    fi
+    cat >&2 << 'EOF'
+
+       SOLUTION:
+       Create a new versioned path instead. Example:
+         .hft/adapter/       (original, locked)
+         .hft/adapter_v2/    (new version, start in staging)
+
+       Steps:
+       1. Unstage the vault changes: git reset HEAD .hft/...
+       2. Discard them: git checkout .hft/...
+       3. Copy component to .hft_staging/adapter_v2/
+       4. Make changes in staging
+       5. Run gate.sh and graduate.sh
+
+       EMERGENCY OVERRIDE (rare, needs founder approval):
+       git commit --no-verify -m "message"
+
+EOF
+    exit 1
+fi
+
+# ============================================================================
+# 3. CHECK THIN TEST SIZE (≤45 lines)
+# ============================================================================
+
+# Find all test_*.c files being committed
+test_files=$(git diff --cached --name-only 2>/dev/null | grep "test_.*\.c$" || true)
+
+for test_file in $test_files; do
+    if [ -f "$test_file" ]; then
+        line_count=$(wc -l < "$test_file")
+        if [ "$line_count" -gt 45 ]; then
+            cat >&2 << EOF
+
+[FAIL] Test file exceeds 45 lines (thin test philosophy).
+       FOUNDER_VISION.md §9, CLAUDE.md — Testing Philosophy.
+
+       File: $test_file
+       Lines: $line_count (max: 45)
+
+       REASON:
+       Tests must be THIN: power-on + display only.
+       No stepping, injection, replay, or orchestration.
+       Prepped data loads at startup; device runs autonomously.
+
+       SOLUTION:
+       1. Remove testbench logic (stepping, replay, checks)
+       2. Keep only: init, loop, display
+       3. Re-stage and commit
+
+       Example (correct, <45 lines):
+         int main() {
+           word_t *r = malloc_backplane();
+           for (int i = 0; i < 1000; i++) {
+             adapter_tick(r);
+           }
+           printf("PRICE: %lx\n", r[ADAPTER_PRICE]);
+           return 0;
+         }
+
+EOF
+            exit 1
+        fi
+    fi
+done
+
+# ============================================================================
+# 4. CHECK GENERATED FILE COMPLIANCE (optional, warning only)
+# ============================================================================
+
+# For each *_gen.h being committed, verify it byte-matches gennet output
+gen_files=$(git diff --cached --name-only 2>/dev/null | grep "_gen\.h$" || true)
+
+for gen_file in $gen_files; do
+    if [ -f "$gen_file" ]; then
+        comp_dir=$(dirname "$gen_file")
+
+        # Check if gennet.py exists
+        if [ -f "$comp_dir/gennet.py" ]; then
+            module=$(basename "$gen_file" _gen.h)
+            netlist="$comp_dir/$module.net.json"
+
+            if [ -f "$netlist" ]; then
+                # Try to regenerate (ignore errors, this is optional check)
+                regenerated=$(cd "$comp_dir" && python3 gennet.py "$module.net.json" 2>/dev/null || echo "SKIP")
+                if [ "$regenerated" != "SKIP" ]; then
+                    committed=$(cat "$gen_file" 2>/dev/null || echo "")
+                    if [ "$regenerated" != "$committed" ] && [ -n "$regenerated" ]; then
+                        cat >&2 << EOF
+
+[WARN] Generated file may not match netlist.
+       File: $gen_file
+       Netlist: $netlist
+
+       The committed $gen_file does not byte-match running:
+         python3 gennet.py $module.net.json
+
+       To fix (optional):
+         cd $comp_dir
+         python3 gennet.py $module.net.json > $module.net.json
+         git add $module.net.json
+         git commit
+
+EOF
+                        # This is a warning, not a failure (proceed with commit)
+                    fi
+                fi
+            fi
+        fi
+    fi
+done
+
+# ============================================================================
+# ALL CHECKS PASSED
+# ============================================================================
+
+exit 0
