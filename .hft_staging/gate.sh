@@ -38,7 +38,14 @@ echo "==> [gate] 1/3 validate netlist"
 ( cd "$DIR" && python3 validate.py ./*.net.json )
 
 echo "==> [gate] 2/3 build + thin test (working tree)"
-( cd "$DIR" && make >/dev/null 2>&1 ) && echo "    build+test OK"
+# Hard-fail on any build/test error. A non-compiling component MUST NOT pass the
+# gate (a silent `&&` here previously let -Werror failures through). Run the
+# thin-test target explicitly so the compile actually happens.
+if ! ( cd "$DIR" && make test >/dev/null 2>&1 ); then
+    echo "    [FAIL] build / thin test failed — rerun 'make test' in $DIR to see the error"
+    exit 2
+fi
+echo "    build+test OK"
 
 # --- gate_level_arithmetic enforcement (founder ruling) ----------------------
 # The device datapath is STRUCTURAL CELLS ONLY: the generated *_tick body must

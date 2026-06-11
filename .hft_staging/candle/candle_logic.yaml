@@ -1,150 +1,259 @@
-# candle_logic.yaml — machine-readable flip-flop-level logic spec (V2)
-# Companion to CANDLE_SPEC_V2.md. Emitter input for the forthcoming
-# gen_device_specialization build mode. SPEC ONLY: no addresses, no placement.
-# Seam inputs are SYMBOLIC names of registers published by dom/timeframe.
+# candle_logic.yaml — COMPLETE logic specification for the Candle indicator.
+#
+# This is a SPEC INPUT (human-authored), consumed by the generic meta-tool
+# gen_module_net.py to emit candle.net.json (a TOOL OUTPUT), which gennet.py
+# then turns into candle_gen.h (a TOOL OUTPUT). Neither the netlist nor the
+# gen.h is hand-written — both are produced by running the tools on this YAML.
+#
+# It fixes the WAVE-1 failure: WAVE-1 emitters declared registers but omitted
+# (or under-specified) the combinational logic + wiring, so the generated tick
+# was a stub. Here EVERY register's update is a named comb_node chain of
+# canonical cells, and every dff names what feeds it and when it is enabled.
+#
+# Schema (consumed by gen_module_net.py):
+#   module        : str
+#   kind          : str (module | indicator | ...)
+#   clock         : {power, ...}            (optional; self-running power bit)
+#   seam_inputs   : [{name, type, source, comment}]      (published upstream lanes)
+#   const_nodes   : [{name, type, value, comment}]       (reset-latched constants)
+#   dff_nodes     : [{name, type, fed_by, enable, comment}]
+#                     fed_by : comb_node name that drives this register
+#                              (default: a same-named "<NAME>_UPDATE" comb_node if
+#                               present, else the register holds its prior value)
+#                     enable : comb_node/const whose bit0 gates the write
+#                              (default: always write)
+#   history_ring  : {name, depth, index, fields, write_enable}
+#   comb_nodes    : [{name, cell, inputs, invert, sub, shift_right, comment}]
+#                     cell : buf|not|and|or|xor|mux|eqmask|addsub|cmp_lt
+#   wiring        : free-form doc map (signal -> consumers) for traceability
+#   seam_outputs  : [{name, source, type, comment}]      (relay lanes downstream)
 
 module: candle
 kind: indicator
-clock: passive            # owns no clock; no power/run machinery (clock-rule: passes quietly)
+window_base: "0x00000000"
 
-seam_inputs:              # config_nodes in the emitted netlist (sampled input lanes)
-  - {name: DOM_BEST_BID_PRICE_REG, from: dom.wiring.best_bid_price}
-  - {name: DOM_BEST_ASK_PRICE_REG, from: dom.wiring.best_ask_price}
-  - {name: DOM_BEST_BID_QTY_REG,   from: dom.wiring.best_bid_qty}
-  - {name: DOM_BEST_ASK_QTY_REG,   from: dom.wiring.best_ask_qty}
-  - {name: TF_BAR_SEQ,             from: timeframe.bar_seq}
-  - {name: TF_BAR_START,           from: timeframe.bar_start}
+clock: passive
+# Passive consumer (indicator): candle owns no clock. The device fabric clocks
+# it each edge; in standalone test the testbench loops candle_tick. Consistent
+# with footprint/tpo (no-clock) and the founder indicator architecture.
 
+# ---------------------------------------------------------------------------
+# 1. INPUT INTERFACE — published upstream lanes (module barrier: read-only).
+# ---------------------------------------------------------------------------
+seam_inputs:
+  - {name: DOM_BEST_BID_PRICE_REG,  type: u64, source: dom,       comment: "Best bid price (highest bid level)"}
+  - {name: DOM_BEST_ASK_PRICE_REG,  type: u64, source: dom,       comment: "Best ask price (lowest ask level)"}
+  - {name: DOM_BEST_BID_QTY_REG,    type: u64, source: dom,       comment: "Bid quantity at top level"}
+  - {name: DOM_BEST_ASK_QTY_REG,    type: u64, source: dom,       comment: "Ask quantity at top level"}
+  - {name: TF_BAR_SEQ, type: u64, source: timeframe, comment: "Timeframe bar sequence (bar-boundary detection)"}
+  - {name: TF_BAR_START,     type: u64, source: timeframe, comment: "TAI at current bar open (latched into completed bar)"}
+
+# ---------------------------------------------------------------------------
+# 2. CONSTANTS — reset-latched arms, never written by the tick.
+# ---------------------------------------------------------------------------
 const_nodes:
-  - {name: CANDLE_ONE,  value: 1}
-  - {name: CANDLE_ZERO, value: 0}
-  - {name: CANDLE_HIST_MASK, value: 255}   # ring depth-1 (OPEN DECISION D1)
+  - {name: CANDLE_POWER,         type: u64, value: 0, comment: "Power bit; starter sets to 1 to run"}
+  - {name: CANDLE_ONE,          type: u64, value: 1, comment: "Constant 1 (volume increment amount)"}
+  - {name: CANDLE_OPEN_SET_HOLD,  type: u64, value: 1, comment: "OPEN_SET steady-state value (open already latched)"}
+  - {name: CANDLE_ZERO,         type: u64, value: 0, comment: "Constant 0 (fresh-bar reset arm for accumulators)"}
 
-dff_nodes:   # register, fed_by = driving comb node (cell type in parens)
-  - {name: CANDLE_BID_OPEN,            fed_by: bid_open_next (mux)}
-  - {name: CANDLE_BID_HIGH,            fed_by: bid_high_next (mux)}
-  - {name: CANDLE_BID_LOW,             fed_by: bid_low_next (mux)}
-  - {name: CANDLE_BID_CLOSE,           fed_by: bid_close_next (buf)}
-  - {name: CANDLE_ASK_OPEN,            fed_by: ask_open_next (mux)}
-  - {name: CANDLE_ASK_HIGH,            fed_by: ask_high_next (mux)}
-  - {name: CANDLE_ASK_LOW,             fed_by: ask_low_next (mux)}
-  - {name: CANDLE_ASK_CLOSE,           fed_by: ask_close_next (buf)}
-  - {name: CANDLE_VOLUME_BID,          fed_by: vol_bid_next (addsub)}
-  - {name: CANDLE_VOLUME_ASK,          fed_by: vol_ask_next (addsub)}
-  - {name: CANDLE_TRUE_RANGE_BID,      fed_by: tr_bid_next (addsub)}
-  - {name: CANDLE_TRUE_RANGE_ASK,      fed_by: tr_ask_next (addsub)}
-  - {name: CANDLE_INTRABAR_QTY_DELTA,  fed_by: delta_next (addsub)}
-  - {name: CANDLE_MID,                 fed_by: mid_next (sar)}     # OPEN DECISION D4
-  - {name: CANDLE_OPEN_SET,            fed_by: open_set_next (mux)}
-  - {name: CANDLE_LAST_TF_SEQ,         fed_by: last_tf_next (buf)}
-  - {name: CANDLE_BID_TICK,            fed_by: bid_tick_now (eqmask+not)}
-  - {name: CANDLE_ASK_TICK,            fed_by: ask_tick_now (eqmask+not)}
-  - {name: CANDLE_BAR_BOUNDARY,        fed_by: bar_boundary_now (not)}
-  - {name: CANDLE_BAR_SEQ,             fed_by: bar_seq_next (mux)}
-  # completed-bar snapshot (en = bar_boundary_now)
-  - {name: CANDLE_COMP_BID_OPEN,   fed_by: CANDLE_BID_OPEN (dff en=bar_boundary_now)}
-  - {name: CANDLE_COMP_BID_HIGH,   fed_by: CANDLE_BID_HIGH (dff en=bar_boundary_now)}
-  - {name: CANDLE_COMP_BID_LOW,    fed_by: CANDLE_BID_LOW (dff en=bar_boundary_now)}
-  - {name: CANDLE_COMP_BID_CLOSE,  fed_by: CANDLE_BID_CLOSE (dff en=bar_boundary_now)}
-  - {name: CANDLE_COMP_ASK_OPEN,   fed_by: CANDLE_ASK_OPEN (dff en=bar_boundary_now)}
-  - {name: CANDLE_COMP_ASK_HIGH,   fed_by: CANDLE_ASK_HIGH (dff en=bar_boundary_now)}
-  - {name: CANDLE_COMP_ASK_LOW,    fed_by: CANDLE_ASK_LOW (dff en=bar_boundary_now)}
-  - {name: CANDLE_COMP_ASK_CLOSE,  fed_by: CANDLE_ASK_CLOSE (dff en=bar_boundary_now)}
-  - {name: CANDLE_COMP_VOLUME_BID, fed_by: CANDLE_VOLUME_BID (dff en=bar_boundary_now)}
-  - {name: CANDLE_COMP_VOLUME_ASK, fed_by: CANDLE_VOLUME_ASK (dff en=bar_boundary_now)}
-  - {name: CANDLE_COMP_TRUE_RANGE_BID, fed_by: CANDLE_TRUE_RANGE_BID (dff en=bar_boundary_now)}
-  - {name: CANDLE_COMP_TRUE_RANGE_ASK, fed_by: CANDLE_TRUE_RANGE_ASK (dff en=bar_boundary_now)}
-  - {name: CANDLE_COMP_INTRABAR_QTY_DELTA, fed_by: CANDLE_INTRABAR_QTY_DELTA (dff en=bar_boundary_now)}
-  - {name: CANDLE_COMP_TAI,        fed_by: TF_BAR_START (dff en=bar_boundary_now)}
-  - {name: CANDLE_COMP_BAR_SEQ,    fed_by: CANDLE_BAR_SEQ (dff en=bar_boundary_now)}
+# ---------------------------------------------------------------------------
+# 3. REGISTERS — live bar state + completed-bar snapshot + bar control.
+#    Each dff names the comb_node that feeds it (fed_by) and, when its write is
+#    conditional, the gating signal (enable). Branchless: enable is mask algebra
+#    in cell_dff, not an if. Completed-bar registers are enabled by the
+#    bar-boundary pulse; accumulators reset on the boundary via a mux arm.
+# ---------------------------------------------------------------------------
+dff_nodes:
+  # --- live OHLC (bid) ---
+  - {name: CANDLE_BID_OPEN,  type: u64, fed_by: CANDLE_BID_OPEN_UPDATE,  comment: "First bid price of bar"}
+  - {name: CANDLE_BID_HIGH,  type: u64, fed_by: CANDLE_BID_HIGH_UPDATE,  comment: "Running max bid price"}
+  - {name: CANDLE_BID_LOW,   type: u64, fed_by: CANDLE_BID_LOW_UPDATE,   comment: "Running min bid price"}
+  - {name: CANDLE_BID_CLOSE, type: u64, fed_by: CANDLE_BID_CLOSE_UPDATE, comment: "Most recent bid price"}
+  # --- live OHLC (ask) ---
+  - {name: CANDLE_ASK_OPEN,  type: u64, fed_by: CANDLE_ASK_OPEN_UPDATE,  comment: "First ask price of bar"}
+  - {name: CANDLE_ASK_HIGH,  type: u64, fed_by: CANDLE_ASK_HIGH_UPDATE,  comment: "Running max ask price"}
+  - {name: CANDLE_ASK_LOW,   type: u64, fed_by: CANDLE_ASK_LOW_UPDATE,   comment: "Running min ask price"}
+  - {name: CANDLE_ASK_CLOSE, type: u64, fed_by: CANDLE_ASK_CLOSE_UPDATE, comment: "Most recent ask price"}
+  # --- live accumulators ---
+  - {name: CANDLE_VOLUME_BID,         type: u64, fed_by: CANDLE_VOLUME_BID_UPDATE,         comment: "Cumulative bid ticks this bar"}
+  - {name: CANDLE_VOLUME_ASK,         type: u64, fed_by: CANDLE_VOLUME_ASK_UPDATE,         comment: "Cumulative ask ticks this bar"}
+  - {name: CANDLE_TRUE_RANGE_BID,     type: u64, fed_by: CANDLE_TRUE_RANGE_BID_UPDATE,     comment: "bid_high - bid_low"}
+  - {name: CANDLE_TRUE_RANGE_ASK,     type: u64, fed_by: CANDLE_TRUE_RANGE_ASK_UPDATE,     comment: "ask_high - ask_low"}
+  - {name: CANDLE_INTRABAR_QTY_DELTA, type: u64, fed_by: CANDLE_INTRABAR_QTY_DELTA_UPDATE, comment: "Cumulative (ask_qty - bid_qty) over bar"}
+  - {name: CANDLE_MID,                type: u64, fed_by: CANDLE_MID_UPDATE,                comment: "(bid_high + ask_low) >> 1"}
+  # --- bar control ---
+  - {name: CANDLE_OPEN_SET,    type: u64, fed_by: CANDLE_OPEN_SET_UPDATE,  comment: "1 once first tick of bar processed; 0 on fresh bar"}
+  - {name: CANDLE_LAST_TF_SEQ, type: u64, fed_by: CANDLE_LAST_TF_SEQ_UPDATE, comment: "Last TF seq seen (bar-boundary edge detect)"}
+  - {name: CANDLE_BAR_SEQ,     type: u64, fed_by: CANDLE_BAR_SEQ_UPDATE,   comment: "Bar sequence counter (+1 each boundary)"}
+  # --- completed-bar snapshot (enabled only on the boundary pulse) ---
+  - {name: CANDLE_COMP_BID_OPEN,          type: u64, fed_by: CANDLE_BID_OPEN,          enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar bid open"}
+  - {name: CANDLE_COMP_BID_HIGH,          type: u64, fed_by: CANDLE_BID_HIGH,          enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar bid high"}
+  - {name: CANDLE_COMP_BID_LOW,           type: u64, fed_by: CANDLE_BID_LOW,           enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar bid low"}
+  - {name: CANDLE_COMP_BID_CLOSE,         type: u64, fed_by: CANDLE_BID_CLOSE,         enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar bid close"}
+  - {name: CANDLE_COMP_ASK_OPEN,          type: u64, fed_by: CANDLE_ASK_OPEN,          enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar ask open"}
+  - {name: CANDLE_COMP_ASK_HIGH,          type: u64, fed_by: CANDLE_ASK_HIGH,          enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar ask high"}
+  - {name: CANDLE_COMP_ASK_LOW,           type: u64, fed_by: CANDLE_ASK_LOW,           enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar ask low"}
+  - {name: CANDLE_COMP_ASK_CLOSE,         type: u64, fed_by: CANDLE_ASK_CLOSE,         enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar ask close"}
+  - {name: CANDLE_COMP_VOLUME_BID,        type: u64, fed_by: CANDLE_VOLUME_BID,        enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar bid volume"}
+  - {name: CANDLE_COMP_VOLUME_ASK,        type: u64, fed_by: CANDLE_VOLUME_ASK,        enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar ask volume"}
+  - {name: CANDLE_COMP_TRUE_RANGE_BID,    type: u64, fed_by: CANDLE_TRUE_RANGE_BID,    enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar bid true range"}
+  - {name: CANDLE_COMP_TRUE_RANGE_ASK,    type: u64, fed_by: CANDLE_TRUE_RANGE_ASK,    enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar ask true range"}
+  - {name: CANDLE_COMP_INTRABAR_QTY_DELTA,type: u64, fed_by: CANDLE_INTRABAR_QTY_DELTA,enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar intrabar qty delta"}
+  - {name: CANDLE_COMP_TAI,               type: u64, fed_by: TF_BAR_START,                  enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar TAI timestamp"}
+  - {name: CANDLE_COMP_BAR_SEQ,           type: u64, fed_by: CANDLE_BAR_SEQ,           enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar sequence"}
 
+# ---------------------------------------------------------------------------
+# 4. HISTORY RING — append the completed bar each boundary, wrapping at depth.
+#    index = ring_cnt & (depth-1); depth is a power of two so the index is a
+#    branchless mask cell (no %). write_enable is the bar-boundary pulse.
+#    DEFAULT depth 256 applied (open_decision: candle history depth).
+# ---------------------------------------------------------------------------
 history_ring:
   name: CANDLE_HIST
-  depth: 256                       # OPEN DECISION D1 (power of two REQUIRED)
-  index: {cell: and, inputs: [CANDLE_BAR_SEQ, CANDLE_HIST_MASK]}   # branchless, no %
-  write_enable: bar_boundary_now   # one-hot slot enable: eqmask(slot_const_i, hist_slot_idx) AND bar_boundary_now
-  fed_by: CANDLE_COMP_* closing values (dff per slot x field)
-  fields: [BID_OPEN, BID_HIGH, BID_LOW, BID_CLOSE,
-           ASK_OPEN, ASK_HIGH, ASK_LOW, ASK_CLOSE,
-           VOLUME_BID, VOLUME_ASK, TRUE_RANGE_BID, TRUE_RANGE_ASK,
-           INTRABAR_QTY_DELTA, TAI, BAR_SEQ]
+  depth: 256
+  index: CANDLE_HIST_CNT
+  write_enable: CANDLE_BAR_BOUNDARY
+  fields:
+    - {name: BID_OPEN,          source: CANDLE_BID_OPEN}
+    - {name: BID_HIGH,          source: CANDLE_BID_HIGH}
+    - {name: BID_LOW,           source: CANDLE_BID_LOW}
+    - {name: BID_CLOSE,         source: CANDLE_BID_CLOSE}
+    - {name: ASK_OPEN,          source: CANDLE_ASK_OPEN}
+    - {name: ASK_HIGH,          source: CANDLE_ASK_HIGH}
+    - {name: ASK_LOW,           source: CANDLE_ASK_LOW}
+    - {name: ASK_CLOSE,         source: CANDLE_ASK_CLOSE}
+    - {name: VOLUME_BID,        source: CANDLE_VOLUME_BID}
+    - {name: VOLUME_ASK,        source: CANDLE_VOLUME_ASK}
+    - {name: TRUE_RANGE_BID,    source: CANDLE_TRUE_RANGE_BID}
+    - {name: TRUE_RANGE_ASK,    source: CANDLE_TRUE_RANGE_ASK}
+    - {name: INTRABAR_QTY_DELTA,source: CANDLE_INTRABAR_QTY_DELTA}
+    - {name: TAI,               source: TF_BAR_START}
+    - {name: BAR_SEQ,           source: CANDLE_BAR_SEQ}
 
+# ---------------------------------------------------------------------------
+# 5. COMBINATIONAL LOGIC — every cell call, branchless. Ordering matters:
+#    a comb_node may reference an earlier comb_node by its (lower-cased) name.
+#    Cells: buf, not, and, or, xor, mux(a,b,sel)=sel?b:a, eqmask(a,b)=1 iff a==b,
+#    addsub(a,b,sub), cmp_lt(a,b)=1 iff a<b (gate-netlist helper).
+# ---------------------------------------------------------------------------
 comb_nodes:
-  # boundary / tick detect
-  - {name: bar_seq_same,     cell: eqmask, inputs: [CANDLE_LAST_TF_SEQ, TF_BAR_SEQ]}
-  - {name: bar_boundary_now, cell: not,    inputs: [bar_seq_same], bit0: true,
-     fed_to: [CANDLE_BAR_BOUNDARY, all boundary muxes/gates]}
-  - {name: not_boundary,     cell: buf,    inputs: [bar_seq_same], bit0: true}
-  - {name: bid_tick_now,     cell: eqmask, inputs: [DOM_BEST_BID_PRICE_REG, CANDLE_BID_CLOSE], invert: true, fed_to: [CANDLE_BID_TICK, bid_tick_bit]}
-  - {name: ask_tick_now,     cell: eqmask, inputs: [DOM_BEST_ASK_PRICE_REG, CANDLE_ASK_CLOSE], invert: true, fed_to: [CANDLE_ASK_TICK, ask_tick_bit]}
-  # bid OHLC
-  - {name: open_seed_bid,  cell: mux, inputs: [DOM_BEST_BID_PRICE_REG, CANDLE_BID_OPEN, CANDLE_OPEN_SET]}
-  - {name: bid_open_next,  cell: mux, inputs: [open_seed_bid, DOM_BEST_BID_PRICE_REG, bar_boundary_now], fed_to: [CANDLE_BID_OPEN]}
-  - {name: is_new_bid_high, cell: cmp_lt, inputs: [CANDLE_BID_HIGH, DOM_BEST_BID_PRICE_REG]}
-  - {name: bid_high_run,   cell: mux, inputs: [CANDLE_BID_HIGH, DOM_BEST_BID_PRICE_REG, is_new_bid_high]}
-  - {name: bid_high_next,  cell: mux, inputs: [bid_high_run, DOM_BEST_BID_PRICE_REG, bar_boundary_now], fed_to: [CANDLE_BID_HIGH, tr_bid_next, mid_sum]}
-  - {name: is_new_bid_low, cell: cmp_lt, inputs: [DOM_BEST_BID_PRICE_REG, CANDLE_BID_LOW]}
-  - {name: bid_low_run,    cell: mux, inputs: [CANDLE_BID_LOW, DOM_BEST_BID_PRICE_REG, is_new_bid_low]}
-  - {name: bid_low_next,   cell: mux, inputs: [bid_low_run, DOM_BEST_BID_PRICE_REG, bar_boundary_now], fed_to: [CANDLE_BID_LOW, tr_bid_next]}
-  - {name: bid_close_next, cell: buf, inputs: [DOM_BEST_BID_PRICE_REG], fed_to: [CANDLE_BID_CLOSE]}
-  # ask OHLC (symmetric)
-  - {name: open_seed_ask,  cell: mux, inputs: [DOM_BEST_ASK_PRICE_REG, CANDLE_ASK_OPEN, CANDLE_OPEN_SET]}
-  - {name: ask_open_next,  cell: mux, inputs: [open_seed_ask, DOM_BEST_ASK_PRICE_REG, bar_boundary_now], fed_to: [CANDLE_ASK_OPEN]}
-  - {name: is_new_ask_high, cell: cmp_lt, inputs: [CANDLE_ASK_HIGH, DOM_BEST_ASK_PRICE_REG]}
-  - {name: ask_high_run,   cell: mux, inputs: [CANDLE_ASK_HIGH, DOM_BEST_ASK_PRICE_REG, is_new_ask_high]}
-  - {name: ask_high_next,  cell: mux, inputs: [ask_high_run, DOM_BEST_ASK_PRICE_REG, bar_boundary_now], fed_to: [CANDLE_ASK_HIGH, tr_ask_next]}
-  - {name: is_new_ask_low, cell: cmp_lt, inputs: [DOM_BEST_ASK_PRICE_REG, CANDLE_ASK_LOW]}
-  - {name: ask_low_run,    cell: mux, inputs: [CANDLE_ASK_LOW, DOM_BEST_ASK_PRICE_REG, is_new_ask_low]}
-  - {name: ask_low_next,   cell: mux, inputs: [ask_low_run, DOM_BEST_ASK_PRICE_REG, bar_boundary_now], fed_to: [CANDLE_ASK_LOW, tr_ask_next, mid_sum]}
-  - {name: ask_close_next, cell: buf, inputs: [DOM_BEST_ASK_PRICE_REG], fed_to: [CANDLE_ASK_CLOSE]}
-  # volume (reset-on-boundary)
-  - {name: vol_bid_base, cell: gate, inputs: [CANDLE_VOLUME_BID, not_boundary]}
-  - {name: bid_tick_bit, cell: and,  inputs: [bid_tick_now, CANDLE_ONE]}
-  - {name: vol_bid_next, cell: addsub, sub: 0, inputs: [vol_bid_base, bid_tick_bit], fed_to: [CANDLE_VOLUME_BID]}
-  - {name: vol_ask_base, cell: gate, inputs: [CANDLE_VOLUME_ASK, not_boundary]}
-  - {name: ask_tick_bit, cell: and,  inputs: [ask_tick_now, CANDLE_ONE]}
-  - {name: vol_ask_next, cell: addsub, sub: 0, inputs: [vol_ask_base, ask_tick_bit], fed_to: [CANDLE_VOLUME_ASK]}
-  # true range
-  - {name: tr_bid_next, cell: addsub, sub: 1, inputs: [bid_high_next, bid_low_next], fed_to: [CANDLE_TRUE_RANGE_BID]}
-  - {name: tr_ask_next, cell: addsub, sub: 1, inputs: [ask_high_next, ask_low_next], fed_to: [CANDLE_TRUE_RANGE_ASK]}
-  # intrabar qty delta (reset-on-boundary)
-  - {name: quote_delta, cell: addsub, sub: 1, inputs: [DOM_BEST_ASK_QTY_REG, DOM_BEST_BID_QTY_REG]}
-  - {name: delta_base,  cell: gate, inputs: [CANDLE_INTRABAR_QTY_DELTA, not_boundary]}
-  - {name: delta_next,  cell: addsub, sub: 0, inputs: [delta_base, quote_delta], fed_to: [CANDLE_INTRABAR_QTY_DELTA]}
-  # mid (shift, no division)
-  - {name: mid_sum,  cell: addsub, sub: 0, inputs: [bid_high_next, ask_low_next]}
-  - {name: mid_next, cell: sar, shift: 1, inputs: [mid_sum], fed_to: [CANDLE_MID]}   # OPEN DECISION D4
-  # bookkeeping
-  - {name: open_set_next, cell: mux, inputs: [CANDLE_ONE, CANDLE_ZERO, bar_boundary_now], fed_to: [CANDLE_OPEN_SET]}
-  - {name: last_tf_next,  cell: buf, inputs: [TF_BAR_SEQ], fed_to: [CANDLE_LAST_TF_SEQ]}
-  - {name: bar_seq_inc,   cell: addsub, sub: 0, inputs: [CANDLE_BAR_SEQ, CANDLE_ONE]}
-  - {name: bar_seq_next,  cell: mux, inputs: [CANDLE_BAR_SEQ, bar_seq_inc, bar_boundary_now], fed_to: [CANDLE_BAR_SEQ]}
-  - {name: hist_slot_idx, cell: and, inputs: [CANDLE_BAR_SEQ, CANDLE_HIST_MASK], fed_to: [CANDLE_HIST ring slot one-hot select]}
+  # --- 5.0 bar-boundary + fresh-bar control (computed FIRST) ---
+  # raw seq change: 1 iff LAST_TF_SEQ != TF_BAR_SEQ.
+  - {name: CANDLE_SEQ_CHANGE, cell: eqmask, inputs: [CANDLE_LAST_TF_SEQ, TF_BAR_SEQ], invert: true,
+     comment: "1 iff timeframe seq differs from last cycle"}
+  # A real boundary only counts AFTER the first tick (open_set=1): the very first
+  # tick at power-on has LAST_TF_SEQ=0 which would falsely look like a change.
+  # bar_boundary = seq_change AND open_set  (suppresses the startup pseudo-edge).
+  - {name: CANDLE_BAR_BOUNDARY, cell: and, inputs: [CANDLE_SEQ_CHANGE, CANDLE_OPEN_SET],
+     comment: "1 iff seq changed AND a bar was already open (true bar close)"}
+  # is_fresh = boundary OR open not yet set -> the very first tick of a bar.
+  - {name: CANDLE_NOT_OPEN_SET, cell: xor, inputs: [CANDLE_OPEN_SET, CANDLE_ONE],
+     comment: "open_set ^ 1 — 1 while open not yet latched"}
+  - {name: CANDLE_FRESH, cell: or, inputs: [CANDLE_BAR_BOUNDARY, CANDLE_NOT_OPEN_SET],
+     comment: "fresh = boundary OR (open not set): seed OHLC this tick"}
 
-wiring:   # signal flow summary (single-writer: one driver per register)
-  inputs:
-    DOM_BEST_BID_PRICE_REG: [bid OHLC comparators, open latch, tick detect]
-    DOM_BEST_ASK_PRICE_REG: [ask OHLC comparators, open latch, tick detect]
-    DOM_BEST_BID_QTY_REG:   [quote_delta]
-    DOM_BEST_ASK_QTY_REG:   [quote_delta]
-    TF_BAR_SEQ:             [bar_seq_same, last_tf_next]
-    TF_BAR_START:           [CANDLE_COMP_TAI latch]
-  on_bar_boundary:
-    - latch all CANDLE_COMP_* from closing live values (en=bar_boundary_now)
-    - write ring slot (CANDLE_BAR_SEQ & CANDLE_HIST_MASK) from COMP values
-    - increment CANDLE_BAR_SEQ; reset CANDLE_OPEN_SET, volumes, delta; re-seed OHLC
+  # --- 5.1 tick detection (price changed vs last close) ---
+  - {name: CANDLE_BID_TICK, cell: eqmask, inputs: [DOM_BEST_BID_PRICE_REG, CANDLE_BID_CLOSE], invert: true,
+     comment: "1 iff bid price differs from last latched bid"}
+  - {name: CANDLE_ASK_TICK, cell: eqmask, inputs: [DOM_BEST_ASK_PRICE_REG, CANDLE_ASK_CLOSE], invert: true,
+     comment: "1 iff ask price differs from last latched ask"}
 
+  # --- 5.2 bid-side OHLC ---
+  # OPEN: on fresh tick latch DOM, else hold.
+  - {name: CANDLE_BID_OPEN_UPDATE, cell: mux, inputs: [CANDLE_BID_OPEN, DOM_BEST_BID_PRICE_REG, CANDLE_FRESH],
+     comment: "fresh -> latch DOM_BEST_BID_PRICE_REG; else hold CANDLE_BID_OPEN"}
+  # HIGH: running max. On fresh, seed = DOM; else max(high, DOM).
+  - {name: CANDLE_BID_IS_NEW_HIGH, cell: cmp_lt, inputs: [CANDLE_BID_HIGH, DOM_BEST_BID_PRICE_REG],
+     comment: "1 iff current high < DOM_BEST_BID_PRICE_REG (new high)"}
+  - {name: CANDLE_BID_HIGH_TRACK, cell: mux, inputs: [CANDLE_BID_HIGH, DOM_BEST_BID_PRICE_REG, CANDLE_BID_IS_NEW_HIGH],
+     comment: "max(high, DOM): pick DOM when new high, else hold"}
+  - {name: CANDLE_BID_HIGH_UPDATE, cell: mux, inputs: [CANDLE_BID_HIGH_TRACK, DOM_BEST_BID_PRICE_REG, CANDLE_FRESH],
+     comment: "fresh -> seed DOM; else running max"}
+  # LOW: running min. On fresh, seed = DOM; else min(low, DOM).
+  - {name: CANDLE_BID_IS_NEW_LOW, cell: cmp_lt, inputs: [DOM_BEST_BID_PRICE_REG, CANDLE_BID_LOW],
+     comment: "1 iff DOM_BEST_BID_PRICE_REG < current low (new low)"}
+  - {name: CANDLE_BID_LOW_TRACK, cell: mux, inputs: [CANDLE_BID_LOW, DOM_BEST_BID_PRICE_REG, CANDLE_BID_IS_NEW_LOW],
+     comment: "min(low, DOM): pick DOM when new low, else hold"}
+  - {name: CANDLE_BID_LOW_UPDATE, cell: mux, inputs: [CANDLE_BID_LOW_TRACK, DOM_BEST_BID_PRICE_REG, CANDLE_FRESH],
+     comment: "fresh -> seed DOM; else running min"}
+  # CLOSE: always latch most recent.
+  - {name: CANDLE_BID_CLOSE_UPDATE, cell: buf, inputs: [DOM_BEST_BID_PRICE_REG],
+     comment: "passthrough — always latch most recent bid"}
+
+  # --- 5.3 ask-side OHLC (symmetric) ---
+  - {name: CANDLE_ASK_OPEN_UPDATE, cell: mux, inputs: [CANDLE_ASK_OPEN, DOM_BEST_ASK_PRICE_REG, CANDLE_FRESH],
+     comment: "fresh -> latch DOM_BEST_ASK_PRICE_REG; else hold"}
+  - {name: CANDLE_ASK_IS_NEW_HIGH, cell: cmp_lt, inputs: [CANDLE_ASK_HIGH, DOM_BEST_ASK_PRICE_REG], comment: "new ask high"}
+  - {name: CANDLE_ASK_HIGH_TRACK, cell: mux, inputs: [CANDLE_ASK_HIGH, DOM_BEST_ASK_PRICE_REG, CANDLE_ASK_IS_NEW_HIGH], comment: "max(high,DOM)"}
+  - {name: CANDLE_ASK_HIGH_UPDATE, cell: mux, inputs: [CANDLE_ASK_HIGH_TRACK, DOM_BEST_ASK_PRICE_REG, CANDLE_FRESH], comment: "fresh seed else max"}
+  - {name: CANDLE_ASK_IS_NEW_LOW, cell: cmp_lt, inputs: [DOM_BEST_ASK_PRICE_REG, CANDLE_ASK_LOW], comment: "new ask low"}
+  - {name: CANDLE_ASK_LOW_TRACK, cell: mux, inputs: [CANDLE_ASK_LOW, DOM_BEST_ASK_PRICE_REG, CANDLE_ASK_IS_NEW_LOW], comment: "min(low,DOM)"}
+  - {name: CANDLE_ASK_LOW_UPDATE, cell: mux, inputs: [CANDLE_ASK_LOW_TRACK, DOM_BEST_ASK_PRICE_REG, CANDLE_FRESH], comment: "fresh seed else min"}
+  - {name: CANDLE_ASK_CLOSE_UPDATE, cell: buf, inputs: [DOM_BEST_ASK_PRICE_REG], comment: "passthrough — most recent ask"}
+
+  # --- 5.4 volume accumulation with bar-boundary reset ---
+  # incremented value = volume + tick; on fresh bar reset to the tick count of
+  # this first tick (i.e. start from 0 + tick). Implemented as:
+  #   base = mux(volume, ZERO, FRESH)   (fresh -> 0, else current)
+  #   next = addsub(base, tick, 0)
+  - {name: CANDLE_VOLUME_BID_BASE, cell: mux, inputs: [CANDLE_VOLUME_BID, CANDLE_ZERO, CANDLE_FRESH],
+     comment: "fresh -> 0 (reset), else hold accumulator"}
+  - {name: CANDLE_VOLUME_BID_UPDATE, cell: addsub, inputs: [CANDLE_VOLUME_BID_BASE, CANDLE_BID_TICK], sub: 0,
+     comment: "base + bid_tick (gated +1)"}
+  - {name: CANDLE_VOLUME_ASK_BASE, cell: mux, inputs: [CANDLE_VOLUME_ASK, CANDLE_ZERO, CANDLE_FRESH], comment: "fresh reset else hold"}
+  - {name: CANDLE_VOLUME_ASK_UPDATE, cell: addsub, inputs: [CANDLE_VOLUME_ASK_BASE, CANDLE_ASK_TICK], sub: 0, comment: "base + ask_tick"}
+
+  # --- 5.5 true range (high - low) on the freshly-updated high/low ---
+  - {name: CANDLE_TRUE_RANGE_BID_UPDATE, cell: addsub, inputs: [CANDLE_BID_HIGH_UPDATE, CANDLE_BID_LOW_UPDATE], sub: 1,
+     comment: "bid_high' - bid_low' (this tick's updated values)"}
+  - {name: CANDLE_TRUE_RANGE_ASK_UPDATE, cell: addsub, inputs: [CANDLE_ASK_HIGH_UPDATE, CANDLE_ASK_LOW_UPDATE], sub: 1,
+     comment: "ask_high' - ask_low'"}
+
+  # --- 5.6 intrabar quantity delta (cumulative ask_qty - bid_qty) with reset ---
+  - {name: CANDLE_QUOTE_DELTA, cell: addsub, inputs: [DOM_BEST_ASK_QTY_REG, DOM_BEST_BID_QTY_REG], sub: 1,
+     comment: "ask_qty - bid_qty this quote"}
+  - {name: CANDLE_DELTA_BASE, cell: mux, inputs: [CANDLE_INTRABAR_QTY_DELTA, CANDLE_ZERO, CANDLE_FRESH],
+     comment: "fresh -> 0 (reset), else hold accumulator"}
+  - {name: CANDLE_INTRABAR_QTY_DELTA_UPDATE, cell: addsub, inputs: [CANDLE_DELTA_BASE, CANDLE_QUOTE_DELTA], sub: 0,
+     comment: "base + quote_delta"}
+
+  # --- 5.7 mid convenience: (bid_high' + ask_low') >> 1 ---
+  - {name: CANDLE_MID_UPDATE, cell: addsub, inputs: [CANDLE_BID_HIGH_UPDATE, CANDLE_ASK_LOW_UPDATE], sub: 0, shift_right: 1,
+     comment: "(bid_high' + ask_low') / 2 via power-of-two shift"}
+
+  # --- 5.8 bar control writes ---
+  # OPEN_SET: latches to 1 after the first processed tick and STAYS 1. At
+  # power-on it is 0, so the very first tick's FRESH (= boundary OR !open_set) is
+  # 1 and seeds bar 0; thereafter open_set=1. Re-seeding at a real bar boundary
+  # is driven by CANDLE_BAR_BOUNDARY (the TF-seq edge), NOT by open_set, so a bar
+  # is seeded EXACTLY once (the boundary tick) and never double-seeded next tick.
+  - {name: CANDLE_OPEN_SET_UPDATE, cell: buf, inputs: [CANDLE_OPEN_SET_HOLD],
+     comment: "open_set' = 1 (steady): first tick seeds via !open_set, then holds 1"}
+  # LAST_TF_SEQ: track the timeframe seq so the next boundary is edge-detected.
+  - {name: CANDLE_LAST_TF_SEQ_UPDATE, cell: buf, inputs: [TF_BAR_SEQ],
+     comment: "latch current TF seq for next-cycle edge detect"}
+  # BAR_SEQ: +1 on each boundary.
+  - {name: CANDLE_BAR_SEQ_UPDATE, cell: addsub, inputs: [CANDLE_BAR_SEQ, CANDLE_BAR_BOUNDARY], sub: 0,
+     comment: "bar_seq + boundary (counts completed bars)"}
+
+# ---------------------------------------------------------------------------
+# 6. WIRING — traceability map (doc only; gen_module_net.py copies into netlist).
+# ---------------------------------------------------------------------------
+wiring:
+  DOM_BEST_BID_PRICE_REG:  [CANDLE_BID_OPEN_UPDATE, CANDLE_BID_IS_NEW_HIGH, CANDLE_BID_HIGH_TRACK, CANDLE_BID_IS_NEW_LOW, CANDLE_BID_LOW_TRACK, CANDLE_BID_CLOSE_UPDATE, CANDLE_BID_TICK]
+  DOM_BEST_ASK_PRICE_REG:  [CANDLE_ASK_OPEN_UPDATE, CANDLE_ASK_IS_NEW_HIGH, CANDLE_ASK_HIGH_TRACK, CANDLE_ASK_IS_NEW_LOW, CANDLE_ASK_LOW_TRACK, CANDLE_ASK_CLOSE_UPDATE, CANDLE_ASK_TICK]
+  DOM_BEST_BID_QTY_REG:    [CANDLE_QUOTE_DELTA]
+  DOM_BEST_ASK_QTY_REG:    [CANDLE_QUOTE_DELTA]
+  TF_BAR_SEQ: [CANDLE_BAR_BOUNDARY, CANDLE_LAST_TF_SEQ_UPDATE]
+  CANDLE_BAR_BOUNDARY: [CANDLE_FRESH, CANDLE_OPEN_SET_UPDATE, CANDLE_BAR_SEQ_UPDATE, "completed-bar latches (enable)", "history ring write_enable"]
+
+# ---------------------------------------------------------------------------
+# 7. OUTPUT INTERFACE — relay lanes downstream consumers sample.
+# ---------------------------------------------------------------------------
 seam_outputs:
-  - {group: CANDLE_LIVE_OUT,  lanes: [CANDLE_BID_OPEN, CANDLE_BID_HIGH, CANDLE_BID_LOW, CANDLE_BID_CLOSE, CANDLE_ASK_OPEN, CANDLE_ASK_HIGH, CANDLE_ASK_LOW, CANDLE_ASK_CLOSE, CANDLE_MID]}
-  - {group: CANDLE_VOLUME_OUT, lanes: [CANDLE_VOLUME_BID, CANDLE_VOLUME_ASK]}
-  - {group: CANDLE_TRUE_RANGE_OUT, lanes: [CANDLE_TRUE_RANGE_BID, CANDLE_TRUE_RANGE_ASK]}
-  - {group: CANDLE_DELTA_OUT, lanes: [CANDLE_INTRABAR_QTY_DELTA]}
-  - {group: CANDLE_COMP_OUT,  lanes: [all CANDLE_COMP_*]}
-  - {group: CANDLE_HIST_OUT,  lanes: [CANDLE_HIST ring, CANDLE_BAR_SEQ]}
-
-open_decisions:
-  - {id: D1, topic: history ring depth, default: 256, alternatives: [64, 1024]}
-  - {id: D2, topic: boundary re-seed semantics, default: re-seed OHLC at boundary tick price, alternatives: [hold until first new-bar tick]}
-  - {id: D3, topic: bar-open timestamp source, default: TF_BAR_START, alternatives: [latch DOM_LAST_FEED_TIME_REG at first tick]}
-  - {id: D4, topic: cell_sar canon status for CANDLE_MID, default: add cell_sar to canonical cells.h, alternatives: [drop CANDLE_MID]}
-  - {id: D5, topic: volume definition, default: tick count, alternatives: [qty-weighted]}
+  - {name: CANDLE_BID_OHLC_OUT,   source: CANDLE_BID_CLOSE,         type: u64, comment: "Bid OHLC relay (read OPEN/HIGH/LOW/CLOSE)"}
+  - {name: CANDLE_ASK_OHLC_OUT,   source: CANDLE_ASK_CLOSE,         type: u64, comment: "Ask OHLC relay"}
+  - {name: CANDLE_VOLUME_OUT,     source: CANDLE_VOLUME_BID,        type: u64, comment: "Volume relay (read BID and ASK)"}
+  - {name: CANDLE_TRUE_RANGE_OUT, source: CANDLE_TRUE_RANGE_BID,    type: u64, comment: "True range relay"}
+  - {name: CANDLE_DELTA_OUT,      source: CANDLE_INTRABAR_QTY_DELTA, type: u64, comment: "Intrabar delta relay"}
