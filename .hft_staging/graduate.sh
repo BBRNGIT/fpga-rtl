@@ -15,13 +15,26 @@
 set -e
 
 COMP=$1
-[ -n "$COMP" ] || { echo "usage: graduate.sh <component> [--regraduate]"; exit 2; }
-REGRAD=0; [ "$2" = "--regraduate" ] && REGRAD=1
+[ -n "$COMP" ] || { echo "usage: graduate.sh <component> [--as <vaultname>] [--regraduate]"; exit 2; }
+shift
+REGRAD=0
+DESTNAME="$COMP"          # vault path name; defaults to the component name
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --regraduate) REGRAD=1 ;;
+        --as) shift; DESTNAME="$1"; [ -n "$DESTNAME" ] || { echo "usage: --as <vaultname>"; exit 2; } ;;
+        *) echo "unknown arg: $1"; exit 2 ;;
+    esac
+    shift
+done
 
 ROOT=$(git rev-parse --show-toplevel)
 SRC="$ROOT/.hft_staging/$COMP"
 VAULT="$ROOT/.hft"
-DEST="$VAULT/$COMP"
+# Versioned promotion (Law #8): --as lets a rebuilt component land at a NEW vault
+# path (e.g. candle -> candle_v2), superseding an immutable stub without editing
+# it in place. The module's internals/seam names are unchanged.
+DEST="$VAULT/$DESTNAME"
 
 [ -d "$SRC" ]        || { echo "[abort] no such staging component: .hft_staging/$COMP"; exit 1; }
 [ -d "$VAULT/.git" ] || { echo "[abort] vault repo not initialized (.hft/.git missing)"; exit 1; }
@@ -86,14 +99,14 @@ git -C "$ROOT" archive HEAD ".hft_staging/$COMP" | tar -x -C "$DEST" --strip-com
 
 # 5) commit into the vault (its pre-commit immutability guard applies).
 cd "$VAULT"
-git add "$COMP"
+git add "$DESTNAME"
 if git diff --cached --quiet; then
-    echo "==> '$COMP' already up-to-date in vault — nothing to commit."
+    echo "==> '$DESTNAME' already up-to-date in vault — nothing to commit."
     exit 0
 fi
 if [ "$REGRAD" -eq 1 ]; then
-    HFT_ALLOW_REGRADUATE=1 git commit -q -m "vault: re-graduate $COMP (validated, byte-identical from staging)"
+    HFT_ALLOW_REGRADUATE=1 git commit -q -m "vault: re-graduate $DESTNAME (validated, byte-identical from staging)"
 else
-    git commit -q -m "vault: graduate $COMP (validated, byte-identical from staging)"
+    git commit -q -m "vault: graduate $DESTNAME (from .hft_staging/$COMP; validated, byte-identical)"
 fi
-echo "==> graduated '$COMP' -> .hft/$COMP   (vault $(git rev-parse --short HEAD))"
+echo "==> graduated '$COMP' -> .hft/$DESTNAME   (vault $(git rev-parse --short HEAD))"
