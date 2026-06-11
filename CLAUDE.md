@@ -296,6 +296,14 @@ an absolute stored coordinate.
   OHLC), and **never as the axis** — when price is the axis it is the address, not data.
   Therefore: no allocation, no free-slot search, no stored price keys, no anchor/window
   subsystem. The index *is* the match; the position *is* the price.
+- **Price may be referenced ONLY against time — never against price, never absolute.**
+  Every price-as-value is defined by a *time event*: `open` = price at frame start,
+  `high` = highest price during the frame, `low` = lowest during the frame, `close` =
+  last price at frame end; DOM bid/ask counter registers = TAI-timestamped market
+  events **per internal clock tick**. There is no price-vs-price offset and no
+  absolute-price anchor anywhere. This rule is **immutable and enforced at every level**
+  (spec, emitter, gate via `checks/check_index_doctrine.py`); a violation blocks
+  development.
 - **`pip_resolver` owns nothing** — it is a per-symbol lookup that publishes the pip
   size (the price-index separation). `timeframe` is a tick accumulator (the bar stride).
   Neither is an "axis authority"; time (tick-count) is the only persistent reference.

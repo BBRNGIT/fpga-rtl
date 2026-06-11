@@ -183,6 +183,13 @@ echo "==> [gate] 2g/3 clock rule (self-running clock, no external step) per netl
     python3 "$CHECKS/check_clock_rule.py" "$NET" || exit 3
 done ) || exit 3
 
+echo "==> [gate] 2h/3 index doctrine (price = direct index, time-only reference) — Law #10"
+# Price is a direct index, never stored/allocated; price referenced only against
+# time. Bans allocation / stored-price-keys / absolute-price anchors / price-vs-
+# price offsets in price-indexed modules. A violation halts development (Law #10).
+[ -f "$CHECKS/check_index_doctrine.py" ] || { echo "    FAIL — missing enforcement script: $CHECKS/check_index_doctrine.py"; exit 3; }
+python3 "$CHECKS/check_index_doctrine.py" "$DIR" || exit 3
+
 echo "==> [gate] 3/3 clean-room build from committed HEAD"
 # Uncommitted check covers the whole staging tree: a sibling dep changing would
 # also invalidate a clean-room build of this component, so gate the real artifact

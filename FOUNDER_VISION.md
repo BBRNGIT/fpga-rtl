@@ -190,6 +190,13 @@ stored coordinate.
   a published POC). When price is the **axis** it is the *address*, never data — so:
   **no allocation, no free-slot search, no stored price keys, no anchor/window
   subsystem.** The index *is* the match; the position *is* the price.
+- **Price may be referenced ONLY against time — never against price, never absolute.**
+  If a price value is needed, it is defined by a *time event*: `open` = price at frame
+  start, `high` = highest during the frame, `low` = lowest during the frame, `close` =
+  last price at frame end; DOM bid/ask counters = TAI-timestamped market events **per
+  internal clock tick**. No price-vs-price offset, no absolute-price anchor — ever.
+  **Immutable and enforced at every level** (spec, emitter, gate); a violation halts
+  development until corrected.
 - **`pip_resolver` owns nothing** — a per-symbol lookup publishing the pip size (the
   price-index separation unit). `timeframe` is a tick accumulator (the bar stride).
   Neither is an axis authority; **time (tick-count) is the only persistent reference.**
