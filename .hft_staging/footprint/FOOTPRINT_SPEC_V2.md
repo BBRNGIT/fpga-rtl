@@ -1,3 +1,10 @@
+> ⛔ **OBSOLETE — DO NOT USE. Contradicts the Index Doctrine (CLAUDE.md Law #10).**
+> Uses the retired store-and-allocate model (`FP_LVL` price-key slots + `FP_ALLOC_CUR`
+> cursor); gate-blocked by `checks/check_index_doctrine.py`. Footprint must be rewritten
+> as a direct price-indexed projection that counts from DOM's per-tick payload into its
+> own bid/ask counters over the bar (its own POC/VAH/VAL/HVN/LVN). Historical reference
+> only. See `memory/index_doctrine_price_time_as_index.md`.
+
 # FOOTPRINT_SPEC_V2 — Complete Flip-Flop-Level Specification (Phase 2 prep)
 
 **Status:** SPECIFICATION ONLY. No addresses, no placement, no cross-module

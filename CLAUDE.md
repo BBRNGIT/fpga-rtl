@@ -295,8 +295,19 @@ an absolute stored coordinate.
   bound (no price-span cap, no canvas size to set).
 - **Modules are price-indexed activity counters.** Each stores a *measure* at a
   price-index (volume, count, depth), sampled at its tick-stride. DOM is the live
-  per-tick layer; the bar indicators accumulate the same activity over `period` ticks.
-  tpo = time-touches per pip; footprint = volume per pip; candle = the bar's pip-extremes.
+  per-tick layer. tpo = time-touches per pip; footprint = volume per pip; candle = the
+  bar's pip-extremes.
+- **DOM is the source payload; each module does its OWN counting — never lift DOM's
+  aggregates.** The DOM snapshot is the enriched per-internal-tick, all-price payload
+  (the *what happened at each price this tick*). footprint/tpo/candle keep their **own
+  counters** and **count from that payload** into their own registers, bounded by their
+  own timeframe; they compute their **own** outputs (footprint POC/VAH/VAL/HVN/LVN from
+  footprint's own bid/ask counts; candle total volume from candle's own counter; tpo
+  touches from tpo's own tally). **DOM's POC ≠ footprint's POC** (different time scope) —
+  reading a DOM derived-aggregate into an indicator is a bug. The **shared internal
+  clock** means every module's counter advances in lockstep with DOM's per-tick payload,
+  so no tick is lost. "footprint is DOM bounded by a timeframe" = footprint runs DOM's
+  *kind* of counting, sourced from DOM's payload, on its *own* state over its *own* bar.
 - **Price is stored as a VALUE only when it is the measured quantity** (e.g. candle's
   OHLC), and **never as the axis** — when price is the axis it is the address, not data.
   Therefore: no allocation, no free-slot search, no stored price keys, no anchor/window

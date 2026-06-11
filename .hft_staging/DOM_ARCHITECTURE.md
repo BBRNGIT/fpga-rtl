@@ -317,6 +317,13 @@ These are **addressable arrays** with **no computation**. Each entry is read/wri
 
 **Use case:** Footprint module reads DOM_BUY_VOL(0..15) + DOM_SELL_VOL(0..15) to draw price profile (volume at each level), then indicators (TPO, footprint chart) consume this.
 
+> ⚠️ **Doctrine note (Law #10):** footprint does **not** "consume"/lift DOM's volume —
+> it **counts from** the DOM per-tick payload into its **own** bid/ask counters over its
+> timeframe and derives its **own** POC/VAH/VAL/HVN/LVN. DOM's aggregate ≠ footprint's.
+> Also FLAGGED: the names `DOM_BUY_VOL`/`DOM_SELL_VOL` are stale — DOM publishes
+> `DOM_BID_QTY`/`DOM_ASK_QTY` (+ `DOM_COUNT`/`DOM_TIME`) tables. Reconcile this doc to
+> the real DOM seams before using it as a reference.
+
 ---
 
 ### "CVD" vs "Trade Delta" — Global, Not Per-Price

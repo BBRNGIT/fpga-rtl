@@ -1,3 +1,8 @@
+# ⛔ OBSOLETE — DO NOT EMIT. Contradicts the Index Doctrine (CLAUDE.md Law #10).
+#    Uses the retired store-and-allocate model (level_ring price-key slots + FP_ALLOC_CUR);
+#    gate-blocked by checks/check_index_doctrine.py. Rewrite as a direct price-indexed
+#    projection (count from DOM's per-tick payload into own bid/ask counters over the bar).
+#    See memory/index_doctrine_price_time_as_index.md. Historical reference only.
 # footprint_logic.yaml — machine-readable flip-flop-level logic spec (V2)
 # Companion to FOOTPRINT_SPEC_V2.md. SPEC ONLY: no addresses, no placement.
 

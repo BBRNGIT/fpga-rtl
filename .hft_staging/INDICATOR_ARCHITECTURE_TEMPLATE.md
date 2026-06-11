@@ -26,8 +26,19 @@ NOT a store-and-allocate table. Before specifying any indicator, internalize:
   POC = `bar_open + offset`); never store it as the axis.
 - Sizing knob: the **max pip-span a bar may occupy** (the canvas height), per symbol.
 
-So: candle = bar pip-extremes; footprint = volume per pip-offset; tpo = time-touches
-per pip-offset. See `memory/index_doctrine_price_time_as_index.md`.
+So: candle = bar pip-extremes; footprint = volume per price; tpo = time-touches per
+price. See `memory/index_doctrine_price_time_as_index.md`.
+
+**DOM is the source payload; the indicator does its OWN counting — never lift DOM's
+aggregates.** The DOM snapshot is the enriched per-internal-tick, all-price payload.
+The indicator keeps its **own** counters and **counts from** that payload into its own
+registers, bounded by its timeframe, computing its **own** outputs (footprint
+POC/VAH/VAL/HVN/LVN from its own bid/ask counts; candle total volume from its own
+counter; tpo touches from its own tally). **DOM's POC ≠ footprint's POC** (different
+time scope) — reading a DOM derived-aggregate as your output is a bug. The shared
+internal clock guarantees the indicator's counter advances in lockstep with DOM's
+payload, so no tick is lost. "footprint is DOM bounded by a timeframe" = the same kind
+of counting, sourced from DOM's payload, on the indicator's own state over its own bar.
 
 ---
 

@@ -1,3 +1,10 @@
+> ⛔ **OBSOLETE — DO NOT USE. Contradicts the Index Doctrine (CLAUDE.md Law #10).**
+> Uses the retired store-and-allocate model (`TPO_LVL` price-key slots + `TPO_ALLOC_CUR`
+> cursor); gate-blocked by `checks/check_index_doctrine.py`. TPO must be rewritten as a
+> direct price-indexed projection that counts time-touches per price from DOM's per-tick
+> payload over the bar (its own POC). Historical reference only. See
+> `memory/index_doctrine_price_time_as_index.md`.
+
 # TPO_SPEC_V2 — Complete Flip-Flop-Level Specification (Phase 2 prep)
 
 **Status:** SPECIFICATION ONLY. No addresses, no placement, no cross-module
