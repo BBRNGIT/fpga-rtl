@@ -8,6 +8,29 @@
 
 ---
 
+## ⚠️ MANDATORY: The Index Doctrine (CLAUDE.md Law #10, FOUNDER_VISION.md §8a)
+
+Every indicator is a **price-indexed activity counter on a per-frame pip-canvas** —
+NOT a store-and-allocate table. Before specifying any indicator, internalize:
+
+- **Time-framed on the one tick axis.** The frame is a bounded count of internal
+  clock ticks (`BAR_SEQ` from `timeframe`). The indicator accumulates within the
+  frame and snapshots to history addressed by `BAR_SEQ` at the boundary, then resets.
+- **Price is a pip-index *within* the frame, not an absolute coordinate.** Compute
+  `offset = price − bar_open` (one `cell_addsub`) in pip units (`pip_resolver` gives
+  the pip size); the offset *is* the address. The canvas spans only the bar's pip-range.
+- **NO allocation, NO free-slot search, NO stored price keys, NO anchor/window
+  stamping.** The index is the match; the position is the price. (The old FP_LVL +
+  FP_ALLOC_CUR allocation pattern is RETIRED — do not reproduce it.)
+- **Store price as a VALUE only when it is the measured quantity** (OHLC, published
+  POC = `bar_open + offset`); never store it as the axis.
+- Sizing knob: the **max pip-span a bar may occupy** (the canvas height), per symbol.
+
+So: candle = bar pip-extremes; footprint = volume per pip-offset; tpo = time-touches
+per pip-offset. See `memory/index_doctrine_price_time_as_index.md`.
+
+---
+
 ## Overview
 
 Each indicator must specify:

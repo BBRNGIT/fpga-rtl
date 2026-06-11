@@ -269,6 +269,42 @@ Bid, ask, time, symbol, pip, commission, seq, valid. Downstream derives spread, 
 
 **This law is immutable.** No deviations permitted. See `memory/c_is_rtl_immutable_law.md` and `skills/c_is_rtl_enforcement.md`.
 
+### 10. The Index Doctrine — One Quantum; Price & Time Are Indices, Not Stored Data
+
+**There is one fundamental unit: the internal clock tick.** Everything called "time"
+is a bounded count of it, and price is a natural index *within* a time frame — never
+an absolute stored coordinate.
+
+- **One quantum.** `taiosc` mints the internal clock tick (the sole oscillator).
+  `tai` = accumulated ticks = time itself ("now" is tick-count since power-on; there
+  is no absolute wall-clock — ingress re-stamps external time onto the tick-count).
+- **Frames are bounded tick-counts.** `timeframe` counts ticks and rolls `BAR_SEQ`
+  at the period — a *bar is N internal ticks*. The bar is not a fundamental axis; it
+  is a coarsened stride on the one tick axis. DOM lives at the raw tick (stride 1);
+  candle/footprint/tpo live at the bar (stride = period ticks). Same axis.
+- **Price is a natural in-frame index.** Within a frame, price is a **pip-offset**
+  (`offset = price − frame_origin`, in pip units from `pip_resolver`), origin set by
+  a *time event* — bar-open for the bar indicators, current top-of-book per tick for
+  DOM. **There is no absolute price**; it is an external abstraction that does not
+  apply here. The price canvas expands/shrinks to what the frame covered (bar pip-range
+  / book pip-depth); its only sizing knob is the max pip-span a frame may occupy.
+- **Modules are price-indexed activity counters.** Each stores a *measure* at a
+  price-index (volume, count, depth), sampled at its tick-stride. DOM is the live
+  per-tick layer; the bar indicators accumulate the same activity over `period` ticks.
+  tpo = time-touches per pip; footprint = volume per pip; candle = the bar's pip-extremes.
+- **Price is stored as a VALUE only when it is the measured quantity** (e.g. candle's
+  OHLC), and **never as the axis** — when price is the axis it is the address, not data.
+  Therefore: no allocation, no free-slot search, no stored price keys, no anchor/window
+  subsystem. The index *is* the match; the position *is* the price.
+- **`pip_resolver` owns nothing** — it is a per-symbol lookup that publishes the pip
+  size (the price-index separation). `timeframe` is a tick accumulator (the bar stride).
+  Neither is an "axis authority"; time (tick-count) is the only persistent reference.
+
+This unifies the clock hierarchy (`taiosc → tai → timeframe`) with the data model:
+the oscillator produces the quantum, `tai` counts it into time, `timeframe` bounds it
+into bars, and every module projects price-indexed activity onto that one tick axis.
+See `memory/index_doctrine_price_time_as_index.md`.
+
 ## Development Workflow
 
 ### 1. Design Phase
