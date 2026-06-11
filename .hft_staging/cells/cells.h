@@ -16,8 +16,8 @@
  *
  * NO floats, NO malloc, NO function pointers. Every cell is a pure word function.
  */
-#ifndef NIC_CELLS_H
-#define NIC_CELLS_H
+#ifndef HFT_CELLS_H
+#define HFT_CELLS_H
 
 #include <stdint.h>
 
@@ -103,4 +103,4 @@ static inline word_t cell_dff(word_t q, word_t d, word_t en) {
     return q ^ ((q ^ d) & m);
 }
 
-#endif /* NIC_CELLS_H */
+#endif /* HFT_CELLS_H */

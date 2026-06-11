@@ -1,11 +1,18 @@
-/* cells.h — branchless flip-flop / gate primitives for the PIP_RESOLVER device.
+/* cells.h — branchless flip-flop / gate primitives for HFT devices.
  *
- * Owned by the real pip_resolver tree. Built fresh to the build approach
- * (project_hft_framework_adopted): every flip-flop, gate node, and signal is an
- * addressed register; every operation is a boolean function between addressed
- * registers — no if/switch/?: , selection is mask algebra, equality is
- * zero-reduction. These primitives are intrinsic to the system: a register IS a
- * dff, a comparator IS a netlist of these gates.
+ * CANONICAL SINGLE SOURCE. This file (.hft_staging/cells/cells.h) is the one
+ * authoritative copy of the cell primitive library. Per-component copies of
+ * cells.h must byte-match this file modulo the header-guard token (the
+ * #ifndef/#define/#endif guard identifier may be component-specific, e.g.
+ * ADAPTER_CELLS_H; everything else must be identical). Enforced by
+ * .hft_staging/checks/check_cells_canon.sh.
+ *
+ * Built fresh to the build approach (project_hft_framework_adopted): every
+ * flip-flop, gate node, and signal is an addressed register; every operation
+ * is a boolean function between addressed registers — no if/switch/?: ,
+ * selection is mask algebra, equality is zero-reduction. These primitives are
+ * intrinsic to the system: a register IS a dff, a comparator IS a netlist of
+ * these gates.
  *
  * NO floats, NO malloc, NO function pointers. Every cell is a pure word function.
  */
@@ -52,9 +59,11 @@ static inline word_t cell_fa(word_t a, word_t b, word_t cin) {
 }
 
 /* gate: register-backed pass-or-zero. out = en ? val : 0 — mask algebra, no
- * branch. mask = -(en & 1) → all-ones when en, all-zeros when !en. Used by the
- * table select (gate exactly one slot through, OR-reduce the rest as 0) and to
- * power-gate a multi-bit value without an if/?: and without a literal in path. */
+ * branch. mask = -(en & 1) → all-ones when en, all-zeros when !en. Used to
+ * power-gate a multi-bit register value (e.g. the clock step = SPEED while
+ * powered, 0 while off) without an if/?: and without a literal in the path.
+ * Also the building block of table select: gate exactly one slot through and
+ * OR-reduce the rest as 0 (one-hot select with no branch). */
 static inline word_t cell_gate(word_t val, word_t en) {
     const word_t m = (word_t)0 - (en & 1ULL);
     return val & m;
@@ -62,7 +71,7 @@ static inline word_t cell_gate(word_t val, word_t en) {
 
 /* cell_addsub: gate-netlist add/subtract — the STRUCTURAL arithmetic primitive.
  * Returns the 64-bit sum word (not the carry — that is the only difference from
- * the cmp_lt carry chain, which returns the final carry-out). sub=0 → a+b;
+ * the cmp_le carry chain, which returns the final carry-out). sub=0 → a+b;
  * sub=1 → a-b via two's complement: invert b and inject an initial carry of 1
  * (a + ~b + 1). The bit-loop IS the gate expansion of a 64-cell ripple-carry
  * adder — a generator-level unrolling, not a data-path branch (no conditional
