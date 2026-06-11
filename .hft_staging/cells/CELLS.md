@@ -72,6 +72,17 @@ The loop index is the only native arithmetic, and it is address/index math,
 not data. Returns the sum word (the related `cmp_le`/`cmp_lt` carry chain
 returns the final carry-out instead).
 
+### cell_sar(a, n)
+RTL: arithmetic shift right by a compile-time constant `n` (0 < n < 64) with
+sign replication. At gate level a fixed shift is pure rewiring (each output
+bit is a wired select of input bit `i+n`); the vacated high bits are filled by
+the two's-complement broadcast of bit 63 (`-(a>>63 & 1)`), so negative values
+floor correctly. No adder, no branch; shifts are sanctioned in the tick body
+(the arithmetic gate strips `>>`/`<<` before scanning). Canonical use:
+mid-price `cell_sar(bid + ask, 1)`-style halving where the sum comes from
+`cell_addsub`, and power-of-two scaling per the gate-level-arithmetic law
+("Shifts → cell_sar", CLAUDE.md Law #2).
+
 ### cell_dff(q, d, en)
 RTL: D flip-flop with clock-enable — the ONE stateful cell.
 `q_next = en ? d : q`, as mask algebra (`q ^ ((q ^ d) & m)`). The device's

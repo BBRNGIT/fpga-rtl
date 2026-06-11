@@ -94,6 +94,18 @@ static inline word_t cell_addsub(word_t a, word_t b, word_t sub) {
     return sum;
 }
 
+/* ---- shift primitive: arithmetic shift right --------------------------------
+ * cell_sar(a, n): shift a right by a compile-time constant n (0 < n < 64),
+ * replicating the sign bit (bit 63) into the vacated high bits. At gate level
+ * a fixed shift is pure rewiring (bit-selects), and the sign fill is the
+ * two's-complement broadcast of bit 63 — no adder, no branch. Shifts are
+ * sanctioned in the tick body (the arithmetic gate strips >> and << before
+ * scanning for native +,-,*). */
+static inline word_t cell_sar(word_t a, unsigned n) {
+    const word_t sign = (word_t)0 - ((a >> 63) & 1ULL);
+    return (a >> n) | (sign << (64u - n));
+}
+
 /* ---- sequential primitive: D flip-flop with enable -------------------------
  * The ONE stateful cell. q_next = en ? d : q  (mask algebra, no branch).
  * The device's clock-edge applies this to every dff node each tick; the value
