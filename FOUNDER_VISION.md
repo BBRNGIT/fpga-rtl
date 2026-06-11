@@ -166,22 +166,26 @@ The deepest law of the data model. **There is one fundamental unit: the internal
 clock tick.** Everything else is built from it, and price is an *index*, not a
 stored coordinate.
 
-- **One quantum.** `taiosc` mints the internal clock tick (the sole oscillator).
-  `tai` = accumulated ticks = **time itself** — "now" is the tick-count since
-  power-on. There is **no absolute wall-clock**; ingress re-stamps external time
-  onto the tick-count.
-- **Every "time frame" is a bounded tick-count.** `timeframe` counts ticks and
-  rolls `BAR_SEQ` at the period — a **bar is N internal ticks**, a coarsened stride
-  on the one tick axis, not a separate axis. **DOM** lives at the raw tick
-  (stride 1, the live book); **candle / footprint / tpo** live at the bar
-  (stride = period ticks, accumulated then snapshotted). Same axis, different stride.
-- **Price is a natural index *within* a frame — there is no absolute price.**
-  Absolute price is a human/charting abstraction that **does not apply** to this
-  system. Within a frame, price is a **pip-offset** (`price − frame_origin`, in pip
-  units), the origin set by a *time event*: **bar-open** for the bar indicators,
-  **current top-of-book per tick** for DOM. The price canvas **expands and shrinks
-  to what the frame covered** (a bar's pip-range, the book's pip-depth); its only
-  sizing knob is the maximum pip-span a frame may occupy.
+- **One quantum: the internal clock tick — the SOLE DRIVER of computation.** Every
+  internal register computes on internal clock ticks. **This is NOT `taiosc`.**
+  `taiosc` is a *separate* free-running oscillator; `tai` (its accumulated tick-tock
+  value) is the **TAI timestamp**, the value **ingress stamps onto external data**.
+  **TAI is timestamped *data*, not a controller** — it does not drive or step any
+  internal module. On each internal clock tick the registers compute, interacting
+  with the TAI-stamped data that arrived through ingress. (Two distinct things:
+  the internal clock = the compute heartbeat; `taiosc`/`tai` = the timestamp source.)
+- **Every "time frame" is a bounded count of internal clock ticks.** `timeframe`
+  counts **internal clock ticks** and rolls `BAR_SEQ` at the period — a **bar is N
+  internal ticks**, a coarsened stride on the one internal-tick axis, not a separate
+  axis. **DOM** lives at the raw internal tick (stride 1, the live book);
+  **candle / footprint / tpo** live at the bar (accumulated then snapshotted).
+- **Price is a DIRECT index — no offset, no origin, no anchor.** The price value,
+  at pip granularity (`pip_resolver` publishes the pip = the separation between
+  adjacent price-indices), **is** the address. Nothing is measured relative to a
+  reference price; there is **no `price − origin`** and **no absolute price** (a
+  human/charting abstraction that does not apply here). The structure **expands and
+  shrinks to exactly the prices the frame covered** — and the frame's bounded
+  tick-count is the *only* bound (there is no price-span cap or canvas size to set).
 - **Modules are price-indexed activity counters.** Each stores a *measure* at a
   price-index — DOM: physical book activity per pip per tick; footprint: volume per
   pip per bar; tpo: time-touches per pip per bar; candle: the bar's pip-extremes.
@@ -201,10 +205,12 @@ stored coordinate.
   price-index separation unit). `timeframe` is a tick accumulator (the bar stride).
   Neither is an axis authority; **time (tick-count) is the only persistent reference.**
 
-This unifies the clock hierarchy with the data model: `taiosc → tai → timeframe`
-*is* the index basis — the oscillator produces the quantum, `tai` counts it into
-time, `timeframe` bounds it into bars, and every module projects price-indexed
-activity onto that one tick axis. (CLAUDE.md Law #10;
+Two clock roles, never conflated: **`taiosc → tai`** produces the **TAI timestamp**
+(stamped onto external data at ingress — data, not a driver); the **internal clock**
+drives *all* computation, and `timeframe` counts **internal** ticks into bars. Time
+the system *references on data* is TAI; time that *drives* the system is the internal
+clock; every module projects price-indexed activity onto that one internal-tick axis.
+(CLAUDE.md Law #10;
 `memory/index_doctrine_price_time_as_index.md`.)
 
 ---

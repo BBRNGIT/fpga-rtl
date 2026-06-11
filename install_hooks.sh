@@ -3,8 +3,10 @@
 #
 # Idempotent: safe to run any number of times.
 #
-# 1. Main repo: copies the tracked hook source (hooks/pre-commit) into
-#    .git/hooks/pre-commit. The tracked copy is the source of truth.
+# 1. Main repo: copies the tracked hook sources (hooks/pre-commit, hooks/commit-msg)
+#    into .git/hooks/. The tracked copies are the source of truth. Attribution is
+#    checked by commit-msg (the only hook git gives the message to); pre-commit
+#    does the file-level checks (vault immutability, thin-test, gen byte-match).
 # 2. Vault (.hft): a standalone git repo (not a submodule). Its immutability
 #    hook lives in .hft/.githooks/pre-commit; we point core.hooksPath at it.
 set -e
@@ -12,22 +14,22 @@ set -e
 repo_root=$(cd "$(dirname "$0")" && pwd)
 cd "$repo_root"
 
-# --- 1. Main repo pre-commit hook ------------------------------------------
-src="$repo_root/hooks/pre-commit"
-dst="$repo_root/.git/hooks/pre-commit"
-
-if [ ! -f "$src" ]; then
-    echo "[FAIL] missing tracked hook source: hooks/pre-commit" >&2
-    exit 1
-fi
-
-if [ -f "$dst" ] && cmp -s "$src" "$dst"; then
-    echo "[ok] .git/hooks/pre-commit already up to date"
-else
-    cp "$src" "$dst"
-    echo "[ok] installed .git/hooks/pre-commit from hooks/pre-commit"
-fi
-chmod +x "$dst"
+# --- 1. Main repo hooks (pre-commit + commit-msg) --------------------------
+for hook in pre-commit commit-msg; do
+    src="$repo_root/hooks/$hook"
+    dst="$repo_root/.git/hooks/$hook"
+    if [ ! -f "$src" ]; then
+        echo "[FAIL] missing tracked hook source: hooks/$hook" >&2
+        exit 1
+    fi
+    if [ -f "$dst" ] && cmp -s "$src" "$dst"; then
+        echo "[ok] .git/hooks/$hook already up to date"
+    else
+        cp "$src" "$dst"
+        echo "[ok] installed .git/hooks/$hook from hooks/$hook"
+    fi
+    chmod +x "$dst"
+done
 
 # --- 2. Vault (.hft) immutability hook --------------------------------------
 if [ -d "$repo_root/.hft/.git" ] || [ -f "$repo_root/.hft/.git" ]; then

@@ -275,19 +275,24 @@ Bid, ask, time, symbol, pip, commission, seq, valid. Downstream derives spread, 
 is a bounded count of it, and price is a natural index *within* a time frame — never
 an absolute stored coordinate.
 
-- **One quantum.** `taiosc` mints the internal clock tick (the sole oscillator).
-  `tai` = accumulated ticks = time itself ("now" is tick-count since power-on; there
-  is no absolute wall-clock — ingress re-stamps external time onto the tick-count).
-- **Frames are bounded tick-counts.** `timeframe` counts ticks and rolls `BAR_SEQ`
-  at the period — a *bar is N internal ticks*. The bar is not a fundamental axis; it
-  is a coarsened stride on the one tick axis. DOM lives at the raw tick (stride 1);
-  candle/footprint/tpo live at the bar (stride = period ticks). Same axis.
-- **Price is a natural in-frame index.** Within a frame, price is a **pip-offset**
-  (`offset = price − frame_origin`, in pip units from `pip_resolver`), origin set by
-  a *time event* — bar-open for the bar indicators, current top-of-book per tick for
-  DOM. **There is no absolute price**; it is an external abstraction that does not
-  apply here. The price canvas expands/shrinks to what the frame covered (bar pip-range
-  / book pip-depth); its only sizing knob is the max pip-span a frame may occupy.
+- **One quantum: the internal clock tick — the SOLE DRIVER of computation.** Every
+  internal register computes on internal clock ticks. **This is NOT `taiosc`.**
+  `taiosc` is a *separate* free-running oscillator; `tai` (its accumulated tick-tock
+  value) is the **TAI timestamp**, the value **ingress stamps onto external data**.
+  TAI is timestamped *data*, not a controller — it does not drive or step any internal
+  module. On each internal tick the registers compute, interacting with the TAI-stamped
+  ingress data. (Internal clock = the compute heartbeat; `taiosc`/`tai` = the timestamp
+  source. Never conflate them.)
+- **Frames are bounded counts of internal clock ticks.** `timeframe` counts internal
+  clock ticks and rolls `BAR_SEQ` at the period — a *bar is N internal ticks*, a
+  coarsened stride on the one internal-tick axis. DOM lives at the raw internal tick
+  (stride 1); candle/footprint/tpo live at the bar.
+- **Price is a DIRECT index — no offset, no origin, no anchor.** The price value at
+  pip granularity (`pip_resolver` publishes the pip = the separation between adjacent
+  price-indices) **is** the address. Nothing is measured relative to a reference price;
+  there is no `price − origin` and **no absolute price**. The structure expands/shrinks
+  to exactly the prices the frame covered; the frame's bounded tick-count is the *only*
+  bound (no price-span cap, no canvas size to set).
 - **Modules are price-indexed activity counters.** Each stores a *measure* at a
   price-index (volume, count, depth), sampled at its tick-stride. DOM is the live
   per-tick layer; the bar indicators accumulate the same activity over `period` ticks.
@@ -308,9 +313,11 @@ an absolute stored coordinate.
   size (the price-index separation). `timeframe` is a tick accumulator (the bar stride).
   Neither is an "axis authority"; time (tick-count) is the only persistent reference.
 
-This unifies the clock hierarchy (`taiosc → tai → timeframe`) with the data model:
-the oscillator produces the quantum, `tai` counts it into time, `timeframe` bounds it
-into bars, and every module projects price-indexed activity onto that one tick axis.
+Two clock roles, never conflated: `taiosc → tai` produces the **TAI timestamp**
+(stamped onto external data at ingress — data, not a driver); the **internal clock**
+drives all computation, and `timeframe` counts **internal** ticks into bars. Time
+referenced *on data* is TAI; time that *drives* the system is the internal clock;
+every module projects price-indexed activity onto that one internal-tick axis.
 See `memory/index_doctrine_price_time_as_index.md`.
 
 ## Development Workflow
