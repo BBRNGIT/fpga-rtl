@@ -1,0 +1,92 @@
+# dom_logic.yaml — doctrine-aligned cell-level rebuild of DOM (the order book).
+#
+# DOM has two duties (founder): (1) COMPUTE live market state into registers that
+# other modules read; (2) PERSIST its memory as a record store it can snapshot out.
+# It does NOT build a "ladder" (a derived view = its own module) and it does NOT use
+# a price-indexed anchored table (the legacy 16384 base_px table was a Law #10
+# violation: absolute anchor + canvas cap + generalist array decode).
+#
+# Duty 1 — live state (registers): best bid/ask price+qty, totals, spread, mid,
+#   event counters, last-feed-time, prev prices. Pure compute + dffs.
+# Duty 2 — persistent memory: a SHIFT-IN record store (Law #10) of the per-tick
+#   market payload — each record carries its own coordinates (BID_PX, ASK_PX, TAI)
+#   as stored fields, newest at slot 0, NO write-pointer / index / anchor. Maps to
+#   fpga_bram. Querying it (by price or time) is a separate parallel-scan module.
+#
+# Inputs are the consumed fifo_rx head packet lanes via abstract ports (barrier law);
+# there is no qty in the price-only feed, so "qty" is presence (1 when level active).
+module: dom
+kind: orderbook
+clock: {power: DOM_POWER, comment: "self-runs on internal edge while powered, bounded by DOM_RUN_UNTIL"}
+seam_inputs:
+  - {name: DOM_POWER,     type: bit, source: "", comment: "power bit"}
+  - {name: DOM_RUN_UNTIL, type: u64, source: "", comment: "self-run budget (start/stop)"}
+  - {name: BID_PX,        type: u64, source: "", comment: "fifo head bid price (consumed packet)"}
+  - {name: ASK_PX,        type: u64, source: "", comment: "fifo head ask price"}
+  - {name: TAI,           type: u64, source: "", comment: "fifo head TAI timestamp"}
+  - {name: RD_FIRE,       type: bit, source: "", comment: "fifo read-fire strobe"}
+  - {name: FIFO_EMPTY,    type: bit, source: "", comment: "fifo empty flag"}
+const_nodes:
+  - {name: ONE,  type: u64, value: 1, comment: "tick step / presence qty"}
+  - {name: ZERO, type: u64, value: 0, comment: "spread floor / equality probe"}
+comb_nodes:
+  - {name: STEP,       cell: gate,   inputs: [ONE, DOM_POWER]}
+  - {name: TICKS_NEXT, cell: addsub, inputs: [DOM_TICKS, STEP], sub: 0}
+  - {name: NEMPTY,  cell: not, inputs: [FIFO_EMPTY], comment: "~empty"}
+  - {name: CONSUME, cell: and, inputs: [RD_FIRE, NEMPTY], comment: "rd_fire & ~empty"}
+  - {name: EQ_BID,  cell: eqmask, inputs: [BID_PX, DOM_PREV_BID_PRICE]}
+  - {name: NE_BID,  cell: not, inputs: [EQ_BID]}
+  - {name: BID_CHG, cell: and, inputs: [NE_BID, CONSUME], comment: "bid price changed on a consumed packet"}
+  - {name: EQ_ASK,  cell: eqmask, inputs: [ASK_PX, DOM_PREV_ASK_PRICE]}
+  - {name: NE_ASK,  cell: not, inputs: [EQ_ASK]}
+  - {name: ASK_CHG, cell: and, inputs: [NE_ASK, CONSUME]}
+  - {name: BBID_P_N, cell: mux, inputs: [DOM_BEST_BID_PRICE_REG, BID_PX, BID_CHG], comment: "latch new best bid price on change"}
+  - {name: BASK_P_N, cell: mux, inputs: [DOM_BEST_ASK_PRICE_REG, ASK_PX, ASK_CHG]}
+  - {name: BBID_Q_N, cell: mux, inputs: [DOM_BEST_BID_QTY_REG, ONE, BID_CHG], comment: "presence qty = 1 when active"}
+  - {name: BASK_Q_N, cell: mux, inputs: [DOM_BEST_ASK_QTY_REG, ONE, ASK_CHG]}
+  - {name: TBID_N,   cell: addsub, inputs: [DOM_TOTAL_BID_QTY_REG, BID_CHG], sub: 0, comment: "total += 1 on a new level"}
+  - {name: TASK_N,   cell: addsub, inputs: [DOM_TOTAL_ASK_QTY_REG, ASK_CHG], sub: 0}
+  - {name: ASK_EQ0,    cell: eqmask, inputs: [BASK_P_N, ZERO]}
+  - {name: ASK_VALID,  cell: not, inputs: [ASK_EQ0], comment: "best ask price != 0"}
+  - {name: SPREAD_RAW, cell: addsub, inputs: [BASK_P_N, BBID_P_N], sub: 1, comment: "ask - bid"}
+  - {name: MID_RAW,    cell: addsub, inputs: [BBID_P_N, BASK_P_N], sub: 0, shift_right: 1, comment: "(bid+ask)>>1"}
+  - {name: SPREAD_N,   cell: mux, inputs: [ZERO, SPREAD_RAW, ASK_VALID]}
+  - {name: MID_N,      cell: mux, inputs: [BBID_P_N, MID_RAW, ASK_VALID]}
+  - {name: ANY_CHG,  cell: or, inputs: [BID_CHG, ASK_CHG]}
+  - {name: PKT_N,    cell: addsub, inputs: [DOM_PKT_COUNT_REG, CONSUME], sub: 0}
+  - {name: ADD_N,    cell: addsub, inputs: [DOM_ADD_COUNT_REG, ANY_CHG], sub: 0}
+  - {name: CANCEL_N, cell: addsub, inputs: [DOM_CANCEL_COUNT_REG, ANY_CHG], sub: 0}
+  - {name: LFT_N,    cell: mux, inputs: [DOM_LAST_FEED_TIME_REG, TAI, CONSUME], comment: "last feed time on consume"}
+  - {name: PREV_BID_N, cell: mux, inputs: [DOM_PREV_BID_PRICE, BID_PX, CONSUME]}
+  - {name: PREV_ASK_N, cell: mux, inputs: [DOM_PREV_ASK_PRICE, ASK_PX, CONSUME]}
+dff_nodes:
+  - {name: DOM_TICKS,             type: u64, fed_by: TICKS_NEXT, enable: ONE, comment: "self-run budget counter"}
+  - {name: DOM_PREV_BID_PRICE,    type: u64, fed_by: PREV_BID_N, enable: ONE}
+  - {name: DOM_PREV_ASK_PRICE,    type: u64, fed_by: PREV_ASK_N, enable: ONE}
+  - {name: DOM_BEST_BID_PRICE_REG, type: u64, fed_by: BBID_P_N, enable: ONE, comment: "live best bid price"}
+  - {name: DOM_BEST_ASK_PRICE_REG, type: u64, fed_by: BASK_P_N, enable: ONE}
+  - {name: DOM_BEST_BID_QTY_REG,   type: u64, fed_by: BBID_Q_N, enable: ONE}
+  - {name: DOM_BEST_ASK_QTY_REG,   type: u64, fed_by: BASK_Q_N, enable: ONE}
+  - {name: DOM_TOTAL_BID_QTY_REG,  type: u64, fed_by: TBID_N,   enable: ONE}
+  - {name: DOM_TOTAL_ASK_QTY_REG,  type: u64, fed_by: TASK_N,   enable: ONE}
+  - {name: DOM_PKT_COUNT_REG,      type: u64, fed_by: PKT_N,    enable: ONE, comment: "packets consumed"}
+  - {name: DOM_ADD_COUNT_REG,      type: u64, fed_by: ADD_N,    enable: ONE}
+  - {name: DOM_CANCEL_COUNT_REG,   type: u64, fed_by: CANCEL_N, enable: ONE}
+  - {name: DOM_LAST_FEED_TIME_REG, type: u64, fed_by: LFT_N,    enable: ONE}
+  - {name: DOM_SPREAD_REG,         type: u64, fed_by: SPREAD_N, enable: ONE, comment: "derived spread"}
+  - {name: DOM_MID_PRICE_REG,      type: u64, fed_by: MID_N,    enable: ONE, comment: "derived mid"}
+history_ring:
+  name: DOM_BOOK
+  depth: 256
+  write_enable: CONSUME
+  fields:
+    - {name: BID_PX, source: BID_PX}
+    - {name: ASK_PX, source: ASK_PX}
+    - {name: TAI,    source: TAI}
+seam_outputs:
+  - {name: DOM_BEST_BID_PRICE_OUT, source: DOM_BEST_BID_PRICE_REG, type: u64, comment: "live snapshot"}
+  - {name: DOM_BEST_ASK_PRICE_OUT, source: DOM_BEST_ASK_PRICE_REG, type: u64}
+  - {name: DOM_SPREAD_OUT,         source: DOM_SPREAD_REG,         type: u64}
+  - {name: DOM_MID_PRICE_OUT,      source: DOM_MID_PRICE_REG,      type: u64}
+  - {name: DOM_TOTAL_BID_QTY_OUT,  source: DOM_TOTAL_BID_QTY_REG,  type: u64}
+  - {name: DOM_TOTAL_ASK_QTY_OUT,  source: DOM_TOTAL_ASK_QTY_REG,  type: u64}
