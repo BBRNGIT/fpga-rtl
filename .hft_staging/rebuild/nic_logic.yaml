@@ -1,0 +1,207 @@
+# nic_logic.yaml — cell-level rebuild of the NIC (mac + TAI stamp + seq dedup).
+# Faithful to nic_gen.h: 16-slot dedup ring (idx=WIRE_SEQ&15, full-seq+valid),
+#   dup=valid&slot_valid&eqmask(slot_seq,seq); pass=valid&~dup; seam latches on pass;
+#   ring slot at idx latches seq+valid=1 on en=(eqmask(idx,i)&pass); status on power.
+module: nic
+kind: nic
+clock: {power: NIC_POWER, comment: "self-runs on mac edge while powered, bounded by NIC_RUN_UNTIL"}
+seam_inputs:
+  - {name: NIC_POWER,     type: bit, source: "", comment: "power bit"}
+  - {name: NIC_RUN_UNTIL, type: u64, source: "", comment: "self-run budget (start/stop bound)"}
+  - {name: WIRE_BID_PX, type: u64, source: "", comment: "wire bus lane (barrier sample)"}
+  - {name: WIRE_ASK_PX, type: u64, source: "", comment: "wire bus lane (barrier sample)"}
+  - {name: WIRE_TIME, type: u64, source: "", comment: "wire bus lane (barrier sample)"}
+  - {name: WIRE_SYMBOL, type: u64, source: "", comment: "wire bus lane (barrier sample)"}
+  - {name: WIRE_PIP, type: u64, source: "", comment: "wire bus lane (barrier sample)"}
+  - {name: WIRE_COMMISSION, type: u64, source: "", comment: "wire bus lane (barrier sample)"}
+  - {name: WIRE_SEQ, type: u64, source: "", comment: "wire bus lane (barrier sample)"}
+  - {name: WIRE_VALID, type: bit, source: "", comment: "wire bus lane (barrier sample)"}
+  - {name: TAI_MAC, type: u64, source: "", comment: "TAI stamp from mac domain"}
+const_nodes:
+  - {name: ONE, type: u64, value: 1, comment: "tick step / ring valid feed"}
+  - {name: MASK, type: u64, value: 15, comment: "ring depth-1 mask (depth=16)"}
+  - {name: IDX_0, type: u64, value: 0}
+  - {name: IDX_1, type: u64, value: 1}
+  - {name: IDX_2, type: u64, value: 2}
+  - {name: IDX_3, type: u64, value: 3}
+  - {name: IDX_4, type: u64, value: 4}
+  - {name: IDX_5, type: u64, value: 5}
+  - {name: IDX_6, type: u64, value: 6}
+  - {name: IDX_7, type: u64, value: 7}
+  - {name: IDX_8, type: u64, value: 8}
+  - {name: IDX_9, type: u64, value: 9}
+  - {name: IDX_10, type: u64, value: 10}
+  - {name: IDX_11, type: u64, value: 11}
+  - {name: IDX_12, type: u64, value: 12}
+  - {name: IDX_13, type: u64, value: 13}
+  - {name: IDX_14, type: u64, value: 14}
+  - {name: IDX_15, type: u64, value: 15}
+comb_nodes:
+  - {name: IDX, cell: and, inputs: [WIRE_SEQ, MASK], comment: "WIRE_SEQ & (depth-1)"}
+  - {name: EQ_0, cell: eqmask, inputs: [IDX, IDX_0]}
+  - {name: EQ_1, cell: eqmask, inputs: [IDX, IDX_1]}
+  - {name: EQ_2, cell: eqmask, inputs: [IDX, IDX_2]}
+  - {name: EQ_3, cell: eqmask, inputs: [IDX, IDX_3]}
+  - {name: EQ_4, cell: eqmask, inputs: [IDX, IDX_4]}
+  - {name: EQ_5, cell: eqmask, inputs: [IDX, IDX_5]}
+  - {name: EQ_6, cell: eqmask, inputs: [IDX, IDX_6]}
+  - {name: EQ_7, cell: eqmask, inputs: [IDX, IDX_7]}
+  - {name: EQ_8, cell: eqmask, inputs: [IDX, IDX_8]}
+  - {name: EQ_9, cell: eqmask, inputs: [IDX, IDX_9]}
+  - {name: EQ_10, cell: eqmask, inputs: [IDX, IDX_10]}
+  - {name: EQ_11, cell: eqmask, inputs: [IDX, IDX_11]}
+  - {name: EQ_12, cell: eqmask, inputs: [IDX, IDX_12]}
+  - {name: EQ_13, cell: eqmask, inputs: [IDX, IDX_13]}
+  - {name: EQ_14, cell: eqmask, inputs: [IDX, IDX_14]}
+  - {name: EQ_15, cell: eqmask, inputs: [IDX, IDX_15]}
+  - {name: SS_0, cell: gate, inputs: [NIC_RING_SEQ_0, EQ_0]}
+  - {name: SS_1, cell: gate, inputs: [NIC_RING_SEQ_1, EQ_1]}
+  - {name: SS_2, cell: gate, inputs: [NIC_RING_SEQ_2, EQ_2]}
+  - {name: SS_3, cell: gate, inputs: [NIC_RING_SEQ_3, EQ_3]}
+  - {name: SS_4, cell: gate, inputs: [NIC_RING_SEQ_4, EQ_4]}
+  - {name: SS_5, cell: gate, inputs: [NIC_RING_SEQ_5, EQ_5]}
+  - {name: SS_6, cell: gate, inputs: [NIC_RING_SEQ_6, EQ_6]}
+  - {name: SS_7, cell: gate, inputs: [NIC_RING_SEQ_7, EQ_7]}
+  - {name: SS_8, cell: gate, inputs: [NIC_RING_SEQ_8, EQ_8]}
+  - {name: SS_9, cell: gate, inputs: [NIC_RING_SEQ_9, EQ_9]}
+  - {name: SS_10, cell: gate, inputs: [NIC_RING_SEQ_10, EQ_10]}
+  - {name: SS_11, cell: gate, inputs: [NIC_RING_SEQ_11, EQ_11]}
+  - {name: SS_12, cell: gate, inputs: [NIC_RING_SEQ_12, EQ_12]}
+  - {name: SS_13, cell: gate, inputs: [NIC_RING_SEQ_13, EQ_13]}
+  - {name: SS_14, cell: gate, inputs: [NIC_RING_SEQ_14, EQ_14]}
+  - {name: SS_15, cell: gate, inputs: [NIC_RING_SEQ_15, EQ_15]}
+  - {name: SV_0, cell: gate, inputs: [NIC_RING_VALID_0, EQ_0]}
+  - {name: SV_1, cell: gate, inputs: [NIC_RING_VALID_1, EQ_1]}
+  - {name: SV_2, cell: gate, inputs: [NIC_RING_VALID_2, EQ_2]}
+  - {name: SV_3, cell: gate, inputs: [NIC_RING_VALID_3, EQ_3]}
+  - {name: SV_4, cell: gate, inputs: [NIC_RING_VALID_4, EQ_4]}
+  - {name: SV_5, cell: gate, inputs: [NIC_RING_VALID_5, EQ_5]}
+  - {name: SV_6, cell: gate, inputs: [NIC_RING_VALID_6, EQ_6]}
+  - {name: SV_7, cell: gate, inputs: [NIC_RING_VALID_7, EQ_7]}
+  - {name: SV_8, cell: gate, inputs: [NIC_RING_VALID_8, EQ_8]}
+  - {name: SV_9, cell: gate, inputs: [NIC_RING_VALID_9, EQ_9]}
+  - {name: SV_10, cell: gate, inputs: [NIC_RING_VALID_10, EQ_10]}
+  - {name: SV_11, cell: gate, inputs: [NIC_RING_VALID_11, EQ_11]}
+  - {name: SV_12, cell: gate, inputs: [NIC_RING_VALID_12, EQ_12]}
+  - {name: SV_13, cell: gate, inputs: [NIC_RING_VALID_13, EQ_13]}
+  - {name: SV_14, cell: gate, inputs: [NIC_RING_VALID_14, EQ_14]}
+  - {name: SV_15, cell: gate, inputs: [NIC_RING_VALID_15, EQ_15]}
+  - {name: SLOTSEQ_1, cell: or, inputs: [SS_0, SS_1]}
+  - {name: SLOTSEQ_2, cell: or, inputs: [SLOTSEQ_1, SS_2]}
+  - {name: SLOTSEQ_3, cell: or, inputs: [SLOTSEQ_2, SS_3]}
+  - {name: SLOTSEQ_4, cell: or, inputs: [SLOTSEQ_3, SS_4]}
+  - {name: SLOTSEQ_5, cell: or, inputs: [SLOTSEQ_4, SS_5]}
+  - {name: SLOTSEQ_6, cell: or, inputs: [SLOTSEQ_5, SS_6]}
+  - {name: SLOTSEQ_7, cell: or, inputs: [SLOTSEQ_6, SS_7]}
+  - {name: SLOTSEQ_8, cell: or, inputs: [SLOTSEQ_7, SS_8]}
+  - {name: SLOTSEQ_9, cell: or, inputs: [SLOTSEQ_8, SS_9]}
+  - {name: SLOTSEQ_10, cell: or, inputs: [SLOTSEQ_9, SS_10]}
+  - {name: SLOTSEQ_11, cell: or, inputs: [SLOTSEQ_10, SS_11]}
+  - {name: SLOTSEQ_12, cell: or, inputs: [SLOTSEQ_11, SS_12]}
+  - {name: SLOTSEQ_13, cell: or, inputs: [SLOTSEQ_12, SS_13]}
+  - {name: SLOTSEQ_14, cell: or, inputs: [SLOTSEQ_13, SS_14]}
+  - {name: SLOT_SEQ, cell: or, inputs: [SLOTSEQ_14, SS_15]}
+  - {name: SLOTVAL_1, cell: or, inputs: [SV_0, SV_1]}
+  - {name: SLOTVAL_2, cell: or, inputs: [SLOTVAL_1, SV_2]}
+  - {name: SLOTVAL_3, cell: or, inputs: [SLOTVAL_2, SV_3]}
+  - {name: SLOTVAL_4, cell: or, inputs: [SLOTVAL_3, SV_4]}
+  - {name: SLOTVAL_5, cell: or, inputs: [SLOTVAL_4, SV_5]}
+  - {name: SLOTVAL_6, cell: or, inputs: [SLOTVAL_5, SV_6]}
+  - {name: SLOTVAL_7, cell: or, inputs: [SLOTVAL_6, SV_7]}
+  - {name: SLOTVAL_8, cell: or, inputs: [SLOTVAL_7, SV_8]}
+  - {name: SLOTVAL_9, cell: or, inputs: [SLOTVAL_8, SV_9]}
+  - {name: SLOTVAL_10, cell: or, inputs: [SLOTVAL_9, SV_10]}
+  - {name: SLOTVAL_11, cell: or, inputs: [SLOTVAL_10, SV_11]}
+  - {name: SLOTVAL_12, cell: or, inputs: [SLOTVAL_11, SV_12]}
+  - {name: SLOTVAL_13, cell: or, inputs: [SLOTVAL_12, SV_13]}
+  - {name: SLOTVAL_14, cell: or, inputs: [SLOTVAL_13, SV_14]}
+  - {name: SLOT_VAL, cell: or, inputs: [SLOTVAL_14, SV_15]}
+  - {name: SEQ_MATCH, cell: eqmask, inputs: [SLOT_SEQ, WIRE_SEQ]}
+  - {name: VS,    cell: and, inputs: [WIRE_VALID, SLOT_VAL], comment: "valid & slot_valid"}
+  - {name: DUP,   cell: and, inputs: [VS, SEQ_MATCH], comment: "dup = valid & slot_valid & seq_match"}
+  - {name: NDUP,  cell: not, inputs: [DUP]}
+  - {name: PASS,  cell: and, inputs: [WIRE_VALID, NDUP], comment: "fresh non-dup packet"}
+  - {name: WEN_0, cell: and, inputs: [EQ_0, PASS]}
+  - {name: WEN_1, cell: and, inputs: [EQ_1, PASS]}
+  - {name: WEN_2, cell: and, inputs: [EQ_2, PASS]}
+  - {name: WEN_3, cell: and, inputs: [EQ_3, PASS]}
+  - {name: WEN_4, cell: and, inputs: [EQ_4, PASS]}
+  - {name: WEN_5, cell: and, inputs: [EQ_5, PASS]}
+  - {name: WEN_6, cell: and, inputs: [EQ_6, PASS]}
+  - {name: WEN_7, cell: and, inputs: [EQ_7, PASS]}
+  - {name: WEN_8, cell: and, inputs: [EQ_8, PASS]}
+  - {name: WEN_9, cell: and, inputs: [EQ_9, PASS]}
+  - {name: WEN_10, cell: and, inputs: [EQ_10, PASS]}
+  - {name: WEN_11, cell: and, inputs: [EQ_11, PASS]}
+  - {name: WEN_12, cell: and, inputs: [EQ_12, PASS]}
+  - {name: WEN_13, cell: and, inputs: [EQ_13, PASS]}
+  - {name: WEN_14, cell: and, inputs: [EQ_14, PASS]}
+  - {name: WEN_15, cell: and, inputs: [EQ_15, PASS]}
+  - {name: WIRE_BID_PX_BUF, cell: buf, inputs: [WIRE_BID_PX]}
+  - {name: WIRE_ASK_PX_BUF, cell: buf, inputs: [WIRE_ASK_PX]}
+  - {name: WIRE_TIME_BUF, cell: buf, inputs: [WIRE_TIME]}
+  - {name: WIRE_SYMBOL_BUF, cell: buf, inputs: [WIRE_SYMBOL]}
+  - {name: WIRE_PIP_BUF, cell: buf, inputs: [WIRE_PIP]}
+  - {name: WIRE_COMMISSION_BUF, cell: buf, inputs: [WIRE_COMMISSION]}
+  - {name: WIRE_SEQ_BUF, cell: buf, inputs: [WIRE_SEQ]}
+  - {name: TAI_BUF, cell: buf, inputs: [TAI_MAC]}
+  - {name: PASS_BUF, cell: buf, inputs: [PASS]}
+  - {name: DUP_BUF, cell: buf, inputs: [DUP]}
+  - {name: STEP, cell: gate, inputs: [ONE, NIC_POWER]}
+  - {name: TICKS_NEXT, cell: addsub, inputs: [NIC_TICKS, STEP], sub: 0}
+dff_nodes:
+  - {name: NIC_TICKS, type: u64, fed_by: TICKS_NEXT, enable: ONE, comment: "self-run budget counter"}
+  - {name: SEAM_BID_PX, type: u64, fed_by: WIRE_BID_PX_BUF, enable: PASS, comment: "re-stamped seam lane (en=pass)"}
+  - {name: SEAM_ASK_PX, type: u64, fed_by: WIRE_ASK_PX_BUF, enable: PASS, comment: "re-stamped seam lane (en=pass)"}
+  - {name: SEAM_TIME, type: u64, fed_by: TAI_BUF, enable: PASS, comment: "re-stamped seam lane (en=pass)"}
+  - {name: SEAM_SRC_TIME, type: u64, fed_by: WIRE_TIME_BUF, enable: PASS, comment: "re-stamped seam lane (en=pass)"}
+  - {name: SEAM_SYMBOL, type: u64, fed_by: WIRE_SYMBOL_BUF, enable: PASS, comment: "re-stamped seam lane (en=pass)"}
+  - {name: SEAM_PIP, type: u64, fed_by: WIRE_PIP_BUF, enable: PASS, comment: "re-stamped seam lane (en=pass)"}
+  - {name: SEAM_COMMISSION, type: u64, fed_by: WIRE_COMMISSION_BUF, enable: PASS, comment: "re-stamped seam lane (en=pass)"}
+  - {name: SEAM_SEQ, type: u64, fed_by: WIRE_SEQ_BUF, enable: PASS, comment: "re-stamped seam lane (en=pass)"}
+  - {name: SEAM_VALID,      type: bit, fed_by: PASS_BUF, enable: NIC_POWER, comment: "packet present"}
+  - {name: SEAM_STROBE,     type: bit, fed_by: PASS_BUF, enable: NIC_POWER, comment: "1-cycle write strobe"}
+  - {name: SEAM_DEDUP_MARK, type: bit, fed_by: DUP_BUF,  enable: NIC_POWER, comment: "dup dropped (diag)"}
+  - {name: NIC_RING_SEQ_0,   type: u64, fed_by: WIRE_SEQ_BUF, enable: WEN_0, comment: "dedup ring slot 0 seq"}
+  - {name: NIC_RING_VALID_0, type: bit, fed_by: ONE,          enable: WEN_0, comment: "dedup ring slot 0 valid"}
+  - {name: NIC_RING_SEQ_1,   type: u64, fed_by: WIRE_SEQ_BUF, enable: WEN_1, comment: "dedup ring slot 1 seq"}
+  - {name: NIC_RING_VALID_1, type: bit, fed_by: ONE,          enable: WEN_1, comment: "dedup ring slot 1 valid"}
+  - {name: NIC_RING_SEQ_2,   type: u64, fed_by: WIRE_SEQ_BUF, enable: WEN_2, comment: "dedup ring slot 2 seq"}
+  - {name: NIC_RING_VALID_2, type: bit, fed_by: ONE,          enable: WEN_2, comment: "dedup ring slot 2 valid"}
+  - {name: NIC_RING_SEQ_3,   type: u64, fed_by: WIRE_SEQ_BUF, enable: WEN_3, comment: "dedup ring slot 3 seq"}
+  - {name: NIC_RING_VALID_3, type: bit, fed_by: ONE,          enable: WEN_3, comment: "dedup ring slot 3 valid"}
+  - {name: NIC_RING_SEQ_4,   type: u64, fed_by: WIRE_SEQ_BUF, enable: WEN_4, comment: "dedup ring slot 4 seq"}
+  - {name: NIC_RING_VALID_4, type: bit, fed_by: ONE,          enable: WEN_4, comment: "dedup ring slot 4 valid"}
+  - {name: NIC_RING_SEQ_5,   type: u64, fed_by: WIRE_SEQ_BUF, enable: WEN_5, comment: "dedup ring slot 5 seq"}
+  - {name: NIC_RING_VALID_5, type: bit, fed_by: ONE,          enable: WEN_5, comment: "dedup ring slot 5 valid"}
+  - {name: NIC_RING_SEQ_6,   type: u64, fed_by: WIRE_SEQ_BUF, enable: WEN_6, comment: "dedup ring slot 6 seq"}
+  - {name: NIC_RING_VALID_6, type: bit, fed_by: ONE,          enable: WEN_6, comment: "dedup ring slot 6 valid"}
+  - {name: NIC_RING_SEQ_7,   type: u64, fed_by: WIRE_SEQ_BUF, enable: WEN_7, comment: "dedup ring slot 7 seq"}
+  - {name: NIC_RING_VALID_7, type: bit, fed_by: ONE,          enable: WEN_7, comment: "dedup ring slot 7 valid"}
+  - {name: NIC_RING_SEQ_8,   type: u64, fed_by: WIRE_SEQ_BUF, enable: WEN_8, comment: "dedup ring slot 8 seq"}
+  - {name: NIC_RING_VALID_8, type: bit, fed_by: ONE,          enable: WEN_8, comment: "dedup ring slot 8 valid"}
+  - {name: NIC_RING_SEQ_9,   type: u64, fed_by: WIRE_SEQ_BUF, enable: WEN_9, comment: "dedup ring slot 9 seq"}
+  - {name: NIC_RING_VALID_9, type: bit, fed_by: ONE,          enable: WEN_9, comment: "dedup ring slot 9 valid"}
+  - {name: NIC_RING_SEQ_10,   type: u64, fed_by: WIRE_SEQ_BUF, enable: WEN_10, comment: "dedup ring slot 10 seq"}
+  - {name: NIC_RING_VALID_10, type: bit, fed_by: ONE,          enable: WEN_10, comment: "dedup ring slot 10 valid"}
+  - {name: NIC_RING_SEQ_11,   type: u64, fed_by: WIRE_SEQ_BUF, enable: WEN_11, comment: "dedup ring slot 11 seq"}
+  - {name: NIC_RING_VALID_11, type: bit, fed_by: ONE,          enable: WEN_11, comment: "dedup ring slot 11 valid"}
+  - {name: NIC_RING_SEQ_12,   type: u64, fed_by: WIRE_SEQ_BUF, enable: WEN_12, comment: "dedup ring slot 12 seq"}
+  - {name: NIC_RING_VALID_12, type: bit, fed_by: ONE,          enable: WEN_12, comment: "dedup ring slot 12 valid"}
+  - {name: NIC_RING_SEQ_13,   type: u64, fed_by: WIRE_SEQ_BUF, enable: WEN_13, comment: "dedup ring slot 13 seq"}
+  - {name: NIC_RING_VALID_13, type: bit, fed_by: ONE,          enable: WEN_13, comment: "dedup ring slot 13 valid"}
+  - {name: NIC_RING_SEQ_14,   type: u64, fed_by: WIRE_SEQ_BUF, enable: WEN_14, comment: "dedup ring slot 14 seq"}
+  - {name: NIC_RING_VALID_14, type: bit, fed_by: ONE,          enable: WEN_14, comment: "dedup ring slot 14 valid"}
+  - {name: NIC_RING_SEQ_15,   type: u64, fed_by: WIRE_SEQ_BUF, enable: WEN_15, comment: "dedup ring slot 15 seq"}
+  - {name: NIC_RING_VALID_15, type: bit, fed_by: ONE,          enable: WEN_15, comment: "dedup ring slot 15 valid"}
+seam_outputs:
+  - {name: SEAM_BID_PX_OUT, source: SEAM_BID_PX, type: u64}
+  - {name: SEAM_ASK_PX_OUT, source: SEAM_ASK_PX, type: u64}
+  - {name: SEAM_TIME_OUT, source: SEAM_TIME, type: u64}
+  - {name: SEAM_SRC_TIME_OUT, source: SEAM_SRC_TIME, type: u64}
+  - {name: SEAM_SYMBOL_OUT, source: SEAM_SYMBOL, type: u64}
+  - {name: SEAM_PIP_OUT, source: SEAM_PIP, type: u64}
+  - {name: SEAM_COMMISSION_OUT, source: SEAM_COMMISSION, type: u64}
+  - {name: SEAM_SEQ_OUT, source: SEAM_SEQ, type: u64}
+  - {name: SEAM_VALID_OUT,  source: SEAM_VALID,  type: bit}
+  - {name: SEAM_STROBE_OUT, source: SEAM_STROBE, type: bit}
