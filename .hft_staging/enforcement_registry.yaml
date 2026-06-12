@@ -15,3 +15,4 @@
 
 kinds:
   passive_bus: logic_content_exempt   # a barrier bus is addressed lanes only — no compute BY DESIGN (wire, dom_bus)
+  fpga_blank: logic_content_exempt    # a blank is PURE DEVICE REFERENCE — no logic until install (blank law); identity enforced by check_blank_identity.py

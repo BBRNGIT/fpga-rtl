@@ -210,6 +210,12 @@ echo "==> [gate] 2j/3 build/assignment purity (no addresses/pins, no peer bindin
 [ -f "$CHECKS/check_build_no_assignment.py" ] || { echo "    FAIL — missing enforcement script: $CHECKS/check_build_no_assignment.py"; exit 3; }
 python3 "$CHECKS/check_build_no_assignment.py" "$DIR" --strict || exit 3
 
+echo "==> [gate] 2k/3 blank identity (ALL BLANKS ARE IDENTICAL — system-wide)"
+# One blank (the full real part, undifferentiated), one part profile; the boards
+# are identical instances named at addressing. N/A while no blanks exist.
+[ -f "$CHECKS/check_blank_identity.py" ] || { echo "    FAIL — missing enforcement script: $CHECKS/check_blank_identity.py"; exit 3; }
+python3 "$CHECKS/check_blank_identity.py" || exit 3
+
 echo "==> [gate] 3/3 clean-room build from committed HEAD"
 # Uncommitted check covers the whole staging tree: a sibling dep changing would
 # also invalidate a clean-room build of this component, so gate the real artifact

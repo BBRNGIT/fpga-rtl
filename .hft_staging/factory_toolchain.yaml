@@ -14,10 +14,10 @@ fpgas: [fpga-in, fpga-main, fpga-control]
 # ---- FORMATS (the declarative artifacts the tools exchange) -----------------
 # Each format is a contract: a tool that produces/consumes it must conform.
 formats:
-  board_profile:
-    file_glob: "device_profiles/*.yaml"
+  part_profile:
+    file_glob: "device_profiles/vu9p.yaml"
     required_fields: [name, part_ref, registers, clock_domains, io, address_space]
-    purpose: "real FPGA-part facts a board blank is cast from (determinism source)"
+    purpose: "THE one full-part profile (VU9P, complete, UNDIFFERENTIATED). ALL BLANKS ARE IDENTICAL — the boards are instances of the one blank cast from this; exactly one part profile may exist (check_blank_identity)"
     status: planned
   harness:
     file_glob: "harness/*.harness.yaml"
@@ -48,10 +48,10 @@ phases:
     name: boards
     status: planned
     tools:
-      - {name: gen_fpga_blank.py, file: gen_fpga_blank.py, in: [board_profile], out: [fpga blank netlist+C], status: planned,
-         purpose: "cast an internally-connected FPGA blank fabric from a real-part profile; NO module allocation"}
-      - {name: gen_harness.py,    file: gen_harness.py,    in: [harness],       out: [harness netlist+C],   status: planned,
-         purpose: "emit the power-control fabric: on/off + start/stop + power-up sequence for the 3 boards"}
+      - {name: gen_fpga_blank.py, file: gen_fpga_blank.py, in: [part_profile], out: [COMPLETE fpga_blank component fileset], status: planned,
+         purpose: "cast THE one identical blank from the one part profile, emitting the COMPLETE component fileset (netlist+gennet+validator+Makefile+thin test) in one invocation — zero hand assembly. NO differentiation: no role, no slicing, no intended modules (check_blank_identity). Boards = identical instances, named at addressing"}
+      - {name: gen_harness.py,    file: gen_harness.py,    in: [harness],       out: [COMPLETE harness component fileset],   status: planned,
+         purpose: "emit the power-control module (on/off + start/stop + power-up sequence for the 3 board instances) as a COMPLETE component fileset via the generic emitter — zero hand assembly"}
 
   - id: 3
     name: address
@@ -90,7 +90,9 @@ phases:
 
 # ---- LAWS (enforced) --------------------------------------------------------
 laws:
-  - "Nothing by hand: build, address, install/de-install, synthesize are TOOL-ONLY operations."
+  - "Nothing by hand: build, address, install/de-install, synthesize are TOOL-ONLY operations — including COMPONENT FILESETS (a tool emits the whole fileset; hand-assembling scaffolding around a tool is manual coding)."
+  - "ALL BLANKS ARE IDENTICAL: one blank (the full real part, undifferentiated), one part profile; boards are identical instances named at addressing. Enforced by checks/check_blank_identity.py."
+  - "The judges may not be edited by the judged: enforcement files are protected (HFT_ALLOW_ENFORCEMENT_CHANGE=1, founder-granted, never bundled with judged artifacts)."
   - "Phase order: a phase may only have built tools if every prior phase's tools are built/done."
   - "Every entity is uniquely addressed in system_registry BEFORE any install."
   - "Install/de-install happen ONLY via install.py/deinstall.py (manual operation is forbidden)."
