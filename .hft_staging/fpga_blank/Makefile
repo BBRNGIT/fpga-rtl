@@ -1,7 +1,8 @@
 # fpga_blank — THE identical FPGA blank (cast from device_profiles/vu9p.yaml).
 # EMITTED BY gen_fpga_blank.py — DO NOT EDIT BY HAND (regenerate via the tool).
-# Pure device reference: NO module allocation, NO logic, NO addresses (blank law).
-# Boards = identical instances of this blank, named at addressing (phase 3).
+# Pure device reference: A BLANK ASSIGNS NOTHING (no clock tables, no module
+# names, no placements, no addresses). Boards = identical instances of this
+# blank, named at addressing (phase 3); clocks arrive at install (phase 4).
 # Flow: part profile --emit--> netlist --validate--> --gennet--> fabric C --cc--> thin test.
 CC=cc
 CFLAGS=-std=c11 -Wall -Wextra -Werror -O2

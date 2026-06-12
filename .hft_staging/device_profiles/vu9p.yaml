@@ -25,12 +25,12 @@ address_space:
   slot_alignment: 0x1000
   cdc_region_size: 0x100000
 
-# ALL clock domains the system runs — identical table on every instance.
-# (The oscillator MODULES own the clocks; power + start/stop live in them.)
-clock_domains:
-  mac:      {frequency_hz: 125000000, source: external_phy}
-  internal: {frequency_hz: 250000000, source: pll_2x}
-  taiosc:   {frequency_hz: 1000000,   source: oscillator}
+# NO clock domains here — A BLANK ASSIGNS NOTHING. Clock domains belong to the
+# oscillator MODULES (they own power + start/stop) and arrive only when those
+# modules are INSTALLED (phase 4). A part profile naming system clock domains is
+# part-assignment at casting: gen_fpga_blank.py REFUSES such a profile, the
+# emitted validator rejects such a netlist, and checks/check_blank_identity.py
+# fails the gate (stage 2k). Enforcement persists in the tools, not in memory.
 
 # FULL-part I/O geometry (real-part facts, undivided)
 io:

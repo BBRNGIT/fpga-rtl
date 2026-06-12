@@ -70,3 +70,25 @@ All device-specialization logic is now in `.hft_staging/gen_device_specializatio
 For datasheet parsing or parts extraction, integrate directly into the meta tool as embedded functions, or create a separate **spec extraction** tool that feeds the meta tool (not the other way around).
 
 **Principle:** Parse specs → feed to meta tool → meta tool generates everything.
+
+## 2026-06-12 — part-assigning specialization era purged (banned hardware + tools)
+
+Removed for violating "A BLANK ASSIGNS NOTHING / meta tools must not hardcode the
+device or assign parts" (factory_toolchain.yaml laws; SILICON_FACTORY.md):
+
+- `fpga_nic/`, `fpga_pipeline/`, `fpga_design/`, `fpga_nic_modules.yaml`,
+  `fpga_pipeline_modules.yaml` — differentiated/branded FPGA hardware with module
+  allocation baked in (the rejected NIC/Pipeline branding; boards are identical
+  instances of THE one blank).
+- `gen_device_specialization.py` + `GEN_DEVICE_SPECIALIZATION.md` + type profiles
+  (`device_profiles/{fpga,mcu,asic,pcb}.yaml`) — a part-ASSIGNING meta tool
+  (allocation/assign/connect) with hardcoded clock-domain tables. Superseded by
+  the factory line: gen_fpga_blank (construction, assigns nothing) + the phase-3
+  registry toolbox (address_assigner/validator/editor/updater) + the phase-4
+  install/deinstall tools — the ONLY code permitted to assign.
+- Era guides `GEN_FPGA_SPECIALIZATION_*`, `FPGA_SPECIALIZATION_GUIDE.md`,
+  `FPGA_TEMPLATE_STRATEGY.md` — documented the deleted tools (agent poison).
+
+Kept: `circuitlib.py`/`test_circuitlib.py` (cell-catalog lowering — construction,
+no assignment); research/decision records (FPGA_DEVICE_RESEARCH.md,
+DECISION_FPGA_CPU_BACKPLANE.md, XILINX_VU9P_SPEC_EXTRACTION.md).
