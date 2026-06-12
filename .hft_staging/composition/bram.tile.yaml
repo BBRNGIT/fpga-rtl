@@ -1,0 +1,19 @@
+# composition/bram.tile.yaml — Block RAM tile (RAMB36E2, 36 Kb block).
+#
+# Memory = flip-flops. Per-block storage = 36 Kb / 64 = 576 uniform-64-bit words ->
+# library component `bram_block`. The COUNT is authentic from the datasheet
+# ("Block RAM Blocks" = 2,160 for VU9P); the XMP103 PSG lists only Total Block RAM
+# (Mb), so the block count is sourced from the device datasheet (see manifest entry).
+tile_type: BRAM
+source: "RAMB36E2 36Kb block (UG573); count from datasheet 'Block RAM Blocks'; per-block 576 uniform-64b storage words -> library bram_block"
+
+sites:
+  - site_type: RAMB36E2
+    per_tile: 1
+    bels:
+      - {bel: RAMB36, count: 1, library: bram_block}
+
+count_rule:
+  from: "Block RAM Blocks"   # authentic block count (datasheet; PSG has only Mb)
+  scale: 1
+  per_bel: RAMB36

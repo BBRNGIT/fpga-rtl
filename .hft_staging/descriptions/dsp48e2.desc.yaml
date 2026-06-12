@@ -1,0 +1,57 @@
+# dsp48e2.desc.yaml — realize ONE DSP48E2 slice (instantiates the library component)
+# so the existing elaborate.py/gennet.py turn it into real C flip-flops, then the
+# fabric generator arrays it across the grid (6,840). Composition only.
+design: dsp48e2
+kind: fabric_tile
+ports:
+  in:  [a1_d, a1_en, a2_d, a2_en, b1_d, b1_en, b2_d, b2_en, c_d, c_en,
+        d_d, d_en, ad_d, ad_en, m_d, m_en, p_d, p_en, carryin_d, carryin_en,
+        inmode_d, inmode_en, opmode_d, opmode_en, alumode_d, alumode_en,
+        carryinsel_d, carryinsel_en]
+  out: [a1_q, a2_q, b1_q, b2_q, c_q, d_q, ad_q, m_q, p_q, carryin_q,
+        inmode_q, opmode_q, alumode_q, carryinsel_q]
+instances:
+  - {name: dsp, component: dsp48e2, params: {}}
+connections:
+  - {net: [a1_d,          dsp.a1_d]}
+  - {net: [a1_en,         dsp.a1_en]}
+  - {net: [dsp.a1_q,      a1_q]}
+  - {net: [a2_d,          dsp.a2_d]}
+  - {net: [a2_en,         dsp.a2_en]}
+  - {net: [dsp.a2_q,      a2_q]}
+  - {net: [b1_d,          dsp.b1_d]}
+  - {net: [b1_en,         dsp.b1_en]}
+  - {net: [dsp.b1_q,      b1_q]}
+  - {net: [b2_d,          dsp.b2_d]}
+  - {net: [b2_en,         dsp.b2_en]}
+  - {net: [dsp.b2_q,      b2_q]}
+  - {net: [c_d,           dsp.c_d]}
+  - {net: [c_en,          dsp.c_en]}
+  - {net: [dsp.c_q,       c_q]}
+  - {net: [d_d,           dsp.d_d]}
+  - {net: [d_en,          dsp.d_en]}
+  - {net: [dsp.d_q,       d_q]}
+  - {net: [ad_d,          dsp.ad_d]}
+  - {net: [ad_en,         dsp.ad_en]}
+  - {net: [dsp.ad_q,      ad_q]}
+  - {net: [m_d,           dsp.m_d]}
+  - {net: [m_en,          dsp.m_en]}
+  - {net: [dsp.m_q,       m_q]}
+  - {net: [p_d,           dsp.p_d]}
+  - {net: [p_en,          dsp.p_en]}
+  - {net: [dsp.p_q,       p_q]}
+  - {net: [carryin_d,     dsp.carryin_d]}
+  - {net: [carryin_en,    dsp.carryin_en]}
+  - {net: [dsp.carryin_q, carryin_q]}
+  - {net: [inmode_d,      dsp.inmode_d]}
+  - {net: [inmode_en,     dsp.inmode_en]}
+  - {net: [dsp.inmode_q,  inmode_q]}
+  - {net: [opmode_d,      dsp.opmode_d]}
+  - {net: [opmode_en,     dsp.opmode_en]}
+  - {net: [dsp.opmode_q,  opmode_q]}
+  - {net: [alumode_d,     dsp.alumode_d]}
+  - {net: [alumode_en,    dsp.alumode_en]}
+  - {net: [dsp.alumode_q, alumode_q]}
+  - {net: [carryinsel_d,  dsp.carryinsel_d]}
+  - {net: [carryinsel_en, dsp.carryinsel_en]}
+  - {net: [dsp.carryinsel_q, carryinsel_q]}

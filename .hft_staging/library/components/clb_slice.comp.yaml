@@ -1,0 +1,92 @@
+# library/components/clb_slice.comp.yaml — the UltraScale+ CLB SLICE as a library
+# component, built from its underlying flip-flop structure (16 `dff` atoms).
+#
+# Authentic composition (UG574, same source as composition/clb.tile.yaml): a CLB =
+# one SLICE = 16 flip-flops (+ 8 LUT6). This component is the 16-FF structure — real
+# cell_dff, composed exactly like t_ff composes dff. The FPGA is built by composing
+# instances of THIS component across the grid; modules install onto it (phase 4).
+#
+# The 8 LUT6 are NOT in here yet: `lut6` is not a library component (it is a 64:1
+# config-mux built from gates, to be added deliberately). When `lut6` lands, it is
+# added to this component's body — composition only, nothing invented.
+#
+# Each FF's d/en are component ports (bound at install/assignment); q is the
+# registered output. init defaults the flip-flops' power-up state.
+
+component: clb_slice
+params:
+  init: 0
+ports:
+  in:  [d_0, en_0, d_1, en_1, d_2, en_2, d_3, en_3, d_4, en_4, d_5, en_5,
+        d_6, en_6, d_7, en_7, d_8, en_8, d_9, en_9, d_10, en_10, d_11, en_11,
+        d_12, en_12, d_13, en_13, d_14, en_14, d_15, en_15]
+  out: [q_0, q_1, q_2, q_3, q_4, q_5, q_6, q_7,
+        q_8, q_9, q_10, q_11, q_12, q_13, q_14, q_15]
+
+body:
+  instances:
+    - {name: ff_0,  component: dff, params: {init: init}}
+    - {name: ff_1,  component: dff, params: {init: init}}
+    - {name: ff_2,  component: dff, params: {init: init}}
+    - {name: ff_3,  component: dff, params: {init: init}}
+    - {name: ff_4,  component: dff, params: {init: init}}
+    - {name: ff_5,  component: dff, params: {init: init}}
+    - {name: ff_6,  component: dff, params: {init: init}}
+    - {name: ff_7,  component: dff, params: {init: init}}
+    - {name: ff_8,  component: dff, params: {init: init}}
+    - {name: ff_9,  component: dff, params: {init: init}}
+    - {name: ff_10, component: dff, params: {init: init}}
+    - {name: ff_11, component: dff, params: {init: init}}
+    - {name: ff_12, component: dff, params: {init: init}}
+    - {name: ff_13, component: dff, params: {init: init}}
+    - {name: ff_14, component: dff, params: {init: init}}
+    - {name: ff_15, component: dff, params: {init: init}}
+  connections:
+    - {net: [d_0,   ff_0.d]}
+    - {net: [en_0,  ff_0.en]}
+    - {net: [ff_0.q,  q_0]}
+    - {net: [d_1,   ff_1.d]}
+    - {net: [en_1,  ff_1.en]}
+    - {net: [ff_1.q,  q_1]}
+    - {net: [d_2,   ff_2.d]}
+    - {net: [en_2,  ff_2.en]}
+    - {net: [ff_2.q,  q_2]}
+    - {net: [d_3,   ff_3.d]}
+    - {net: [en_3,  ff_3.en]}
+    - {net: [ff_3.q,  q_3]}
+    - {net: [d_4,   ff_4.d]}
+    - {net: [en_4,  ff_4.en]}
+    - {net: [ff_4.q,  q_4]}
+    - {net: [d_5,   ff_5.d]}
+    - {net: [en_5,  ff_5.en]}
+    - {net: [ff_5.q,  q_5]}
+    - {net: [d_6,   ff_6.d]}
+    - {net: [en_6,  ff_6.en]}
+    - {net: [ff_6.q,  q_6]}
+    - {net: [d_7,   ff_7.d]}
+    - {net: [en_7,  ff_7.en]}
+    - {net: [ff_7.q,  q_7]}
+    - {net: [d_8,   ff_8.d]}
+    - {net: [en_8,  ff_8.en]}
+    - {net: [ff_8.q,  q_8]}
+    - {net: [d_9,   ff_9.d]}
+    - {net: [en_9,  ff_9.en]}
+    - {net: [ff_9.q,  q_9]}
+    - {net: [d_10,  ff_10.d]}
+    - {net: [en_10, ff_10.en]}
+    - {net: [ff_10.q, q_10]}
+    - {net: [d_11,  ff_11.d]}
+    - {net: [en_11, ff_11.en]}
+    - {net: [ff_11.q, q_11]}
+    - {net: [d_12,  ff_12.d]}
+    - {net: [en_12, ff_12.en]}
+    - {net: [ff_12.q, q_12]}
+    - {net: [d_13,  ff_13.d]}
+    - {net: [en_13, ff_13.en]}
+    - {net: [ff_13.q, q_13]}
+    - {net: [d_14,  ff_14.d]}
+    - {net: [en_14, ff_14.en]}
+    - {net: [ff_14.q, q_14]}
+    - {net: [d_15,  ff_15.d]}
+    - {net: [en_15, ff_15.en]}
+    - {net: [ff_15.q, q_15]}

@@ -3,6 +3,23 @@
   "from_spec": "spec/XMP103_VirtexUltraScalePlus_ProductSelectionGuide_v2.8.pdf",
   "materialization": "tile/site/BEL grid (EDA standard); PARAMETRIC; per-tile power-gating; GENERIC tool (no device hardcoded)",
   "tile_types": {
+    "BRAM": {
+      "source": "RAMB36E2 36Kb block (UG573); count from datasheet 'Block RAM Blocks'; per-block 576 uniform-64b storage words -> library bram_block",
+      "sites": [
+        {
+          "site_type": "RAMB36E2",
+          "per_tile": 1,
+          "bels": [
+            {
+              "bel": "RAMB36",
+              "count": 1,
+              "library": "bram_block"
+            }
+          ]
+        }
+      ],
+      "bels_per_tile": 1
+    },
     "CLB": {
       "source": "UG574 UltraScale Architecture CLB User Guide",
       "sites": [
@@ -71,9 +88,32 @@
         }
       ],
       "bels_per_tile": 1
+    },
+    "URAM": {
+      "source": "URAM288 288Kb block (UG573); count from datasheet 'UltraRAM Blocks'; per-block 4608 uniform-64b storage words -> library uram_block",
+      "sites": [
+        {
+          "site_type": "URAM288",
+          "per_tile": 1,
+          "bels": [
+            {
+              "bel": "URAM288",
+              "count": 1,
+              "library": "uram_block"
+            }
+          ]
+        }
+      ],
+      "bels_per_tile": 1
     }
   },
   "grid": {
+    "BRAM": {
+      "count": 2160,
+      "layout": "regular_model",
+      "addressing": "_X#Y# per Xilinx scheme",
+      "power": "per-tile enable (unused tiles off)"
+    },
     "CLB": {
       "count": 147750,
       "layout": "regular_model",
@@ -88,6 +128,12 @@
     },
     "GTY": {
       "count": 120,
+      "layout": "regular_model",
+      "addressing": "_X#Y# per Xilinx scheme",
+      "power": "per-tile enable (unused tiles off)"
+    },
+    "URAM": {
+      "count": 960,
       "layout": "regular_model",
       "addressing": "_X#Y# per Xilinx scheme",
       "power": "per-tile enable (unused tiles off)"

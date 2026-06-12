@@ -1,0 +1,19 @@
+# composition/uram.tile.yaml — UltraRAM tile (URAM288, 288 Kb block).
+#
+# Memory = flip-flops. Per-block storage = 288 Kb / 64 = 4,608 uniform-64-bit words
+# -> library component `uram_block`. The COUNT is authentic from the datasheet
+# ("UltraRAM Blocks" = 960 for VU9P); the XMP103 PSG lists only UltraRAM (Mb), so
+# the block count is sourced from the device datasheet (see manifest entry).
+tile_type: URAM
+source: "URAM288 288Kb block (UG573); count from datasheet 'UltraRAM Blocks'; per-block 4608 uniform-64b storage words -> library uram_block"
+
+sites:
+  - site_type: URAM288
+    per_tile: 1
+    bels:
+      - {bel: URAM288, count: 1, library: uram_block}
+
+count_rule:
+  from: "UltraRAM Blocks"   # authentic block count (datasheet; PSG has only Mb)
+  scale: 1
+  per_bel: URAM288

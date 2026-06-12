@@ -1,0 +1,9 @@
+# gty_logic.yaml — the GTY transceiver fabric as CONDUCTOR LANES (not flip-flops).
+# A GTY is a serial transceiver lane — a carrier, the library's conductor class
+# (like wire/dom_bus), NOT a register block. width = 120 = authentic GTY count
+# (manifest "GTY 32.75 Gb/s Transceivers" = 120). Passive: addressed lanes, no tick.
+module: gty
+kind: passive_bus
+width: 120
+bus_nodes:
+  - {name: GTY_LANE_i, type: u64, unroll: true, comment: "GTY transceiver lane i (serial conductor)"}

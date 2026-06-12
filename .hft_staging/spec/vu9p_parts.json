@@ -97,6 +97,16 @@
       "resource": "Industrial",
       "value": "-1",
       "source_line": 214
+    },
+    {
+      "resource": "Block RAM Blocks",
+      "value": "2160",
+      "source": "DS overview datasheet (VU9P column); the XMP103 PSG lists only Total Block RAM (Mb)=75.9"
+    },
+    {
+      "resource": "UltraRAM Blocks",
+      "value": "960",
+      "source": "DS overview datasheet (VU9P column); the XMP103 PSG lists only UltraRAM (Mb)=270.0"
     }
   ]
 }
