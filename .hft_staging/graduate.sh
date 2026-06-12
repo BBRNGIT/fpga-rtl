@@ -72,6 +72,15 @@ echo "==> logic content check: verify cell calls in device C"
 CELL_COUNT=0
 for GENH in "$SRC"/*_gen.h; do
     [ -f "$GENH" ] || continue
+    GBASE=${GENH%_gen.h}
+    # Passive buses (kind: passive_bus, e.g. wire/dom_bus) carry no compute by
+    # design — exempt from the logic-content requirement (which catches stub
+    # *indicators*, not buses). Mirrors gate.sh stage 2d.
+    if [ -f "$GBASE.net.json" ] && grep -q '"kind"[[:space:]]*:[[:space:]]*"passive_bus"' "$GBASE.net.json" 2>/dev/null; then
+        echo "    $(basename "$GENH"): passive bus (no compute by design) — exempt"
+        CELL_COUNT=1
+        continue
+    fi
     COUNT=$(grep -o "cell_[a-z_]*(" "$GENH" 2>/dev/null | wc -l)
     if [ "$COUNT" -gt "$CELL_COUNT" ]; then
         CELL_COUNT="$COUNT"
