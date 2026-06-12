@@ -1,0 +1,44 @@
+# device_profiles/vu9p.yaml — THE PART PROFILE (factory format: part_profile).
+#
+# The ONE real part every board is: Xilinx Virtex UltraScale+ VU9P, complete and
+# UNDIFFERENTIATED. ALL BLANKS ARE IDENTICAL — the 3 boards (fpga-in / fpga-main /
+# fpga-control) are identical INSTANCES of the one blank cast from this profile;
+# board identity is a name assigned at addressing (phase 3), and what differs
+# between boards is only what gets INSTALLED (phase 4) — never the blank.
+#
+# NO role, NO resource slicing, NO intended modules, NO clock subsetting — any
+# differentiation here is a law violation (checks/check_blank_identity.py).
+#
+# Source of truth: XILINX_VU9P_SPEC_EXTRACTION.md. Integers only (no floats).
+# Geometry/capacity only — NO addresses (addressing is phase 3).
+
+name: vu9p
+part_ref: "Xilinx Virtex UltraScale+ VU9P (XILINX_VU9P_SPEC_EXTRACTION.md)"
+
+# Fabric register capacity (the C-model interconnect geometry) — identical on
+# every instance. Power of two.
+registers: 262144           # 256K u64 fabric words
+
+# Address-space GEOMETRY (sizes only)
+address_space:
+  size: 0x10000000          # 256 MB window geometry
+  slot_alignment: 0x1000
+  cdc_region_size: 0x100000
+
+# ALL clock domains the system runs — identical table on every instance.
+# (The oscillator MODULES own the clocks; power + start/stop live in them.)
+clock_domains:
+  mac:      {frequency_hz: 125000000, source: external_phy}
+  internal: {frequency_hz: 250000000, source: pll_2x}
+  taiosc:   {frequency_hz: 1000000,   source: oscillator}
+
+# FULL-part I/O geometry (real-part facts, undivided)
+io:
+  gty_lanes: 32             # all 32 GTY transceivers
+  io_banks: 44              # all 44 I/O banks
+
+# FULL-part resource budget (real-part facts, undivided)
+resources:
+  clb:  {capacity: 182400, unit: slice}
+  bram: {capacity: 2160,   unit: block36}
+  dsp:  {capacity: 6840,   unit: dsp48e2}
