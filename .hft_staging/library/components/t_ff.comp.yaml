@@ -1,0 +1,36 @@
+# library/components/t_ff.comp.yaml — WORKED EXAMPLE of the composite-definition
+# format. A composite library component, defined PURELY as a composition of lower
+# library components (here: the `xor` and `dff` atoms). Transcribed verbatim from
+# circuitlib.lower_t_ff: "T flip-flop. q' = q ^ T. Lowering: xor(q, t) -> dff."
+# Nothing invented — this is an existing audited component re-expressed in the format.
+#
+# THE COMPOSITE-DEFINITION FORMAT (the contract):
+#   component : the library name
+#   params    : parameters with defaults (substituted at elaboration)
+#   ports     : in / out — the component's external interface
+#   body:
+#     instances   : [{name, component, params}]  — sub-instances of LOWER library
+#                   components ONLY (atoms or other composites). No raw logic field.
+#     connections : [{net: [endpoints...]}]      — wire ports together; an endpoint
+#                   is "<instance>.<port>" or a bare component port name. Exactly
+#                   ONE driver per net (single-writer, checked by the validator).
+# A composite references ONLY library components; it can never reach below the
+# flip-flop foundation or write arithmetic — composition only.
+
+component: t_ff
+params:
+  init: 0                      # initial q (passed to the dff atom)
+ports:
+  in:  [t, en]                 # toggle input; enable
+  out: [q]                     # registered output
+
+body:
+  instances:
+    - {name: x,   component: xor, params: {}}        # q ^ t
+    - {name: reg, component: dff, params: {init: init}}
+  connections:
+    - {net: [t,        x.b]}                          # toggle -> xor.b
+    - {net: [reg.q,    x.a]}                          # current q -> xor.a (feedback)
+    - {net: [x.y,      reg.d]}                        # xor result -> dff.d
+    - {net: [en,       reg.en]}                       # enable -> dff.en
+    - {net: [reg.q,    q]}                            # dff.q -> component out q

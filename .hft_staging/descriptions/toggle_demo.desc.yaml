@@ -1,0 +1,34 @@
+# descriptions/toggle_demo.desc.yaml — WORKED EXAMPLE of the DESCRIPTION format.
+#
+# A design is described by COMPOSING library components and wiring their ports —
+# the same format for a module, a bus, a device, or a board. This minimal example
+# instantiates one `t_ff` library composite and exposes its ports; it invents
+# nothing — it only composes existing library parts.
+#
+# THE DESCRIPTION FORMAT (the contract):
+#   design      : the design's name
+#   kind        : descriptive role (module | bus | device | board | demo ...)
+#   ports       : in / out — the design's external interface
+#   instances   : [{name, component, params}] — instances of LIBRARY components
+#                 (atoms or composites) ONLY. There is NO field for raw logic,
+#                 arithmetic, or values-not-from-source: composition only, which
+#                 is WHY design cannot be AI-imposed (nowhere to impose it).
+#   connections : [{net: [endpoints...]}] — wire ports; endpoint = "<instance>.<port>"
+#                 or a bare design port. Exactly ONE driver per net (single-writer).
+#
+# The ONE elaborator flattens this (recursively expanding each instance through the
+# library) to flip-flop-level C; the ONE validator checks it against the laws.
+
+design: toggle_demo
+kind: demo
+ports:
+  in:  [t, en]
+  out: [q]
+
+instances:
+  - {name: bit, component: t_ff, params: {init: 0}}
+
+connections:
+  - {net: [t,      bit.t]}
+  - {net: [en,     bit.en]}
+  - {net: [bit.q,  q]}

@@ -1,0 +1,26 @@
+# library/atoms.yaml — THE LIBRARY ROOT: the atomic components (leaves).
+#
+# The single foundation of the whole component library: the flip-flop and the
+# branchless gate cells, in C. Every library component and every design elaborates
+# down to THESE — nothing exists below them. Their ONLY definition is their C
+# lowering in cells/cells.h (the audited canon); this manifest registers each atom
+# so the elaborator and validator know its ports and C function.
+#
+# Transcribed VERBATIM from cells/cells.h — no invention. `c` is the exact C
+# function; `in`/`out` are its ports; `shift` marks a compile-time-constant shift
+# operand (sar/shl), `sub` the addsub mode operand.
+
+atoms:
+  buf:    {c: cell_buf,    in: [a],            out: [y]}
+  not:    {c: cell_not,    in: [a],            out: [y]}
+  and:    {c: cell_and,    in: [a, b],         out: [y]}
+  or:     {c: cell_or,     in: [a, b],         out: [y]}
+  xor:    {c: cell_xor,    in: [a, b],         out: [y]}
+  mux:    {c: cell_mux,    in: [a, b, sel],    out: [y]}
+  eqmask: {c: cell_eqmask, in: [a, b],         out: [y]}
+  fa:     {c: cell_fa,     in: [a, b, cin],    out: [y]}     # sum bit0, carry bit1
+  gate:   {c: cell_gate,   in: [val, en],      out: [y]}
+  addsub: {c: cell_addsub, in: [a, b],         out: [y], mode: sub}   # sub: 0=add 1=sub
+  sar:    {c: cell_sar,    in: [a],            out: [y], shift: n}     # compile-time n
+  shl:    {c: cell_shl,    in: [a],            out: [y], shift: n}     # compile-time n
+  dff:    {c: cell_dff,    in: [q, d, en],     out: [q]}     # the ONE stateful atom
