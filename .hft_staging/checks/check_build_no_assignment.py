@@ -31,6 +31,10 @@ MODULE_PREFIXES = {
     "candle": ["CANDLE_"], "footprint": ["FP_"], "tpo": ["TPO_"], "cbr": ["CBR_"], "fractal": ["FRAC_", "FRACTAL_"],
 }
 ADDR_KEYS = re.compile(r"(window_base|^address$|^addr$|base_addr|^pin$|pins?$|registry|slot_addr)", re.I)
+# Placement / differentiation in a BUILD artifact is assignment leakage too:
+# naming which modules will live somewhere (placement), or per-instance roles —
+# those are phase-3/4 decisions. (Caught the rejected differentiated-blank case.)
+PLACEMENT_KEYS = re.compile(r"(intended_modules|installed_modules|placement|assigned_to|residents)", re.I)
 
 
 def own_prefixes(name):
@@ -60,6 +64,8 @@ def main():
                 for k, v in o.items():
                     if ADDR_KEYS.search(str(k)) and v not in (None, "", 0):
                         findings.append(("ADDRESS/PIN", f"{os.path.basename(f)}:{path}{k} = {v} — assignment data in a build artifact"))
+                    if PLACEMENT_KEYS.search(str(k)) and v:
+                        findings.append(("PLACEMENT", f"{os.path.basename(f)}:{path}{k} = {v} — placement/differentiation in a build artifact (phase-3/4 decision)"))
                     walk(v, path + str(k) + ".")
             elif isinstance(o, list):
                 for i, v in enumerate(o):

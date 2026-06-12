@@ -1,0 +1,17 @@
+# enforcement_registry.yaml — THE CLOSED EXEMPTION REGISTRY (protected file).
+#
+# The ONLY place a netlist `kind` may be granted an exemption from a gate check.
+# gate.sh / graduate.sh READ this registry — they carry no inline exemptions.
+# Adding a kind or an exemption is an ENFORCEMENT CHANGE: this file is on the
+# protected-enforcement manifest, so modifying it requires the founder-granted
+# override (HFT_ALLOW_ENFORCEMENT_CHANGE=1). An agent cannot exempt its own
+# artifacts in the same stroke that creates them.
+#
+# Grant format (one line per kind — shell-greppable, do not reformat):
+#   <kind>: <exemption>[, <exemption>...]   # rationale
+#
+# Known exemptions:
+#   logic_content_exempt — skip gate 2d / graduate logic-content (no cells required)
+
+kinds:
+  passive_bus: logic_content_exempt   # a barrier bus is addressed lanes only — no compute BY DESIGN (wire, dom_bus)

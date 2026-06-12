@@ -154,6 +154,40 @@ EOF
 done
 
 # ============================================================================
+# 5. PROTECTED ENFORCEMENT LAYER (the judges may not be edited by the judged)
+# ============================================================================
+# Root cause of the rejected phase-2 work: one commit created violating
+# components AND edited the gate/contracts to exempt them. The enforcement
+# layer therefore gets the same discipline as the vault: modifying or deleting
+# any enforcement file requires the founder-granted override
+# HFT_ALLOW_ENFORCEMENT_CHANGE=1. Additions of NEW check scripts are allowed
+# (they can only add scrutiny); edits/deletions of existing enforcers are not.
+
+ENFORCEMENT_PATHS='^\.hft_staging/gate\.sh$|^\.hft_staging/graduate\.sh$|^\.hft_staging/checks/|^\.hft_staging/module_contracts\.yaml$|^\.hft_staging/factory_toolchain\.yaml$|^\.hft_staging/enforcement_registry\.yaml$|^\.hft_staging/cells/cells\.h$|^hooks/|^install_hooks\.sh$'
+
+enforcement_changed=$(git diff --cached --name-only --diff-filter=MD 2>/dev/null | grep -E "$ENFORCEMENT_PATHS" || true)
+
+if [ -n "$enforcement_changed" ] && [ "$HFT_ALLOW_ENFORCEMENT_CHANGE" != "1" ]; then
+    cat >&2 << EOF
+
+[FAIL] Protected ENFORCEMENT files modified without the founder override.
+       The judges may not be edited in the same stroke as the judged
+       (this is how the rejected phase-2 self-exemption happened).
+
+       Files:
+$(echo "$enforcement_changed" | sed 's/^/         /')
+
+       If this enforcement change is founder-sanctioned:
+         HFT_ALLOW_ENFORCEMENT_CHANGE=1 git commit ...
+EOF
+    exit 1
+fi
+
+if [ -n "$enforcement_changed" ]; then
+    echo "  [enforcement] HFT_ALLOW_ENFORCEMENT_CHANGE=1 — override active for this commit" >&2
+fi
+
+# ============================================================================
 # ALL CHECKS PASSED
 # ============================================================================
 

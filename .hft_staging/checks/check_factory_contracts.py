@@ -57,12 +57,28 @@ def main():
             errs.append(f"phase {ph.get('id')} '{ph.get('name')}' has built tools but a prior phase is incomplete (no skipping)")
         prior_complete = prior_complete and complete
 
-    # formats marked built must have a conforming artifact
+    # formats marked built must have a conforming artifact, and every artifact
+    # must carry the format's required_fields (a format is a CONTRACT, not a name).
+    try:
+        import yaml as _y
+    except Exception:
+        _y = None
     for fname, fmt in (c.get("formats") or {}).items():
         if fmt.get("status") in BUILT:
             hits = glob.glob(os.path.join(STAGING, fmt.get("file_glob", "")))
             if not hits:
                 errs.append(f"format '{fname}' is status:built but no artifact matches {fmt.get('file_glob')}")
+            req = fmt.get("required_fields") or []
+            for h in hits:
+                try:
+                    doc = (_y.safe_load(open(h)) if h.endswith((".yaml", ".yml")) and _y
+                           else json.load(open(h)))
+                except Exception as e:
+                    errs.append(f"format '{fname}': artifact {os.path.basename(h)} unparseable ({e})")
+                    continue
+                missing = [f for f in req if f not in (doc or {})]
+                if missing:
+                    errs.append(f"format '{fname}': {os.path.basename(h)} missing required_fields {missing}")
 
     if errs:
         print("\nVIOLATIONS:")

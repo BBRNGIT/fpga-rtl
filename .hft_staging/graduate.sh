@@ -77,11 +77,11 @@ for GENH in "$SRC"/*_gen.h; do
     # adapter/) have no local netlist here — they are checked in their own
     # component's graduation. Skip them. Mirrors gate.sh stage 2d.
     [ -f "$GBASE.net.json" ] || { echo "    $(basename "$GENH"): sibling seam header (no local netlist) — skipped"; continue; }
-    # Passive buses (kind: passive_bus, e.g. wire/dom_bus) carry no compute by
-    # design — exempt from the logic-content requirement (which catches stub
-    # *indicators*, not buses). Mirrors gate.sh stage 2d.
-    if [ -f "$GBASE.net.json" ] && grep -q '"kind"[[:space:]]*:[[:space:]]*"passive_bus"' "$GBASE.net.json" 2>/dev/null; then
-        echo "    $(basename "$GENH"): passive bus (no compute by design) — exempt"
+    # Exemptions come ONLY from the closed registry (enforcement_registry.yaml —
+    # a protected enforcement file). Mirrors gate.sh stage 2d: no inline exemptions.
+    GKIND=$(sed -nE 's/.*"kind"[[:space:]]*:[[:space:]]*"([a-z_]+)".*/\1/p' "$GBASE.net.json" 2>/dev/null | head -1)
+    if [ -n "$GKIND" ] && grep -qE "^  $GKIND: .*logic_content_exempt" "$ROOT/.hft_staging/enforcement_registry.yaml" 2>/dev/null; then
+        echo "    $(basename "$GENH"): kind '$GKIND' — logic-content exempt per enforcement_registry.yaml"
         CELL_COUNT=1
         continue
     fi

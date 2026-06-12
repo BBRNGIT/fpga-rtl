@@ -143,11 +143,12 @@ echo "==> [gate] 2d/3 flip-flop logic content (cell calls in device C)"
     [ -f "$GENH" ] || continue
     BASE=${GENH%_gen.h}
     [ -f "$BASE.net.json" ] || { echo "    $GENH: sibling seam header (no local netlist) — skipped"; continue; }
-    # Passive buses (role: bus / kind: passive_bus) carry no compute by design —
-    # a register/lane map, not a logic device. Exempt them from the logic-content
-    # requirement (which exists to catch WAVE-1 stub *indicators*, not buses).
-    if grep -q '"kind"[[:space:]]*:[[:space:]]*"passive_bus"' "$BASE.net.json" 2>/dev/null; then
-        echo "    $GENH: passive bus (no compute by design) — exempt"; continue
+    # Exemptions come ONLY from the closed registry (enforcement_registry.yaml —
+    # a protected enforcement file). No inline exemptions: an agent cannot exempt
+    # its own artifacts in the same stroke that creates them.
+    KIND=$(sed -nE 's/.*"kind"[[:space:]]*:[[:space:]]*"([a-z_]+)".*/\1/p' "$BASE.net.json" 2>/dev/null | head -1)
+    if [ -n "$KIND" ] && grep -qE "^  $KIND: .*logic_content_exempt" "$ROOT/.hft_staging/enforcement_registry.yaml" 2>/dev/null; then
+        echo "    $GENH: kind '$KIND' — logic-content exempt per enforcement_registry.yaml"; continue
     fi
     CELL_COUNT=$(grep -o "cell_[a-z_]*(" "$GENH" 2>/dev/null | wc -l)
     if [ "$CELL_COUNT" -eq 0 ]; then
