@@ -16,8 +16,8 @@ fpgas: [fpga-in, fpga-main, fpga-control]
 formats:
   part_profile:
     file_glob: "device_profiles/vu9p.yaml"
-    required_fields: [name, part_ref, registers, clock_domains, io, address_space]
-    purpose: "THE one full-part profile (VU9P, complete, UNDIFFERENTIATED). ALL BLANKS ARE IDENTICAL — the boards are instances of the one blank cast from this; exactly one part profile may exist (check_blank_identity)"
+    required_fields: [name, part_ref, registers, io, address_space]
+    purpose: "THE one full-part profile (VU9P, complete, UNDIFFERENTIATED). ALL BLANKS ARE IDENTICAL — the boards are instances of the one blank cast from this; exactly one part profile may exist (check_blank_identity). NO clock_domains and NO module/part assignment: clock domains belong to the oscillator MODULES and arrive only when those modules are INSTALLED (phase 4) — a blank/profile naming system clock domains is part-assignment at casting (forbidden)"
     status: built
   harness:
     file_glob: "harness/*.harness.yaml"
@@ -92,6 +92,7 @@ phases:
 laws:
   - "Nothing by hand: build, address, install/de-install, synthesize are TOOL-ONLY operations — including COMPONENT FILESETS (a tool emits the whole fileset; hand-assembling scaffolding around a tool is manual coding)."
   - "ALL BLANKS ARE IDENTICAL: one blank (the full real part, undifferentiated), one part profile; boards are identical instances named at addressing. Enforced by checks/check_blank_identity.py."
+  - "A BLANK ASSIGNS NOTHING: no clock-domain tables (clocks belong to oscillator MODULES, arriving at install), no module names, no slot pre-assignment of any system part. Meta tools must not hardcode device specifics or assign parts — all part facts come from the part profile; all assignment is phase 3/4."
   - "The judges may not be edited by the judged: enforcement files are protected (HFT_ALLOW_ENFORCEMENT_CHANGE=1, founder-granted, never bundled with judged artifacts)."
   - "Phase order: a phase may only have built tools if every prior phase's tools are built/done."
   - "Every entity is uniquely addressed in system_registry BEFORE any install."
