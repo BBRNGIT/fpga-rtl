@@ -1,0 +1,10 @@
+# tpo.place.yaml — place the tpo module into partition P_A (region mode).
+# Pure grid-positional: identity = the tiles it occupies. Inputs auto-bind to
+# dom_bus lanes by name (IN_TOUCH_0 -> ...TOUCH_0, etc.) — the data contract.
+module: tpo
+module_netlist: tpo/tpo.net.json
+module_gen: tpo/tpo_gen.h
+partition: P_A
+mode: region
+tiles: {clb: [0]}
+buses: [dom_bus]

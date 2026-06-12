@@ -1,0 +1,3 @@
+# generated/transient: configs are placement state, gen/ is emitted C, binaries
+configs/
+gen/

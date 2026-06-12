@@ -1,0 +1,17 @@
+# bool_demo.desc.yaml — minimal boolean module for the cell-level POC:
+# q = registered (a XOR b). One gate (xor) + one flip-flop (dff). The cell-level
+# placer maps the xor -> a LUT6 (truth table) and the dff -> an FF BEL.
+design: bool_demo
+kind: demo
+ports:
+  in:  [a, b, en]
+  out: [q]
+instances:
+  - {name: g, component: xor, params: {}}
+  - {name: r, component: dff, params: {init: 0}}
+connections:
+  - {net: [a,    g.a]}
+  - {net: [b,    g.b]}
+  - {net: [g.y,  r.d]}
+  - {net: [en,   r.en]}
+  - {net: [r.q,  q]}

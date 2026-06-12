@@ -1,0 +1,346 @@
+#!/usr/bin/env python3
+"""dfx.py — THE one tool for programming modules onto the locked blank (C-as-RTL
+Dynamic Function eXchange). It BUILDS the rest: per-module config + loader C + a
+demo harness. Nothing about the blank is edited — modules are configured ONTO it.
+
+Pure grid-positional: a module's identity IS its tile coordinates; no registry, no
+name index. Connection is by named bus lanes (data contracts), auto-matched by name.
+
+Subcommands:
+  install   <place.yaml>     place a module into a partition; emit config + loader + harness
+  deinstall <config.json>    free the partition; emit a clear loader (re-init its tiles)
+  trace     <what> [args]    module->tiles | tile->module | path  (reads configs only)
+
+Placement manifest (place.yaml):
+  module: tpo
+  module_netlist: tpo/tpo.net.json
+  module_gen: tpo/tpo_gen.h
+  partition: P_A
+  mode: region
+  tiles: {clb: [0]}          # tile indices this partition occupies
+  buses: [dom_bus]           # buses whose lanes the abstract inputs auto-bind to
+
+This file is the tool; the configs/loaders/harness under install/ are its OUTPUTS.
+"""
+import glob
+import json
+import os
+import re
+import sys
+
+try:
+    import yaml
+except Exception:
+    sys.stderr.write("dfx: PyYAML required\n"); sys.exit(2)
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.normpath(os.path.join(HERE, ".."))          # .hft_staging
+CFG_DIR = os.path.join(HERE, "configs")
+GEN_DIR = os.path.join(HERE, "gen")
+FAB = os.path.join(ROOT, "fpga")
+DEFRE = re.compile(r"#define\s+(\w+)\s+(\d+)u")
+
+
+def die(m): sys.stderr.write("dfx: " + m + "\n"); sys.exit(2)
+
+
+def defines(path):
+    """Parse '#define NAME n u' -> {NAME: int} from a generated header."""
+    d = {}
+    for line in open(path):
+        m = DEFRE.search(line)
+        if m:
+            d[m.group(1)] = int(m.group(2))
+    return d
+
+
+def find_lane(buses, suffix):
+    """Auto-bind: find the bus lane whose #define name ends with <suffix>
+    (the data contract — port IN_<suffix> binds to lane ...<suffix>)."""
+    for bus in buses:
+        hdr = os.path.join(ROOT, bus, f"{bus}_gen.h")
+        if not os.path.exists(hdr):
+            die(f"bus header not found: {hdr}")
+        for name, idx in defines(hdr).items():
+            if name.endswith(suffix):
+                return bus, name, idx
+    return None
+
+
+def cmd_install(place_path):
+    m = yaml.safe_load(open(place_path))
+    mod = m["module"]; MOD = mod.upper()
+    mode = m.get("mode", "region")
+    if mode == "cell":
+        return cell_install(m)
+    if mode != "region":
+        die(f"unknown mode '{mode}' (region | cell)")
+    part = m["partition"]
+    clb_tiles = (m.get("tiles") or {}).get("clb") or []
+    if not clb_tiles:
+        die("placement needs tiles.clb (at least one CLB tile for the state)")
+    buses = m.get("buses") or []
+    net = json.load(open(os.path.join(ROOT, m["module_netlist"])))
+    mod_gen = m["module_gen"]
+    mdef = defines(os.path.join(ROOT, mod_gen))
+    sdef = defines(os.path.join(FAB, "clb_slice_gen.h"))
+
+    inputs = [n["name"] for n in net.get("config_nodes", [])]
+    state = [n["name"] for n in net.get("dff_nodes", [])]
+    tile0 = int(clb_tiles[0])
+    if len(state) > 16:
+        die(f"{mod} has {len(state)} state FFs > 16 FF in one CLB tile (region POC uses one tile)")
+
+    # auto-bind every abstract input IN_<X> to a lane ...<X> in the listed buses
+    bindings = []
+    for port in inputs:
+        suffix = port[3:] if port.startswith("IN_") else port
+        hit = find_lane(buses, suffix)
+        if not hit:
+            die(f"no bus lane matches input '{port}' (suffix '{suffix}') in buses {buses}")
+        bus, lane, lane_idx = hit
+        bindings.append({"port": port, "port_reg": mdef[f"{MOD}_{port}"],
+                         "bus": bus, "lane": lane, "lane_reg": lane_idx})
+
+    # state map: module dff k -> this tile's FF BEL slot k (grid coordinate)
+    state_map = []
+    for k, s in enumerate(state):
+        state_map.append({"node": s, "module_reg": mdef[f"{MOD}_{s}"],
+                          "tile_type": "clb", "tile": tile0, "ff_slot": k,
+                          "tile_reg": sdef[f"CLB_SLICE_top_ff{k}"]})
+
+    cfg = {
+        "mode": "region", "module": mod, "module_gen": mod_gen,
+        "partition": part, "tiles": {"clb": [int(t) for t in clb_tiles]},
+        "state_map": state_map, "bindings": bindings,
+        "provenance": "emitted by dfx.py install (do not hand-edit)",
+    }
+    os.makedirs(CFG_DIR, exist_ok=True)
+    cfg_path = os.path.join(CFG_DIR, f"{mod}.{mode}.config.json")
+    json.dump(cfg, open(cfg_path, "w"), indent=2); open(cfg_path, "a").write("\n")
+    emit_region_loader(cfg)
+    emit_harness(cfg)
+    sys.stderr.write(f"dfx: installed {mod} @ {part} (region) tiles={clb_tiles} "
+                     f"-> {os.path.relpath(cfg_path, ROOT)} (+ loader + harness)\n")
+
+
+def emit_region_loader(cfg):
+    mod = cfg["module"]; MOD = mod.upper()
+    busset = sorted({b["bus"] for b in cfg["bindings"]})
+    L = [f"/* GENERATED by dfx.py — region loader for '{mod}'. Drives the module's own",
+         " * tick over a working bank whose STATE lives in the occupied tiles' FF BELs.",
+         " * Reads bound bus lanes into the module's inputs. Never edits the blank header;",
+         " * only writes blank array elements at runtime. */",
+         f"#ifndef DFX_{MOD}_REGION_H", f"#define DFX_{MOD}_REGION_H",
+         '#include "fpga_device_gen.h"']
+    # the module's cells.h is the same canon modulo guard; suppress its duplicate
+    # so the device's cells.h (a superset) is the single definition.
+    mcells = os.path.join(ROOT, os.path.dirname(cfg["module_gen"]), "cells.h")
+    guard = next((re.match(r"#ifndef\s+(\w+_H)", ln.strip()).group(1)
+                  for ln in open(mcells) if re.match(r"#ifndef\s+\w+_H", ln.strip())), None)
+    if guard:
+        L.append(f"#define {guard}  /* suppress {mod}'s duplicate cells.h (same canon) */")
+    L.append(f'#include "{os.path.basename(cfg["module_gen"])}"')
+    for b in busset:
+        L.append(f'#include "{b}_gen.h"')
+    # bus lane banks the loader reads (the producer side; harness drives them)
+    for b in busset:
+        L.append(f"word_t dfx_{b}[{b.upper()}_REG_COUNT];")
+    L.append(f"static word_t dfx_{mod}_regs[{MOD}_REG_COUNT];")
+    # load: init the module bank; tiles already zeroed by fpga_device_init
+    L.append(f"static inline void dfx_{mod}_load(void){{ {mod}_init(dfx_{mod}_regs); }}")
+    # tick: tile-FF -> state ; bus -> inputs ; module tick ; state -> tile-FF
+    L.append(f"static inline void dfx_{mod}_tick(void){{")
+    for s in cfg["state_map"]:
+        L.append(f"  dfx_{mod}_regs[{s['module_reg']}u] = fpga_clb[{s['tile']}u][{s['tile_reg']}u];")
+    for b in cfg["bindings"]:
+        L.append(f"  dfx_{mod}_regs[{b['port_reg']}u] = dfx_{b['bus']}[{b['lane_reg']}u];")
+    L.append(f"  {mod}_tick(dfx_{mod}_regs);")
+    for s in cfg["state_map"]:
+        L.append(f"  fpga_clb[{s['tile']}u][{s['tile_reg']}u] = dfx_{mod}_regs[{s['module_reg']}u];")
+    L.append("}")
+    # clear: re-init the occupied tiles' state slots (deinstall)
+    L.append(f"static inline void dfx_{mod}_clear(void){{")
+    for s in cfg["state_map"]:
+        L.append(f"  fpga_clb[{s['tile']}u][{s['tile_reg']}u] = 0u;")
+    L.append("}")
+    L.append("#endif")
+    os.makedirs(GEN_DIR, exist_ok=True)
+    open(os.path.join(GEN_DIR, f"{mod}_region_load.h"), "w").write("\n".join(L) + "\n")
+
+
+def emit_harness(cfg):
+    mod = cfg["module"]
+    busset = sorted({b["bus"] for b in cfg["bindings"]})
+    L = [f'/* GENERATED by dfx.py — demo harness for {mod} (region). */',
+         f'#include "{mod}_region_load.h"', "#include <stdio.h>", "int main(void){",
+         "  fpga_device_init(); fpga_device_power_on();",
+         f"  dfx_{mod}_load();",
+         '  printf("placed %s region; driving bus, ticking...\\n", "' + mod + '");',
+         "  for (int t=0;t<8;t++){"]
+    # drive a known stimulus: set all TOUCH lanes = 1 each tick (8 ticks)
+    for b in busset:
+        L.append(f"    for (unsigned i=0;i<{b.upper()}_REG_COUNT;i++) dfx_{b}[i]=0u;")
+    for bd in cfg["bindings"]:
+        if "TOUCH" in bd["lane"]:
+            L.append(f"    dfx_{bd['bus']}[{bd['lane_reg']}u]=1u;   /* {bd['lane']} */")
+    L.append(f"    dfx_{mod}_tick();")
+    L.append("  }")
+    # dump the module state straight from the occupied tiles
+    L.append('  printf("module state read from occupied tiles:\\n");')
+    for s in cfg["state_map"]:
+        L.append(f'  printf("  %-12s (clb[%u].ff%u) = %llu\\n", "{s["node"]}", '
+                 f'{s["tile"]}u, {s["ff_slot"]}u, (unsigned long long)fpga_clb[{s["tile"]}u][{s["tile_reg"]}u]);')
+    L.append("  return 0;")
+    L.append("}")
+    open(os.path.join(GEN_DIR, f"{mod}_region_harness.c"), "w").write("\n".join(L) + "\n")
+
+
+# ---- cell-level placement: gate -> LUT6 truth table, FF -> FF BEL -----------
+def cell_out(cell, ins):
+    if cell == "buf": return ins[0] & 1
+    if cell == "not": return (ins[0] ^ 1) & 1
+    if cell == "and": return ins[0] & ins[1] & 1
+    if cell == "or":  return (ins[0] | ins[1]) & 1
+    if cell == "xor": return (ins[0] ^ ins[1]) & 1
+    if cell == "eqmask": return 1 if (ins[0] & 1) == (ins[1] & 1) else 0
+    if cell == "mux": return (ins[1] if (ins[2] & 1) else ins[0]) & 1
+    die(f"cell '{cell}' is not a single-LUT boolean cell (wide arithmetic like "
+        f"addsub needs a carry-chain LUT mapper — out of scope for this POC)")
+
+
+def truth_table(cell, n):
+    tt = 0
+    for idx in range(64):
+        bits = [(idx >> k) & 1 for k in range(6)]
+        if cell_out(cell, bits[:n]):
+            tt |= (1 << idx)
+    return tt
+
+
+def cell_install(m):
+    mod = m["module"]
+    tile = int(((m.get("tiles") or {}).get("clb") or [die("cell needs tiles.clb")])[0])
+    net = json.load(open(os.path.join(ROOT, m["module_netlist"])))
+    sdef = defines(os.path.join(FAB, "clb_slice_gen.h"))
+    combs, dffs = net.get("comb_nodes", []), net.get("dff_nodes", [])
+    inputs = [n["name"] for n in net.get("config_nodes", [])]
+    if len(combs) > 8: die(f"{len(combs)} gates > 8 LUT6 per tile (POC: one tile)")
+    if len(dffs) > 16: die(f"{len(dffs)} FFs > 16 FF per tile")
+    lut_slot = {c["name"]: j for j, c in enumerate(combs)}
+    ff_slot = {d["name"]: k for k, d in enumerate(dffs)}
+    in_idx = {nm: i for i, nm in enumerate(inputs)}
+
+    def val(sig):
+        if sig in in_idx:   return f"dfx_{mod}_in[{in_idx[sig]}u]"
+        if sig in lut_slot: return f"fpga_clb[{tile}u][{sdef[f'CLB_SLICE_OUT_l{lut_slot[sig]}_y']}u]"
+        if sig in ff_slot:  return f"fpga_clb[{tile}u][{sdef[f'CLB_SLICE_top_ff{ff_slot[sig]}']}u]"
+        die(f"cell: unresolved signal '{sig}'")
+
+    cfg = {"mode": "cell", "module": mod, "partition": m["partition"],
+           "tiles": {"clb": [tile]}, "inputs": inputs,
+           "luts": [{"node": c["name"], "cell": c["cell"], "slot": lut_slot[c["name"]],
+                     "tt": truth_table(c["cell"], len(c["inputs"])), "inputs": c["inputs"]}
+                    for c in combs],
+           "ffs": [{"node": d["name"], "slot": ff_slot[d["name"]],
+                    "fed_by": d["fed_by"], "enable": d.get("enable")} for d in dffs],
+           "outputs": [{"name": s["name"], "source": s["source"]} for s in net.get("seam_nodes", [])],
+           "provenance": "emitted by dfx.py install (cell) — do not hand-edit"}
+    os.makedirs(CFG_DIR, exist_ok=True)
+    p = os.path.join(CFG_DIR, f"{mod}.cell.config.json")
+    json.dump(cfg, open(p, "w"), indent=2); open(p, "a").write("\n")
+
+    # cell loader: program LUT truth tables; per tick phase1 LUTs eval, phase2 FFs latch routed outputs
+    MOD = mod.upper()
+    L = ["/* GENERATED by dfx.py (cell) — each gate is a LUT6 (truth table programmed),",
+         " * each FF an FF BEL; loader routes LUT->FF. Drives blank BELs at runtime;",
+         " * never edits the blank header.*/",
+         f"#ifndef DFX_{MOD}_CELL_H", f"#define DFX_{MOD}_CELL_H",
+         '#include "fpga_device_gen.h"',
+         f"static word_t dfx_{mod}_in[{max(1, len(inputs))}u];",
+         f"static inline void dfx_{mod}_load(void){{"]
+    for lu in cfg["luts"]:
+        j = lu["slot"]
+        L.append(f"  fpga_clb[{tile}u][{sdef[f'CLB_SLICE_l{j}_cfg_d']}u]={lu['tt']}ull;"
+                 f" fpga_clb[{tile}u][{sdef[f'CLB_SLICE_l{j}_cfg_en']}u]=1u;")
+    L.append(f"  clb_slice_tick(fpga_clb[{tile}u]);")
+    L.append("}")
+    L.append(f"static inline void dfx_{mod}_tick(void){{")
+    for lu in cfg["luts"]:
+        j = lu["slot"]
+        for n, sig in enumerate(lu["inputs"]):
+            reg = sdef[f"CLB_SLICE_l{j}_i{n}"]
+            L.append(f"  fpga_clb[{tile}u][{reg}u]={val(sig)};")
+    L.append(f"  clb_slice_tick(fpga_clb[{tile}u]);  /* LUTs evaluate */")
+    for ff in cfg["ffs"]:
+        k = ff["slot"]
+        en = val(ff["enable"]) if ff.get("enable") else "1u"
+        L.append(f"  fpga_clb[{tile}u][{sdef[f'CLB_SLICE_d_{k}']}u]={val(ff['fed_by'])};"
+                 f" fpga_clb[{tile}u][{sdef[f'CLB_SLICE_en_{k}']}u]={en};")
+    L.append(f"  clb_slice_tick(fpga_clb[{tile}u]);  /* FFs latch routed LUT outputs */")
+    L.append("}")
+    for o in cfg["outputs"]:
+        L.append(f"static inline word_t dfx_{mod}_{o['name']}(void){{ return {val(o['source'])}; }}")
+    L.append("#endif")
+    os.makedirs(GEN_DIR, exist_ok=True)
+    open(os.path.join(GEN_DIR, f"{mod}_cell_load.h"), "w").write("\n".join(L) + "\n")
+    sys.stderr.write(f"dfx: installed {mod} @ {cfg['partition']} (CELL) tile={tile}: "
+                     f"{len(cfg['luts'])} gate(s)->LUT, {len(cfg['ffs'])} FF(s)->FF-BEL\n")
+
+
+def cmd_deinstall(cfg_path):
+    cfg = json.load(open(cfg_path))
+    os.remove(cfg_path)
+    sys.stderr.write(f"dfx: deinstalled {cfg['module']} @ {cfg['partition']} "
+                     f"(config removed; run dfx_{cfg['module']}_clear() to zero its tiles)\n")
+
+
+def cmd_trace(args):
+    cfgs = [json.load(open(p)) for p in glob.glob(os.path.join(CFG_DIR, "*.config.json"))]
+    if not args:
+        die("trace: module-tiles <mod> | tile-module <type> <i> | path <mod> <port>")
+    q = args[0]
+    if q == "module-tiles":
+        for c in cfgs:
+            if c["module"] == args[1]:
+                tiles = sorted({s["tile"] for s in c["state_map"]})
+                print(f"{args[1]} @ partition {c['partition']} occupies clb tiles {tiles}")
+                return
+        die(f"no installed module '{args[1]}'")
+    if q == "tile-module":
+        tt, i = args[1], int(args[2])
+        for c in cfgs:
+            for s in c["state_map"]:
+                if s["tile_type"] == tt and s["tile"] == i:
+                    print(f"clb tile {i} holds {c['module']} state {s['node']} (ff{s['ff_slot']})")
+                    return
+        print(f"clb tile {i}: free")
+        return
+    if q == "path":
+        mod, port = args[1], args[2]
+        for c in cfgs:
+            if c["module"] == mod:
+                for b in c["bindings"]:
+                    if b["port"] == port:
+                        print(f"{mod}.{port}  <-  {b['bus']} lane {b['lane']}  (data contract)")
+                        return
+        die(f"no binding for {mod}.{port}")
+    die(f"unknown trace query '{q}'")
+
+
+def main():
+    if len(sys.argv) < 2:
+        die("usage: dfx.py install <place.yaml> | deinstall <config.json> | trace <q> ...")
+    cmd = sys.argv[1]
+    if cmd == "install":
+        cmd_install(sys.argv[2])
+    elif cmd == "deinstall":
+        cmd_deinstall(sys.argv[2])
+    elif cmd == "trace":
+        cmd_trace(sys.argv[2:])
+    else:
+        die(f"unknown command '{cmd}'")
+
+
+if __name__ == "__main__":
+    main()

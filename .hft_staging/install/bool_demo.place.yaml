@@ -1,0 +1,6 @@
+# bool_demo.place.yaml — cell-level placement: gates->LUTs, FFs->FF-BELs.
+module: bool_demo
+module_netlist: install/bool_demo.net.json
+partition: P_B
+mode: cell
+tiles: {clb: [3]}
