@@ -1,0 +1,97 @@
+# factory_toolchain.yaml — ENFORCEABLE CONTRACT for the digital silicon factory.
+#
+# The authoritative, version-controlled spec of every phase's tools, their I/O
+# contracts, the formats they consume/produce, build status, and the laws. This
+# persists the toolchain plan IN THE CODEBASE — never in memory. Enforced by
+# checks/check_factory_contracts.py. Narrative: SILICON_FACTORY.md.
+#
+# As each tool is built, flip its status to "built" and add its file; the checker
+# then requires the file to exist and the prior phase to be complete (no skipping).
+
+# Canonical board set (immutable).
+fpgas: [fpga-in, fpga-main, fpga-control]
+
+# ---- FORMATS (the declarative artifacts the tools exchange) -----------------
+# Each format is a contract: a tool that produces/consumes it must conform.
+formats:
+  board_profile:
+    file_glob: "device_profiles/*.yaml"
+    required_fields: [name, part_ref, registers, clock_domains, io, address_space]
+    purpose: "real FPGA-part facts a board blank is cast from (determinism source)"
+    status: planned
+  harness:
+    file_glob: "harness/*.harness.yaml"
+    required_fields: [boards, power_bit, start_stop, sequence]
+    purpose: "programmatic power on/off + start/stop + power-up sequence for the 3 boards"
+    status: planned
+  system_registry:
+    file_glob: "system_registry.json"
+    required_fields: [entity, type, address, owner_module, owner_board]
+    purpose: "a UNIQUE address for EVERY entity — module/lane/wire/flip-flop register/memory/fpga"
+    status: planned
+  install_manifest:
+    file_glob: "*.install.yaml"
+    required_fields: [board, modules, bindings, power_clock]
+    purpose: "declarative seating of modules into a board, bound BY REGISTRY REFERENCE (no raw addresses)"
+    status: planned
+
+# ---- PHASES (each gates the next; a phase's tools require the prior built) ---
+phases:
+  - id: 1
+    name: parts
+    status: done
+    tools:
+      - {name: gen_module_net.py, file: gen_module_net.py, in: [logic.yaml],   out: [netlist],   status: built}
+      - {name: gennet.py,         file: candle/gennet.py,  in: [netlist],      out: [device C],  status: built}
+
+  - id: 2
+    name: boards
+    status: planned
+    tools:
+      - {name: gen_fpga_blank.py, file: gen_fpga_blank.py, in: [board_profile], out: [fpga blank netlist+C], status: planned,
+         purpose: "cast an internally-connected FPGA blank fabric from a real-part profile; NO module allocation"}
+      - {name: gen_harness.py,    file: gen_harness.py,    in: [harness],       out: [harness netlist+C],   status: planned,
+         purpose: "emit the power-control fabric: on/off + start/stop + power-up sequence for the 3 boards"}
+
+  - id: 3
+    name: address
+    status: planned
+    tools:
+      - {name: address_assigner.py,   file: address_assigner.py,   in: [all netlists, blanks],       out: [system_registry], status: planned,
+         purpose: "stamp a UNIQUE address on EVERY entity system-wide (modules/lanes/wires/registers/memories/fpgas)"}
+      - {name: registry_validator.py, file: registry_validator.py, in: [system_registry],            out: [report],          status: planned,
+         purpose: "system-wide: every entity uniquely addressed, no overlap, all refs resolve, board windows respected"}
+      - {name: registry_editor.py,    file: registry_editor.py,    in: [system_registry],            out: [system_registry], status: planned,
+         purpose: "programmatic reserve/override/pin with re-validation (never hand-edit the registry)"}
+      - {name: registry_updater.py,   file: registry_updater.py,   in: [system_registry, netlists],  out: [system_registry], status: planned,
+         purpose: "stable incremental re-addressing when a module changes (no needless reshuffle)"}
+
+  - id: 4
+    name: install
+    status: planned
+    tools:
+      - {name: install.py,   file: install.py,   in: [fpga blank, system_registry, install_manifest], out: [populated board netlist], status: planned,
+         purpose: "seat modules into a board: bind abstract ports to fabric lanes/buses at registry addresses + power/clock. Manual FORBIDDEN"}
+      - {name: deinstall.py, file: deinstall.py, in: [populated board netlist, module],                out: [populated board netlist], status: planned,
+         purpose: "cleanly unseat a module, freeing its registry entries. Manual FORBIDDEN"}
+
+  - id: 5
+    name: synthesize
+    status: planned
+    tools:
+      - {name: synthesize.py, file: synthesize.py, in: [populated boards, system_registry], out: ["device_<fpga>_gen.h + system composite"], status: planned,
+         purpose: "emit the complete C model of each populated board (tape-out); system gate + clean-room"}
+
+  - id: 6
+    name: higher_layers
+    status: planned
+    note: "strategy / oms / execution / signals — built as modules via the SAME line (phase 1 tools); no new toolchain"
+    tools: []
+
+# ---- LAWS (enforced) --------------------------------------------------------
+laws:
+  - "Nothing by hand: build, address, install/de-install, synthesize are TOOL-ONLY operations."
+  - "Phase order: a phase may only have built tools if every prior phase's tools are built/done."
+  - "Every entity is uniquely addressed in system_registry BEFORE any install."
+  - "Install/de-install happen ONLY via install.py/deinstall.py (manual operation is forbidden)."
+  - "A tool marked status: built MUST exist on disk; a format marked built MUST have a conforming artifact."

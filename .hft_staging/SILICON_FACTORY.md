@@ -62,5 +62,9 @@ fixed clocks, real timing) + tool-produced artifacts (byte-match reproducible).
 - No-manual-operation extends to ALL factory operations (build, address, install,
   synthesize) — see `metatools-build-no-manual-coding` and `silicon-factory-phases`.
 - The 3 FPGAs are the canonical device set (`fpga-in`, `fpga-main`, `fpga-control`).
-- (Mechanical checks land as each phase's tools are built: blank-conformance, registry
-  uniqueness/coverage, install-manifest validity, system synthesis gate.)
+- **`factory_toolchain.yaml`** is the machine-readable, version-controlled contract for
+  every phase's tools, their I/O, the formats, and build status — enforced by
+  **`checks/check_factory_contracts.py`** (built tools must exist; no phase skipping;
+  boards canonical). The toolchain plan lives in the codebase, not in memory.
+- (Per-phase mechanical checks land as each phase's tools are built: blank-conformance,
+  registry uniqueness/coverage, install-manifest validity, system synthesis gate.)
