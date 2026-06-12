@@ -98,3 +98,6 @@ laws:
   - "Every entity is uniquely addressed in system_registry BEFORE any install."
   - "Install/de-install happen ONLY via install.py/deinstall.py (manual operation is forbidden)."
   - "A tool marked status: built MUST exist on disk; a format marked built MUST have a conforming artifact."
+  - "Tools REFUSE poison specs (C3): every construction tool (parser/emitter/elaborator/gennet/blank caster) validates its inputs against its governing law and refuses violations — structurally incapable of producing a bad artifact. Correctness lives in the tool, not in memory."
+  - "Gate-forcing (C1): a component cannot be committed unless it passes its full gate (pre-commit hook); escape only via logged HFT_GATE_OVERRIDE=1."
+  - "One-command conformance (C2): checks/audit_all.py audits every component + description + globals — run by the hook, preflight (checks/preflight.sh), and the scheduled sweep (checks/sweep.sh)."
