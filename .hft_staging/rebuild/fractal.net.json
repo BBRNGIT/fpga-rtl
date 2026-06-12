@@ -78,22 +78,16 @@
       "comment": "enable / >= flip"
     },
     {
-      "name": "FRAC_THREE",
-      "type": "u64",
-      "value": 3,
-      "comment": "cs2 = seq - 3"
-    },
-    {
       "name": "FRAC_FIVE",
       "type": "u64",
       "value": 5,
       "comment": "seq>=5 guard threshold"
     },
     {
-      "name": "MASK255",
+      "name": "FRAC_SENTINEL",
       "type": "u64",
-      "value": 255,
-      "comment": "history depth-1 mask (depth=256)"
+      "value": 18446744073709551615,
+      "comment": "no-fractal sentinel (0xFFF..F)"
     }
   ],
   "dff_nodes": [
@@ -110,28 +104,16 @@
       "fed_by": "DN_PRICE_UPDATE",
       "enable": "ONE",
       "comment": "DN fractal pivot-low high-water"
+    },
+    {
+      "name": "FRAC_LAST_SEQ_REG",
+      "type": "u64",
+      "fed_by": "FRAC_LAST_SEQ_UPDATE",
+      "enable": "ONE",
+      "comment": "last seen bar seq (boundary edge)"
     }
   ],
   "comb_nodes": [
-    {
-      "name": "CS2_RAW",
-      "cell": "addsub",
-      "inputs": [
-        "TF_BAR_SEQ_REG",
-        "FRAC_THREE"
-      ],
-      "sub": 1,
-      "comment": "seq - 3"
-    },
-    {
-      "name": "CS2",
-      "cell": "and",
-      "inputs": [
-        "CS2_RAW",
-        "MASK255"
-      ],
-      "comment": "(seq-3) & 255 = history write slot"
-    },
     {
       "name": "SEQ_LT5",
       "cell": "cmp_lt",
@@ -313,6 +295,44 @@
         "IS_DN"
       ],
       "comment": "latch l2 on DN, else hold"
+    },
+    {
+      "name": "NEXT_HU",
+      "cell": "mux",
+      "inputs": [
+        "FRAC_SENTINEL",
+        "H2",
+        "IS_UP"
+      ],
+      "comment": "per-bar UP record (h2 on UP, else sentinel)"
+    },
+    {
+      "name": "NEXT_HD",
+      "cell": "mux",
+      "inputs": [
+        "FRAC_SENTINEL",
+        "L2",
+        "IS_DN"
+      ],
+      "comment": "per-bar DN record (l2 on DN, else sentinel)"
+    },
+    {
+      "name": "FRAC_BOUNDARY",
+      "cell": "eqmask",
+      "inputs": [
+        "FRAC_LAST_SEQ_REG",
+        "TF_BAR_SEQ_REG"
+      ],
+      "invert": true,
+      "comment": "1 iff seq changed (bar committed)"
+    },
+    {
+      "name": "FRAC_LAST_SEQ_UPDATE",
+      "cell": "buf",
+      "inputs": [
+        "TF_BAR_SEQ_REG"
+      ],
+      "comment": "latch latest seq for next-cycle edge"
     }
   ],
   "seam_nodes": [
@@ -329,5 +349,20 @@
       "comment": ""
     }
   ],
-  "wiring": {}
+  "wiring": {},
+  "history_ring": {
+    "name": "FRAC_HIST",
+    "depth": 256,
+    "write_enable": "FRAC_BOUNDARY",
+    "fields": [
+      {
+        "name": "UP",
+        "source": "NEXT_HU"
+      },
+      {
+        "name": "DN",
+        "source": "NEXT_HD"
+      }
+    ]
+  }
 }
