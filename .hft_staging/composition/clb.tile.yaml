@@ -5,19 +5,27 @@
 #   "Each UltraScale architecture CLB contains one slice ... eight 6-input LUTs
 #    and sixteen flip-flops", positions labeled A–H.
 #
-# This is a SPEC INPUT (authentic facts, no invention) consumed by materialize.py
-# to build the device model's CLB tile type. BEL leaves map to library components:
-#   FF  -> cell_dff (the flip-flop atom; FDRE/FDSE/FDCE/FDPE configs of it)
-#   LUT6 -> library component `lut6` (a 64:1 config mux composite — TO BE ADDED to
-#           the library deliberately; flagged, not invented here).
+# SPEC INPUT (authentic facts, no invention) consumed by the GENERIC materialize.py.
+# The spec itself declares how its instance COUNT is derived from the parts manifest
+# and the cross-checks that must hold — so the tool hardcodes NO device specifics.
+# BEL leaves map to library components: FF -> cell_dff; LUT6 -> library `lut6`
+# (a 64:1 config-mux composite, TO BE ADDED to the library deliberately).
 
 tile_type: CLB
 source: "UG574 UltraScale Architecture CLB User Guide"
+
 sites:
   - site_type: SLICE
     per_tile: 1
     bels:
       - {bel: LUT6, count: 8,  positions: [A, B, C, D, E, F, G, H], library: lut6, status: library_component_pending}
       - {bel: FF,   count: 16, library: dff}   # 16 storage elements (2 per A–H position)
-# Cross-check (authentic, enforced by materialize.py): with N CLBs,
-#   N * 16  == manifest CLB Flip-Flops,  and  N * 8 == manifest CLB LUTs.
+
+# How materialize.py derives this tile's instance count from the manifest, and the
+# checks that must hold — all DECLARED here, applied generically by the tool:
+count_rule:
+  from: "CLB Flip-Flops"   # manifest resource (substring match)
+  scale: 1000              # the "(K)" column = thousands
+  per_bel: FF              # count = (scaled total) / (number of FF bels per tile)
+cross_checks:
+  - {from: "CLB LUTs", scale: 1000, per_bel: LUT6}   # scaled total == count * (#LUT6 bels)
