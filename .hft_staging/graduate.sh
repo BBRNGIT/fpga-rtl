@@ -73,6 +73,10 @@ CELL_COUNT=0
 for GENH in "$SRC"/*_gen.h; do
     [ -f "$GENH" ] || continue
     GBASE=${GENH%_gen.h}
+    # Sibling seam headers regenerated in this dir (e.g. wire_gen.h inside
+    # adapter/) have no local netlist here — they are checked in their own
+    # component's graduation. Skip them. Mirrors gate.sh stage 2d.
+    [ -f "$GBASE.net.json" ] || { echo "    $(basename "$GENH"): sibling seam header (no local netlist) — skipped"; continue; }
     # Passive buses (kind: passive_bus, e.g. wire/dom_bus) carry no compute by
     # design — exempt from the logic-content requirement (which catches stub
     # *indicators*, not buses). Mirrors gate.sh stage 2d.
