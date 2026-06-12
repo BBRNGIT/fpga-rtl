@@ -1,0 +1,39 @@
+# timeframe_logic.yaml — cell-level rebuild of the bar-boundary clock authority.
+# Faithful to timeframe_gen.h tick (TIMEFRAME.md COMPUTE):
+#   elapsed   = addsub(tai, bar_start, sub)      ; TAI - BAR_START
+#   ge        = cmp_lt(elapsed, period) ^ 1      ; elapsed >= period
+#   rollover  = gate(ge, power)                  ; >= AND powered
+#   seq_next  = bar_seq + rollover
+#   closed    = gate(rollover, power)            ; one-tick pulse
+#   start     = mux(bar_start, tai, rollover)    ; re-anchor on boundary
+# TF_TICKS is the self-run budget counter (legacy: incremented in the run loop while
+# powered & < RUN_UNTIL); modeled here as gate(1,power) step (equivalent in-loop).
+module: timeframe
+kind: counter
+clock: {power: TF_POWER, comment: "bar rollover detect self-runs while powered, bounded by TF_RUN_UNTIL"}
+seam_inputs:
+  - {name: TF_POWER,     type: bit, source: "", comment: "power bit (set once by starter)"}
+  - {name: TF_RUN_UNTIL, type: u64, source: "", comment: "self-run tick budget (start/stop bound)"}
+  - {name: TF_TAI_IN,    type: u64, source: "", comment: "sampled TIME_TAI_NS value on this device's lane (module-barrier)"}
+  - {name: TF_PERIOD_NS, type: u64, source: "", comment: "bar period in ns (operator-written once)"}
+const_nodes:
+  - {name: ONE, type: u64, value: 1, comment: "tick step / >= flip constant"}
+comb_nodes:
+  - {name: ELAPSED,     cell: addsub, inputs: [TF_TAI_IN, TF_BAR_START], sub: 1, comment: "TAI - BAR_START"}
+  - {name: LT,          cell: cmp_lt, inputs: [ELAPSED, TF_PERIOD_NS], comment: "elapsed < period"}
+  - {name: GE,          cell: xor,    inputs: [LT, ONE], comment: "elapsed >= period (cmp_lt ^ 1)"}
+  - {name: ROLLOVER,    cell: gate,   inputs: [GE, TF_POWER], comment: ">= AND powered"}
+  - {name: SEQ_NEXT,    cell: addsub, inputs: [TF_BAR_SEQ, ROLLOVER], sub: 0, comment: "BAR_SEQ += rollover"}
+  - {name: CLOSED_NEXT, cell: gate,   inputs: [ROLLOVER, TF_POWER], comment: "one-tick boundary pulse"}
+  - {name: START_NEXT,  cell: mux,    inputs: [TF_BAR_START, TF_TAI_IN, ROLLOVER], comment: "re-anchor to TAI on boundary, else hold"}
+  - {name: STEP,        cell: gate,   inputs: [ONE, TF_POWER], comment: "1 while powered (self-run step)"}
+  - {name: TICKS_NEXT,  cell: addsub, inputs: [TF_TICKS, STEP], sub: 0, comment: "self-run tick counter += step"}
+dff_nodes:
+  - {name: TF_TICKS,      type: u64, fed_by: TICKS_NEXT,  enable: ONE, comment: "self-run budget counter"}
+  - {name: TF_BAR_SEQ,    type: u64, fed_by: SEQ_NEXT,    enable: ONE, comment: "bar sequence"}
+  - {name: TF_BAR_CLOSED, type: u64, fed_by: CLOSED_NEXT, enable: ONE, comment: "0->1 one-tick pulse at boundary"}
+  - {name: TF_BAR_START,  type: u64, fed_by: START_NEXT,  enable: ONE, comment: "TAI at current bar open"}
+seam_outputs:
+  - {name: TF_BAR_SEQ_OUT,    source: TF_BAR_SEQ,    type: u64, comment: "bar sequence (read by candle/footprint/tpo/fractal/cbr/grid)"}
+  - {name: TF_BAR_CLOSED_OUT, source: TF_BAR_CLOSED, type: bit, comment: "bar-closed strobe"}
+  - {name: TF_BAR_START_OUT,  source: TF_BAR_START,  type: u64, comment: "bar-open TAI"}
