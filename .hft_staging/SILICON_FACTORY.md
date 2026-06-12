@@ -56,6 +56,16 @@ without writing millions of lines of hand code. The factory does the heavy lifti
 human authors specs and the machines. Determinism comes from the FPGA (fixed fabric,
 fixed clocks, real timing) + tool-produced artifacts (byte-match reproducible).
 
+## The protected enforcement layer (hardened 2026-06-12)
+
+The judges may not be edited by the judged. Enforcement files (`gate.sh`,
+`graduate.sh`, `checks/*`, `module_contracts.yaml`, `factory_toolchain.yaml`,
+`enforcement_registry.yaml`, the cells canon, the hooks) are **protected**:
+modifying or deleting them requires the founder-granted override
+`HFT_ALLOW_ENFORCEMENT_CHANGE=1` at commit time. Gate exemptions are granted
+ONLY in `enforcement_registry.yaml` (itself protected) — never inline. Never
+change an enforcement file in the same stroke as the artifacts it judges.
+
 ## Enforcement
 
 - Phase order is a hard sequence: a phase's outputs must gate-pass before the next.
