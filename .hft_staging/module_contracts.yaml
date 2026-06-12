@@ -1,0 +1,35 @@
+# module_contracts.yaml — the SYSTEM CONTRACT in machine-readable form.
+#
+# The authoritative declaration of every module's FUNCTIONAL contract: role,
+# clock domain, data direction, and whether it keeps history. This exists so the
+# system model is ENFORCED codebase-wide (checks/check_module_contract.py, wired
+# into gate.sh) and does NOT depend on LLM memory or founder re-explanation to
+# persist. See SYSTEM_CONTRACT.md for the human narrative.
+#
+# Fields per module:
+#   role         : ingress | bus | gateway | cdc | oscillator | counter |
+#                  passive_time | lookup | bar_clock | order_book | indicator
+#   clock_domain : self_paced (owns a clock generator) | mac | internal |
+#                  oscillator (produces a clock) | cdc (crossing) | none (passive)
+#   writes_to    : where its output goes (doc/abstract — bound at assignment)
+#   has_history  : true iff it keeps a record store (only indicators do)
+#   data_push    : true iff it pushes data downstream; false for pure references
+#                  (tai just exists — others read it; it pushes nothing)
+#   notes        : the one-line intent
+
+modules:
+  adapter:   {role: ingress,      clock_domain: self_paced, writes_to: wire,     has_history: false, data_push: true,  notes: "data-in; OWN time pacer (self-advancing, source timestamps only gate release), writes to wire"}
+  wire:      {role: bus,          clock_domain: none,       writes_to: "-",      has_history: false, data_push: false, notes: "passive seam/bus the adapter publishes onto"}
+  nic:       {role: gateway,      clock_domain: mac,        writes_to: fifo,     has_history: false, data_push: true,  notes: "samples wire at MAC clock; stamps TAI time on receipt; writes to fifo"}
+  mac:       {role: oscillator,   clock_domain: oscillator, writes_to: "-",      has_history: false, data_push: false, notes: "produces the MAC clock"}
+  internal:  {role: oscillator,   clock_domain: oscillator, writes_to: "-",      has_history: false, data_push: false, notes: "produces the internal clock that drives the fabric"}
+  fifo_rx:   {role: cdc,          clock_domain: cdc,        writes_to: internal, has_history: false, data_push: true,  notes: "MAC->internal crossing buffer (nic writes, dom reads)"}
+  tai_cdc:   {role: cdc,          clock_domain: cdc,        writes_to: internal, has_history: false, data_push: false, notes: "TAI value crossing into the internal domain"}
+  tai:       {role: passive_time, clock_domain: counter,    writes_to: "-",      has_history: false, data_push: false, notes: "real-world time, accumulated from taiosc; does NOT drive/push data — just exists to be read/stamped"}
+  taiosc:    {role: oscillator,   clock_domain: oscillator, writes_to: "-",      has_history: false, data_push: false, notes: "oscillates TAI (the TAI time source)"}
+  pip_resolver: {role: lookup,    clock_domain: mac,        writes_to: "-",      has_history: false, data_push: false, notes: "per-symbol lookup; publishes the pip size (owns nothing)"}
+  timeframe: {role: bar_clock,    clock_domain: counter,    writes_to: "-",      has_history: false, data_push: false, notes: "counts internal ticks; rolls BAR_SEQ at the period (a guide, not a master)"}
+  dom:       {role: order_book,   clock_domain: internal,   writes_to: "-",      has_history: false, data_push: true,  notes: "samples fifo at the internal clock; live per-tick price-indexed book"}
+  candle:    {role: indicator,    clock_domain: internal_passive,   writes_to: "-",      has_history: true,  data_push: false, notes: "per-bar OHLC; keeps a record store"}
+  footprint: {role: indicator,    clock_domain: internal_passive,   writes_to: "-",      has_history: true,  data_push: false, notes: "per-bar own bid/ask volume + delta per price; record store"}
+  tpo:       {role: indicator,    clock_domain: internal_passive,   writes_to: "-",      has_history: true,  data_push: false, notes: "per-bar time-ticks-spent per price; record store"}

@@ -190,6 +190,13 @@ echo "==> [gate] 2h/3 index doctrine (price = direct index, time-only reference)
 [ -f "$CHECKS/check_index_doctrine.py" ] || { echo "    FAIL — missing enforcement script: $CHECKS/check_index_doctrine.py"; exit 3; }
 python3 "$CHECKS/check_index_doctrine.py" "$DIR" || exit 3
 
+echo "==> [gate] 2i/3 module contract (construction matches declared functional contract)"
+# The system model (module_contracts.yaml / SYSTEM_CONTRACT.md) is enforced per
+# module: clock domain, history, passive-time discipline must match the netlist.
+# Encodes the recap so it persists without memory/re-explanation.
+[ -f "$CHECKS/check_module_contract.py" ] || { echo "    FAIL — missing enforcement script: $CHECKS/check_module_contract.py"; exit 3; }
+python3 "$CHECKS/check_module_contract.py" "$DIR" --strict || exit 3
+
 echo "==> [gate] 3/3 clean-room build from committed HEAD"
 # Uncommitted check covers the whole staging tree: a sibling dep changing would
 # also invalidate a clean-room build of this component, so gate the real artifact
