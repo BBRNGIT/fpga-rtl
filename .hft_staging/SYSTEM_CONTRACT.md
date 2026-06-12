@@ -44,6 +44,20 @@ founder re-explanation.
   guide, not a master). **pip_resolver** — per-symbol lookup that publishes the
   pip size; owns nothing.
 
+## The barrier-bus law (a module may not read another's registers directly)
+
+Cross-module data always crosses a **barrier bus** — a passive, lock-free, addressed
+lane bank that the producer dumps onto and the consumer samples. A module never reads
+another module's registers directly.
+
+- **wire** — adapter → nic (the ingress packet).
+- **dom_bus** — dom → indicators. DOM dumps its per-tick snapshot onto `dom_bus`;
+  candle/footprint/tpo **sample dom_bus**, never DOM's registers. (Single-writer +
+  registered ⇒ lock-free by construction; same-domain, so no CDC.)
+
+Consumers therefore declare **abstract input ports** (build phase) and are bound to the
+bus at the **assignment phase** — they are never constructed against a peer's internals.
+
 ## Memory
 
 - Only **historical** modules (the indicators) keep a record store, and it is a
