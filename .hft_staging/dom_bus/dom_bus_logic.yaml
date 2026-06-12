@@ -1,0 +1,41 @@
+# dom_bus_logic.yaml — DOM's lock-free output BARRIER BUS (spec input).
+#
+# A passive, lock-free, addressed lane bank. DOM dumps its per-tick snapshot onto
+# these lanes (sole writer); the indicators SAMPLE them. A module may not read
+# another module's registers directly (barrier-bus law) — dom_bus is the medium
+# both sides meet at, exactly as `wire` is for adapter->nic. Single-writer +
+# registered + same internal-clock domain => lock-free, no CDC.
+#
+# NO clock, NO compute, NO logic — addressed lanes only. The DOM->dom_bus and
+# dom_bus->indicator bindings are the ASSIGNMENT phase (not here).
+#
+# width = price-index lanes carried (the per-tick price-indexed snapshot).
+
+module: dom_bus
+kind: passive_bus
+width: 8
+
+bus_nodes:
+  # --- per-price snapshot (the price-indexed payload indicators count from) ---
+  - {name: DOMBUS_BID_ACT_i, type: u64, unroll: true, comment: "bid activity at price-index i this tick"}
+  - {name: DOMBUS_ASK_ACT_i, type: u64, unroll: true, comment: "ask activity at price-index i this tick"}
+  - {name: DOMBUS_TOUCH_i,   type: u64, unroll: true, comment: "1 iff price-index i was touched this tick (tpo)"}
+  # --- top-of-book scalars ---
+  - {name: DOMBUS_BEST_BID,     type: fixed_u64, comment: "best bid price"}
+  - {name: DOMBUS_BEST_ASK,     type: fixed_u64, comment: "best ask price"}
+  - {name: DOMBUS_BEST_BID_QTY, type: u64,       comment: "best bid quantity"}
+  - {name: DOMBUS_BEST_ASK_QTY, type: u64,       comment: "best ask quantity"}
+  # --- time / frame scalars ---
+  - {name: DOMBUS_BAR_BOUNDARY, type: bit, comment: "1 on the first tick of a new bar"}
+  - {name: DOMBUS_BAR_TIME,     type: u64, comment: "committing bar's time (intrinsic record coordinate)"}
+  - {name: DOMBUS_BAR_SEQ,      type: u64, comment: "bar sequence"}
+  - {name: DOMBUS_VALID,        type: bit, comment: "1 when a fresh snapshot is present"}
+  # --- DOM derived per-tick aggregates (B: for future consumers) ---
+  - {name: DOMBUS_TOTAL_BID_QTY,  type: u64,       comment: "total bid qty across the book"}
+  - {name: DOMBUS_TOTAL_ASK_QTY,  type: u64,       comment: "total ask qty across the book"}
+  - {name: DOMBUS_SPREAD,         type: fixed_u64, comment: "best ask - best bid (non-gating convenience)"}
+  - {name: DOMBUS_MID,            type: fixed_u64, comment: "mid price (non-gating convenience)"}
+  - {name: DOMBUS_ADD_COUNT,      type: u64,       comment: "adds this tick"}
+  - {name: DOMBUS_CANCEL_COUNT,   type: u64,       comment: "cancels this tick"}
+  - {name: DOMBUS_TRADE_COUNT,    type: u64,       comment: "trades this tick"}
+  - {name: DOMBUS_LAST_FEED_TIME, type: u64,       comment: "last feed TAI time"}
