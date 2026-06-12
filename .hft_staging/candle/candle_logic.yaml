@@ -42,12 +42,12 @@ clock: passive
 # 1. INPUT INTERFACE — published upstream lanes (module barrier: read-only).
 # ---------------------------------------------------------------------------
 seam_inputs:
-  - {name: DOM_BEST_BID_PRICE_REG,  type: u64, source: dom,       comment: "Best bid price (highest bid level)"}
-  - {name: DOM_BEST_ASK_PRICE_REG,  type: u64, source: dom,       comment: "Best ask price (lowest ask level)"}
-  - {name: DOM_BEST_BID_QTY_REG,    type: u64, source: dom,       comment: "Bid quantity at top level"}
-  - {name: DOM_BEST_ASK_QTY_REG,    type: u64, source: dom,       comment: "Ask quantity at top level"}
-  - {name: TF_BAR_SEQ, type: u64, source: timeframe, comment: "Timeframe bar sequence (bar-boundary detection)"}
-  - {name: TF_BAR_START,     type: u64, source: timeframe, comment: "TAI at current bar open (latched into completed bar)"}
+  - {name: IN_BID_PRICE,  type: u64, source: "",       comment: "Best bid price (highest bid level)"}
+  - {name: IN_ASK_PRICE,  type: u64, source: "",       comment: "Best ask price (lowest ask level)"}
+  - {name: IN_BID_QTY,    type: u64, source: "",       comment: "Bid quantity at top level"}
+  - {name: IN_ASK_QTY,    type: u64, source: "",       comment: "Ask quantity at top level"}
+  - {name: IN_BAR_SEQ, type: u64, source: "", comment: "Timeframe bar sequence (bar-boundary detection)"}
+  - {name: IN_BAR_TIME,     type: u64, source: "", comment: "TAI at current bar open (latched into completed bar)"}
 
 # ---------------------------------------------------------------------------
 # 2. CONSTANTS — reset-latched arms, never written by the tick.
@@ -101,7 +101,7 @@ dff_nodes:
   - {name: CANDLE_COMP_TRUE_RANGE_BID,    type: u64, fed_by: CANDLE_TRUE_RANGE_BID,    enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar bid true range"}
   - {name: CANDLE_COMP_TRUE_RANGE_ASK,    type: u64, fed_by: CANDLE_TRUE_RANGE_ASK,    enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar ask true range"}
   - {name: CANDLE_COMP_INTRABAR_QTY_DELTA,type: u64, fed_by: CANDLE_INTRABAR_QTY_DELTA,enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar intrabar qty delta"}
-  - {name: CANDLE_COMP_TAI,               type: u64, fed_by: TF_BAR_START,                  enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar TAI timestamp"}
+  - {name: CANDLE_COMP_TAI,               type: u64, fed_by: IN_BAR_TIME,                  enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar TAI timestamp"}
   - {name: CANDLE_COMP_BAR_SEQ,           type: u64, fed_by: CANDLE_BAR_SEQ,           enable: CANDLE_BAR_BOUNDARY, comment: "Completed bar sequence"}
 
 # ---------------------------------------------------------------------------
@@ -128,7 +128,7 @@ history_ring:
     - {name: TRUE_RANGE_BID,    source: CANDLE_TRUE_RANGE_BID}
     - {name: TRUE_RANGE_ASK,    source: CANDLE_TRUE_RANGE_ASK}
     - {name: INTRABAR_QTY_DELTA,source: CANDLE_INTRABAR_QTY_DELTA}
-    - {name: TAI,               source: TF_BAR_START}
+    - {name: TAI,               source: IN_BAR_TIME}
     - {name: BAR_SEQ,           source: CANDLE_BAR_SEQ}
 
 # ---------------------------------------------------------------------------
@@ -139,8 +139,8 @@ history_ring:
 # ---------------------------------------------------------------------------
 comb_nodes:
   # --- 5.0 bar-boundary + fresh-bar control (computed FIRST) ---
-  # raw seq change: 1 iff LAST_TF_SEQ != TF_BAR_SEQ.
-  - {name: CANDLE_SEQ_CHANGE, cell: eqmask, inputs: [CANDLE_LAST_TF_SEQ, TF_BAR_SEQ], invert: true,
+  # raw seq change: 1 iff LAST_TF_SEQ != IN_BAR_SEQ.
+  - {name: CANDLE_SEQ_CHANGE, cell: eqmask, inputs: [CANDLE_LAST_TF_SEQ, IN_BAR_SEQ], invert: true,
      comment: "1 iff timeframe seq differs from last cycle"}
   # A real boundary only counts AFTER the first tick (open_set=1): the very first
   # tick at power-on has LAST_TF_SEQ=0 which would falsely look like a change.
@@ -154,43 +154,43 @@ comb_nodes:
      comment: "fresh = boundary OR (open not set): seed OHLC this tick"}
 
   # --- 5.1 tick detection (price changed vs last close) ---
-  - {name: CANDLE_BID_TICK, cell: eqmask, inputs: [DOM_BEST_BID_PRICE_REG, CANDLE_BID_CLOSE], invert: true,
+  - {name: CANDLE_BID_TICK, cell: eqmask, inputs: [IN_BID_PRICE, CANDLE_BID_CLOSE], invert: true,
      comment: "1 iff bid price differs from last latched bid"}
-  - {name: CANDLE_ASK_TICK, cell: eqmask, inputs: [DOM_BEST_ASK_PRICE_REG, CANDLE_ASK_CLOSE], invert: true,
+  - {name: CANDLE_ASK_TICK, cell: eqmask, inputs: [IN_ASK_PRICE, CANDLE_ASK_CLOSE], invert: true,
      comment: "1 iff ask price differs from last latched ask"}
 
   # --- 5.2 bid-side OHLC ---
   # OPEN: on fresh tick latch DOM, else hold.
-  - {name: CANDLE_BID_OPEN_UPDATE, cell: mux, inputs: [CANDLE_BID_OPEN, DOM_BEST_BID_PRICE_REG, CANDLE_FRESH],
-     comment: "fresh -> latch DOM_BEST_BID_PRICE_REG; else hold CANDLE_BID_OPEN"}
+  - {name: CANDLE_BID_OPEN_UPDATE, cell: mux, inputs: [CANDLE_BID_OPEN, IN_BID_PRICE, CANDLE_FRESH],
+     comment: "fresh -> latch IN_BID_PRICE; else hold CANDLE_BID_OPEN"}
   # HIGH: running max. On fresh, seed = DOM; else max(high, DOM).
-  - {name: CANDLE_BID_IS_NEW_HIGH, cell: cmp_lt, inputs: [CANDLE_BID_HIGH, DOM_BEST_BID_PRICE_REG],
-     comment: "1 iff current high < DOM_BEST_BID_PRICE_REG (new high)"}
-  - {name: CANDLE_BID_HIGH_TRACK, cell: mux, inputs: [CANDLE_BID_HIGH, DOM_BEST_BID_PRICE_REG, CANDLE_BID_IS_NEW_HIGH],
+  - {name: CANDLE_BID_IS_NEW_HIGH, cell: cmp_lt, inputs: [CANDLE_BID_HIGH, IN_BID_PRICE],
+     comment: "1 iff current high < IN_BID_PRICE (new high)"}
+  - {name: CANDLE_BID_HIGH_TRACK, cell: mux, inputs: [CANDLE_BID_HIGH, IN_BID_PRICE, CANDLE_BID_IS_NEW_HIGH],
      comment: "max(high, DOM): pick DOM when new high, else hold"}
-  - {name: CANDLE_BID_HIGH_UPDATE, cell: mux, inputs: [CANDLE_BID_HIGH_TRACK, DOM_BEST_BID_PRICE_REG, CANDLE_FRESH],
+  - {name: CANDLE_BID_HIGH_UPDATE, cell: mux, inputs: [CANDLE_BID_HIGH_TRACK, IN_BID_PRICE, CANDLE_FRESH],
      comment: "fresh -> seed DOM; else running max"}
   # LOW: running min. On fresh, seed = DOM; else min(low, DOM).
-  - {name: CANDLE_BID_IS_NEW_LOW, cell: cmp_lt, inputs: [DOM_BEST_BID_PRICE_REG, CANDLE_BID_LOW],
-     comment: "1 iff DOM_BEST_BID_PRICE_REG < current low (new low)"}
-  - {name: CANDLE_BID_LOW_TRACK, cell: mux, inputs: [CANDLE_BID_LOW, DOM_BEST_BID_PRICE_REG, CANDLE_BID_IS_NEW_LOW],
+  - {name: CANDLE_BID_IS_NEW_LOW, cell: cmp_lt, inputs: [IN_BID_PRICE, CANDLE_BID_LOW],
+     comment: "1 iff IN_BID_PRICE < current low (new low)"}
+  - {name: CANDLE_BID_LOW_TRACK, cell: mux, inputs: [CANDLE_BID_LOW, IN_BID_PRICE, CANDLE_BID_IS_NEW_LOW],
      comment: "min(low, DOM): pick DOM when new low, else hold"}
-  - {name: CANDLE_BID_LOW_UPDATE, cell: mux, inputs: [CANDLE_BID_LOW_TRACK, DOM_BEST_BID_PRICE_REG, CANDLE_FRESH],
+  - {name: CANDLE_BID_LOW_UPDATE, cell: mux, inputs: [CANDLE_BID_LOW_TRACK, IN_BID_PRICE, CANDLE_FRESH],
      comment: "fresh -> seed DOM; else running min"}
   # CLOSE: always latch most recent.
-  - {name: CANDLE_BID_CLOSE_UPDATE, cell: buf, inputs: [DOM_BEST_BID_PRICE_REG],
+  - {name: CANDLE_BID_CLOSE_UPDATE, cell: buf, inputs: [IN_BID_PRICE],
      comment: "passthrough — always latch most recent bid"}
 
   # --- 5.3 ask-side OHLC (symmetric) ---
-  - {name: CANDLE_ASK_OPEN_UPDATE, cell: mux, inputs: [CANDLE_ASK_OPEN, DOM_BEST_ASK_PRICE_REG, CANDLE_FRESH],
-     comment: "fresh -> latch DOM_BEST_ASK_PRICE_REG; else hold"}
-  - {name: CANDLE_ASK_IS_NEW_HIGH, cell: cmp_lt, inputs: [CANDLE_ASK_HIGH, DOM_BEST_ASK_PRICE_REG], comment: "new ask high"}
-  - {name: CANDLE_ASK_HIGH_TRACK, cell: mux, inputs: [CANDLE_ASK_HIGH, DOM_BEST_ASK_PRICE_REG, CANDLE_ASK_IS_NEW_HIGH], comment: "max(high,DOM)"}
-  - {name: CANDLE_ASK_HIGH_UPDATE, cell: mux, inputs: [CANDLE_ASK_HIGH_TRACK, DOM_BEST_ASK_PRICE_REG, CANDLE_FRESH], comment: "fresh seed else max"}
-  - {name: CANDLE_ASK_IS_NEW_LOW, cell: cmp_lt, inputs: [DOM_BEST_ASK_PRICE_REG, CANDLE_ASK_LOW], comment: "new ask low"}
-  - {name: CANDLE_ASK_LOW_TRACK, cell: mux, inputs: [CANDLE_ASK_LOW, DOM_BEST_ASK_PRICE_REG, CANDLE_ASK_IS_NEW_LOW], comment: "min(low,DOM)"}
-  - {name: CANDLE_ASK_LOW_UPDATE, cell: mux, inputs: [CANDLE_ASK_LOW_TRACK, DOM_BEST_ASK_PRICE_REG, CANDLE_FRESH], comment: "fresh seed else min"}
-  - {name: CANDLE_ASK_CLOSE_UPDATE, cell: buf, inputs: [DOM_BEST_ASK_PRICE_REG], comment: "passthrough — most recent ask"}
+  - {name: CANDLE_ASK_OPEN_UPDATE, cell: mux, inputs: [CANDLE_ASK_OPEN, IN_ASK_PRICE, CANDLE_FRESH],
+     comment: "fresh -> latch IN_ASK_PRICE; else hold"}
+  - {name: CANDLE_ASK_IS_NEW_HIGH, cell: cmp_lt, inputs: [CANDLE_ASK_HIGH, IN_ASK_PRICE], comment: "new ask high"}
+  - {name: CANDLE_ASK_HIGH_TRACK, cell: mux, inputs: [CANDLE_ASK_HIGH, IN_ASK_PRICE, CANDLE_ASK_IS_NEW_HIGH], comment: "max(high,DOM)"}
+  - {name: CANDLE_ASK_HIGH_UPDATE, cell: mux, inputs: [CANDLE_ASK_HIGH_TRACK, IN_ASK_PRICE, CANDLE_FRESH], comment: "fresh seed else max"}
+  - {name: CANDLE_ASK_IS_NEW_LOW, cell: cmp_lt, inputs: [IN_ASK_PRICE, CANDLE_ASK_LOW], comment: "new ask low"}
+  - {name: CANDLE_ASK_LOW_TRACK, cell: mux, inputs: [CANDLE_ASK_LOW, IN_ASK_PRICE, CANDLE_ASK_IS_NEW_LOW], comment: "min(low,DOM)"}
+  - {name: CANDLE_ASK_LOW_UPDATE, cell: mux, inputs: [CANDLE_ASK_LOW_TRACK, IN_ASK_PRICE, CANDLE_FRESH], comment: "fresh seed else min"}
+  - {name: CANDLE_ASK_CLOSE_UPDATE, cell: buf, inputs: [IN_ASK_PRICE], comment: "passthrough — most recent ask"}
 
   # --- 5.4 volume accumulation with bar-boundary reset ---
   # incremented value = volume + tick; on fresh bar reset to the tick count of
@@ -211,7 +211,7 @@ comb_nodes:
      comment: "ask_high' - ask_low'"}
 
   # --- 5.6 intrabar quantity delta (cumulative ask_qty - bid_qty) with reset ---
-  - {name: CANDLE_QUOTE_DELTA, cell: addsub, inputs: [DOM_BEST_ASK_QTY_REG, DOM_BEST_BID_QTY_REG], sub: 1,
+  - {name: CANDLE_QUOTE_DELTA, cell: addsub, inputs: [IN_ASK_QTY, IN_BID_QTY], sub: 1,
      comment: "ask_qty - bid_qty this quote"}
   - {name: CANDLE_DELTA_BASE, cell: mux, inputs: [CANDLE_INTRABAR_QTY_DELTA, CANDLE_ZERO, CANDLE_FRESH],
      comment: "fresh -> 0 (reset), else hold accumulator"}
@@ -231,7 +231,7 @@ comb_nodes:
   - {name: CANDLE_OPEN_SET_UPDATE, cell: buf, inputs: [CANDLE_OPEN_SET_HOLD],
      comment: "open_set' = 1 (steady): first tick seeds via !open_set, then holds 1"}
   # LAST_TF_SEQ: track the timeframe seq so the next boundary is edge-detected.
-  - {name: CANDLE_LAST_TF_SEQ_UPDATE, cell: buf, inputs: [TF_BAR_SEQ],
+  - {name: CANDLE_LAST_TF_SEQ_UPDATE, cell: buf, inputs: [IN_BAR_SEQ],
      comment: "latch current TF seq for next-cycle edge detect"}
   # BAR_SEQ: +1 on each boundary.
   - {name: CANDLE_BAR_SEQ_UPDATE, cell: addsub, inputs: [CANDLE_BAR_SEQ, CANDLE_BAR_BOUNDARY], sub: 0,
@@ -241,11 +241,11 @@ comb_nodes:
 # 6. WIRING — traceability map (doc only; gen_module_net.py copies into netlist).
 # ---------------------------------------------------------------------------
 wiring:
-  DOM_BEST_BID_PRICE_REG:  [CANDLE_BID_OPEN_UPDATE, CANDLE_BID_IS_NEW_HIGH, CANDLE_BID_HIGH_TRACK, CANDLE_BID_IS_NEW_LOW, CANDLE_BID_LOW_TRACK, CANDLE_BID_CLOSE_UPDATE, CANDLE_BID_TICK]
-  DOM_BEST_ASK_PRICE_REG:  [CANDLE_ASK_OPEN_UPDATE, CANDLE_ASK_IS_NEW_HIGH, CANDLE_ASK_HIGH_TRACK, CANDLE_ASK_IS_NEW_LOW, CANDLE_ASK_LOW_TRACK, CANDLE_ASK_CLOSE_UPDATE, CANDLE_ASK_TICK]
-  DOM_BEST_BID_QTY_REG:    [CANDLE_QUOTE_DELTA]
-  DOM_BEST_ASK_QTY_REG:    [CANDLE_QUOTE_DELTA]
-  TF_BAR_SEQ: [CANDLE_BAR_BOUNDARY, CANDLE_LAST_TF_SEQ_UPDATE]
+  IN_BID_PRICE:  [CANDLE_BID_OPEN_UPDATE, CANDLE_BID_IS_NEW_HIGH, CANDLE_BID_HIGH_TRACK, CANDLE_BID_IS_NEW_LOW, CANDLE_BID_LOW_TRACK, CANDLE_BID_CLOSE_UPDATE, CANDLE_BID_TICK]
+  IN_ASK_PRICE:  [CANDLE_ASK_OPEN_UPDATE, CANDLE_ASK_IS_NEW_HIGH, CANDLE_ASK_HIGH_TRACK, CANDLE_ASK_IS_NEW_LOW, CANDLE_ASK_LOW_TRACK, CANDLE_ASK_CLOSE_UPDATE, CANDLE_ASK_TICK]
+  IN_BID_QTY:    [CANDLE_QUOTE_DELTA]
+  IN_ASK_QTY:    [CANDLE_QUOTE_DELTA]
+  IN_BAR_SEQ: [CANDLE_BAR_BOUNDARY, CANDLE_LAST_TF_SEQ_UPDATE]
   CANDLE_BAR_BOUNDARY: [CANDLE_FRESH, CANDLE_OPEN_SET_UPDATE, CANDLE_BAR_SEQ_UPDATE, "completed-bar latches (enable)", "history ring write_enable"]
 
 # ---------------------------------------------------------------------------

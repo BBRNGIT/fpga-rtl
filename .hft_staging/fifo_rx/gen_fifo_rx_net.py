@@ -45,7 +45,6 @@ SEAM_SRC = {ln: f"SEAM_{ln}" for ln in PACKET_LANES}
 
 NET = {
     "device": "fifo_rx",
-    "window_base": "0x2000000",
     "kind": "cdc_fifo",
     "depth": DEPTH,
     "addr_bits": ADDR_BITS,

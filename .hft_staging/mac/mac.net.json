@@ -1,6 +1,5 @@
 {
   "device": "mac",
-  "window_base": "0x1D00000",
   "kind": "oscillator",
   "comment": "mac \u2014 the 125 MHz MAC sample clock. A free-running counter (the NIC sample/copy RATE) emitting one edge strobe per powered tick. MAC = the sample RATE, a SEPARATE clock from TAI (the timestamp VALUE) and from internal (the pipeline metronome). The NIC samples on MAC_EDGE.",
   "config_nodes": [

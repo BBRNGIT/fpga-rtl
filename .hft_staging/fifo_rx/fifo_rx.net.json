@@ -1,6 +1,5 @@
 {
   "device": "fifo_rx",
-  "window_base": "0x2000000",
   "kind": "cdc_fifo",
   "depth": 512,
   "addr_bits": 9,

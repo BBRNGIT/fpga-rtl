@@ -1,6 +1,5 @@
 {
   "device": "timeframe",
-  "window_base": "0x2000000",
   "kind": "rollover",
   "comment": "timeframe \u2014 the reference bar clock (SPEC_REGISTERS.md \u00a72). A pure-combinational rollover detector: when (TAI - BAR_START) >= PERIOD, BAR_SEQ += 1, BAR_CLOSED pulses 1 for one tick, BAR_START re-anchors to TAI. A GUIDE not a master: each bar module carries its own period multiple and closes its own bars by watching BAR_SEQ. Module barrier: TAI and PERIOD are presented on this device's own input lanes.",
   "config_nodes": [

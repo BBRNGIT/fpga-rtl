@@ -10,7 +10,6 @@ import json
 
 NET = {
     "device": "internal",
-    "window_base": "0x1E00000",
     "kind": "oscillator",
     "comment": (
         "internal — the 250 MHz pipeline metronome. A free-running counter "

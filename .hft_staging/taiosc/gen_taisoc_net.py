@@ -14,7 +14,6 @@ import json
 
 NET = {
     "device": "taisoc",
-    "window_base": "0x1B00000",
     "kind": "oscillator",
     "comment": (
         "taisoc — the TAI oscillator REFERENCE. A free-running counter (the TAI "

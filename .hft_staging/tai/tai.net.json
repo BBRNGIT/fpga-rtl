@@ -1,6 +1,5 @@
 {
   "device": "tai",
-  "window_base": "0x1C00000",
   "kind": "counter",
   "comment": "tai \u2014 the authoritative TAI timestamp. A 64-bit counter CLOCKED BY taisoc (one taisoc edge = one tick = TAI_NS += 1). NO discipline/PPS/PI loop: taisoc is the reference by definition. The timestamp VALUE (separate clock from MAC the sample RATE). tai_cdc samples TAI_NS into the MAC domain.",
   "config_nodes": [

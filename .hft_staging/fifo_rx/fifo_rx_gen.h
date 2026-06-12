@@ -12,7 +12,6 @@
                            * source). fifo_rx SAMPLES the SEAM_* lanes; no copy. */
 
 #define FIFO_REG_COUNT 4112u
-#define FIFO_WINDOW_BASE 0x2000000u
 #define FIFO_DEPTH 512u
 #define FIFO_ADDR_BITS 9u
 #define FIFO_PTR_BITS 10u

@@ -27,7 +27,6 @@ TABLE_DEPTH = 16
 
 NET = {
     "device": "pip_resolver",
-    "window_base": "0x2000000",
     "kind": "lookup",
     "clock": "mac",
     "comment": (

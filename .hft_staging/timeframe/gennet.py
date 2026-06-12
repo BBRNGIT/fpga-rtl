@@ -88,7 +88,6 @@ def main():
     out.append('#include "cells.h"')
     out.append("")
     out.append(f"#define {pfx}_REG_COUNT {count}u")
-    out.append(f"#define {pfx}_WINDOW_BASE {net['window_base']}u\n")
     for nm in order:
         out.append(f"#define {pfx}_{nm} {addr[nm]}u")
     out.append("")

@@ -1,6 +1,5 @@
 {
   "device": "internal",
-  "window_base": "0x1E00000",
   "kind": "oscillator",
   "comment": "internal \u2014 the 250 MHz pipeline metronome. A free-running counter emitting one edge strobe per powered tick; pipeline modules fire on INTERNAL_EDGE. A SEPARATE oscillator from MAC (125 MHz) and from the TAI timebase. Same-domain reads need no CDC.",
   "config_nodes": [

@@ -17,7 +17,6 @@ import json
 
 NET = {
     "device": "timeframe",
-    "window_base": "0x2000000",
     "kind": "rollover",
     "comment": (
         "timeframe — the reference bar clock (SPEC_REGISTERS.md §2). A pure-combinational "

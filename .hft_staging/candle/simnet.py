@@ -131,9 +131,9 @@ def main():
     r = s.r
 
     def quote(bid, ask, bidq, askq, tf, tai):
-        r["DOM_BEST_BID_PRICE_REG"] = bid; r["DOM_BEST_ASK_PRICE_REG"] = ask
-        r["DOM_BEST_BID_QTY_REG"] = bidq;  r["DOM_BEST_ASK_QTY_REG"] = askq
-        r["TF_BAR_SEQ"] = tf; r["TF_BAR_START"] = tai
+        r["IN_BID_PRICE"] = bid; r["IN_ASK_PRICE"] = ask
+        r["IN_BID_QTY"] = bidq;  r["IN_ASK_QTY"] = askq
+        r["IN_BAR_SEQ"] = tf; r["IN_BAR_TIME"] = tai
         s.tick()
 
     print("== Bar 0 (tf_seq=1): quotes 100,105,98,103 ==")

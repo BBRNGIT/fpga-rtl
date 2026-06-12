@@ -1,6 +1,5 @@
 {
   "device": "wire",
-  "window_base": "0x1800000",
   "kind": "passive_bus",
   "comment": "The wire — a PASSIVE addressed-memory bus in its own window. It has NO clock, NO compute, NO logic of its own: it is just addressed storage holding the price-only packet (INGRESS_FLOW.md s1/s3). Structurally it is memory (a held, addressed value); it behaves like a wire: non-blocking, 1-deep (the latest packet, overwritten freely). Single writer = the ADAPTER, whose WRITE phase DEPOSITS the packet directly into these registers (it drives the bus). Reader = the NIC, which SAMPLES the bus on the mac cadence. The wire exists because a module may not read another module's registers directly (feedback_hft_wire_and_barrier): it is the required barrier/medium both sides meet at. There is no clock/strobe/dff/latch here — the wire writes nothing itself. The CDC/FIFO is downstream (NIC->DOM); the wire->NIC hop is same-domain (MAC).",
 

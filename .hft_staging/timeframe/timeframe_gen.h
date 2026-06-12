@@ -9,8 +9,6 @@
 #include "cells.h"
 
 #define TIMEFRAME_REG_COUNT 8u
-#define TIMEFRAME_WINDOW_BASE 0x2000000u
-
 #define TIMEFRAME_TF_POWER 0u
 #define TIMEFRAME_TF_RUN_UNTIL 1u
 #define TIMEFRAME_TF_TAI_IN 2u

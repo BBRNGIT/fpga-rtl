@@ -15,12 +15,12 @@ static word_t R[CANDLE_REG_COUNT];
 /* push one quote into the device input lanes, then run one clock edge. */
 static void quote(word_t bid, word_t ask, word_t bidq, word_t askq,
                   word_t tf_seq, word_t tai) {
-    R[CANDLE_DOM_BEST_BID_PRICE_REG]  = bid;
-    R[CANDLE_DOM_BEST_ASK_PRICE_REG]  = ask;
-    R[CANDLE_DOM_BEST_BID_QTY_REG]    = bidq;
-    R[CANDLE_DOM_BEST_ASK_QTY_REG]    = askq;
-    R[CANDLE_TF_BAR_SEQ] = tf_seq;
-    R[CANDLE_TF_BAR_START]        = tai;
+    R[CANDLE_IN_BID_PRICE]  = bid;
+    R[CANDLE_IN_ASK_PRICE]  = ask;
+    R[CANDLE_IN_BID_QTY]    = bidq;
+    R[CANDLE_IN_ASK_QTY]    = askq;
+    R[CANDLE_IN_BAR_SEQ] = tf_seq;
+    R[CANDLE_IN_BAR_TIME]        = tai;
     candle_tick(R);
 }
 

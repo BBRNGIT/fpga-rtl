@@ -1,6 +1,5 @@
 {
   "device": "tai_cdc",
-  "window_base": "0x1F00000",
   "kind": "cdc",
   "comment": "tai_cdc \u2014 gray-code 2-FF synchronizer (Cummings) bringing the TAI value from the taisoc/tai domain into the MAC domain, metastability-safe. The NIC stamps with TAI_MAC (MAC-domain), never raw cross-domain TAI. No discipline anywhere in the clock set: taiosc is the reference by definition.",
   "config_nodes": [

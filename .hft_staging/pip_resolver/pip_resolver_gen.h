@@ -13,7 +13,6 @@
                             * SEAM_VALID lanes; no private copy. */
 
 #define PIP_REG_COUNT 22u
-#define PIP_WINDOW_BASE 0x2000000u
 #define PIP_TABLE_DEPTH 16u
 #define PIP_TABLE_MASK (PIP_TABLE_DEPTH - 1u)
 

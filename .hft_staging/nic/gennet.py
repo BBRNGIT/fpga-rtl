@@ -106,7 +106,6 @@ def main():
 
     out = [HEADER]
     out.append(f"#define {P}_REG_COUNT {count}u")
-    out.append(f"#define {P}_WINDOW_BASE {net['window_base']}u")
     out.append(f"#define {P}_RING_DEPTH {depth}u")
     # ring wrap mask DERIVED from depth (power of two) — not a second literal.
     out.append(f"#define {P}_RING_MASK ({P}_RING_DEPTH - 1u)\n")

@@ -80,7 +80,6 @@ TABLES = [
 
 NET = {
     "device": "dom",
-    "window_base": "0x2100000",
     "kind": "order_book",
     "clock": "internal",
     "table_depth": TABLE_DEPTH,

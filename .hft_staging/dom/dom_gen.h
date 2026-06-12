@@ -13,7 +13,6 @@
                             * EMPTY flags; no private copy of the FIFO map. */
 
 #define DOM_REG_COUNT 65596u
-#define DOM_WINDOW_BASE 0x2100000u
 #define DOM_TABLE_DEPTH 16384u
 #define DOM_RELAY_LEVELS 10u
 #define DOM_IDX_MASK (DOM_TABLE_DEPTH - 1u)

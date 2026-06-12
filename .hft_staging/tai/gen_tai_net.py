@@ -12,7 +12,6 @@ import json
 
 NET = {
     "device": "tai",
-    "window_base": "0x1C00000",
     "kind": "counter",
     "comment": (
         "tai — the authoritative TAI timestamp. A 64-bit counter CLOCKED BY taisoc "

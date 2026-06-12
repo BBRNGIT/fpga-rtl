@@ -96,7 +96,6 @@ def main():
 
     out = [HEADER]
     out.append(f"#define ADP_REG_COUNT {count}u")
-    out.append(f"#define ADP_WINDOW_BASE {net['window_base']}u\n")
     for nm in order:
         out.append(f"#define ADP_{nm} {addr[nm]}u")
     if dr:

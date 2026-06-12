@@ -114,7 +114,6 @@ def main():
 
     out = [HEADER]
     out.append(f"#define {P}_REG_COUNT {count}u")
-    out.append(f"#define {P}_WINDOW_BASE {net['window_base']}u")
     out.append(f"#define {P}_DEPTH {depth}u")
     out.append(f"#define {P}_ADDR_BITS {addr_bits}u")
     out.append(f"#define {P}_PTR_BITS {ptr_bits}u")

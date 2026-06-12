@@ -10,7 +10,6 @@ import json
 
 NET = {
     "device": "mac",
-    "window_base": "0x1D00000",
     "kind": "oscillator",
     "comment": (
         "mac — the 125 MHz MAC sample clock. A free-running counter (the NIC "

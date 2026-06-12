@@ -1,6 +1,5 @@
 {
   "device": "adapter",
-  "window_base": "0x1700000",
   "comment": "The adapter device — its own address window. Every node is an addressed register; every op is a cell between registers. The clock is a power-bit-gated dff counter; the pacer comparator is a gate netlist (bit-serial), not a C compare. Selection is mask algebra. No if/switch/?: anywhere in the generated data path.",
 
   "config_nodes": [

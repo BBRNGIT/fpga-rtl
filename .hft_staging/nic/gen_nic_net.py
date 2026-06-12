@@ -23,7 +23,6 @@ RING_DEPTH = 16
 
 NET = {
     "device": "nic",
-    "window_base": "0x1A00000",
     "kind": "gateway",
     "clock": "mac",
     "comment": (

@@ -1,6 +1,5 @@
 {
   "device": "pip_resolver",
-  "window_base": "0x2000000",
   "kind": "lookup",
   "clock": "mac",
   "comment": "PIP_RESOLVER \u2014 per-symbol pip-resolution lookup. On the MAC edge: sample the NIC seam's SEAM_SYMBOL (gated by SEAM_VALID), index a STATIC pip-config table by addr = symbol*8 bytes (= the symbol-th 64-bit slot; word index = symbol, reduced by a power-of-two mask \u2014 no %, no bounds if), read the resolved pip value (branchless eqmask-gate-OR slot select), and publish it on PIP_RESOLUTION_REG. Pure combinational address arithmetic + table select; the table is config-only (written once at init, never per-tick). Same-domain hop (MAC) with the NIC seam; no CDC.",

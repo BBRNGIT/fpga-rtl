@@ -7,12 +7,12 @@
 
 #define CANDLE_REG_COUNT 3922u
 
-#define CANDLE_DOM_BEST_BID_PRICE_REG 0u
-#define CANDLE_DOM_BEST_ASK_PRICE_REG 1u
-#define CANDLE_DOM_BEST_BID_QTY_REG 2u
-#define CANDLE_DOM_BEST_ASK_QTY_REG 3u
-#define CANDLE_TF_BAR_SEQ 4u
-#define CANDLE_TF_BAR_START 5u
+#define CANDLE_IN_BID_PRICE 0u
+#define CANDLE_IN_ASK_PRICE 1u
+#define CANDLE_IN_BID_QTY 2u
+#define CANDLE_IN_ASK_QTY 3u
+#define CANDLE_IN_BAR_SEQ 4u
+#define CANDLE_IN_BAR_TIME 5u
 #define CANDLE_CANDLE_POWER 6u
 #define CANDLE_CANDLE_ONE 7u
 #define CANDLE_CANDLE_OPEN_SET_HOLD 8u
@@ -3962,12 +3962,12 @@ static inline void candle_init(word_t *r) {
  * COMPUTE via cells (no native add/sub/mul on data), WRITE every register. */
 static inline void candle_tick(word_t *r) {
     /* READ phase — pre-read every consumed register value. */
-    const word_t dom_best_bid_price_reg = r[CANDLE_DOM_BEST_BID_PRICE_REG];
-    const word_t dom_best_ask_price_reg = r[CANDLE_DOM_BEST_ASK_PRICE_REG];
-    const word_t dom_best_bid_qty_reg = r[CANDLE_DOM_BEST_BID_QTY_REG];
-    const word_t dom_best_ask_qty_reg = r[CANDLE_DOM_BEST_ASK_QTY_REG];
-    const word_t tf_bar_seq = r[CANDLE_TF_BAR_SEQ];
-    const word_t tf_bar_start = r[CANDLE_TF_BAR_START];
+    const word_t in_bid_price = r[CANDLE_IN_BID_PRICE];
+    const word_t in_ask_price = r[CANDLE_IN_ASK_PRICE];
+    const word_t in_bid_qty = r[CANDLE_IN_BID_QTY];
+    const word_t in_ask_qty = r[CANDLE_IN_ASK_QTY];
+    const word_t in_bar_seq = r[CANDLE_IN_BAR_SEQ];
+    const word_t in_bar_time = r[CANDLE_IN_BAR_TIME];
     const word_t candle_one = r[CANDLE_CANDLE_ONE];
     const word_t candle_open_set_hold = r[CANDLE_CANDLE_OPEN_SET_HOLD];
     const word_t candle_zero = r[CANDLE_CANDLE_ZERO];
@@ -4005,40 +4005,40 @@ static inline void candle_tick(word_t *r) {
     const word_t candle_comp_bar_seq = r[CANDLE_CANDLE_COMP_BAR_SEQ];
 
     /* COMPUTE phase — combinational cell chain (declaration order). */
-    const word_t candle_seq_change = (cell_eqmask(candle_last_tf_seq, tf_bar_seq) ^ 1ULL);
+    const word_t candle_seq_change = (cell_eqmask(candle_last_tf_seq, in_bar_seq) ^ 1ULL);
     const word_t candle_bar_boundary = cell_and(candle_seq_change, candle_open_set);
     const word_t candle_not_open_set = cell_xor(candle_open_set, candle_one);
     const word_t candle_fresh = cell_or(candle_bar_boundary, candle_not_open_set);
-    const word_t candle_bid_tick = (cell_eqmask(dom_best_bid_price_reg, candle_bid_close) ^ 1ULL);
-    const word_t candle_ask_tick = (cell_eqmask(dom_best_ask_price_reg, candle_ask_close) ^ 1ULL);
-    const word_t candle_bid_open_update = cell_mux(candle_bid_open, dom_best_bid_price_reg, candle_fresh);
-    const word_t candle_bid_is_new_high = cmp_lt(candle_bid_high, dom_best_bid_price_reg);
-    const word_t candle_bid_high_track = cell_mux(candle_bid_high, dom_best_bid_price_reg, candle_bid_is_new_high);
-    const word_t candle_bid_high_update = cell_mux(candle_bid_high_track, dom_best_bid_price_reg, candle_fresh);
-    const word_t candle_bid_is_new_low = cmp_lt(dom_best_bid_price_reg, candle_bid_low);
-    const word_t candle_bid_low_track = cell_mux(candle_bid_low, dom_best_bid_price_reg, candle_bid_is_new_low);
-    const word_t candle_bid_low_update = cell_mux(candle_bid_low_track, dom_best_bid_price_reg, candle_fresh);
-    const word_t candle_bid_close_update = cell_buf(dom_best_bid_price_reg);
-    const word_t candle_ask_open_update = cell_mux(candle_ask_open, dom_best_ask_price_reg, candle_fresh);
-    const word_t candle_ask_is_new_high = cmp_lt(candle_ask_high, dom_best_ask_price_reg);
-    const word_t candle_ask_high_track = cell_mux(candle_ask_high, dom_best_ask_price_reg, candle_ask_is_new_high);
-    const word_t candle_ask_high_update = cell_mux(candle_ask_high_track, dom_best_ask_price_reg, candle_fresh);
-    const word_t candle_ask_is_new_low = cmp_lt(dom_best_ask_price_reg, candle_ask_low);
-    const word_t candle_ask_low_track = cell_mux(candle_ask_low, dom_best_ask_price_reg, candle_ask_is_new_low);
-    const word_t candle_ask_low_update = cell_mux(candle_ask_low_track, dom_best_ask_price_reg, candle_fresh);
-    const word_t candle_ask_close_update = cell_buf(dom_best_ask_price_reg);
+    const word_t candle_bid_tick = (cell_eqmask(in_bid_price, candle_bid_close) ^ 1ULL);
+    const word_t candle_ask_tick = (cell_eqmask(in_ask_price, candle_ask_close) ^ 1ULL);
+    const word_t candle_bid_open_update = cell_mux(candle_bid_open, in_bid_price, candle_fresh);
+    const word_t candle_bid_is_new_high = cmp_lt(candle_bid_high, in_bid_price);
+    const word_t candle_bid_high_track = cell_mux(candle_bid_high, in_bid_price, candle_bid_is_new_high);
+    const word_t candle_bid_high_update = cell_mux(candle_bid_high_track, in_bid_price, candle_fresh);
+    const word_t candle_bid_is_new_low = cmp_lt(in_bid_price, candle_bid_low);
+    const word_t candle_bid_low_track = cell_mux(candle_bid_low, in_bid_price, candle_bid_is_new_low);
+    const word_t candle_bid_low_update = cell_mux(candle_bid_low_track, in_bid_price, candle_fresh);
+    const word_t candle_bid_close_update = cell_buf(in_bid_price);
+    const word_t candle_ask_open_update = cell_mux(candle_ask_open, in_ask_price, candle_fresh);
+    const word_t candle_ask_is_new_high = cmp_lt(candle_ask_high, in_ask_price);
+    const word_t candle_ask_high_track = cell_mux(candle_ask_high, in_ask_price, candle_ask_is_new_high);
+    const word_t candle_ask_high_update = cell_mux(candle_ask_high_track, in_ask_price, candle_fresh);
+    const word_t candle_ask_is_new_low = cmp_lt(in_ask_price, candle_ask_low);
+    const word_t candle_ask_low_track = cell_mux(candle_ask_low, in_ask_price, candle_ask_is_new_low);
+    const word_t candle_ask_low_update = cell_mux(candle_ask_low_track, in_ask_price, candle_fresh);
+    const word_t candle_ask_close_update = cell_buf(in_ask_price);
     const word_t candle_volume_bid_base = cell_mux(candle_volume_bid, candle_zero, candle_fresh);
     const word_t candle_volume_bid_update = cell_addsub(candle_volume_bid_base, candle_bid_tick, 0ULL);
     const word_t candle_volume_ask_base = cell_mux(candle_volume_ask, candle_zero, candle_fresh);
     const word_t candle_volume_ask_update = cell_addsub(candle_volume_ask_base, candle_ask_tick, 0ULL);
     const word_t candle_true_range_bid_update = cell_addsub(candle_bid_high_update, candle_bid_low_update, 1ULL);
     const word_t candle_true_range_ask_update = cell_addsub(candle_ask_high_update, candle_ask_low_update, 1ULL);
-    const word_t candle_quote_delta = cell_addsub(dom_best_ask_qty_reg, dom_best_bid_qty_reg, 1ULL);
+    const word_t candle_quote_delta = cell_addsub(in_ask_qty, in_bid_qty, 1ULL);
     const word_t candle_delta_base = cell_mux(candle_intrabar_qty_delta, candle_zero, candle_fresh);
     const word_t candle_intrabar_qty_delta_update = cell_addsub(candle_delta_base, candle_quote_delta, 0ULL);
     const word_t candle_mid_update = cell_sar(cell_addsub(candle_bid_high_update, candle_ask_low_update, 0ULL), 1u);
     const word_t candle_open_set_update = cell_buf(candle_open_set_hold);
-    const word_t candle_last_tf_seq_update = cell_buf(tf_bar_seq);
+    const word_t candle_last_tf_seq_update = cell_buf(in_bar_seq);
     const word_t candle_bar_seq_update = cell_addsub(candle_bar_seq, candle_bar_boundary, 0ULL);
 
     /* WRITE phase — gated dff commit: r[X] = cell_dff(q, fed_by, enable). */
@@ -4072,7 +4072,7 @@ static inline void candle_tick(word_t *r) {
     r[CANDLE_CANDLE_COMP_TRUE_RANGE_BID] = cell_dff(candle_comp_true_range_bid, candle_true_range_bid, candle_bar_boundary);
     r[CANDLE_CANDLE_COMP_TRUE_RANGE_ASK] = cell_dff(candle_comp_true_range_ask, candle_true_range_ask, candle_bar_boundary);
     r[CANDLE_CANDLE_COMP_INTRABAR_QTY_DELTA] = cell_dff(candle_comp_intrabar_qty_delta, candle_intrabar_qty_delta, candle_bar_boundary);
-    r[CANDLE_CANDLE_COMP_TAI] = cell_dff(candle_comp_tai, tf_bar_start, candle_bar_boundary);
+    r[CANDLE_CANDLE_COMP_TAI] = cell_dff(candle_comp_tai, in_bar_time, candle_bar_boundary);
     r[CANDLE_CANDLE_COMP_BAR_SEQ] = cell_dff(candle_comp_bar_seq, candle_bar_seq, candle_bar_boundary);
     r[CANDLE_CANDLE_SEQ_CHANGE] = candle_seq_change;
     r[CANDLE_CANDLE_BAR_BOUNDARY] = candle_bar_boundary;
@@ -7955,7 +7955,7 @@ static inline void candle_tick(word_t *r) {
     r[CANDLE_CANDLE_HIST_0_TRUE_RANGE_BID] = cell_dff(r[CANDLE_CANDLE_HIST_0_TRUE_RANGE_BID], candle_true_range_bid, candle_bar_boundary);
     r[CANDLE_CANDLE_HIST_0_TRUE_RANGE_ASK] = cell_dff(r[CANDLE_CANDLE_HIST_0_TRUE_RANGE_ASK], candle_true_range_ask, candle_bar_boundary);
     r[CANDLE_CANDLE_HIST_0_INTRABAR_QTY_DELTA] = cell_dff(r[CANDLE_CANDLE_HIST_0_INTRABAR_QTY_DELTA], candle_intrabar_qty_delta, candle_bar_boundary);
-    r[CANDLE_CANDLE_HIST_0_TAI] = cell_dff(r[CANDLE_CANDLE_HIST_0_TAI], tf_bar_start, candle_bar_boundary);
+    r[CANDLE_CANDLE_HIST_0_TAI] = cell_dff(r[CANDLE_CANDLE_HIST_0_TAI], in_bar_time, candle_bar_boundary);
     r[CANDLE_CANDLE_HIST_0_BAR_SEQ] = cell_dff(r[CANDLE_CANDLE_HIST_0_BAR_SEQ], candle_bar_seq, candle_bar_boundary);
 
 }

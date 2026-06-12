@@ -1,6 +1,5 @@
 {
   "device": "taisoc",
-  "window_base": "0x1B00000",
   "kind": "oscillator",
   "comment": "taisoc \u2014 the TAI oscillator REFERENCE. A free-running counter (the TAI rate) that emits one edge strobe per powered tick. No discipline, no timestamp value: it only produces the rate. tai counts TAISOC_EDGE. Separate oscillator from MAC and internal (CLAUDE.md two-clock model).",
   "config_nodes": [

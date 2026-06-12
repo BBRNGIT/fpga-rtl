@@ -143,6 +143,12 @@ echo "==> [gate] 2d/3 flip-flop logic content (cell calls in device C)"
     [ -f "$GENH" ] || continue
     BASE=${GENH%_gen.h}
     [ -f "$BASE.net.json" ] || { echo "    $GENH: sibling seam header (no local netlist) — skipped"; continue; }
+    # Passive buses (role: bus / kind: passive_bus) carry no compute by design —
+    # a register/lane map, not a logic device. Exempt them from the logic-content
+    # requirement (which exists to catch WAVE-1 stub *indicators*, not buses).
+    if grep -q '"kind"[[:space:]]*:[[:space:]]*"passive_bus"' "$BASE.net.json" 2>/dev/null; then
+        echo "    $GENH: passive bus (no compute by design) — exempt"; continue
+    fi
     CELL_COUNT=$(grep -o "cell_[a-z_]*(" "$GENH" 2>/dev/null | wc -l)
     if [ "$CELL_COUNT" -eq 0 ]; then
         echo "    [FAIL] $GENH — no structural cell calls found"
@@ -196,6 +202,12 @@ echo "==> [gate] 2i/3 module contract (construction matches declared functional 
 # Encodes the recap so it persists without memory/re-explanation.
 [ -f "$CHECKS/check_module_contract.py" ] || { echo "    FAIL — missing enforcement script: $CHECKS/check_module_contract.py"; exit 3; }
 python3 "$CHECKS/check_module_contract.py" "$DIR" --strict || exit 3
+
+echo "==> [gate] 2j/3 build/assignment purity (no addresses/pins, no peer binding)"
+# A build artifact carries NO assignment data — no window_base/addresses/pins and
+# no peer-module register binding. Addresses/placement are the assignment phase.
+[ -f "$CHECKS/check_build_no_assignment.py" ] || { echo "    FAIL — missing enforcement script: $CHECKS/check_build_no_assignment.py"; exit 3; }
+python3 "$CHECKS/check_build_no_assignment.py" "$DIR" --strict || exit 3
 
 echo "==> [gate] 3/3 clean-room build from committed HEAD"
 # Uncommitted check covers the whole staging tree: a sibling dep changing would

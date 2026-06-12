@@ -44,7 +44,6 @@ def main():
 
     out = [HEADER]
     out.append(f"#define WIRE_REG_COUNT {count}u")
-    out.append(f"#define WIRE_WINDOW_BASE {net['window_base']}u\n")
     for nm in nodes:
         out.append(f"#define WIRE_{nm} {addr[nm]}u")
     out.append("")

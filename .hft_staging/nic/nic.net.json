@@ -1,6 +1,5 @@
 {
   "device": "nic",
-  "window_base": "0x1A00000",
   "kind": "gateway",
   "clock": "mac",
   "comment": "NIC \u2014 the wire->fifo gateway. On the MAC edge: sample the wire bus (gated by WIRE_VALID), dedup by WIRE_SEQ via a history ring (full-seq key + valid tag), re-stamp the survivor with TAI_MAC (the MAC-domain TAI value from tai_cdc; never a raw cross-domain tai read), and deposit the structured re-stamped packet into the nic->fifo seam on a 1-cycle write strobe. Same-domain hop (MAC); the FIFO CDC is downstream (fifo_rx).",

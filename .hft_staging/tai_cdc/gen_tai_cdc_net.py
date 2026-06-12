@@ -14,7 +14,6 @@ import json
 
 NET = {
     "device": "tai_cdc",
-    "window_base": "0x1F00000",
     "kind": "cdc",
     "comment": (
         "tai_cdc — gray-code 2-FF synchronizer (Cummings) bringing the TAI value "
