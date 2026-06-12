@@ -1,0 +1,31 @@
+# library/components/jk_ff.comp.yaml — JK flip-flop (flip-flop TYPE composite).
+# Transcribed VERBATIM from circuitlib.lower_jk_ff: q' = (J & ~q) | (~K & q).
+# J=K=1 toggle; J=1,K=0 set; J=0,K=1 reset; J=K=0 hold.
+# Composition of library atoms only — nothing invented.
+
+component: jk_ff
+params:
+  init: 0
+ports:
+  in:  [j, k, en]
+  out: [q]
+body:
+  instances:
+    - {name: notq,  component: not, params: {}}
+    - {name: notk,  component: not, params: {}}
+    - {name: setT,  component: and, params: {}}    # j & ~q
+    - {name: holdT, component: and, params: {}}    # ~k & q
+    - {name: dnode, component: or,  params: {}}    # set | hold
+    - {name: reg,   component: dff, params: {init: init}}
+  connections:
+    - {net: [reg.q,   notq.a]}
+    - {net: [k,       notk.a]}
+    - {net: [j,       setT.a]}
+    - {net: [notq.y,  setT.b]}
+    - {net: [notk.y,  holdT.a]}
+    - {net: [reg.q,   holdT.b]}
+    - {net: [setT.y,  dnode.a]}
+    - {net: [holdT.y, dnode.b]}
+    - {net: [dnode.y, reg.d]}
+    - {net: [en,      reg.en]}
+    - {net: [reg.q,   q]}

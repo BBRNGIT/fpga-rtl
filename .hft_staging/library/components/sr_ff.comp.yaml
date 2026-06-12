@@ -1,0 +1,26 @@
+# library/components/sr_ff.comp.yaml — SR flip-flop (flip-flop TYPE composite).
+# Transcribed VERBATIM from circuitlib.lower_sr_ff: q' = S | (q & ~R)
+# (S=1,R=1 set-dominant). Lowering: not(r) -> and(q, ~r) -> or(s, hold) -> dff.
+# Composition of library atoms only — nothing invented.
+
+component: sr_ff
+params:
+  init: 0
+ports:
+  in:  [s, r, en]
+  out: [q]
+body:
+  instances:
+    - {name: notr, component: not, params: {}}
+    - {name: hold, component: and, params: {}}
+    - {name: dnode, component: or, params: {}}
+    - {name: reg,  component: dff, params: {init: init}}
+  connections:
+    - {net: [r,        notr.a]}            # ~r
+    - {net: [reg.q,    hold.a]}            # q & ~r
+    - {net: [notr.y,   hold.b]}
+    - {net: [s,        dnode.a]}           # s | (q & ~r)
+    - {net: [hold.y,   dnode.b]}
+    - {net: [dnode.y,  reg.d]}
+    - {net: [en,       reg.en]}
+    - {net: [reg.q,    q]}

@@ -1,16 +1,16 @@
-# library/atoms.yaml — THE LIBRARY ROOT: the atomic components (leaves).
+# library/atoms.yaml — irreducible C-LOWERED primitives (two of the three classes).
 #
-# The single foundation of the whole component library: the flip-flop and the
-# branchless gate cells, in C. Every library component and every design elaborates
-# down to THESE — nothing exists below them. Their ONLY definition is their C
-# lowering in cells/cells.h (the audited canon); this manifest registers each atom
-# so the elaborator and validator know its ports and C function.
+# These are the leaves whose ONLY definition is their C function in cells/cells.h
+# (the audited canon), transcribed VERBATIM. The THIRD primitive class — conductors
+# (wire/bus) — is NOT here: a conductor is not a cell and holds no state; see
+# conductors.yaml. (Founder law: built-from-primitives and addressable are distinct
+# axes; flip-flops and conductors are distinct classes — do not conflate.)
 #
-# Transcribed VERBATIM from cells/cells.h — no invention. `c` is the exact C
-# function; `in`/`out` are its ports; `shift` marks a compile-time-constant shift
-# operand (sar/shl), `sub` the addsub mode operand.
+# `c` = the exact C function; `in`/`out` = its ports; `shift` marks a compile-time
+# shift operand (sar/shl); `mode` the addsub add/sub operand.
 
-atoms:
+# --- CLASS 1: gate / boolean constructs (combinational, stateless) -----------
+gates:
   buf:    {c: cell_buf,    in: [a],            out: [y]}
   not:    {c: cell_not,    in: [a],            out: [y]}
   and:    {c: cell_and,    in: [a, b],         out: [y]}
@@ -23,4 +23,8 @@ atoms:
   addsub: {c: cell_addsub, in: [a, b],         out: [y], mode: sub}   # sub: 0=add 1=sub
   sar:    {c: cell_sar,    in: [a],            out: [y], shift: n}     # compile-time n
   shl:    {c: cell_shl,    in: [a],            out: [y], shift: n}     # compile-time n
-  dff:    {c: cell_dff,    in: [q, d, en],     out: [q]}     # the ONE stateful atom
+
+# --- CLASS 2: flip-flops (stateful). The D flip-flop is the irreducible state -
+# atom; the OTHER flip-flop types (T/SR/JK/D-latch) are composites in components/.
+flip_flops:
+  dff:    {c: cell_dff,    in: [q, d, en],     out: [q]}     # q in+out = feedback

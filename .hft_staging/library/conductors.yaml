@@ -1,0 +1,19 @@
+# library/conductors.yaml — CLASS 3: conductors (wire / bus / lane).
+#
+# A conductor is real copper carrying a signal: it HOLDS NO STATE and is NOT built
+# from flip-flops. It is its own first-class primitive class (founder law:
+# flip-flops and conductors are distinct; addressable != flip-flopped).
+#
+# In the C-as-RTL model a conductor lane is a PASSIVE ADDRESSED slot: its single
+# driver DEPOSITS the value, readers SAMPLE it; no logic, no tick, no clock. This
+# is exactly how `wire` and `dom_bus` are realized. Conductors are addressable
+# (every lane has an address) but never reduced to flip-flops; the elaborator
+# carries them THROUGH as conductors.
+
+conductors:
+  wire:
+    role: passive signal carrier (one driver, many readers)
+    holds_state: false
+    in:  [drive]      # the single driver deposits here
+    out: [tap]        # readers sample here (same lane; passive pass-through)
+    realization: "an addressed lane slot; deposited by its driver, sampled by readers; no logic/tick"

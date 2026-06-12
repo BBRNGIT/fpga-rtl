@@ -1,0 +1,18 @@
+# library/components/d_latch.comp.yaml — D latch (flip-flop TYPE composite).
+# Transcribed VERBATIM from circuitlib.lower_d_latch: q' = en ? d : q — in the
+# single-tick C-as-RTL model this is exactly cell_dff(q, d, en) (the latch enable
+# IS the dff enable). Composition of library atoms only — nothing invented.
+
+component: d_latch
+params:
+  init: 0
+ports:
+  in:  [d, en]
+  out: [q]
+body:
+  instances:
+    - {name: reg, component: dff, params: {init: init}}
+  connections:
+    - {net: [d,     reg.d]}
+    - {net: [en,    reg.en]}
+    - {net: [reg.q, q]}
