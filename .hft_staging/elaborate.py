@@ -40,12 +40,19 @@ def die(msg):
 
 
 def load_library():
-    atoms = (yaml.safe_load(open(os.path.join(LIB, "atoms.yaml"))) or {}).get("atoms", {})
+    """The library has THREE primitive classes (founder law): gate/boolean atoms +
+    the dff flip-flop atom (cells), conductors (wire — carried through, NOT a
+    flip-flop), and composites. Returns (atoms, conductors, comps)."""
+    a = yaml.safe_load(open(os.path.join(LIB, "atoms.yaml"))) or {}
+    atoms = {**(a.get("gates") or {}), **(a.get("flip_flops") or {})}
+    cond_path = os.path.join(LIB, "conductors.yaml")
+    conductors = ((yaml.safe_load(open(cond_path)) or {}).get("conductors", {})
+                  if os.path.exists(cond_path) else {})
     comps = {}
     for f in glob.glob(os.path.join(LIB, "components", "*.comp.yaml")):
         c = yaml.safe_load(open(f))
         comps[c["component"]] = c
-    return atoms, comps
+    return atoms, conductors, comps
 
 
 def atom_reader_driver(atoms, t):
@@ -74,7 +81,7 @@ def main():
     design = yaml.safe_load(open(sys.argv[1]))
     if "design" not in design or "instances" not in design:
         die("not a description (need 'design' + 'instances')")
-    atoms, comps = load_library()
+    atoms, conductors, comps = load_library()
 
     nets = []           # each: list of fully-qualified endpoints
     atom_insts = {}     # ipath -> {type, params}
@@ -99,6 +106,14 @@ def main():
             p = resolve_params(inst.get("params", {}), env)
             if X in atoms:
                 atom_insts[ipath] = {"type": X, "params": p}
+            elif X in conductors:
+                # Conductor (wire): a passive carrier, NOT a flip-flop. Carry the
+                # signal THROUGH — alias each tap (out) to each drive (in); emit no
+                # logic node. The upstream driver flows to the readers unchanged.
+                cdef = conductors[X]
+                for op in cdef.get("out", []):
+                    for ip in cdef.get("in", []):
+                        nets.append([f"{path}/{nm}.{op}", f"{path}/{nm}.{ip}"])
             elif X in comps:
                 cdef = comps[X]
                 cin = cdef["ports"].get("in", [])
@@ -108,8 +123,8 @@ def main():
                 child_env = {**(cdef.get("params") or {}), **p}
                 flatten(cdef, ipath, child_env)
             else:
-                die(f"unknown component '{X}' (not a library atom or composite) "
-                    f"— add it to the library deliberately; descriptions compose only")
+                die(f"unknown component '{X}' (not a library atom, conductor, or "
+                    f"composite) — add it to the library deliberately; descriptions compose only")
 
     design_name = design["design"]
     in_ports = design.get("ports", {}).get("in", [])
