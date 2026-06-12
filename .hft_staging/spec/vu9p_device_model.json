@@ -1,0 +1,76 @@
+{
+  "device_model": "VU9P",
+  "from_spec": "spec/XMP103_VirtexUltraScalePlus_ProductSelectionGuide_v2.8.pdf",
+  "materialization": "tile/site/BEL grid (EDA standard); PARAMETRIC (type+grid, not flat); per-tile power-gating",
+  "authenticity": {
+    "clb_count_derived": 147750,
+    "cross_check": "CLBs*16==flip-flops AND CLBs*8==LUTs (passed)"
+  },
+  "tile_types": {
+    "CLB": {
+      "source": "UG574 UltraScale Architecture CLB User Guide",
+      "sites": [
+        {
+          "site_type": "SLICE",
+          "per_tile": 1,
+          "bels": [
+            {
+              "bel": "LUT6",
+              "count": 8,
+              "positions": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "H"
+              ],
+              "library": "lut6",
+              "status": "library_component_pending"
+            },
+            {
+              "bel": "FF",
+              "count": 16,
+              "library": "dff"
+            }
+          ]
+        }
+      ],
+      "bels_per_tile": 24
+    },
+    "DSP48E2": {
+      "composition": "pending UG (UG573/UG579/UG578)",
+      "status": "typed_site_count_only"
+    },
+    "GTY": {
+      "composition": "pending UG (UG573/UG579/UG578)",
+      "status": "typed_site_count_only"
+    }
+  },
+  "grid": {
+    "CLB": {
+      "count": 147750,
+      "layout": "regular_model",
+      "addressing": "_X#Y# per Xilinx scheme",
+      "power": "per-tile enable (unused tiles off)"
+    },
+    "DSP48E2": {
+      "count": 6840,
+      "layout": "regular_model",
+      "power": "per-tile enable"
+    },
+    "GTY": {
+      "count": 120,
+      "layout": "regular_model",
+      "power": "per-tile enable"
+    }
+  },
+  "flags": [
+    "grid layout is a REGULAR MODEL layout (functional), NOT the physical VU9P floorplan \u2014 physical coords need the device DB",
+    "LUT6 BEL needs a library component (lut6) before CLB elaborates to atoms",
+    "DSP48E2: count 6840 only \u2014 BEL composition pending its architecture UG",
+    "GTY: count 120 only \u2014 BEL composition pending its architecture UG"
+  ]
+}

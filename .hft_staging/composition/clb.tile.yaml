@@ -1,0 +1,23 @@
+# composition/clb.tile.yaml — AUTHENTIC CLB tile composition (transcribed from UG574).
+#
+# Source: UltraScale Architecture Configurable Logic Block User Guide (UG574),
+# docs.amd.com/r/en-US/ug574-ultrascale-clb. Verbatim architectural facts:
+#   "Each UltraScale architecture CLB contains one slice ... eight 6-input LUTs
+#    and sixteen flip-flops", positions labeled A–H.
+#
+# This is a SPEC INPUT (authentic facts, no invention) consumed by materialize.py
+# to build the device model's CLB tile type. BEL leaves map to library components:
+#   FF  -> cell_dff (the flip-flop atom; FDRE/FDSE/FDCE/FDPE configs of it)
+#   LUT6 -> library component `lut6` (a 64:1 config mux composite — TO BE ADDED to
+#           the library deliberately; flagged, not invented here).
+
+tile_type: CLB
+source: "UG574 UltraScale Architecture CLB User Guide"
+sites:
+  - site_type: SLICE
+    per_tile: 1
+    bels:
+      - {bel: LUT6, count: 8,  positions: [A, B, C, D, E, F, G, H], library: lut6, status: library_component_pending}
+      - {bel: FF,   count: 16, library: dff}   # 16 storage elements (2 per A–H position)
+# Cross-check (authentic, enforced by materialize.py): with N CLBs,
+#   N * 16  == manifest CLB Flip-Flops,  and  N * 8 == manifest CLB LUTs.
