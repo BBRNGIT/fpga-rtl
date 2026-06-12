@@ -188,6 +188,48 @@ if [ -n "$enforcement_changed" ]; then
 fi
 
 # ============================================================================
+# GATE-FORCING (C1): every staged component must PASS its gate to commit.
+# ============================================================================
+# Correctness stops depending on anyone remembering to run gate.sh: the commit
+# is BLOCKED unless every component with staged changes passes its full gate
+# (validate + -Werror build + 2b-2k checks). Escape ONLY via the founder-granted
+# HFT_GATE_OVERRIDE=1, which is LOGGED (visible WIP, never casual).
+ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo .)
+changed_components=$(git diff --cached --name-only 2>/dev/null \
+    | grep -E '^\.hft_staging/[^/]+/' \
+    | sed -E 's#^(\.hft_staging/[^/]+)/.*#\1#' | sort -u)
+
+gate_failed=""
+for comp in $changed_components; do
+    [ -f "$ROOT/$comp/Makefile" ] || continue          # only real components
+    ls "$ROOT/$comp"/*.net.json >/dev/null 2>&1 || continue
+    if ! ( "$ROOT/.hft_staging/gate.sh" "$ROOT/$comp" >/tmp/gate_$$.log 2>&1 ); then
+        gate_failed="$gate_failed $comp"
+        echo "  [gate] FAIL: $comp" >&2
+        grep -E '\[FAIL\]|FAIL|error' /tmp/gate_$$.log 2>/dev/null | head -3 | sed 's/^/        /' >&2
+    fi
+done
+rm -f /tmp/gate_$$.log
+
+if [ -n "$gate_failed" ]; then
+    if [ "$HFT_GATE_OVERRIDE" = "1" ]; then
+        echo "$(date '+%Y-%m-%d %H:%M:%S') OVERRIDE gate-fail:$gate_failed user=$(git config user.name)" \
+            >> "$ROOT/.hft_staging/.gate_overrides.log"
+        echo "  [gate] HFT_GATE_OVERRIDE=1 — committing ungated work (LOGGED to .gate_overrides.log):$gate_failed" >&2
+    else
+        cat >&2 << EOF
+
+[FAIL] Component(s) failed the gate — commit BLOCKED:$gate_failed
+       A component must PASS .hft_staging/gate.sh to be committed.
+       Run it to see the failure:  .hft_staging/gate.sh .hft_staging/<component>
+       If this is sanctioned work-in-progress (logged):
+         HFT_GATE_OVERRIDE=1 git commit ...
+EOF
+        exit 1
+    fi
+fi
+
+# ============================================================================
 # ALL CHECKS PASSED
 # ============================================================================
 

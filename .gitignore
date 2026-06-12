@@ -43,3 +43,5 @@ tools/*.pyc
 # stale agent worktree checkouts — never tracked
 .hft_staging/wt-*
 .claude/worktrees/
+
+.hft_staging/.gate_overrides.log
