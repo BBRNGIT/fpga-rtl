@@ -1,0 +1,30 @@
+# device_profiles/fpga-main.yaml — BOARD PROFILE (format: board_profile).
+# Real-part-referenced facts the fpga-main blank is cast from. Consumed by
+# gen_fpga_blank.py. Integers only. NO addresses here — geometry only (phase 3).
+
+name: fpga-main
+role: "core compute fabric — book, indicators, analytics (later: strategy/signals)"
+part_ref: "Xilinx Virtex UltraScale+ VU9P (XILINX_VU9P_SPEC_EXTRACTION.md)"
+
+registers: 262144           # 256K u64 fabric words (the heavy board)
+
+address_space:
+  size: 0x10000000
+  slot_alignment: 0x1000
+  cdc_region_size: 0x100000
+
+clock_domains:
+  internal: {frequency_hz: 250000000, source: pll_2x}
+  taiosc:   {frequency_hz: 1000000,   source: oscillator}
+
+io:
+  gty_lanes: 16             # board-to-board share of the 32 GTY
+  io_banks: 20              # of 44
+
+resources:
+  clb:  {capacity: 100000, unit: slice}    # of 182,400
+  bram: {capacity: 1200,   unit: block36}  # of 2,160
+  dsp:  {capacity: 4000,   unit: dsp48e2}  # of 6,840
+
+# Intended residents (DOCUMENTATION ONLY — install is phase 4, by tool)
+intended_modules: [internal, tai, timeframe, dom, dom_bus, candle, footprint, tpo]

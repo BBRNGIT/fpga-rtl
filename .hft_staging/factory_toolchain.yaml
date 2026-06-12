@@ -15,15 +15,15 @@ fpgas: [fpga-in, fpga-main, fpga-control]
 # Each format is a contract: a tool that produces/consumes it must conform.
 formats:
   board_profile:
-    file_glob: "device_profiles/*.yaml"
+    file_glob: "device_profiles/fpga-*.yaml"
     required_fields: [name, part_ref, registers, clock_domains, io, address_space]
     purpose: "real FPGA-part facts a board blank is cast from (determinism source)"
-    status: planned
+    status: built
   harness:
     file_glob: "harness/*.harness.yaml"
     required_fields: [boards, power_bit, start_stop, sequence]
     purpose: "programmatic power on/off + start/stop + power-up sequence for the 3 boards"
-    status: planned
+    status: built
   system_registry:
     file_glob: "system_registry.json"
     required_fields: [entity, type, address, owner_module, owner_board]
@@ -46,11 +46,11 @@ phases:
 
   - id: 2
     name: boards
-    status: planned
+    status: done
     tools:
-      - {name: gen_fpga_blank.py, file: gen_fpga_blank.py, in: [board_profile], out: [fpga blank netlist+C], status: planned,
+      - {name: gen_fpga_blank.py, file: gen_fpga_blank.py, in: [board_profile], out: [fpga blank netlist+C], status: built,
          purpose: "cast an internally-connected FPGA blank fabric from a real-part profile; NO module allocation"}
-      - {name: gen_harness.py,    file: gen_harness.py,    in: [harness],       out: [harness netlist+C],   status: planned,
+      - {name: gen_harness.py,    file: gen_harness.py,    in: [harness],       out: [harness netlist+C],   status: built,
          purpose: "emit the power-control fabric: on/off + start/stop + power-up sequence for the 3 boards"}
 
   - id: 3
