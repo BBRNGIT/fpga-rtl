@@ -1,0 +1,21 @@
+# composition/gty.tile.yaml — GTY transceiver tile composition (device-model level).
+#
+# Tile/site/BEL model: one GTY transceiver = one GTY channel BEL in a GTY site.
+# The COUNT is authentic — from the parts manifest ("GTY 32.75 Gb/s Transceivers"),
+# not invented. The GTY BEL's internal composition (SERDES: TX/RX registers, CDR,
+# gearbox) is a separate library component sourced from UG578 when a populated GTY
+# is elaborated to circuit — flagged pending, not invented here.
+
+tile_type: GTY
+source: "count from parts manifest (GTY 32.75 Gb/s Transceivers); BEL internals pending UG578"
+
+sites:
+  - site_type: GTY_CHANNEL
+    per_tile: 1
+    bels:
+      - {bel: GTY, count: 1, library: gty, status: library_component_pending}
+
+count_rule:
+  from: "GTY"   # manifest resource substring (authentic count)
+  scale: 1
+  per_bel: GTY

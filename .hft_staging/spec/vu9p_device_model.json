@@ -35,11 +35,59 @@
         }
       ],
       "bels_per_tile": 24
+    },
+    "DSP": {
+      "source": "count from parts manifest (DSP Slices); BEL internals pending UG579 (DSP48E2)",
+      "sites": [
+        {
+          "site_type": "DSP48E2",
+          "per_tile": 1,
+          "bels": [
+            {
+              "bel": "DSP48E2",
+              "count": 1,
+              "library": "dsp48e2",
+              "status": "library_component_pending"
+            }
+          ]
+        }
+      ],
+      "bels_per_tile": 1
+    },
+    "GTY": {
+      "source": "count from parts manifest (GTY 32.75 Gb/s Transceivers); BEL internals pending UG578",
+      "sites": [
+        {
+          "site_type": "GTY_CHANNEL",
+          "per_tile": 1,
+          "bels": [
+            {
+              "bel": "GTY",
+              "count": 1,
+              "library": "gty",
+              "status": "library_component_pending"
+            }
+          ]
+        }
+      ],
+      "bels_per_tile": 1
     }
   },
   "grid": {
     "CLB": {
       "count": 147750,
+      "layout": "regular_model",
+      "addressing": "_X#Y# per Xilinx scheme",
+      "power": "per-tile enable (unused tiles off)"
+    },
+    "DSP": {
+      "count": 6840,
+      "layout": "regular_model",
+      "addressing": "_X#Y# per Xilinx scheme",
+      "power": "per-tile enable (unused tiles off)"
+    },
+    "GTY": {
+      "count": 120,
       "layout": "regular_model",
       "addressing": "_X#Y# per Xilinx scheme",
       "power": "per-tile enable (unused tiles off)"

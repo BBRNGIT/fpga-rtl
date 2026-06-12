@@ -1,0 +1,22 @@
+# composition/dsp.tile.yaml — DSP tile composition (device-model level).
+#
+# Tile/site/BEL model: a DSP slice is one DSP48E2 BEL in a DSP site (the standard
+# UltraScale+ mapping). The COUNT is authentic — taken from the parts manifest
+# ("DSP Slices"), not invented. The DSP48E2 BEL's INTERNAL flip-flop/gate
+# composition (multiplier + 48-bit ALU + pipeline registers) is a separate library
+# component, sourced from UG579 when a populated DSP is elaborated to circuit —
+# flagged pending, not invented here.
+
+tile_type: DSP
+source: "count from parts manifest (DSP Slices); BEL internals pending UG579 (DSP48E2)"
+
+sites:
+  - site_type: DSP48E2
+    per_tile: 1
+    bels:
+      - {bel: DSP48E2, count: 1, library: dsp48e2, status: library_component_pending}
+
+count_rule:
+  from: "DSP Slices"   # manifest resource (authentic count)
+  scale: 1
+  per_bel: DSP48E2
