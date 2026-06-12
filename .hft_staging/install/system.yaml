@@ -1,0 +1,7 @@
+# system.yaml — what goes on the FPGA. adapter + wire stay OFF-fabric (ingress);
+# dom_bus is an on-fabric conductor bus (lanes, not cell-synthesized). The rest are
+# bit-blasted onto LUT6 + FF BELs by synth.py and verified bit-exact vs native.
+off_fabric: [adapter, wire]
+conductor: [dom_bus]
+synthesize: [taiosc, tai, mac, internal, tai_cdc, fifo_rx, nic, pip_resolver,
+             timeframe, dom, candle, footprint, tpo, fractal, cbr]

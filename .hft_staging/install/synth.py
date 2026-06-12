@@ -136,6 +136,16 @@ def main():
                 if i < W - 1:
                     co = f"{name}#c{i+1}"
                     add_gate(co, [ai, bi, carry], f_fa_carry); carry = co
+        elif cell == "cmp_lt":
+            # a<b (unsigned) via a + ~b + 1 carry chain; result = NOT(final carry).
+            carry = CONST1
+            for i in range(W):
+                ai = src(ci[0], i)
+                bn = f"{name}#nb{i}"; add_gate(bn, [src(ci[1], i)], f_not)
+                co = f"{name}#c{i+1}"
+                add_gate(co, [ai, bn, carry], f_fa_carry); carry = co
+            add_gate(bit(name, 0), [carry], f_not)        # 1 iff no carry-out == a<b
+            for i in range(1, W): alias[bit(name, i)] = CONST0
         elif cell in ("sar", "shl"):
             n = int(c.get("shift_right", c.get("shift", 0)))
             for i in range(W):
@@ -172,7 +182,8 @@ def main():
         for i in range(W):
             ff_at[(d["name"], i)] = (tiles[fbase + fi // 16], fi % 16); fi += 1
 
-    cfg = {"mode": "cell_synth", "module": mod, "start_tile": start_tile,
+    cfg = {"mode": "cell_synth", "module": mod, "partition": f"P@{start_tile}",
+           "start_tile": start_tile,
            "tiles": tiles, "n_gates": len(gates), "n_ff": n_ff,
            "inputs": inputs, "dffs": [d["name"] for d in dffs],
            "provenance": "emitted by synth.py (do not hand-edit)"}
@@ -182,6 +193,8 @@ def main():
 
     emit_loader(mod, gates, lut_at, ff_at, dffs, inputs, out_of, sdef,
                 CONST0, CONST1, resolve)
+    emit_verify(mod, inputs, [d["name"] for d in dffs],
+                os.path.dirname(os.path.abspath(sys.argv[1])))
     sys.stdout.write(json.dumps(cfg, indent=2) + "\n")
     sys.stderr.write(f"synth: {mod} -> {len(gates)} LUTs + {n_ff} FF BELs over "
                      f"{len(tiles)} CLB tiles (start {start_tile})\n")
@@ -268,6 +281,45 @@ def emit_loader(mod, gates, lut_at, ff_at, dffs, inputs, out_of, sdef,
     L.append("#endif")
     os.makedirs(GEN, exist_ok=True)
     open(os.path.join(GEN, f"{mod}_synth_load.h"), "w").write("\n".join(L) + "\n")
+
+
+def emit_verify(mod, inputs, dff_names, mod_dir):
+    """Emit a native-vs-synth harness: drive random inputs, tick both, compare every
+    register word. Proves the synthesized (in-fabric LUT/FF) module == native module."""
+    import re as _re
+    MOD = mod.upper()
+    guard = None
+    cpath = os.path.join(mod_dir, "cells.h")
+    if os.path.exists(cpath):
+        for ln in open(cpath):
+            m = _re.match(r"#ifndef\s+(\w+_H)", ln.strip())
+            if m:
+                guard = m.group(1); break
+    nin, ndf = len(inputs), len(dff_names)
+    L = [f'#include "{mod}_synth_load.h"']
+    if guard:
+        L.append(f"#define {guard}  /* suppress native module's duplicate cells.h */")
+    L += [f'#include "{mod}_gen.h"', "#include <stdio.h>", "int main(void){",
+          f"  fpga_device_init(); synth_{mod}_load();",
+          f"  word_t reg[{MOD}_REG_COUNT]; {mod}_init(reg);"]
+    if nin:
+        L.append("  unsigned inr[]={" + ",".join(f"{MOD}_{x}" for x in inputs) + "};")
+    L.append("  unsigned st[]={" + ",".join(f"{MOD}_{d}" for d in dff_names) + "};")
+    L.append("  word_t (*sy[])(void)={" + ",".join(f"synth_{mod}_{d}" for d in dff_names) + "};")
+    L += ["  unsigned seed=2463534242u; int pass=0,fail=0;", "  for(int c=0;c<8;c++){"]
+    if nin:
+        L += [f"    word_t in[{nin}];",
+              f"    for(int k=0;k<{nin};k++){{seed^=seed<<13;seed^=seed>>17;seed^=seed<<5;in[k]=(word_t)seed;}}",
+              f"    for(int k=0;k<{nin};k++) reg[inr[k]]=in[k];"]
+    L.append(f"    {mod}_tick(reg);")
+    if nin:
+        L.append(f"    for(int k=0;k<{nin};k++) for(int i=0;i<64;i++) synth_{mod}_in[k][i]=(in[k]>>i)&1u;")
+    L += [f"    synth_{mod}_tick();",
+          f"    for(int k=0;k<{ndf};k++){{ word_t n=reg[st[k]], s=sy[k](); if(n==s) pass++; else fail++; }}",
+          "  }",
+          f'  printf("VERIFY {mod}: %d/%d register-words bit-exact\\n",pass,pass+fail);',
+          "  return fail?1:0;", "}"]
+    open(os.path.join(GEN, f"{mod}_synth_verify.c"), "w").write("\n".join(L) + "\n")
 
 
 if __name__ == "__main__":
