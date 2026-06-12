@@ -73,6 +73,7 @@ def main():
     inputs = [n["name"] for n in net.get("config_nodes", [])]
     dffs = net.get("dff_nodes", [])
     combs = net.get("comb_nodes", [])
+    consts = net.get("const_nodes", [])     # fixed-value words referenced by cells/dffs
     dff_names = {d["name"] for d in dffs}
 
     CONST0, CONST1 = "$const0", "$const1"
@@ -192,7 +193,7 @@ def main():
     json.dump(cfg, open(p, "w"), indent=2); open(p, "a").write("\n")
 
     emit_loader(mod, gates, lut_at, ff_at, dffs, inputs, out_of, sdef,
-                CONST0, CONST1, resolve)
+                CONST0, CONST1, resolve, consts)
     emit_verify(mod, inputs, [d["name"] for d in dffs],
                 os.path.dirname(os.path.abspath(sys.argv[1])))
     sys.stdout.write(json.dumps(cfg, indent=2) + "\n")
@@ -201,7 +202,7 @@ def main():
 
 
 def emit_loader(mod, gates, lut_at, ff_at, dffs, inputs, out_of, sdef,
-                CONST0, CONST1, resolve):
+                CONST0, CONST1, resolve, consts=()):
     MOD = mod.upper()
     ids = {}
     def vid(b):
@@ -209,6 +210,12 @@ def emit_loader(mod, gates, lut_at, ff_at, dffs, inputs, out_of, sdef,
             ids[b] = len(ids)
         return ids[b]
     vid(CONST0); vid(CONST1)
+    # const_nodes: fixed-value words referenced by cells/dffs (CANDLE_ONE, _POWER, ...)
+    const_bits = {}     # bitsig -> 0/1
+    for c in consts:
+        v = int(c.get("value", 0))
+        for i in range(W):
+            b = f"{c['name']}#{i}"; vid(b); const_bits[b] = (v >> i) & 1
     for w in inputs:
         for i in range(W): vid(f"{w}#{i}")
     for d in dffs:
@@ -245,6 +252,9 @@ def emit_loader(mod, gates, lut_at, ff_at, dffs, inputs, out_of, sdef,
                  f" fpga_clb[{t}u][{sdef[f'CLB_SLICE_l{s}_cfg_en']}u]=1u;")
     for t in luttiles:
         L.append(f"  clb_slice_tick(fpga_clb[{t}u]);")
+    L.append(f"  synv[{ids[CONST0]}u]=0u; synv[{ids[CONST1]}u]=1u;")
+    for b, v in const_bits.items():
+        L.append(f"  synv[{ids[b]}u]={v}u;")   # fixed const_node bit
     L.append("}")
     # tick: consts, inputs, FF reads, combinational eval (topo per-gate), FF latch
     L.append(f"static inline void synth_{mod}_tick(void){{")
