@@ -1,0 +1,57 @@
+# fractal_logic.yaml — cell-level rebuild of the fractal pivot indicator (compute + high-water dffs).
+# Faithful to fractal.net.json detection:
+#   seq_ge5 = (seq >= 5)            ; expressed as xor(cmp_lt(seq,5), 1) (no invert modifier)
+#   IS_UP   = (h2>h0)&(h2>h1)&(h2>h3)&(h2>h4) & seq_ge5   ; cmp_lt(a,b) == a<b == b>a
+#   IS_DN   = (l2<l0)&(l2<l1)&(l2<l3)&(l2<l4) & seq_ge5
+#   UP_PRICE <= IS_UP ? h2 : hold   ; DN_PRICE <= IS_DN ? l2 : hold
+# NOTE: the per-bar IND_FRAC_HIST history ring (indexed by cs2=(seq-3)&255) is DEFERRED
+# to the BRAM memory task (synth history/table mapping + indexed-vs-shift-in doctrine).
+# cs2 mask is expressed as an explicit `and` cell (CS2 = (seq-3) & 255), no mask modifier.
+module: fractal
+kind: indicator
+seam_inputs:
+  - {name: TF_BAR_SEQ_REG, type: u64, source: "", comment: "bar sequence (from timeframe seam)"}
+  - {name: H0, type: u64, source: "", comment: "window high, oldest"}
+  - {name: H1, type: u64, source: ""}
+  - {name: H2, type: u64, source: "", comment: "pivot bar high"}
+  - {name: H3, type: u64, source: ""}
+  - {name: H4, type: u64, source: "", comment: "window high, newest"}
+  - {name: L0, type: u64, source: "", comment: "window low, oldest"}
+  - {name: L1, type: u64, source: ""}
+  - {name: L2, type: u64, source: "", comment: "pivot bar low"}
+  - {name: L3, type: u64, source: ""}
+  - {name: L4, type: u64, source: "", comment: "window low, newest"}
+const_nodes:
+  - {name: ONE,        type: u64, value: 1, comment: "enable / >= flip"}
+  - {name: FRAC_THREE, type: u64, value: 3, comment: "cs2 = seq - 3"}
+  - {name: FRAC_FIVE,  type: u64, value: 5, comment: "seq>=5 guard threshold"}
+  - {name: MASK255,    type: u64, value: 255, comment: "history depth-1 mask (depth=256)"}
+comb_nodes:
+  - {name: CS2_RAW, cell: addsub, inputs: [TF_BAR_SEQ_REG, FRAC_THREE], sub: 1, comment: "seq - 3"}
+  - {name: CS2,     cell: and,    inputs: [CS2_RAW, MASK255], comment: "(seq-3) & 255 = history write slot"}
+  - {name: SEQ_LT5, cell: cmp_lt, inputs: [TF_BAR_SEQ_REG, FRAC_FIVE], comment: "seq < 5"}
+  - {name: SEQ_GE5, cell: xor,    inputs: [SEQ_LT5, ONE], comment: "seq >= 5"}
+  - {name: UP_GT0, cell: cmp_lt, inputs: [H0, H2], comment: "h2 > h0"}
+  - {name: UP_GT1, cell: cmp_lt, inputs: [H1, H2], comment: "h2 > h1"}
+  - {name: UP_GT3, cell: cmp_lt, inputs: [H3, H2], comment: "h2 > h3"}
+  - {name: UP_GT4, cell: cmp_lt, inputs: [H4, H2], comment: "h2 > h4"}
+  - {name: UP_AND_A, cell: and, inputs: [UP_GT0, UP_GT1]}
+  - {name: UP_AND_B, cell: and, inputs: [UP_GT3, UP_GT4]}
+  - {name: UP_AND_C, cell: and, inputs: [UP_AND_A, UP_AND_B]}
+  - {name: IS_UP,    cell: and, inputs: [UP_AND_C, SEQ_GE5]}
+  - {name: DN_LT0, cell: cmp_lt, inputs: [L2, L0], comment: "l2 < l0"}
+  - {name: DN_LT1, cell: cmp_lt, inputs: [L2, L1], comment: "l2 < l1"}
+  - {name: DN_LT3, cell: cmp_lt, inputs: [L2, L3], comment: "l2 < l3"}
+  - {name: DN_LT4, cell: cmp_lt, inputs: [L2, L4], comment: "l2 < l4"}
+  - {name: DN_AND_A, cell: and, inputs: [DN_LT0, DN_LT1]}
+  - {name: DN_AND_B, cell: and, inputs: [DN_LT3, DN_LT4]}
+  - {name: DN_AND_C, cell: and, inputs: [DN_AND_A, DN_AND_B]}
+  - {name: IS_DN,    cell: and, inputs: [DN_AND_C, SEQ_GE5]}
+  - {name: UP_PRICE_UPDATE, cell: mux, inputs: [IND_FRAC_UP_PRICE_REG, H2, IS_UP], comment: "latch h2 on UP, else hold"}
+  - {name: DN_PRICE_UPDATE, cell: mux, inputs: [IND_FRAC_DN_PRICE_REG, L2, IS_DN], comment: "latch l2 on DN, else hold"}
+dff_nodes:
+  - {name: IND_FRAC_UP_PRICE_REG, type: u64, fed_by: UP_PRICE_UPDATE, enable: ONE, comment: "UP fractal pivot-high high-water"}
+  - {name: IND_FRAC_DN_PRICE_REG, type: u64, fed_by: DN_PRICE_UPDATE, enable: ONE, comment: "DN fractal pivot-low high-water"}
+seam_outputs:
+  - {name: IND_FRAC_UP_PRICE_OUT, source: IND_FRAC_UP_PRICE_REG, type: u64}
+  - {name: IND_FRAC_DN_PRICE_OUT, source: IND_FRAC_DN_PRICE_REG, type: u64}
