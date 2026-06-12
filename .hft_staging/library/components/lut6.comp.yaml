@@ -1,0 +1,79 @@
+# library/components/lut6.comp.yaml — the UltraScale+ 6-input LUT, built from primitives.
+#
+# A LUT6 is the FPGA's programmable logic element: a 64-entry truth table selected by
+# 6 inputs. Authentic (UG574: 8 LUT6 per SLICE). Composed ONLY from existing library
+# cells — nothing invented:
+#   - `tt`  : a dff holding the 64-bit truth table = the programmable config word
+#             (written via cfg_d/cfg_en at programming time; uniform 64-bit).
+#   - select = a 6-stage log-shifter: at stage k, shift the table right by 2^k iff
+#             input i_k is set (mux of value vs value>>2^k). After 6 stages bit0 =
+#             truth_table[ i5 i4 i3 i2 i1 i0 ].
+#   - `one` : eqmask(i0,i0) = constant 1 (a==a); `out` = (selected & 1) = clean 1-bit y.
+#
+# cell_mux keys on sel&1, so the i_k inputs need only bit0 valid; the output y is a
+# clean single bit. LUT config bits are configuration storage (NOT the counted CLB
+# flip-flops).
+
+component: lut6
+params:
+  init: 0                       # power-up truth table (blank = 0 = unprogrammed)
+ports:
+  in:  [cfg_d, cfg_en, i0, i1, i2, i3, i4, i5]   # cfg_* program the table; i0..i5 = LUT inputs
+  out: [y]                                        # 1-bit LUT output
+
+body:
+  instances:
+    - {name: tt, component: dff, params: {init: init}}   # 64-bit truth table (config)
+    - {name: s0, component: sar, params: {n: 1}}
+    - {name: x0, component: mux}
+    - {name: s1, component: sar, params: {n: 2}}
+    - {name: x1, component: mux}
+    - {name: s2, component: sar, params: {n: 4}}
+    - {name: x2, component: mux}
+    - {name: s3, component: sar, params: {n: 8}}
+    - {name: x3, component: mux}
+    - {name: s4, component: sar, params: {n: 16}}
+    - {name: x4, component: mux}
+    - {name: s5, component: sar, params: {n: 32}}
+    - {name: x5, component: mux}
+    - {name: one, component: eqmask}                     # constant 1 = (i0 == i0)
+    - {name: out, component: and}                        # y = selected & 1
+  connections:
+    - {net: [cfg_d,  tt.d]}
+    - {net: [cfg_en, tt.en]}
+    # stage 0: x0 = i0 ? (tt >> 1) : tt
+    - {net: [tt.q,  s0.a]}
+    - {net: [tt.q,  x0.a]}
+    - {net: [s0.y,  x0.b]}
+    - {net: [i0,    x0.sel]}
+    # stage 1: x1 = i1 ? (x0 >> 2) : x0
+    - {net: [x0.y,  s1.a]}
+    - {net: [x0.y,  x1.a]}
+    - {net: [s1.y,  x1.b]}
+    - {net: [i1,    x1.sel]}
+    # stage 2: x2 = i2 ? (x1 >> 4) : x1
+    - {net: [x1.y,  s2.a]}
+    - {net: [x1.y,  x2.a]}
+    - {net: [s2.y,  x2.b]}
+    - {net: [i2,    x2.sel]}
+    # stage 3: x3 = i3 ? (x2 >> 8) : x2
+    - {net: [x2.y,  s3.a]}
+    - {net: [x2.y,  x3.a]}
+    - {net: [s3.y,  x3.b]}
+    - {net: [i3,    x3.sel]}
+    # stage 4: x4 = i4 ? (x3 >> 16) : x3
+    - {net: [x3.y,  s4.a]}
+    - {net: [x3.y,  x4.a]}
+    - {net: [s4.y,  x4.b]}
+    - {net: [i4,    x4.sel]}
+    # stage 5: x5 = i5 ? (x4 >> 32) : x4
+    - {net: [x4.y,  s5.a]}
+    - {net: [x4.y,  x5.a]}
+    - {net: [s5.y,  x5.b]}
+    - {net: [i5,    x5.sel]}
+    # constant 1, then mask to a clean output bit
+    - {net: [i0,    one.a]}
+    - {net: [i0,    one.b]}
+    - {net: [x5.y,  out.a]}
+    - {net: [one.y, out.b]}
+    - {net: [out.y, y]}

@@ -28,11 +28,15 @@ def main():
     tile_type = sys.argv[2]
     mod = sys.argv[3]                         # e.g. clb_slice
     MOD = mod.upper()
-    # authentic FF-per-tile = the tile's real flip-flops, from its own netlist.
+    # authentic FF-per-tile = the tile's real flip-flops (FF BELs), from its netlist.
+    # LUT truth-table registers (names ending "_tt") are CONFIG storage, not the
+    # counted CLB flip-flops, so they are excluded from the FF count.
     tile_net = json.load(open(sys.argv[4]))
-    ff_per_tile = len(tile_net.get("dff_nodes") or [])
+    dffs = [n["name"] for n in (tile_net.get("dff_nodes") or [])]
+    ff_per_tile = len([n for n in dffs if not n.endswith("_tt")])
+    lut_per_tile = len([n for n in dffs if n.endswith("_tt")])
     if ff_per_tile <= 0:
-        die(f"tile netlist {sys.argv[4]} has no dff_nodes (no flip-flops?)")
+        die(f"tile netlist {sys.argv[4]} has no FF-BEL dff_nodes (no flip-flops?)")
 
     # count: from the materialized device model if present; else an explicit
     # authentic count (for tiles whose count is not yet in the model — e.g. BRAM/

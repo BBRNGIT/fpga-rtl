@@ -13,15 +13,19 @@
 static uint8_t fpga_master_power;
 #define FPGA_CLB_COUNT 147750u
 #define FPGA_CLB_FF 16u
+#define FPGA_CLB_LUT 8u
 static word_t fpga_clb[FPGA_CLB_COUNT][CLB_SLICE_REG_COUNT];
 #define FPGA_DSP_COUNT 6840u
 #define FPGA_DSP_FF 14u
+#define FPGA_DSP_LUT 0u
 static word_t fpga_dsp[FPGA_DSP_COUNT][DSP48E2_REG_COUNT];
 #define FPGA_BRAM_COUNT 2160u
 #define FPGA_BRAM_FF 576u
+#define FPGA_BRAM_LUT 0u
 static word_t fpga_bram[FPGA_BRAM_COUNT][BRAM_BLOCK_REG_COUNT];
 #define FPGA_URAM_COUNT 960u
 #define FPGA_URAM_FF 4608u
+#define FPGA_URAM_LUT 0u
 static word_t fpga_uram[FPGA_URAM_COUNT][URAM_BLOCK_REG_COUNT];
 static gty_word_t fpga_gty_lanes[GTY_REG_COUNT];
 static inline void fpga_device_init(void){
@@ -42,8 +46,9 @@ static inline void fpga_device_tick(void){
   for (unsigned i=0;i<FPGA_URAM_COUNT;i++) uram_block_tick(fpga_uram[i]);
 }
 static inline unsigned long fpga_device_flipflops(void){ return (unsigned long)FPGA_CLB_COUNT*FPGA_CLB_FF + (unsigned long)FPGA_DSP_COUNT*FPGA_DSP_FF + (unsigned long)FPGA_BRAM_COUNT*FPGA_BRAM_FF + (unsigned long)FPGA_URAM_COUNT*FPGA_URAM_FF; }
+static inline unsigned long fpga_device_luts(void){ return (unsigned long)FPGA_CLB_COUNT*FPGA_CLB_LUT + (unsigned long)FPGA_DSP_COUNT*FPGA_DSP_LUT + (unsigned long)FPGA_BRAM_COUNT*FPGA_BRAM_LUT + (unsigned long)FPGA_URAM_COUNT*FPGA_URAM_LUT; }
 static inline void fpga_device_display(void){
-  printf("FPGA %s device (power=%u): %lu real flip-flops\n", "vu9p", fpga_master_power, fpga_device_flipflops());
+  printf("FPGA %s device (power=%u): %lu real flip-flops, %lu LUTs\n", "vu9p", fpga_master_power, fpga_device_flipflops(), fpga_device_luts());
   printf("  CLB  x%-8u  %u FF/tile  = %lu flip-flops\n", FPGA_CLB_COUNT, FPGA_CLB_FF, (unsigned long)FPGA_CLB_COUNT*FPGA_CLB_FF);
   printf("  DSP  x%-8u  %u FF/tile  = %lu flip-flops\n", FPGA_DSP_COUNT, FPGA_DSP_FF, (unsigned long)FPGA_DSP_COUNT*FPGA_DSP_FF);
   printf("  BRAM x%-8u  %u FF/tile  = %lu flip-flops\n", FPGA_BRAM_COUNT, FPGA_BRAM_FF, (unsigned long)FPGA_BRAM_COUNT*FPGA_BRAM_FF);

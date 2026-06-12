@@ -1,0 +1,17 @@
+design: lut6_probe
+kind: probe
+ports:
+  in:  [cfg_d, cfg_en, i0, i1, i2, i3, i4, i5]
+  out: [y]
+instances:
+  - {name: u, component: lut6, params: {init: 0}}
+connections:
+  - {net: [cfg_d,  u.cfg_d]}
+  - {net: [cfg_en, u.cfg_en]}
+  - {net: [i0, u.i0]}
+  - {net: [i1, u.i1]}
+  - {net: [i2, u.i2]}
+  - {net: [i3, u.i3]}
+  - {net: [i4, u.i4]}
+  - {net: [i5, u.i5]}
+  - {net: [u.y, y]}

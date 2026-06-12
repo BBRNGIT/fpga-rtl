@@ -83,6 +83,10 @@ def emit_comb_expr(node):
         expr = f"cell_gate({args[0]}, {args[1]})"
     elif cell == "cmp_lt":
         expr = f"cmp_lt({args[0]}, {args[1]})"
+    elif cell == "sar":
+        # sar atom = a structural right shift; the value passes through and the
+        # shift_right modifier below applies cell_sar (Law 2: structural shift).
+        expr = f"cell_buf({args[0]})"
     else:
         sys.stderr.write(f"gennet: unknown cell '{cell}' for {node['name']}\n")
         sys.exit(2)
