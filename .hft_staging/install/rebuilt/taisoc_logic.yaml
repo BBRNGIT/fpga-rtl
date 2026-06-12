@@ -1,0 +1,17 @@
+module: taisoc
+kind: oscillator
+clock: {power: TAISOC_POWER, comment: "self-runs while powered"}
+seam_inputs:
+  - {name: TAISOC_POWER,     type: bit, source: "", comment: "power bit"}
+  - {name: TAISOC_RUN_UNTIL, type: u64, source: "", comment: "self-run stop bound"}
+const_nodes: [{name: ONE, type: u64, value: 1, comment: "step"}]
+comb_nodes:
+  - {name: STEP,      cell: gate,   inputs: [ONE, TAISOC_POWER]}
+  - {name: CNT_NEXT,  cell: addsub, inputs: [TAISOC_CYCLE, STEP], sub: 0}
+  - {name: EDGE_NEXT, cell: gate,   inputs: [ONE, TAISOC_POWER]}
+dff_nodes:
+  - {name: TAISOC_CYCLE, type: u64, fed_by: CNT_NEXT,  enable: ONE}
+  - {name: TAISOC_EDGE,   type: bit, fed_by: EDGE_NEXT, enable: ONE}
+seam_outputs:
+  - {name: TAISOC_CYCLE_OUT, source: TAISOC_CYCLE, type: u64}
+  - {name: TAISOC_EDGE_OUT,   source: TAISOC_EDGE,   type: bit}

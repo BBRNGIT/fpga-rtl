@@ -1,0 +1,21 @@
+# mac_logic.yaml — cell-level rebuild of the MAC 125MHz sample clock.
+# Faithful to mac_gen.h: MAC_CYCLE += gate(1, power); MAC_EDGE = gate(1, power).
+# clock-rule: clock.power=MAC_POWER + MAC_RUN_UNTIL node (start/stop bound).
+module: mac
+kind: oscillator
+clock: {power: MAC_POWER, comment: "125MHz MAC sample clock; self-runs while powered"}
+seam_inputs:
+  - {name: MAC_POWER,     type: bit, source: "", comment: "power bit (set once by starter)"}
+  - {name: MAC_RUN_UNTIL, type: u64, source: "", comment: "self-run stop count (start/stop bound)"}
+const_nodes:
+  - {name: ONE, type: u64, value: 1, comment: "tick step"}
+comb_nodes:
+  - {name: STEP,      cell: gate,   inputs: [ONE, MAC_POWER], comment: "1 while powered, else 0"}
+  - {name: CNT_NEXT,  cell: addsub, inputs: [MAC_CYCLE, STEP], sub: 0, comment: "cycle += step"}
+  - {name: EDGE_NEXT, cell: gate,   inputs: [ONE, MAC_POWER], comment: "edge each powered tick"}
+dff_nodes:
+  - {name: MAC_CYCLE, type: u64, fed_by: CNT_NEXT,  enable: ONE, comment: "free-running cycle count"}
+  - {name: MAC_EDGE,  type: bit, fed_by: EDGE_NEXT, enable: ONE, comment: "NIC samples on this edge"}
+seam_outputs:
+  - {name: MAC_CYCLE_OUT, source: MAC_CYCLE, type: u64, comment: "display/relay"}
+  - {name: MAC_EDGE_OUT,  source: MAC_EDGE,  type: bit, comment: "sample edge out"}

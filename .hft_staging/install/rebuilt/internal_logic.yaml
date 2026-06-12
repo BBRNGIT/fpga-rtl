@@ -1,0 +1,17 @@
+module: internal
+kind: oscillator
+clock: {power: INTERNAL_POWER, comment: "self-runs while powered"}
+seam_inputs:
+  - {name: INTERNAL_POWER,     type: bit, source: "", comment: "power bit"}
+  - {name: INTERNAL_RUN_UNTIL, type: u64, source: "", comment: "self-run stop bound"}
+const_nodes: [{name: ONE, type: u64, value: 1, comment: "step"}]
+comb_nodes:
+  - {name: STEP,      cell: gate,   inputs: [ONE, INTERNAL_POWER]}
+  - {name: CNT_NEXT,  cell: addsub, inputs: [INTERNAL_CYCLE, STEP], sub: 0}
+  - {name: EDGE_NEXT, cell: gate,   inputs: [ONE, INTERNAL_POWER]}
+dff_nodes:
+  - {name: INTERNAL_CYCLE, type: u64, fed_by: CNT_NEXT,  enable: ONE}
+  - {name: INTERNAL_EDGE,   type: bit, fed_by: EDGE_NEXT, enable: ONE}
+seam_outputs:
+  - {name: INTERNAL_CYCLE_OUT, source: INTERNAL_CYCLE, type: u64}
+  - {name: INTERNAL_EDGE_OUT,   source: INTERNAL_EDGE,   type: bit}
