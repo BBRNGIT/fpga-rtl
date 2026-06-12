@@ -1,0 +1,45 @@
+# tpo_logic.yaml — flip-flop-level logic spec (ground-up, doctrine-correct).
+#
+# Index Doctrine (Law #10): price is a DIRECT index. tpo keeps its OWN per-price
+# counter of TIME-TICKS SPENT AT THAT PRICE, counting from an ABSTRACT per-tick
+# payload into its own registers over the bar (tpo = time-touches per price).
+#
+# Build/Assignment separation: inputs are ABSTRACT ports (a per-tick price-indexed
+# touch payload + a bar-boundary pulse + the committing bar's time). NO DOM/TF
+# binding, NO addresses. Binding to a real producer and placement happen later.
+#
+# History is a record STORE (shift-in), not an index construct: each stored record
+# carries its intrinsic coordinates — TIME (commit time) + the per-price time-tick
+# profile. A future query module browses these records by their intrinsic time/price.
+#
+# SCOPE (this milestone): per-lane time-tick accumulate + bar reset + record store.
+# POC (max-time price) is a reduction added next.
+
+module: tpo
+kind: indicator
+width: 8
+clock: passive   # passive consumer — the fabric clocks it; testbench loops the tick.
+
+seam_inputs:
+  - {name: IN_TOUCH_i, type: u64, source: "", unroll: true, comment: "abstract: 1 iff price-index i is touched/at this tick (0/1)"}
+  - {name: IN_BAR_BOUNDARY, type: u64, source: "", comment: "abstract: 1 on the first tick of a new bar (prev bar closes)"}
+  - {name: IN_BAR_TIME, type: u64, source: "", comment: "abstract: the committing bar's time (intrinsic record coordinate)"}
+
+# own state: per-price time-tick counter (ticks spent at each price this bar)
+dff_nodes:
+  - {name: TPO_TIME_i, type: u64, fed_by: time_next_i, unroll: true, comment: "own count of time-ticks spent at price-index i this bar"}
+
+comb_nodes:
+  # accumulate-then-reset per lane: next = boundary ? this_tick_touch : (current + touch)
+  - {name: time_acc_i,  cell: addsub, inputs: [TPO_TIME_i, IN_TOUCH_i], sub: 0, unroll: true, comment: "current + this tick's touch (0/1)"}
+  - {name: time_next_i, cell: mux,    inputs: [time_acc_i, IN_TOUCH_i, IN_BAR_BOUNDARY], unroll: true, comment: "boundary -> start fresh; else accumulate"}
+
+# completed-bar record store (shift-in; NO index construct). Each record carries
+# its TIME (commit time) + the per-price time-tick profile.
+history_ring:
+  name: TPO_HIST
+  depth: 64
+  write_enable: IN_BAR_BOUNDARY
+  fields:
+    - {name: TIME, source: IN_BAR_TIME}
+    - {name: TPO_i, source: TPO_TIME_i, unroll: true}
