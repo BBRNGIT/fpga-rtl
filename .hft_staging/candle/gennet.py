@@ -79,8 +79,6 @@ def emit_comb_expr(node):
     elif cell == "addsub":
         sub = str(int(node.get("sub", 0))) + "ULL"
         expr = f"cell_addsub({args[0]}, {args[1]}, {sub})"
-    elif cell == "gate":
-        expr = f"cell_gate({args[0]}, {args[1]})"
     elif cell == "cmp_lt":
         expr = f"cmp_lt({args[0]}, {args[1]})"
     else:

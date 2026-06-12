@@ -85,11 +85,6 @@ for GENH in "$SRC"/*_gen.h; do
         CELL_COUNT=1
         continue
     fi
-    if [ -f "$GBASE.net.json" ] && grep -q '"kind"[[:space:]]*:[[:space:]]*"fpga_blank"' "$GBASE.net.json" 2>/dev/null; then
-        echo "    $(basename "$GENH"): fpga blank (pure device reference, no logic by law) — exempt"
-        CELL_COUNT=1
-        continue
-    fi
     COUNT=$(grep -o "cell_[a-z_]*(" "$GENH" 2>/dev/null | wc -l)
     if [ "$COUNT" -gt "$CELL_COUNT" ]; then
         CELL_COUNT="$COUNT"

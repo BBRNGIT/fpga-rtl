@@ -149,11 +149,6 @@ echo "==> [gate] 2d/3 flip-flop logic content (cell calls in device C)"
     if grep -q '"kind"[[:space:]]*:[[:space:]]*"passive_bus"' "$BASE.net.json" 2>/dev/null; then
         echo "    $GENH: passive bus (no compute by design) — exempt"; continue
     fi
-    # FPGA blanks are pure device reference (blank-enforcement law): no logic
-    # until modules are installed (phase 4). Exempt from logic-content.
-    if grep -q '"kind"[[:space:]]*:[[:space:]]*"fpga_blank"' "$BASE.net.json" 2>/dev/null; then
-        echo "    $GENH: fpga blank (pure device reference, no logic by law) — exempt"; continue
-    fi
     CELL_COUNT=$(grep -o "cell_[a-z_]*(" "$GENH" 2>/dev/null | wc -l)
     if [ "$CELL_COUNT" -eq 0 ]; then
         echo "    [FAIL] $GENH — no structural cell calls found"

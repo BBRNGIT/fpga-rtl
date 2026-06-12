@@ -94,14 +94,13 @@ def expand_unroll(items, width):
             out.append(c)
     return out
 
-KNOWN_CELLS = {"buf", "not", "and", "or", "xor", "mux", "eqmask", "addsub", "cmp_lt", "gate"}
+KNOWN_CELLS = {"buf", "not", "and", "or", "xor", "mux", "eqmask", "addsub", "cmp_lt"}
 # arg counts per cell (None = variadic/unary handled specially)
 CELL_ARITY = {
     "buf": 1, "not": 1,
     "and": 2, "or": 2, "xor": 2, "eqmask": 2, "cmp_lt": 2,
     "mux": 3,
     "addsub": 2,
-    "gate": 2,
 }
 
 
