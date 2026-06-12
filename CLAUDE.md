@@ -134,20 +134,34 @@ Workflow: develop → validate → commit → graduate.
 
 The project's constraints are enforced at commit and graduation time by automatic validators — not guidance, but hard blocks:
 
-- **`gate.sh`** — Pre-graduation validator that runs 3 main stages with substeps:
-  1. Netlist validator (`validate.py`) — single-writer, no-overlap, no-floating checks
-  2. Build + test + gate checks (working tree):
-     - Build and run thin test
-     - Gate-level arithmetic check — AWK scan for native `+`/`-`/`*` outside `cell_*()` in tick
-     - Build-sequence check — no hand-written `cell_*()` or `*_tick` in `.c`/`.h`
-     - Logic-content check — at least one structural cell in `*_gen.h` (catches stubs)
-  3. Clean-room build — rebuild from committed HEAD in temp dir to prove determinism
-  
-  Must pass before `graduate.sh` will promote a component.
+- **`gate.sh`** — Pre-graduation validator. Stages 1, 2, 2b–2j, 3 (each a hard block; a
+  missing enforcement script is itself a failure):
+  1. **Netlist validator** (`validate.py`) — single-writer, no-overlap, no-floating.
+  2. **Build + thin test** (working tree) — compiles `-Werror`, runs the test (hard-fails on any build error).
+  - **2b Gate-level arithmetic** — AWK scan: no native `+`/`-`/`*` outside `cell_*()` in the tick.
+  - **2c Build-sequence** — no hand-written `cell_*()`/`*_tick` in `.c`/`.h` (device logic is generated).
+  - **2d Logic-content** — ≥1 structural cell in each owned `*_gen.h` (catches stubs); **passive buses exempt**; sibling seam headers skipped.
+  - **2e Byte-match** (`checks/check_generated.sh`) — committed `*_gen.h` reproduces byte-identically by re-running gennet on the committed netlist (closes the build-sequence law).
+  - **2f Cells canon** (`checks/check_cells_canon.sh`) — `cells.h` byte-matches the canonical `cells/cells.h` (modulo guard).
+  - **2g Clock rule** (`checks/check_clock_rule.py`) — every clock has a power bit + start/stop.
+  - **2h Index Doctrine** (`checks/check_index_doctrine.py`, Law #10) — price = direct index; no allocation / stored-price-keys / absolute anchors / price-vs-price.
+  - **2i Module contract** (`checks/check_module_contract.py`) — construction matches `module_contracts.yaml` (role, clock domain, history; see SYSTEM_CONTRACT.md).
+  - **2j Build/assignment purity** (`checks/check_build_no_assignment.py`) — no addresses/pins (`window_base`), no peer-module register binding.
+  3. **Clean-room build** — rebuild from committed HEAD in a temp dir (determinism).
 
-- **Vault immutability** — Graduated components in `.hft/` are write-once. To update a graduated component, create a new versioned path (e.g., `candle_v2/`) rather than editing in place. See Architectural Law #8 for details.
+  Must pass before `graduate.sh` will promote a component. The enforcement scripts live in `.hft_staging/checks/`.
 
-**Note:** Pre-commit hooks for generated file validation are documented in the architecture but not yet active in this repository. Currently, validation happens via `gate.sh` before graduation.
+- **Vault immutability** — Graduated components in `.hft/` are write-once. To update a graduated
+  component, graduate it to a **new versioned path** via `graduate.sh <component> --as <name>_v2`
+  (e.g. `candle_v2`, `dom_v2`), leaving the original immutable. See Architectural Law #8.
+
+- **`module_contracts.yaml` + `SYSTEM_CONTRACT.md`** — the machine + human declaration of every
+  module's functional contract (role, clock domain, data flow, history). Enforced by gate stage 2i
+  so the system model persists in the codebase, not in memory.
+
+**Note:** A `commit-msg` hook enforces no-AI-attribution on commit messages; a `pre-commit` hook
+enforces vault immutability + thin-test size. Install both with `./install_hooks.sh`. Generated-file
+byte-match is enforced by gate stage 2e / graduate.sh (not a pre-commit hook).
 
 These validators are not suggestions — they are programmatic enforcers of the architecture.
 
@@ -356,10 +370,13 @@ Before any code, write `<MODULE>.md` with:
 
 Reference documents: `.hft_staging/SPEC_REGISTERS.md`, `.hft_staging/ARCHITECTURE_CLARIFICATIONS.md`, `.hft_staging/BLOCK_DIAGRAM_DETAILED.md`.
 
-**Emitter & Generator Workflow:** Each component follows a **three-stage code-generation pipeline** (described in FOUNDER_VISION.md):
-- **Emitter** (`gen_<module>_net.py`) — Hand-written Python script that outputs the netlist JSON: `python3 gen_<module>_net.py > <module>.net.json`
-- **Netlist** (`<module>.net.json`) — Generated JSON specification (COMMITTED to git). Defines registers, gates, and wiring. Validate with: `python3 validate.py <module>.net.json`
-- **Generator** (`gennet.py`) — Hand-written Python script that converts netlist to device C: `python3 gennet.py <module>.net.json > <module>_gen.h`. Output (`<module>_gen.h`) is committed as a validation artifact — it proves the netlist was generated deterministically.
+**Emitter & Generator Workflow:** Each component follows a **three-stage code-generation pipeline** (described in FOUNDER_VISION.md). NO hand-coding of hardware files — the metatools emit them (see `memory/metatools-build-no-manual-coding.md`):
+- **Spec** (`<module>_logic.yaml`) — human-authored machine spec: `seam_inputs` (ABSTRACT ports — no peer binding, no addresses), `const_nodes`, `dff_nodes` (each with `fed_by`/`enable`), `comb_nodes` (cell + inputs), `history_ring` (a shift-in record store — NO index counter), and `contract`. Supports per-index unroll (`_i` over a `width`) for price-indexed projections, and a `bus_nodes` form for passive buses.
+- **Generic emitter** (`../gen_module_net.py`) — the universal meta-tool: `<module>_logic.yaml` → `<module>.net.json` (per-component thin wrapper `gen_<module>_net.py` invokes it). Validates the spec (unknown cells, unresolved refs, forward refs) so a stub-producing spec fails loudly.
+- **Generic generator** (`gennet.py`, one converged shift-in version) — `<module>.net.json` → `<module>_gen.h` (READ→COMPUTE→WRITE, canonical cells only; history is a counter-free shift-in record store). Passive buses use the passive-bus generator (lanes + zero-init, no tick).
+- Both `.net.json` and `*_gen.h` are TOOL OUTPUTS, committed as validation artifacts, never hand-edited. The canonical cell library is `cells/cells.h` (incl. `cell_sar`/`cell_shl`); per-component copies byte-match it (gate 2f).
+
+> **Legacy note:** older modules (adapter, dom, the CDC/clock infra) were hand-authored netlists with per-module gennets and have been graduated as `_v2` (build-pure). New modules use the generic emitter + logic.yaml + abstract ports above.
 
 **Device Specialization Workflow:** Device implementations use a **meta tool** to eliminate hand-wired allocation:
 - **Blank template** (`DEVICE_DESIGN.md`) — Pure device reference (specs, generic structure, no device-specific allocation)
@@ -394,9 +411,10 @@ make xau          # real data test (if applicable)
 .hft_staging/gate.sh .hft_staging/<module>
 ```
 
-`gate.sh` runs 3 main stages:
-1. Netlist validator (single-writer, no-overlap, no-floating checks)
-2. Build + test + gate checks: build and test, then check arithmetic, build-sequence, and logic-content
+`gate.sh` runs stages 1, 2, 2b–2j, 3 (see "Architecture Enforcement Tools" for the full list):
+1. Netlist validator (single-writer, no-overlap, no-floating)
+2. Build + thin test (`-Werror`), then 2b arithmetic, 2c build-sequence, 2d logic-content,
+   2e byte-match, 2f cells-canon, 2g clock-rule, 2h index-doctrine, 2i module-contract, 2j build-purity
 3. Clean-room build from committed HEAD to prove determinism
 
 ### 4. Commit & Graduate
@@ -435,11 +453,11 @@ cd .hft_staging/adapter && make test
 # Run per-tick diagnostic
 cd .hft_staging/adapter && make probe
 
-# Graduate to vault (only after gate.sh PASS)
-.hft_staging/graduate.sh adapter
+# Graduate to vault as a NEW versioned path (only after gate.sh PASS; Law #8)
+.hft_staging/graduate.sh adapter --as adapter_v2
 
-# Re-graduate if needed (rare)
-HFT_ALLOW_REGRADUATE=1 .hft_staging/graduate.sh adapter
+# Re-graduate an existing vault path (rare; overwrites — needs the override)
+.hft_staging/graduate.sh adapter --as adapter_v2 --regraduate
 
 # Clean build artifacts
 cd .hft_staging/<module> && make clean
@@ -511,10 +529,12 @@ The netlist is the source of truth; gennet generates the device C.
 
 ## Key Documents
 
-- **`FOUNDER_VISION.md`** — Canonical architecture reference, system model, and design philosophy
+- **`FOUNDER_VISION.md`** — Canonical architecture reference, system model, and design philosophy (incl. §8a the Index Doctrine)
+- **`.hft_staging/SYSTEM_CONTRACT.md`** + **`module_contracts.yaml`** — module roles, clocks, data flow (barrier-bus law); enforced by gate 2i
+- **`.hft_staging/cells/CELLS.md`** — canonical cell primitive library (the single source for `cells.h`)
 - **`.hft/README.md`** — Vault immutability laws
 - **`.hft_staging/DESIGN_GUIDE.md`** — Full component build process (steps 0–6)
-- **`.hft_staging/INDICATOR_ARCHITECTURE_TEMPLATE.md`** — Template for indicator specs
+- **`.hft_staging/INDICATOR_ARCHITECTURE_TEMPLATE.md`** — Template for indicator specs (Index Doctrine + record-store memory)
 - **`.hft_staging/ARCHITECTURE_CLARIFICATIONS.md`** — System-wide cross-module connections
 - **`.hft_staging/BLOCK_DIAGRAM_DETAILED.md`** — Data flow diagram
 - **`.hft_staging/DEVICE_DESIGN.md`** — Blank device template (reference only)
