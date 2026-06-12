@@ -46,20 +46,24 @@ BODY_KEYS = {"instances", "connections"}
 
 def load_library():
     import glob
-    atoms = (yaml.safe_load(open(os.path.join(LIB, "atoms.yaml"))) or {}).get("atoms", {})
+    a = yaml.safe_load(open(os.path.join(LIB, "atoms.yaml"))) or {}
+    atoms = {**(a.get("gates") or {}), **(a.get("flip_flops") or {})}
+    cpath = os.path.join(LIB, "conductors.yaml")
+    conductors = ((yaml.safe_load(open(cpath)) or {}).get("conductors", {})
+                  if os.path.exists(cpath) else {})
     comps = {}
     for f in glob.glob(os.path.join(LIB, "components", "*.comp.yaml")):
         c = yaml.safe_load(open(f))
         comps[c["component"]] = c
-    return atoms, comps
+    return atoms, conductors, comps
 
 
 def main():
     if len(sys.argv) != 2:
         sys.stderr.write("usage: check_elaborated.py <design>.desc.yaml\n"); sys.exit(2)
     desc_path = sys.argv[1]
-    atoms, comps = load_library()
-    known = set(atoms) | set(comps)
+    atoms, conductors, comps = load_library()
+    known = set(atoms) | set(conductors) | set(comps)
     errs = []
 
     # ---- (1) composition-only: every component resolves; only structural fields
