@@ -191,9 +191,30 @@ def main():
         for i in range(W):
             ff_at[(d["name"], i)] = (tiles[fbase + fi // 16], fi % 16); fi += 1
 
+    # ---- memory: shift-in history record store -> BRAM cells (Law #10) -------
+    # Each (slot, field) is one 64-bit word = one BRAM storage cell. No write-
+    # pointer, no index: on write_enable the records shift down (newest at slot 0).
+    bdef = defines(os.path.join(FAB, "bram_block_gen.h"))
+    BRAM_CELLS = 576
+    hist = net.get("history_ring")
+    hist_words = []     # ordered: {reg, slot, field, source}
+    hplace = {}         # (slot, field) -> (bram_tile, cell_slot)
+    bram_tiles = []
+    if hist:
+        depth = hist["depth"]; flds = hist["fields"]
+        for s in range(depth):
+            for fld in flds:
+                hist_words.append({"reg": f"{hist['name']}_{s}_{fld['name']}",
+                                   "slot": s, "field": fld["name"], "source": fld["source"]})
+        n_bram = (len(hist_words) + BRAM_CELLS - 1) // BRAM_CELLS
+        bram_tiles = list(range(n_bram))     # per-module BRAM tiles (campaign offsets later)
+        for idx, hw in enumerate(hist_words):
+            hplace[(hw["slot"], hw["field"])] = (bram_tiles[idx // BRAM_CELLS], idx % BRAM_CELLS)
+
     cfg = {"mode": "cell_synth", "module": mod, "partition": f"P@{start_tile}",
            "start_tile": start_tile,
            "tiles": tiles, "n_gates": len(gates), "n_ff": n_ff,
+           "bram_tiles": bram_tiles, "n_bram_cells": len(hist_words),
            "inputs": inputs, "dffs": [d["name"] for d in dffs],
            "provenance": "emitted by synth.py (do not hand-edit)"}
     p = os.path.join(HERE, "configs", f"{mod}.cell_synth.config.json")
@@ -201,8 +222,8 @@ def main():
     json.dump(cfg, open(p, "w"), indent=2); open(p, "a").write("\n")
 
     emit_loader(mod, gates, lut_at, ff_at, dffs, inputs, out_of, sdef,
-                CONST0, CONST1, resolve, consts)
-    emit_verify(mod, inputs, [d["name"] for d in dffs],
+                CONST0, CONST1, resolve, consts, hist, hplace, bdef, bram_tiles)
+    emit_verify(mod, inputs, [d["name"] for d in dffs] + [hw["reg"] for hw in hist_words],
                 os.path.dirname(os.path.abspath(sys.argv[1])))
     sys.stdout.write(json.dumps(cfg, indent=2) + "\n")
     sys.stderr.write(f"synth: {mod} -> {len(gates)} LUTs + {n_ff} FF BELs over "
@@ -210,8 +231,10 @@ def main():
 
 
 def emit_loader(mod, gates, lut_at, ff_at, dffs, inputs, out_of, sdef,
-                CONST0, CONST1, resolve, consts=()):
+                CONST0, CONST1, resolve, consts=(), hist=None, hplace=None,
+                bdef=None, bram_tiles=()):
     MOD = mod.upper()
+    dff_names = {d["name"] for d in dffs}
     ids = {}
     def vid(b):
         if b not in ids:
@@ -289,6 +312,36 @@ def emit_loader(mod, gates, lut_at, ff_at, dffs, inputs, out_of, sdef,
                      f" fpga_clb[{t}u][{sdef[f'CLB_SLICE_en_{s}']}u]=synv[{ids[en]}u];")
     for t in fftiles:
         L.append(f"  clb_slice_tick(fpga_clb[{t}u]);")
+
+    # ---- history record store -> BRAM (shift-in; newest at slot 0, Law #10) --
+    # Runs AFTER the FF latch (gennet emits history after the dff writes), so the
+    # slot-0 field source reads the NEW dff value. The shift reads OLD BRAM cells.
+    def cell_ref(t, c, kind):
+        return f"fpga_bram[{t}u][{bdef[f'BRAM_BLOCK_{kind}_{c}']}u]"
+
+    def src_word_bit(node, i):
+        # gennet captures field sources at tick START (old dff value / comb of old),
+        # so read the synv value latched at tick start, NOT the post-latch FF.
+        b = resolve(f"{node}#{i}")
+        return f"(synv[{ids[b]}u]&1u)"
+    if hist:
+        we = hist.get("write_enable")
+        we_expr = f"synv[{ids[resolve(we + '#0')]}u]&1u" if we else "1u"
+        L.append(f"  word_t hwe=(word_t)({we_expr});")
+        depth = hist["depth"]; flds = hist["fields"]
+        # shift slots high->low: DIN[s] <- OLD CELL[s-1] (read all before any tick)
+        for s in range(depth - 1, 0, -1):
+            for fld in flds:
+                t, c = hplace[(s, fld["name"])]
+                pt, pc = hplace[(s - 1, fld["name"])]
+                L.append(f"  {cell_ref(t,c,'DIN')}={cell_ref(pt,pc,'CELL')};"
+                         f" {cell_ref(t,c,'WE')}=hwe;")
+        for fld in flds:                                   # slot 0 <- field source word
+            t, c = hplace[(0, fld["name"])]
+            srcw = "|".join(f"({src_word_bit(fld['source'], i)}<<{i}u)" for i in range(W))
+            L.append(f"  {cell_ref(t,c,'DIN')}=(word_t)({srcw}); {cell_ref(t,c,'WE')}=hwe;")
+        for bt in bram_tiles:
+            L.append(f"  bram_block_tick(fpga_bram[{bt}u]);")
     L.append("}")
     # output accessors: reconstruct each register word from its 64 FF bits
     for d in dffs:
@@ -296,6 +349,11 @@ def emit_loader(mod, gates, lut_at, ff_at, dffs, inputs, out_of, sdef,
         for i in range(W):
             L.append(f"  v|=({topff(d['name'], i)}&1u)<<{i}u;")
         L.append("  return v; }")
+    # history accessors: each (slot,field) word reads its BRAM storage cell
+    if hist:
+        for (slot, field), (t, c) in hplace.items():
+            reg = f"{hist['name']}_{slot}_{field}"
+            L.append(f"static inline word_t synth_{mod}_{reg}(void){{ return {cell_ref(t,c,'CELL')}; }}")
     L.append("#endif")
     os.makedirs(GEN, exist_ok=True)
     open(os.path.join(GEN, f"{mod}_synth_load.h"), "w").write("\n".join(L) + "\n")
