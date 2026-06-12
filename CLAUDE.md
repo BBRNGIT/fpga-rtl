@@ -530,6 +530,7 @@ The netlist is the source of truth; gennet generates the device C.
 ## Key Documents
 
 - **`FOUNDER_VISION.md`** — Canonical architecture reference, system model, and design philosophy (incl. §8a the Index Doctrine)
+- **`.hft_staging/SILICON_FACTORY.md`** — the build doctrine & phase law: 3 FPGAs (`fpga-in`/`fpga-main`/`fpga-control`); phase order parts→boards→address-every-entity→install/de-install→synthesize→higher-layers; nothing by hand (C is the fabric)
 - **`.hft_staging/SYSTEM_CONTRACT.md`** + **`module_contracts.yaml`** — module roles, clocks, data flow (barrier-bus law); enforced by gate 2i
 - **`.hft_staging/cells/CELLS.md`** — canonical cell primitive library (the single source for `cells.h`)
 - **`.hft/README.md`** — Vault immutability laws
