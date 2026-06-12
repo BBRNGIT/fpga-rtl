@@ -73,8 +73,9 @@ key_commands:
   validate_component: ".hft_staging/gate.sh .hft_staging/<module>"
   generate_c: "cd .hft_staging/<module> && make gen"
   run_test: "cd .hft_staging/<module> && make test"
-  graduate: ".hft_staging/graduate.sh <module>"
-  specialize_device: "python3 gen_device_specialization.py --type <type> <spec> <modules> <output>"
+  graduate: ".hft_staging/graduate.sh <module> --as <name>_v2"
+  install_hooks: "./install_hooks.sh"
+  factory_status: "python3 .hft_staging/checks/check_factory_contracts.py"
 
 tags:
   - "C-as-RTL"
@@ -91,8 +92,17 @@ tags:
   - "flip-flop-level"
   - "universal-device-generation"
 
+conduct_law:
+  name: "No AI-Imposed Design (BINDING)"
+  reference: "memory/no-ai-imposed-design.md"
+  summary: >-
+    Design is humanly dictated. Specs must match the real hardware spec EXACTLY
+    as stated — the spec is fed AS-IS to the meta tool; no AI-invented values,
+    fields, or structure anywhere. Missing information means STOP AND ASK, never
+    fill. Violations cost 10 hours of non-progress on 2026-06-12.
+
 created: "2025-06-10"
-updated: "2025-06-10"
+updated: "2026-06-12"
 author: "Founder Vision"
 maintainers: ["Claude Code agents", "Hardware architects"]
 ---
@@ -114,12 +124,17 @@ This is a **C-as-RTL hardware design framework** — a universal system that gen
 **C code IS the hardware specification.** Not a generator. Not a simulator. Not a wrapper.
 
 - All device types (FPGA, ASIC, PCB, MCU, custom) output **C only** — no Verilog, no schematics, no firmware images.
-- Device type is a **parameter** in `gen_device_specialization.py`, not hardcoded in separate tools.
+- Device specifics are **never hardcoded in tools** — all part facts come from the spec/profile fed to the meta tool; meta tools must not hardcode the device or assign parts.
 - The fileset pattern is **universal** — same structure for all device types.
-- Output is always `device_<type>_*_gen.h` — a complete C model of the realized hardware.
 - Validation rules (single-writer, no-overlap, no-floating) are **device-agnostic**.
 
 **This is immutable and non-negotiable.** See `memory/c_is_rtl_immutable_law.md` and `skills/c_is_rtl_enforcement.md`.
+
+> Historical note: the former `gen_device_specialization.py` (a part-ASSIGNING
+> specialization tool with hardcoded clock tables) was purged 2026-06-12 as a
+> violation of this law's spirit — see `tools/DEPRECATED.md`. Device realization
+> happens via the factory line (`factory_toolchain.yaml`): construction tools
+> assign nothing; assignment belongs exclusively to the phase-3/4 meta tools.
 
 ## Repository Structure
 
@@ -146,7 +161,8 @@ The project's constraints are enforced at commit and graduation time by automati
   - **2g Clock rule** (`checks/check_clock_rule.py`) — every clock has a power bit + start/stop.
   - **2h Index Doctrine** (`checks/check_index_doctrine.py`, Law #10) — price = direct index; no allocation / stored-price-keys / absolute anchors / price-vs-price.
   - **2i Module contract** (`checks/check_module_contract.py`) — construction matches `module_contracts.yaml` (role, clock domain, history; see SYSTEM_CONTRACT.md).
-  - **2j Build/assignment purity** (`checks/check_build_no_assignment.py`) — no addresses/pins (`window_base`), no peer-module register binding.
+  - **2j Build/assignment purity** (`checks/check_build_no_assignment.py`) — no addresses/pins (`window_base`), no placement/differentiation (`intended_modules`/roles), no peer-module register binding.
+  - **2k Blank identity** (`checks/check_blank_identity.py`) — ALL BLANKS ARE IDENTICAL and A BLANK ASSIGNS NOTHING: no clock tables, no system-module names, no slicing; one part profile; all blank netlists identical.
   3. **Clean-room build** — rebuild from committed HEAD in a temp dir (determinism).
 
   Must pass before `graduate.sh` will promote a component. The enforcement scripts live in `.hft_staging/checks/`.
@@ -262,16 +278,15 @@ Bid, ask, time, symbol, pip, commission, seq, valid. Downstream derives spread, 
   - PCB → `device_pcb_*_gen.h` (complete C model of PCB)
   - MCU → `device_mcu_*_gen.h` (complete C model of MCU)
   
-- **Device type is a parameter** — not hardcoded in separate tools.
-  - Use: `gen_device_specialization.py --type fpga|asic|pcb|mcu`
-  - Not: `gen_fpga_specialization.py`, `gen_asic_specialization.py`, etc.
+- **Device specifics live in the spec, never in tools** — the hardware spec is fed
+  AS-IS to the meta tool; tools hardcode nothing about the device and assign no
+  parts. (Both era-specific specialization tools — `gen_fpga_specialization.py`
+  and its successor `gen_device_specialization.py` — were purged for violating
+  this; see `tools/DEPRECATED.md`.)
 
-- **Fileset pattern is universal** — same structure for all device types.
-  - Same template: `DEVICE_<TYPE>_DESIGN.md`
-  - Same emitter: `gen_device_<type>_*_net.py`
-  - Same netlist: `device_<type>_*.net.json`
-  - Same generator: `gennet_device_<type>_*.py`
-  - Same output: `device_<type>_*_gen.h` (C)
+- **Fileset pattern is universal** — same component structure for all device
+  types (spec → emitter → netlist → generator → C; complete filesets are
+  TOOL-EMITTED, never hand-assembled).
 
 - **Validation is device-agnostic** — single-writer, no-overlap, no-floating apply to all types.
 
@@ -357,6 +372,48 @@ referenced *on data* is TAI; time that *drives* the system is the internal clock
 every module projects price-indexed activity onto that one internal-tick axis.
 See `memory/index_doctrine_price_time_as_index.md`.
 
+### 11. The Digital Silicon Factory (Phase Law)
+
+The pipeline is a **factory that manufactures silicon**; **C is the fabric**; the
+metatools are the machines; **nothing is done by hand** — including component
+filesets (a tool emits the whole fileset). Canonical: `.hft_staging/SILICON_FACTORY.md`,
+machine contract: `.hft_staging/factory_toolchain.yaml` (enforced by
+`checks/check_factory_contracts.py`).
+
+- **Phase order (each gates the next; no skipping):** 1 parts → 2 boards (blank +
+  power harness) → 3 address EVERY entity system-wide (registry) → 4 install/de-install
+  (tool-only) → 5 synthesize → 6 higher layers (strategy/OMS/execution/signals).
+- **The 3 FPGAs** (`fpga-in`, `fpga-main`, `fpga-control`) are **identical INSTANCES
+  of THE one blank**, named at addressing — never differentiated at casting.
+- **ALL BLANKS ARE IDENTICAL** and **A BLANK ASSIGNS NOTHING**: no clock-domain
+  tables (clocks belong to the oscillator MODULES and arrive at install), no module
+  names, no roles, no slicing, no placements, no addresses. Enforced by
+  `checks/check_blank_identity.py` (gate stage 2k).
+- **Capability separation:** construction tools (blank caster, gennet) are
+  STRUCTURALLY INCAPABLE of assigning and REFUSE poisoned specs; assignment is the
+  exclusive capability of the phase-3/4 meta tools (registry, install).
+- Phase status as of 2026-06-12: phase 1 done; phases 2–6 planned (all phase-2 board
+  work was purged after two rejected attempts — see `tools/DEPRECATED.md`).
+
+### 12. Protected Enforcement Layer
+
+**The judges may not be edited by the judged.** Enforcement files (`gate.sh`,
+`graduate.sh`, `checks/*`, `module_contracts.yaml`, `factory_toolchain.yaml`,
+`enforcement_registry.yaml`, the cells canon, the hooks, `install_hooks.sh`) are
+protected by the pre-commit hook: modifying or deleting them requires the
+founder-granted override `HFT_ALLOW_ENFORCEMENT_CHANGE=1`, in its **own commit,
+never bundled with judged artifacts**. Gate exemptions are granted ONLY in
+`enforcement_registry.yaml` — never inline.
+
+### 13. No AI-Imposed Design (BINDING CONDUCT LAW)
+
+**Design is humanly dictated. The AI implements EXACTLY what is dictated — nothing
+more.** A spec must match the real hardware spec EXACTLY as stated; the spec is fed
+AS-IS to the meta tool. No AI-invented values, fields, renames, "modeling choices,"
+or "recommended defaults" presented as done. **Missing information ⇒ STOP AND ASK,
+never fill.** See `memory/no-ai-imposed-design.md` (violations cost 10 hours of
+non-progress on 2026-06-12).
+
 ## Development Workflow
 
 ### 1. Design Phase
@@ -378,17 +435,17 @@ Reference documents: `.hft_staging/SPEC_REGISTERS.md`, `.hft_staging/ARCHITECTUR
 
 > **Legacy note:** older modules (adapter, dom, the CDC/clock infra) were hand-authored netlists with per-module gennets and have been graduated as `_v2` (build-pure). New modules use the generic emitter + logic.yaml + abstract ports above.
 
-**Device Specialization Workflow:** Device implementations use a **meta tool** to eliminate hand-wired allocation:
-- **Blank template** (`DEVICE_DESIGN.md`) — Pure device reference (specs, generic structure, no device-specific allocation)
-- **Module list** (YAML) — Which modules go where, cell counts, requirements
-- **Meta tool** (`gen_device_specialization.py --type <type>`) — Parametrized by device type, generates:
-  1. Specialized device doc (`DEVICE_<TYPE>_<NAME>.md`) with programmatic allocation
-  2. Emitter skeleton (`gen_device_<type>_<name>_net.py`) with hardcoded resource allocation
-  3. Validation report (constraints satisfied)
-- **Emitter** — User fills in wiring logic, generates composite netlist
-- **Netlist** — Device-level netlist (all modules + interconnect + CDC regions)
+**Device Realization (the factory line — Law #11):** devices are realized in
+phases, per `factory_toolchain.yaml`:
+- **Phase 2 — boards:** THE one identical blank is cast by a tool from the hardware
+  spec **fed as-is** (no AI-authored intermediate, no invented values); a blank
+  assigns nothing. The power harness is its own tool-emitted module.
+- **Phase 3 — address:** the registry meta tool stamps a unique address on EVERY
+  entity system-wide. **Phase 4 — install:** the install tool seats modules into
+  boards (the ONLY code permitted to assign/bind). **Phase 5 — synthesize.**
 
-**Key principle:** All allocation is programmatic. Device type is a parameter. All outputs are C.
+**Key principle:** All allocation/assignment is programmatic AND lives exclusively
+in the phase-3/4 tools. Construction assigns nothing. All outputs are C.
 
 ### 2. Template & Scaffold
 
@@ -411,10 +468,11 @@ make xau          # real data test (if applicable)
 .hft_staging/gate.sh .hft_staging/<module>
 ```
 
-`gate.sh` runs stages 1, 2, 2b–2j, 3 (see "Architecture Enforcement Tools" for the full list):
+`gate.sh` runs stages 1, 2, 2b–2k, 3 (see "Architecture Enforcement Tools" for the full list):
 1. Netlist validator (single-writer, no-overlap, no-floating)
-2. Build + thin test (`-Werror`), then 2b arithmetic, 2c build-sequence, 2d logic-content,
-   2e byte-match, 2f cells-canon, 2g clock-rule, 2h index-doctrine, 2i module-contract, 2j build-purity
+2. Build + thin test (`-Werror`), then 2b arithmetic, 2c build-sequence, 2d logic-content
+   (exemptions ONLY via `enforcement_registry.yaml`), 2e byte-match, 2f cells-canon,
+   2g clock-rule, 2h index-doctrine, 2i module-contract, 2j build-purity, 2k blank-identity
 3. Clean-room build from committed HEAD to prove determinism
 
 ### 4. Commit & Graduate
@@ -424,7 +482,7 @@ Only commit a component once it passes the gate:
 ```sh
 git add <explicit paths>        # never git add -A; name each file
 git commit -m "<stage>: <type>: <lowercase desc>"
-.hft_staging/graduate.sh <module>
+.hft_staging/graduate.sh <module> --as <name>_v2   # versioned vault promotion (Law 8)
 ```
 
 `graduate.sh` validates, cleans, builds, and copies the byte-identical source from HEAD into `.hft/<module>/`, then commits to the vault with immutability guards.
@@ -463,31 +521,33 @@ cd .hft_staging/adapter && make probe
 cd .hft_staging/<module> && make clean
 ```
 
-### Device Specialization
+### Factory & Enforcement
 
 ```sh
-# Specialize a blank device template with programmatic allocation (parametrized by device type)
-python3 gen_device_specialization.py --type fpga \
-  DEVICE_DESIGN.md \
-  fpga_nic_modules.yaml \
-  device_fpga_nic/
+# Factory toolchain status (phases, tools, formats — the build roadmap contract)
+python3 .hft_staging/checks/check_factory_contracts.py
 
-# Or ASIC, PCB, MCU:
-python3 gen_device_specialization.py --type asic ...
-python3 gen_device_specialization.py --type pcb ...
-python3 gen_device_specialization.py --type mcu ...
+# Install/refresh the git hooks (pre-commit: vault immutability, thin-test size,
+# protected enforcement layer; commit-msg: no-AI-attribution)
+./install_hooks.sh
 
-# Output:
-#   device_<type>_<name>/DEVICE_<TYPE>_<NAME>.md (design doc with allocated resources)
-#   device_<type>_<name>/gen_device_<type>_<name>_net.py (emitter skeleton)
-#   device_<type>_<name>/validation_report.txt (constraint check)
+# Run any enforcement check standalone against a component
+python3 .hft_staging/checks/check_build_no_assignment.py .hft_staging/<module> --strict
+python3 .hft_staging/checks/check_module_contract.py .hft_staging/<module> --strict
+python3 .hft_staging/checks/check_index_doctrine.py .hft_staging/<module>
+python3 .hft_staging/checks/check_blank_identity.py
+.hft_staging/checks/check_generated.sh .hft_staging/<module>
+.hft_staging/checks/check_cells_canon.sh .hft_staging/<module>
 
-# Then build the device netlist (user fills in gen_device_<type>_<name>_net.py wiring)
-cd device_<type>_<name> && python3 gen_device_<type>_<name>_net.py > device_<type>_<name>.net.json
-
-# Validate the device netlist
-python3 validate_device.py device_<type>_<name>.net.json
+# Enforcement files are PROTECTED — modifying them requires the founder-granted
+# override, in its OWN commit (never bundled with judged artifacts):
+HFT_ALLOW_ENFORCEMENT_CHANGE=1 git commit ...
 ```
+
+> The former "Device Specialization" workflow (`gen_device_specialization.py`,
+> `DEVICE_DESIGN.md`, module-list YAMLs) was purged 2026-06-12 — it assigned parts
+> and hardcoded device specifics. Device realization now follows the factory line:
+> see `factory_toolchain.yaml` (phases 2–5) and Law #11.
 
 ### Makefile Targets (within a component directory)
 
@@ -538,8 +598,10 @@ The netlist is the source of truth; gennet generates the device C.
 - **`.hft_staging/INDICATOR_ARCHITECTURE_TEMPLATE.md`** — Template for indicator specs (Index Doctrine + record-store memory)
 - **`.hft_staging/ARCHITECTURE_CLARIFICATIONS.md`** — System-wide cross-module connections
 - **`.hft_staging/BLOCK_DIAGRAM_DETAILED.md`** — Data flow diagram
-- **`.hft_staging/DEVICE_DESIGN.md`** — Blank device template (reference only)
-- **`.hft_staging/GEN_DEVICE_SPECIALIZATION_QUICKSTART.md`** — Device specialization guide (5-minute intro)
+- **`.hft_staging/factory_toolchain.yaml`** — the enforceable factory roadmap (phases, tools, formats, laws)
+- **`.hft_staging/enforcement_registry.yaml`** — the ONLY place gate exemptions are granted (protected)
+- **`tools/DEPRECATED.md`** — record of purged tools/artifacts and why (do NOT recreate them)
+- **`memory/no-ai-imposed-design.md`** — BINDING conduct law: design is humanly dictated
 - **Adapter component (`adapter/`)** — Proven reference implementation
 
 ## Common Pitfalls
@@ -552,6 +614,15 @@ The netlist is the source of truth; gennet generates the device C.
 6. **Not validating netlist before build** — Always run `make validate` first; it catches single-writer and overlap issues early.
 7. **Inventing vocabulary not in founder's docs** — Adhere strictly to registers, signal names, and abstractions in the spec.
 8. **Uncommitted changes at graduation** — `graduate.sh` copies from HEAD; all work must be committed first.
+9. **AI-imposed design (THE 10-HOUR PITFALL)** — Never invent values, fields, roles,
+   budgets, clock tables, placements, or "modeling choices" not dictated by the
+   founder or stated in the referenced hardware document. The spec is fed AS-IS to
+   the meta tool. Missing info ⇒ STOP AND ASK. (Law #13; `memory/no-ai-imposed-design.md`.)
+10. **Editing enforcement files alongside judged artifacts** — Blocked by the
+   pre-commit hook. Enforcement changes need `HFT_ALLOW_ENFORCEMENT_CHANGE=1`
+   (founder-granted) in their own commit. Exemptions only via `enforcement_registry.yaml`.
+11. **Recreating purged artifacts** — Check `tools/DEPRECATED.md` first; deleted
+   tools/hardware were removed for law violations and must not return.
 
 ## Testing Philosophy
 
