@@ -118,7 +118,10 @@ def main():
                     else:
                         nxt.append(lvl[k])
                 lvl = nxt; r += 1
-            alias[bit(name, 0)] = lvl[0]
+            if int(c.get("invert", 0)):              # cell_eqmask(...) ^ 1
+                add_gate(bit(name, 0), [lvl[0]], f_not)
+            else:
+                alias[bit(name, 0)] = lvl[0]
             for i in range(1, W): alias[bit(name, i)] = CONST0
         elif cell == "gate":
             # out_i = en0 ? val_i : 0  == and(val_i, en0)
@@ -127,16 +130,21 @@ def main():
             for i in range(W): add_gate(bit(name, i), [src(ci[0], i), src(ci[1], i), src(ci[2], 0)], f_mux)
         elif cell == "addsub":
             sub = int(c.get("sub", 0)) & 1
+            shr = int(c.get("shift_right", 0))            # gennet: cell_sar(cell_addsub(...), shr)
             carry = CONST1 if sub else CONST0
+            sumbit = (lambda i: bit(name, i)) if shr == 0 else (lambda i: f"{name}#s{i}")
             for i in range(W):
                 ai = src(ci[0], i)
                 bi = src(ci[1], i)
                 if sub:                                   # bm = ~b
                     bn = f"{name}#bn{i}"; add_gate(bn, [bi], f_not); bi = bn
-                add_gate(bit(name, i), [ai, bi, carry], f_fa_sum)
+                add_gate(sumbit(i), [ai, bi, carry], f_fa_sum)
                 if i < W - 1:
                     co = f"{name}#c{i+1}"
                     add_gate(co, [ai, bi, carry], f_fa_carry); carry = co
+            if shr:                                        # arithmetic shift right (sign-fill from sum bit 63)
+                for i in range(W):
+                    alias[bit(name, i)] = sumbit(i + shr) if i + shr < W else sumbit(W - 1)
         elif cell == "cmp_lt":
             # a<b (unsigned) via a + ~b + 1 carry chain; result = NOT(final carry).
             carry = CONST1
