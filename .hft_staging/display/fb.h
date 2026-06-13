@@ -12,7 +12,7 @@
 #include "fpga_device_gen.h"     /* fpga_bram, word_t, bram_block_tick */
 
 #define FB_TILE   100u           /* reserved framebuffer tile (compute-state BRAM is elsewhere) */
-#define FB_NWORDS 6u             /* dom's published display words (POC slice) */
+#define FB_NWORDS 64u            /* published display words per frame (fits one BRAM tile) */
 
 /* compute-domain WRITER (relay): module display view -> framebuffer slice, then
  * latch. Free-running — called every compute tick; never gated by the display. */
