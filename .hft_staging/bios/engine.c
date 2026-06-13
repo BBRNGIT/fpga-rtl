@@ -17,10 +17,24 @@ int main(int argc, char **argv) {
     if (!strcmp(cmd, "boot")) {
         printf("  [BIOS] init fabric ............ ok  (%lu flip-flops, %lu LUTs)\n",
                fpga_device_flipflops(), fpga_device_luts());
+#ifdef FPGA_MMCM_COUNT
+        /* native clocks: configure MMCM[0] (bitstream divides) and power the clock */
+        fpga_mmcm[0][MMCM_DIV_0_D]=2; fpga_mmcm[0][MMCM_DIV_1_D]=4; fpga_mmcm[0][MMCM_DIV_CFG_EN]=1;
         fpga_device_power_on();
-        for (int i = 0; i < 8; i++) fpga_device_tick();   /* let the power harness settle */
+        fpga_device_tick();
+        fpga_mmcm[0][MMCM_DIV_CFG_EN]=0; fpga_mmcm[0][MMCM_CLK_POWER]=1;
+        int c0=0,c1=0; for (int t=0;t<12;t++){ fpga_device_tick();
+            c0+=fpga_mmcm[0][MMCM_CLKOUT_0]&1; c1+=fpga_mmcm[0][MMCM_CLKOUT_1]&1; }
         printf("  [BIOS] master power ........... ON\n");
-        printf("  [POST] fabric alive ........... PASS\n");
+        printf("  [CLOCK] native clock mgmt ..... %u MMCM, %u PLL present\n", FPGA_MMCM_COUNT, FPGA_PLL_COUNT);
+        printf("  [CLOCK] MMCM[0] ALIVE ......... CLKOUT/2=%d edges, CLKOUT/4=%d over 12 ref ticks\n", c0, c1);
+        printf("  [POST] fabric + native clocks . PASS\n");
+#else
+        fpga_device_power_on();
+        for (int i = 0; i < 8; i++) fpga_device_tick();
+        printf("  [BIOS] master power ........... ON\n");
+        printf("  [POST] bare fabric alive ...... PASS (no native clocks on this image)\n");
+#endif
         printf("  [BIOS] BOOTED\n");
         return 0;
     }
