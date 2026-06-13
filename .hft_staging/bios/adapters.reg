@@ -1,0 +1,7 @@
+# adapters.reg — ADAPTER REGISTRY. The BIOS scans this file; adapters are NOT
+# hardcoded in the BIOS. As new adapters are built, register one line here.
+# format:  name : kind : source : description
+# kind: ingress (feeds the wire bus) | display (off-fabric monitor)
+xau_backtest : ingress : adapter/data_synth.bin   : XAU synthetic backtest feed
+xau_live     : ingress : adapter/data_xau_test.csv : XAU live test tick data
+monitor      : display : display/display_adapter.h : off-fabric display adapter (TUI)
