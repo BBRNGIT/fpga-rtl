@@ -159,6 +159,7 @@ def main():
     if hist and hist.get("fields"):
         hist = dict(hist)
         hist["fields"] = expand_unroll(hist["fields"], width)
+    ram = spec.get("ram") or None
     seam_outputs = spec.get("seam_outputs", []) or []
     wiring = spec.get("wiring", {}) or {}
     clock = spec.get("clock") or None
@@ -263,6 +264,7 @@ def main():
                 ("type", d.get("type", "u64")),
                 ("fed_by", d["fed_by"]),
                 ("enable", d.get("enable")),
+                ("mem", d.get("mem")),
                 ("comment", d.get("comment", "")),
             ] if v is not None}
             for d in dff_nodes_in
@@ -295,6 +297,16 @@ def main():
             "write_enable": hist.get("write_enable"),
             "fields": [{"name": fl["name"], "source": fl["source"]}
                        for fl in hist["fields"]],
+        }
+    if ram:
+        # addressed RAM (single write port): depth slots x lanes; written at
+        # wr_index on wr_fire. Storage maps to BRAM; read is at the consumer seam.
+        net["ram"] = {
+            "name": ram["name"],
+            "depth": ram["depth"],
+            "wr_index": ram["wr_index"],
+            "wr_fire": ram["wr_fire"],
+            "lanes": [{"name": ln["name"], "source": ln["source"]} for ln in ram["lanes"]],
         }
     if clock:
         net["clock"] = {"power": clock.get("power"),
