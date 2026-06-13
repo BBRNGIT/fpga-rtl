@@ -13,32 +13,14 @@
 typedef unsigned long long ull;
 
 #define MEM_ROWS 8u
-#define LIVE     10u
+#define LIVE     12u   /* declared dom display view: 12 live words, then 8x(bid,ask,tai) */
 
-/* ---- the compute-domain RELAY: dom display view -> framebuffer slice --------*/
+/* ---- the compute-domain RELAY: declared display view -> framebuffer slice ---*/
+/* Uses the formal synth_dom_display_view() emitted from dom_logic.yaml's
+ * display_outputs — no hand-listed accessors. */
 static void relay_dom(void) {
     word_t v[FB_NWORDS] = {0};
-    v[0]=synth_dom_DOM_BEST_BID_PRICE_REG(); v[1]=synth_dom_DOM_BEST_ASK_PRICE_REG();
-    v[2]=synth_dom_DOM_SPREAD_REG();         v[3]=synth_dom_DOM_MID_PRICE_REG();
-    v[4]=synth_dom_DOM_TOTAL_BID_QTY_REG();  v[5]=synth_dom_DOM_TOTAL_ASK_QTY_REG();
-    v[6]=synth_dom_DOM_PKT_COUNT_REG();      v[7]=synth_dom_DOM_ADD_COUNT_REG();
-    v[8]=synth_dom_DOM_CANCEL_COUNT_REG();   v[9]=synth_dom_DOM_LAST_FEED_TIME_REG();
-    /* newest records first (slot 0 = newest in the shift-in store) */
-    word_t (*mb[])(void) = {
-        synth_dom_DOM_BOOK_0_BID_PX, synth_dom_DOM_BOOK_1_BID_PX, synth_dom_DOM_BOOK_2_BID_PX,
-        synth_dom_DOM_BOOK_3_BID_PX, synth_dom_DOM_BOOK_4_BID_PX, synth_dom_DOM_BOOK_5_BID_PX,
-        synth_dom_DOM_BOOK_6_BID_PX, synth_dom_DOM_BOOK_7_BID_PX };
-    word_t (*ma[])(void) = {
-        synth_dom_DOM_BOOK_0_ASK_PX, synth_dom_DOM_BOOK_1_ASK_PX, synth_dom_DOM_BOOK_2_ASK_PX,
-        synth_dom_DOM_BOOK_3_ASK_PX, synth_dom_DOM_BOOK_4_ASK_PX, synth_dom_DOM_BOOK_5_ASK_PX,
-        synth_dom_DOM_BOOK_6_ASK_PX, synth_dom_DOM_BOOK_7_ASK_PX };
-    word_t (*mt[])(void) = {
-        synth_dom_DOM_BOOK_0_TAI, synth_dom_DOM_BOOK_1_TAI, synth_dom_DOM_BOOK_2_TAI,
-        synth_dom_DOM_BOOK_3_TAI, synth_dom_DOM_BOOK_4_TAI, synth_dom_DOM_BOOK_5_TAI,
-        synth_dom_DOM_BOOK_6_TAI, synth_dom_DOM_BOOK_7_TAI };
-    for (unsigned r = 0; r < MEM_ROWS; r++) {
-        v[LIVE + r*3 + 0] = mb[r](); v[LIVE + r*3 + 1] = ma[r](); v[LIVE + r*3 + 2] = mt[r]();
-    }
+    synth_dom_display_view(v);               /* SYNTH_DOM_DISPLAY_WORDS = 36 */
     fb_write(v, FB_NWORDS);
 }
 
@@ -47,10 +29,10 @@ static void tui_paint(const display_adapter_t *disp, int home) {
     const word_t *f = display_adapter_frame(disp);
     if (home) printf("\033[H");                       /* cursor home: flicker-free overwrite */
     printf("+-- DOM  Depth of Market -----------------------------------+\n");
-    printf("|  BID %-10llu  ASK %-10llu  SPREAD %-6llu  MID %-10llu\n",
-           (ull)f[0], (ull)f[1], (ull)f[2], (ull)f[3]);
+    printf("|  BID %-10llu (q%llu)  ASK %-10llu (q%llu)  SPREAD %-4llu  MID %-10llu\n",
+           (ull)f[0], (ull)f[1], (ull)f[2], (ull)f[3], (ull)f[4], (ull)f[5]);
     printf("|  total bid/ask %llu/%llu   pkts %llu  add %llu  cancel %llu   lastTAI %llu\n",
-           (ull)f[4], (ull)f[5], (ull)f[6], (ull)f[7], (ull)f[8], (ull)f[9]);
+           (ull)f[6], (ull)f[7], (ull)f[8], (ull)f[9], (ull)f[10], (ull)f[11]);
     printf("+-- persistent memory (newest first) ----------------------+\n");
     printf("|   #     BID         ASK         TAI\n");
     for (unsigned r = 0; r < MEM_ROWS; r++)
@@ -63,6 +45,7 @@ static void tui_paint(const display_adapter_t *disp, int home) {
 int main(int argc, char **argv) {
     int live_term = (argc > 1 && argv[1][0] == 'l');  /* 'l' = live cursor-home repaint */
     fpga_device_init(); synth_dom_load();
+    fb_bind_pin();                                      /* bind framebuffer -> GTY display pin */
     display_adapter_t disp; display_adapter_init(&disp, 64);
 
     if (live_term) printf("\033[2J");                  /* clear once; then repaint in place */

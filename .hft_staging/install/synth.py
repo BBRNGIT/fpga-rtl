@@ -248,7 +248,7 @@ def main():
                 ram_regs.append(f"{ram['name']}_{s}_{ln['name']}")
     emit_loader(mod, gates, lut_at, ff_at, ff_dffs, inputs, out_of, sdef,
                 CONST0, CONST1, resolve, consts, hist, hplace, bdef, bram_tiles,
-                mem_dffs, mem_at, ram, ram_lane_tile)
+                mem_dffs, mem_at, ram, ram_lane_tile, net.get("display_outputs"))
     emit_verify(mod, inputs, [d["name"] for d in ff_dffs] + [hw["reg"] for hw in hist_words]
                 + [d["name"] for d in mem_dffs] + ram_regs,
                 os.path.dirname(os.path.abspath(sys.argv[1])))
@@ -260,7 +260,7 @@ def main():
 def emit_loader(mod, gates, lut_at, ff_at, dffs, inputs, out_of, sdef,
                 CONST0, CONST1, resolve, consts=(), hist=None, hplace=None,
                 bdef=None, bram_tiles=(), mem_dffs=(), mem_at=None,
-                ram=None, ram_lane_tile=None):
+                ram=None, ram_lane_tile=None, disp=None):
     MOD = mod.upper()
     mem_at = mem_at or {}
     ram_lane_tile = ram_lane_tile or {}
@@ -426,6 +426,24 @@ def emit_loader(mod, gates, lut_at, ff_at, dffs, inputs, out_of, sdef,
                 t = ram_lane_tile[ln["name"]]
                 L.append(f"static inline word_t synth_{mod}_{ram['name']}_{s}_{ln['name']}(void)"
                          f"{{ return fpga_bram[{t}u][{cel0}u+{s}u]; }}")
+    # passive read-only DISPLAY VIEW: composes the declared public accessors into
+    # one ordered frame. No tick, no datapath — pure reads (the monitor boundary).
+    # synth EXPOSES; install WIRES this view to the framebuffer (assigns nothing here).
+    if disp:
+        live = disp.get("live", []) or []
+        mem = disp.get("memory") or None
+        rows = int(mem["rows"]) if mem else 0
+        flds = list(mem["fields"]) if mem else []
+        n = len(live) + rows * len(flds)
+        L.append(f"#define SYNTH_{MOD}_DISPLAY_WORDS {n}u")
+        L.append(f"static inline void synth_{mod}_display_view(word_t *out){{")
+        i = 0
+        for r in live:
+            L.append(f"  out[{i}u]=synth_{mod}_{r}();"); i += 1
+        for row in range(rows):
+            for fl in flds:
+                L.append(f"  out[{i}u]=synth_{mod}_{mem['ring']}_{row}_{fl}();"); i += 1
+        L.append("}")
     L.append("#endif")
     os.makedirs(GEN, exist_ok=True)
     open(os.path.join(GEN, f"{mod}_synth_load.h"), "w").write("\n".join(L) + "\n")

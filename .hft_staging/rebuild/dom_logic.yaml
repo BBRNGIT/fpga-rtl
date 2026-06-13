@@ -83,6 +83,12 @@ history_ring:
     - {name: BID_PX, source: BID_PX}
     - {name: ASK_PX, source: ASK_PX}
     - {name: TAI,    source: TAI}
+# Public display view (monitor boundary): entire live DOM output + persistent memory.
+display_outputs:
+  live: [DOM_BEST_BID_PRICE_REG, DOM_BEST_BID_QTY_REG, DOM_BEST_ASK_PRICE_REG, DOM_BEST_ASK_QTY_REG,
+         DOM_SPREAD_REG, DOM_MID_PRICE_REG, DOM_TOTAL_BID_QTY_REG, DOM_TOTAL_ASK_QTY_REG,
+         DOM_PKT_COUNT_REG, DOM_ADD_COUNT_REG, DOM_CANCEL_COUNT_REG, DOM_LAST_FEED_TIME_REG]
+  memory: {ring: DOM_BOOK, rows: 8, fields: [BID_PX, ASK_PX, TAI]}
 seam_outputs:
   - {name: DOM_BEST_BID_PRICE_OUT, source: DOM_BEST_BID_PRICE_REG, type: u64, comment: "live snapshot"}
   - {name: DOM_BEST_ASK_PRICE_OUT, source: DOM_BEST_ASK_PRICE_REG, type: u64}

@@ -502,6 +502,31 @@
       }
     ]
   },
+  "display_outputs": {
+    "live": [
+      "DOM_BEST_BID_PRICE_REG",
+      "DOM_BEST_BID_QTY_REG",
+      "DOM_BEST_ASK_PRICE_REG",
+      "DOM_BEST_ASK_QTY_REG",
+      "DOM_SPREAD_REG",
+      "DOM_MID_PRICE_REG",
+      "DOM_TOTAL_BID_QTY_REG",
+      "DOM_TOTAL_ASK_QTY_REG",
+      "DOM_PKT_COUNT_REG",
+      "DOM_ADD_COUNT_REG",
+      "DOM_CANCEL_COUNT_REG",
+      "DOM_LAST_FEED_TIME_REG"
+    ],
+    "memory": {
+      "ring": "DOM_BOOK",
+      "rows": 8,
+      "fields": [
+        "BID_PX",
+        "ASK_PX",
+        "TAI"
+      ]
+    }
+  },
   "clock": {
     "power": "DOM_POWER",
     "comment": "self-runs on internal edge while powered, bounded by DOM_RUN_UNTIL"

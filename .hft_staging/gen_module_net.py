@@ -160,6 +160,7 @@ def main():
         hist = dict(hist)
         hist["fields"] = expand_unroll(hist["fields"], width)
     ram = spec.get("ram") or None
+    display_outputs = spec.get("display_outputs") or None
     seam_outputs = spec.get("seam_outputs", []) or []
     wiring = spec.get("wiring", {}) or {}
     clock = spec.get("clock") or None
@@ -307,6 +308,13 @@ def main():
             "wr_index": ram["wr_index"],
             "wr_fire": ram["wr_fire"],
             "lanes": [{"name": ln["name"], "source": ln["source"]} for ln in ram["lanes"]],
+        }
+    if display_outputs:
+        # Declared PUBLIC display view (the monitor boundary, not trading egress).
+        # synth emits a passive read-only view; install wires it to the framebuffer.
+        net["display_outputs"] = {
+            "live": list(display_outputs.get("live", [])),
+            "memory": display_outputs.get("memory") or None,
         }
     if clock:
         net["clock"] = {"power": clock.get("power"),
