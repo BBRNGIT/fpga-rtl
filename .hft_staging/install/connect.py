@@ -108,6 +108,20 @@ def main():
             if producer != "fifo_rx" or field not in FIFO_HEAD_FIELDS:
                 errors.append(f"{producer} head field {field}: not a fifo head lane"); continue
             src = f"{producer}.HEAD.{field}"
+        elif kind == "scan":
+            # consumer SCANS a producer's history record store (its memory) — the
+            # doctrine's query/scan (§8a). No duplicate register; reads stored records.
+            ring, slot, field = c["ring"], int(c["slot"]), c["field"]
+            pnet = get(producer)
+            h = pnet.get("history_ring") if pnet else None
+            if not h or h.get("name") != ring:
+                errors.append(f"{producer}: no history record store '{ring}' to scan"); continue
+            rfields = {f["name"] for f in h.get("fields", [])}
+            if field not in rfields:
+                errors.append(f"{producer}.{ring}: no field '{field}'"); continue
+            if slot >= int(h.get("depth", 0)):
+                errors.append(f"{producer}.{ring}: slot {slot} >= depth {h.get('depth')}"); continue
+            src = f"{producer}.{ring}[{slot}].{field}"
         else:
             errors.append(f"unknown connection kind '{kind}'"); continue
         bound[(consumer, seam)] = src

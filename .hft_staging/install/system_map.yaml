@@ -103,6 +103,20 @@ connections:
   # dom -> fifo_rx : reader-controlled read-enable handshake (DOM asserts RD_EN).
   - {kind: lane, consumer: fifo_rx, seam: FIFO_RD_EN, producer: dom, lane: DOM_RD_EN_OUT}
 
+  # fractal SCANS candle's memory (CANDLE_HIST record store) — the doctrine query/scan,
+  # not a duplicate window register. HIST slot0=newest; H0=oldest..H4=newest -> slots 4..0.
+  - {kind: lane, consumer: fractal, seam: TF_BAR_SEQ_REG, producer: dom_bus, lane: DOMBUS_BAR_SEQ}
+  - {kind: scan, consumer: fractal, seam: H0, producer: candle, ring: CANDLE_HIST, slot: 4, field: BID_HIGH}
+  - {kind: scan, consumer: fractal, seam: H1, producer: candle, ring: CANDLE_HIST, slot: 3, field: BID_HIGH}
+  - {kind: scan, consumer: fractal, seam: H2, producer: candle, ring: CANDLE_HIST, slot: 2, field: BID_HIGH}
+  - {kind: scan, consumer: fractal, seam: H3, producer: candle, ring: CANDLE_HIST, slot: 1, field: BID_HIGH}
+  - {kind: scan, consumer: fractal, seam: H4, producer: candle, ring: CANDLE_HIST, slot: 0, field: BID_HIGH}
+  - {kind: scan, consumer: fractal, seam: L0, producer: candle, ring: CANDLE_HIST, slot: 4, field: BID_LOW}
+  - {kind: scan, consumer: fractal, seam: L1, producer: candle, ring: CANDLE_HIST, slot: 3, field: BID_LOW}
+  - {kind: scan, consumer: fractal, seam: L2, producer: candle, ring: CANDLE_HIST, slot: 2, field: BID_LOW}
+  - {kind: scan, consumer: fractal, seam: L3, producer: candle, ring: CANDLE_HIST, slot: 1, field: BID_LOW}
+  - {kind: scan, consumer: fractal, seam: L4, producer: candle, ring: CANDLE_HIST, slot: 0, field: BID_LOW}
+
 # Static config (BIOS/operator-loaded once, NOT data-wired): pip_resolver
 # PIP_CFG_TABLE_*, timeframe TF_PERIOD_NS. Power/run inputs: BIOS-set.
 # KNOWN GAPS (reported by connect.py, NOT fabricated):
