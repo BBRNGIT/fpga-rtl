@@ -199,6 +199,62 @@
       "fed_by": "RD_FIRE",
       "enable": "ONE",
       "comment": ""
+    },
+    {
+      "name": "FIFO_LAST_BID_PX",
+      "type": "u64",
+      "fed_by": "LAST_BID_PX_BUF",
+      "enable": "WR_FIRE",
+      "comment": "newest-written slot[wr_idx] lane"
+    },
+    {
+      "name": "FIFO_LAST_ASK_PX",
+      "type": "u64",
+      "fed_by": "LAST_ASK_PX_BUF",
+      "enable": "WR_FIRE",
+      "comment": "newest-written slot[wr_idx] lane"
+    },
+    {
+      "name": "FIFO_LAST_TIME",
+      "type": "u64",
+      "fed_by": "LAST_TIME_BUF",
+      "enable": "WR_FIRE",
+      "comment": "newest-written slot[wr_idx] lane"
+    },
+    {
+      "name": "FIFO_LAST_SRC_TIME",
+      "type": "u64",
+      "fed_by": "LAST_SRC_TIME_BUF",
+      "enable": "WR_FIRE",
+      "comment": "newest-written slot[wr_idx] lane"
+    },
+    {
+      "name": "FIFO_LAST_SYMBOL",
+      "type": "u64",
+      "fed_by": "LAST_SYMBOL_BUF",
+      "enable": "WR_FIRE",
+      "comment": "newest-written slot[wr_idx] lane"
+    },
+    {
+      "name": "FIFO_LAST_PIP",
+      "type": "u64",
+      "fed_by": "LAST_PIP_BUF",
+      "enable": "WR_FIRE",
+      "comment": "newest-written slot[wr_idx] lane"
+    },
+    {
+      "name": "FIFO_LAST_COMMISSION",
+      "type": "u64",
+      "fed_by": "LAST_COMMISSION_BUF",
+      "enable": "WR_FIRE",
+      "comment": "newest-written slot[wr_idx] lane"
+    },
+    {
+      "name": "FIFO_LAST_SEQ",
+      "type": "u64",
+      "fed_by": "LAST_SEQ_BUF",
+      "enable": "WR_FIRE",
+      "comment": "newest-written slot[wr_idx] lane"
     }
   ],
   "comb_nodes": [
@@ -408,6 +464,70 @@
       ],
       "sub": 0,
       "comment": ""
+    },
+    {
+      "name": "LAST_BID_PX_BUF",
+      "cell": "buf",
+      "inputs": [
+        "NIC_SEAM_BID_PX"
+      ],
+      "comment": "latest-written peek"
+    },
+    {
+      "name": "LAST_ASK_PX_BUF",
+      "cell": "buf",
+      "inputs": [
+        "NIC_SEAM_ASK_PX"
+      ],
+      "comment": "latest-written peek"
+    },
+    {
+      "name": "LAST_TIME_BUF",
+      "cell": "buf",
+      "inputs": [
+        "NIC_SEAM_TIME"
+      ],
+      "comment": "latest-written peek"
+    },
+    {
+      "name": "LAST_SRC_TIME_BUF",
+      "cell": "buf",
+      "inputs": [
+        "NIC_SEAM_SRC_TIME"
+      ],
+      "comment": "latest-written peek"
+    },
+    {
+      "name": "LAST_SYMBOL_BUF",
+      "cell": "buf",
+      "inputs": [
+        "NIC_SEAM_SYMBOL"
+      ],
+      "comment": "latest-written peek"
+    },
+    {
+      "name": "LAST_PIP_BUF",
+      "cell": "buf",
+      "inputs": [
+        "NIC_SEAM_PIP"
+      ],
+      "comment": "latest-written peek"
+    },
+    {
+      "name": "LAST_COMMISSION_BUF",
+      "cell": "buf",
+      "inputs": [
+        "NIC_SEAM_COMMISSION"
+      ],
+      "comment": "latest-written peek"
+    },
+    {
+      "name": "LAST_SEQ_BUF",
+      "cell": "buf",
+      "inputs": [
+        "NIC_SEAM_SEQ"
+      ],
+      "comment": "latest-written peek"
     }
   ],
   "seam_nodes": [
@@ -464,6 +584,19 @@
         "source": "NIC_SEAM_SEQ"
       }
     ]
+  },
+  "display_outputs": {
+    "live": [
+      "FIFO_LAST_BID_PX",
+      "FIFO_LAST_ASK_PX",
+      "FIFO_LAST_TIME",
+      "FIFO_LAST_SRC_TIME",
+      "FIFO_LAST_SYMBOL",
+      "FIFO_LAST_PIP",
+      "FIFO_LAST_COMMISSION",
+      "FIFO_LAST_SEQ"
+    ],
+    "memory": null
   },
   "clock": {
     "power": "FIFO_POWER",
