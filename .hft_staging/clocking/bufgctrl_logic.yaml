@@ -1,0 +1,11 @@
+# bufgctrl — global clock mux: selects CLK0 or CLK1 onto the global net.
+module: bufgctrl
+kind: clock_buffer
+seam_inputs:
+  - {name: CLK0, type: bit, source: ""}
+  - {name: CLK1, type: bit, source: ""}
+  - {name: SEL,  type: bit, source: "", comment: "0->CLK0, 1->CLK1"}
+comb_nodes:
+  - {name: CLK_OUT_C, cell: mux, inputs: [CLK0, CLK1, SEL]}
+seam_outputs:
+  - {name: CLK_OUT, source: CLK_OUT_C, type: bit}

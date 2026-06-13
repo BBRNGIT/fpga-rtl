@@ -1,0 +1,10 @@
+# bufgce — global clock buffer with clock-enable. Passes its clock when CE=1.
+module: bufgce
+kind: clock_buffer
+seam_inputs:
+  - {name: CLK_IN, type: bit, source: "", comment: "clock to buffer onto the global net"}
+  - {name: CE,     type: bit, source: "", comment: "clock enable"}
+comb_nodes:
+  - {name: CLK_OUT_C, cell: gate, inputs: [CLK_IN, CE], comment: "clock passes iff enabled"}
+seam_outputs:
+  - {name: CLK_OUT, source: CLK_OUT_C, type: bit}
