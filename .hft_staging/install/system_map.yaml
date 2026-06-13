@@ -49,11 +49,54 @@ connections:
   - {kind: head, consumer: dom, seam: ASK_PX, producer: fifo_rx, field: ASK_PX}
   - {kind: head, consumer: dom, seam: TAI,    producer: fifo_rx, field: TIME}
 
+  # dom -> dom_bus : DOM dumps its per-tick snapshot onto the barrier bus.
+  - {kind: writes, producer: dom, bus: dom_bus}
+
+  # dom_bus -> candle (samples the bus, never DOM's registers).
+  - {kind: lane, consumer: candle, seam: IN_BID_PRICE, producer: dom_bus, lane: DOMBUS_BEST_BID}
+  - {kind: lane, consumer: candle, seam: IN_ASK_PRICE, producer: dom_bus, lane: DOMBUS_BEST_ASK}
+  - {kind: lane, consumer: candle, seam: IN_BID_QTY,   producer: dom_bus, lane: DOMBUS_BEST_BID_QTY}
+  - {kind: lane, consumer: candle, seam: IN_ASK_QTY,   producer: dom_bus, lane: DOMBUS_BEST_ASK_QTY}
+  - {kind: lane, consumer: candle, seam: IN_BAR_SEQ,   producer: dom_bus, lane: DOMBUS_BAR_SEQ}
+  - {kind: lane, consumer: candle, seam: IN_BAR_TIME,  producer: dom_bus, lane: DOMBUS_BAR_TIME}
+
+  # dom_bus -> footprint
+  - {kind: lane, consumer: footprint, seam: IN_BID_ACT_0, producer: dom_bus, lane: DOMBUS_BID_ACT_0}
+  - {kind: lane, consumer: footprint, seam: IN_BID_ACT_1, producer: dom_bus, lane: DOMBUS_BID_ACT_1}
+  - {kind: lane, consumer: footprint, seam: IN_BID_ACT_2, producer: dom_bus, lane: DOMBUS_BID_ACT_2}
+  - {kind: lane, consumer: footprint, seam: IN_BID_ACT_3, producer: dom_bus, lane: DOMBUS_BID_ACT_3}
+  - {kind: lane, consumer: footprint, seam: IN_BID_ACT_4, producer: dom_bus, lane: DOMBUS_BID_ACT_4}
+  - {kind: lane, consumer: footprint, seam: IN_BID_ACT_5, producer: dom_bus, lane: DOMBUS_BID_ACT_5}
+  - {kind: lane, consumer: footprint, seam: IN_BID_ACT_6, producer: dom_bus, lane: DOMBUS_BID_ACT_6}
+  - {kind: lane, consumer: footprint, seam: IN_BID_ACT_7, producer: dom_bus, lane: DOMBUS_BID_ACT_7}
+  - {kind: lane, consumer: footprint, seam: IN_ASK_ACT_0, producer: dom_bus, lane: DOMBUS_ASK_ACT_0}
+  - {kind: lane, consumer: footprint, seam: IN_ASK_ACT_1, producer: dom_bus, lane: DOMBUS_ASK_ACT_1}
+  - {kind: lane, consumer: footprint, seam: IN_ASK_ACT_2, producer: dom_bus, lane: DOMBUS_ASK_ACT_2}
+  - {kind: lane, consumer: footprint, seam: IN_ASK_ACT_3, producer: dom_bus, lane: DOMBUS_ASK_ACT_3}
+  - {kind: lane, consumer: footprint, seam: IN_ASK_ACT_4, producer: dom_bus, lane: DOMBUS_ASK_ACT_4}
+  - {kind: lane, consumer: footprint, seam: IN_ASK_ACT_5, producer: dom_bus, lane: DOMBUS_ASK_ACT_5}
+  - {kind: lane, consumer: footprint, seam: IN_ASK_ACT_6, producer: dom_bus, lane: DOMBUS_ASK_ACT_6}
+  - {kind: lane, consumer: footprint, seam: IN_ASK_ACT_7, producer: dom_bus, lane: DOMBUS_ASK_ACT_7}
+  - {kind: lane, consumer: footprint, seam: IN_BAR_BOUNDARY, producer: dom_bus, lane: DOMBUS_BAR_BOUNDARY}
+  - {kind: lane, consumer: footprint, seam: IN_BAR_TIME,     producer: dom_bus, lane: DOMBUS_BAR_TIME}
+
+  # dom_bus -> tpo
+  - {kind: lane, consumer: tpo, seam: IN_TOUCH_0, producer: dom_bus, lane: DOMBUS_TOUCH_0}
+  - {kind: lane, consumer: tpo, seam: IN_TOUCH_1, producer: dom_bus, lane: DOMBUS_TOUCH_1}
+  - {kind: lane, consumer: tpo, seam: IN_TOUCH_2, producer: dom_bus, lane: DOMBUS_TOUCH_2}
+  - {kind: lane, consumer: tpo, seam: IN_TOUCH_3, producer: dom_bus, lane: DOMBUS_TOUCH_3}
+  - {kind: lane, consumer: tpo, seam: IN_TOUCH_4, producer: dom_bus, lane: DOMBUS_TOUCH_4}
+  - {kind: lane, consumer: tpo, seam: IN_TOUCH_5, producer: dom_bus, lane: DOMBUS_TOUCH_5}
+  - {kind: lane, consumer: tpo, seam: IN_TOUCH_6, producer: dom_bus, lane: DOMBUS_TOUCH_6}
+  - {kind: lane, consumer: tpo, seam: IN_TOUCH_7, producer: dom_bus, lane: DOMBUS_TOUCH_7}
+  - {kind: lane, consumer: tpo, seam: IN_BAR_BOUNDARY, producer: dom_bus, lane: DOMBUS_BAR_BOUNDARY}
+  - {kind: lane, consumer: tpo, seam: IN_BAR_TIME,     producer: dom_bus, lane: DOMBUS_BAR_TIME}
+
 # Static config (BIOS/operator-loaded once, NOT data-wired): pip_resolver
 # PIP_CFG_TABLE_*, timeframe TF_PERIOD_NS. Power/run inputs: BIOS-set.
 # KNOWN GAPS (reported by connect.py, NOT fabricated):
 #   - fifo_rx.FIFO_RD_EN  : DOM is the reader but exposes no RD_EN output (handshake).
-#   - candle/footprint/tpo data inputs : DOM does not yet publish the per-price
-#     payload / qty these consume (Index Doctrine: DOM is the source payload).
+#   - DOM must PUBLISH onto dom_bus (it does not yet produce DOMBUS_* lanes) — the
+#     one real dom-side gap; candle/footprint/tpo then sample dom_bus (now mapped).
 #   - fractal H0..H4/L0..L4 : needs a 5-bar window off candle's history.
 #   - timeframe.TF_TAI_IN : tai -> timeframe (a clock-domain value feed).

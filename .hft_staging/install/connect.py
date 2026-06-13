@@ -26,10 +26,8 @@ except Exception:
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, ".."))
 
-# wire is a passive bus: its published lanes are WIRE_BID_PX..VALID (price-only).
-WIRE_LANES = {"WIRE_BID_PX", "WIRE_ASK_PX", "WIRE_TIME", "WIRE_SYMBOL",
-              "WIRE_PIP", "WIRE_COMMISSION", "WIRE_SEQ", "WIRE_VALID"}
 FIFO_HEAD_FIELDS = {"BID_PX", "ASK_PX", "TIME", "SRC_TIME", "SYMBOL", "PIP", "COMMISSION", "SEQ"}
+OFF_FABRIC = {"adapter"}     # writes its bus in off-fabric C, not via a fabric netlist
 STATIC_CFG = ("PIP_CFG_TABLE_", "TF_PERIOD_NS")     # operator/BIOS-loaded config, not data-wired
 
 
@@ -45,6 +43,18 @@ def is_power(seam):
     return seam.endswith("_POWER") or seam.endswith("_RUN_UNTIL")
 
 
+def published_lanes(mod, get):
+    """A producer publishes either a passive BUS (bus_nodes) or module seam outputs.
+    Either way a consumer reads a PUBLISHED lane, never an internal register."""
+    d = get(mod)
+    if not d:
+        return set()
+    buses = [n["name"] for n in d.get("bus_nodes", [])]
+    if buses:
+        return set(buses)                         # passive barrier bus (wire, dom_bus)
+    return {n["name"] for n in d.get("seam_nodes", [])}   # module's published seam outputs
+
+
 def main():
     mp = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "system_map.yaml")
     spec = yaml.safe_load(open(mp))
@@ -56,14 +66,23 @@ def main():
             nets[mod] = netlist(mod)
         return nets[mod]
 
-    bindings, errors, edges = [], [], []
+    bindings, errors, edges, publish_gaps = [], [], [], []
     bound = {}      # (consumer, seam) -> source string
 
     for c in conns:
         kind = c.get("kind")
-        if kind == "writes":                       # adapter -> wire (sole writer)
-            edges.append(f"{c['producer']} == writes ==> bus:{c['bus']}")
-            bindings.append({"kind": "writes", "producer": c["producer"], "bus": c["bus"]})
+        if kind == "writes":                       # producer is sole writer of a bus
+            prod, bus = c["producer"], c["bus"]
+            edges.append(f"{prod} == writes ==> bus:{bus}")
+            bindings.append({"kind": "writes", "producer": prod, "bus": bus})
+            pnet = get(prod)
+            # a fabric module must actually PUBLISH the bus's lanes to drive it.
+            if prod not in OFF_FABRIC and pnet and not pnet.get("bus_nodes"):
+                outs = {n["name"] for n in pnet.get("seam_nodes", [])}
+                blanes = published_lanes(bus, get)
+                if blanes and not (blanes & outs):
+                    publish_gaps.append(f"{prod} must publish onto {bus} "
+                                        f"(produces none of its {len(blanes)} lanes yet)")
             continue
         consumer, seam, producer = c.get("consumer"), c.get("seam"), c.get("producer")
         cnet = get(consumer)
@@ -79,12 +98,7 @@ def main():
         # validate the producer lane EXISTS (no invented constructs).
         if kind == "lane":
             lane = c["lane"]
-            if producer == "wire":
-                ok = lane in WIRE_LANES
-            else:
-                pnet = get(producer)
-                ok = bool(pnet) and lane in {n["name"] for n in pnet.get("seam_nodes", [])}
-            if not ok:
+            if lane not in published_lanes(producer, get):
                 errors.append(f"{producer}.{lane}: not a published lane of {producer}"); continue
             src = f"{producer}.{lane}"
         elif kind == "head":
@@ -124,8 +138,12 @@ def main():
     print(f"\n--- {len(bound)} seams bound, {len(errors)} errors ---")
     for e in errors:
         print("  ERROR:", e)
+    if publish_gaps:
+        print("\n--- PUBLISH gaps (producer must drive its bus) ---")
+        for g in publish_gaps:
+            print("  " + g)
     if gaps:
-        print("\n--- UNBOUND (gaps — NOT fabricated; need a producer lane or module change) ---")
+        print("\n--- UNBOUND seams (gaps — NOT fabricated; need a producer lane or module change) ---")
         for mod, gg in gaps.items():
             print(f"  {mod}: {', '.join(gg)}")
     print("\nwrote install/system_bindings.json")
