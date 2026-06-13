@@ -1,0 +1,59 @@
+# system_map.yaml — the CONNECTION MAP (machine form of BLOCK_DIAGRAM_DETAILED.md).
+#
+# Each entry binds a CONSUMER module's abstract seam_input (source:"") to a
+# PRODUCER module's published lane. This is READ from the block diagram, not
+# invented. The connect program (connect.py) applies it; it is the only code that
+# binds. Clocks are NOT wired here — the BIOS powers them (power bits). Data flows
+# one way: adapter -> wire -> nic -> fifo -> dom. No data is ever bound to a
+# *_POWER / *_RUN_UNTIL input (connect.py refuses it).
+#
+# kind: lane  = static producer register -> consumer seam
+#       head  = consumer reads the producer's runtime FIFO head (slot[rd_idx])
+#       writes= producer is the sole writer of a passive bus (adapter -> wire)
+connections:
+  # adapter -> wire (adapter is wire's sole writer; off-fabric ingress).
+  - {kind: writes, producer: adapter, bus: wire}
+
+  # wire -> nic : NIC samples the wire bus.
+  - {kind: lane, consumer: nic, seam: WIRE_BID_PX,     producer: wire, lane: WIRE_BID_PX}
+  - {kind: lane, consumer: nic, seam: WIRE_ASK_PX,     producer: wire, lane: WIRE_ASK_PX}
+  - {kind: lane, consumer: nic, seam: WIRE_TIME,       producer: wire, lane: WIRE_TIME}
+  - {kind: lane, consumer: nic, seam: WIRE_SYMBOL,     producer: wire, lane: WIRE_SYMBOL}
+  - {kind: lane, consumer: nic, seam: WIRE_PIP,        producer: wire, lane: WIRE_PIP}
+  - {kind: lane, consumer: nic, seam: WIRE_COMMISSION, producer: wire, lane: WIRE_COMMISSION}
+  - {kind: lane, consumer: nic, seam: WIRE_SEQ,        producer: wire, lane: WIRE_SEQ}
+  - {kind: lane, consumer: nic, seam: WIRE_VALID,      producer: wire, lane: WIRE_VALID}
+
+  # tai_cdc -> nic : TAI timestamp carried into the MAC domain (kept; silicon-faithful CDC).
+  - {kind: lane, consumer: nic, seam: TAI_MAC, producer: tai_cdc, lane: TAI_MAC_OUT}
+
+  # nic -> pip_resolver : resolve the pip per symbol.
+  - {kind: lane, consumer: pip_resolver, seam: SEAM_SYMBOL, producer: nic, lane: SEAM_SYMBOL_OUT}
+  - {kind: lane, consumer: pip_resolver, seam: SEAM_VALID,  producer: nic, lane: SEAM_VALID_OUT}
+
+  # nic -> fifo_rx : NIC writes the FIFO (MAC domain).
+  - {kind: lane, consumer: fifo_rx, seam: NIC_SEAM_BID_PX,     producer: nic, lane: SEAM_BID_PX_OUT}
+  - {kind: lane, consumer: fifo_rx, seam: NIC_SEAM_ASK_PX,     producer: nic, lane: SEAM_ASK_PX_OUT}
+  - {kind: lane, consumer: fifo_rx, seam: NIC_SEAM_TIME,       producer: nic, lane: SEAM_TIME_OUT}
+  - {kind: lane, consumer: fifo_rx, seam: NIC_SEAM_SRC_TIME,   producer: nic, lane: SEAM_SRC_TIME_OUT}
+  - {kind: lane, consumer: fifo_rx, seam: NIC_SEAM_SYMBOL,     producer: nic, lane: SEAM_SYMBOL_OUT}
+  - {kind: lane, consumer: fifo_rx, seam: NIC_SEAM_PIP,        producer: nic, lane: SEAM_PIP_OUT}
+  - {kind: lane, consumer: fifo_rx, seam: NIC_SEAM_COMMISSION, producer: nic, lane: SEAM_COMMISSION_OUT}
+  - {kind: lane, consumer: fifo_rx, seam: NIC_SEAM_SEQ,        producer: nic, lane: SEAM_SEQ_OUT}
+  - {kind: lane, consumer: fifo_rx, seam: NIC_SEAM_STROBE,     producer: nic, lane: SEAM_STROBE_OUT}
+
+  # fifo_rx -> dom : DOM pulls the head packet + reads the flags (internal domain).
+  - {kind: lane, consumer: dom, seam: RD_FIRE,    producer: fifo_rx, lane: FIFO_RD_FIRE_OUT}
+  - {kind: lane, consumer: dom, seam: FIFO_EMPTY, producer: fifo_rx, lane: FIFO_EMPTY_OUT}
+  - {kind: head, consumer: dom, seam: BID_PX, producer: fifo_rx, field: BID_PX}
+  - {kind: head, consumer: dom, seam: ASK_PX, producer: fifo_rx, field: ASK_PX}
+  - {kind: head, consumer: dom, seam: TAI,    producer: fifo_rx, field: TIME}
+
+# Static config (BIOS/operator-loaded once, NOT data-wired): pip_resolver
+# PIP_CFG_TABLE_*, timeframe TF_PERIOD_NS. Power/run inputs: BIOS-set.
+# KNOWN GAPS (reported by connect.py, NOT fabricated):
+#   - fifo_rx.FIFO_RD_EN  : DOM is the reader but exposes no RD_EN output (handshake).
+#   - candle/footprint/tpo data inputs : DOM does not yet publish the per-price
+#     payload / qty these consume (Index Doctrine: DOM is the source payload).
+#   - fractal H0..H4/L0..L4 : needs a 5-bar window off candle's history.
+#   - timeframe.TF_TAI_IN : tai -> timeframe (a clock-domain value feed).

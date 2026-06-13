@@ -2,3 +2,4 @@
 configs/
 gen/
 floorplan.yaml
+system_bindings.json
