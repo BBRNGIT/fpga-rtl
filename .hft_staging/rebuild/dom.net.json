@@ -44,6 +44,24 @@
       "type": "bit",
       "source": "",
       "comment": "fifo empty flag"
+    },
+    {
+      "name": "TF_BAR_SEQ",
+      "type": "u64",
+      "source": "",
+      "comment": "timeframe bar seq (relayed onto dom_bus)"
+    },
+    {
+      "name": "TF_BAR_BOUNDARY",
+      "type": "bit",
+      "source": "",
+      "comment": "timeframe bar-closed strobe (relayed)"
+    },
+    {
+      "name": "TF_BAR_TIME",
+      "type": "u64",
+      "source": "",
+      "comment": "timeframe bar-open TAI (relayed)"
     }
   ],
   "const_nodes": [
@@ -1086,6 +1104,42 @@
       "source": "TOUCH_7",
       "type": "u64",
       "comment": ""
+    },
+    {
+      "name": "DOMBUS_BAR_SEQ",
+      "source": "TF_BAR_SEQ",
+      "type": "u64",
+      "comment": "relayed from timeframe"
+    },
+    {
+      "name": "DOMBUS_BAR_BOUNDARY",
+      "source": "TF_BAR_BOUNDARY",
+      "type": "bit",
+      "comment": "relayed from timeframe"
+    },
+    {
+      "name": "DOMBUS_BAR_TIME",
+      "source": "TF_BAR_TIME",
+      "type": "u64",
+      "comment": "relayed from timeframe"
+    },
+    {
+      "name": "DOMBUS_TRADE_COUNT",
+      "source": "ZERO",
+      "type": "u64",
+      "comment": "price-only feed: no trades"
+    },
+    {
+      "name": "DOMBUS_VALID",
+      "source": "CONSUME",
+      "type": "bit",
+      "comment": "a packet was consumed this tick"
+    },
+    {
+      "name": "DOM_RD_EN_OUT",
+      "source": "DOM_POWER",
+      "type": "bit",
+      "comment": "DOM requests a read while powered (reader-controlled handshake)"
     }
   ],
   "wiring": {},

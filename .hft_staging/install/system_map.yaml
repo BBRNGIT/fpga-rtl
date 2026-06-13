@@ -92,6 +92,17 @@ connections:
   - {kind: lane, consumer: tpo, seam: IN_BAR_BOUNDARY, producer: dom_bus, lane: DOMBUS_BAR_BOUNDARY}
   - {kind: lane, consumer: tpo, seam: IN_BAR_TIME,     producer: dom_bus, lane: DOMBUS_BAR_TIME}
 
+  # timeframe -> dom : DOM relays the bar info onto dom_bus (single bus writer).
+  - {kind: lane, consumer: dom, seam: TF_BAR_SEQ,      producer: timeframe, lane: TF_BAR_SEQ_OUT}
+  - {kind: lane, consumer: dom, seam: TF_BAR_BOUNDARY, producer: timeframe, lane: TF_BAR_CLOSED_OUT}
+  - {kind: lane, consumer: dom, seam: TF_BAR_TIME,     producer: timeframe, lane: TF_BAR_START_OUT}
+
+  # tai -> timeframe : the bar clock samples the TAI value (internal-domain published lane).
+  - {kind: lane, consumer: timeframe, seam: TF_TAI_IN, producer: tai, lane: TAI_NS_OUT}
+
+  # dom -> fifo_rx : reader-controlled read-enable handshake (DOM asserts RD_EN).
+  - {kind: lane, consumer: fifo_rx, seam: FIFO_RD_EN, producer: dom, lane: DOM_RD_EN_OUT}
+
 # Static config (BIOS/operator-loaded once, NOT data-wired): pip_resolver
 # PIP_CFG_TABLE_*, timeframe TF_PERIOD_NS. Power/run inputs: BIOS-set.
 # KNOWN GAPS (reported by connect.py, NOT fabricated):
