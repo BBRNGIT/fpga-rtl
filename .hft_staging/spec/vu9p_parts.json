@@ -1,112 +1,163 @@
 {
-  "spec": "spec/XMP103_VirtexUltraScalePlus_ProductSelectionGuide_v2.8.pdf",
-  "device": "VU9P",
-  "note": "VERBATIM device parts from the spec sheet \u2014 counts/values exactly as printed, each with source_line. No materialization, no flip-flops, no derived values. Flip-flop netlist is a separate, human-dictated step.",
-  "parts": [
-    {
-      "resource": "System Logic Cells (K)",
-      "value": "2,586",
-      "source_line": 196
-    },
-    {
-      "resource": "CLB Flip-Flops (K)",
-      "value": "2,364",
-      "source_line": 197
-    },
-    {
-      "resource": "CLB LUTs (K)",
-      "value": "1,182",
-      "source_line": 198
-    },
-    {
-      "resource": "Max. Dist. RAM (Mb)",
-      "value": "36.1",
-      "source_line": 199
-    },
-    {
-      "resource": "Total Block RAM (Mb)",
-      "value": "75.9",
-      "source_line": 200
-    },
-    {
-      "resource": "UltraRAM (Mb)",
-      "value": "270.0",
-      "source_line": 201
-    },
-    {
-      "resource": "DSP Slices",
-      "value": "6,840",
-      "source_line": 202
-    },
-    {
-      "resource": "Peak INT8 DSP (TOP/s)",
-      "value": "21.3",
-      "source_line": 203
-    },
-    {
-      "resource": "PCIe\u00ae Gen3 x16",
-      "value": "6",
-      "source_line": 204
-    },
-    {
-      "resource": "PCIe Gen3 x16/Gen4 x8(1)",
-      "value": "\u2013",
-      "source_line": 205
-    },
-    {
-      "resource": "150G Interlaken",
-      "value": "9",
-      "source_line": 206
-    },
-    {
-      "resource": "100G Ethernet w/ KR4 RS-FEC",
-      "value": "9",
-      "source_line": 207
-    },
-    {
-      "resource": "Max. Single-Ended HP I/Os",
-      "value": "832",
-      "source_line": 208
-    },
-    {
-      "resource": "Max. Single-Ended HD I/Os",
-      "value": "0",
-      "source_line": 209
-    },
-    {
-      "resource": "GTY 32.75 Gb/s Transceivers",
-      "value": "120",
-      "source_line": 210
-    },
-    {
-      "resource": "GTM 58 Gb/s PAM4 Transceivers",
-      "value": "\u2013",
-      "source_line": 211
-    },
-    {
-      "resource": "100G / 50G KP4 FEC",
-      "value": "\u2013",
-      "source_line": 212
-    },
-    {
-      "resource": "Extended(2)",
-      "value": "-2",
-      "source_line": 213
-    },
-    {
-      "resource": "Industrial",
-      "value": "-1",
-      "source_line": 214
-    },
-    {
-      "resource": "Block RAM Blocks",
-      "value": "2160",
-      "source": "DS overview datasheet (VU9P column); the XMP103 PSG lists only Total Block RAM (Mb)=75.9"
-    },
-    {
-      "resource": "UltraRAM Blocks",
-      "value": "960",
-      "source": "DS overview datasheet (VU9P column); the XMP103 PSG lists only UltraRAM (Mb)=270.0"
-    }
-  ]
+ "spec": "spec/XMP103_VirtexUltraScalePlus_ProductSelectionGuide_v2.8.pdf",
+ "device": "VU9P",
+ "note": "VERBATIM device parts from the spec sheet \u2014 counts/values exactly as printed, each with source_line. No materialization, no flip-flops, no derived values. Flip-flop netlist is a separate, human-dictated step.",
+ "parts": [
+  {
+   "resource": "System Logic Cells (K)",
+   "value": "2,586",
+   "source_line": 196
+  },
+  {
+   "resource": "CLB Flip-Flops (K)",
+   "value": "2,364",
+   "source_line": 197
+  },
+  {
+   "resource": "CLB LUTs (K)",
+   "value": "1,182",
+   "source_line": 198
+  },
+  {
+   "resource": "Max. Dist. RAM (Mb)",
+   "value": "36.1",
+   "source_line": 199
+  },
+  {
+   "resource": "Total Block RAM (Mb)",
+   "value": "75.9",
+   "source_line": 200
+  },
+  {
+   "resource": "UltraRAM (Mb)",
+   "value": "270.0",
+   "source_line": 201
+  },
+  {
+   "resource": "DSP Slices",
+   "value": "6,840",
+   "source_line": 202
+  },
+  {
+   "resource": "Peak INT8 DSP (TOP/s)",
+   "value": "21.3",
+   "source_line": 203
+  },
+  {
+   "resource": "PCIe\u00ae Gen3 x16",
+   "value": "6",
+   "source_line": 204
+  },
+  {
+   "resource": "PCIe Gen3 x16/Gen4 x8(1)",
+   "value": "\u2013",
+   "source_line": 205
+  },
+  {
+   "resource": "150G Interlaken",
+   "value": "9",
+   "source_line": 206
+  },
+  {
+   "resource": "100G Ethernet w/ KR4 RS-FEC",
+   "value": "9",
+   "source_line": 207
+  },
+  {
+   "resource": "Max. Single-Ended HP I/Os",
+   "value": "832",
+   "source_line": 208
+  },
+  {
+   "resource": "Max. Single-Ended HD I/Os",
+   "value": "0",
+   "source_line": 209
+  },
+  {
+   "resource": "GTY 32.75 Gb/s Transceivers",
+   "value": "120",
+   "source_line": 210
+  },
+  {
+   "resource": "GTM 58 Gb/s PAM4 Transceivers",
+   "value": "\u2013",
+   "source_line": 211
+  },
+  {
+   "resource": "100G / 50G KP4 FEC",
+   "value": "\u2013",
+   "source_line": 212
+  },
+  {
+   "resource": "Extended(2)",
+   "value": "-2",
+   "source_line": 213
+  },
+  {
+   "resource": "Industrial",
+   "value": "-1",
+   "source_line": 214
+  },
+  {
+   "resource": "Block RAM Blocks",
+   "value": "2160",
+   "source": "DS overview datasheet (VU9P column); the XMP103 PSG lists only Total Block RAM (Mb)=75.9"
+  },
+  {
+   "resource": "UltraRAM Blocks",
+   "value": "960",
+   "source": "DS overview datasheet (VU9P column); the XMP103 PSG lists only UltraRAM (Mb)=270.0"
+  }
+ ],
+ "clocking_and_structure": {
+  "source": "DS923 Virtex UltraScale+ Data Sheet + UG572 UltraScale Architecture Clocking + product overview (researched 2026-06-13). NOT in the XMP103 PSG.",
+  "resources": [
+   {
+    "resource": "Super Logic Regions (SLR)",
+    "value": 3,
+    "source_note": "SSI stacked-silicon, 3 SLRs operate as one device"
+   },
+   {
+    "resource": "Clock Management Tiles (CMT)",
+    "value": 30,
+    "source_note": "30 CMTs total; each CMT = 1 MMCM + 2 PLLs"
+   },
+   {
+    "resource": "MMCM (MMCME4)",
+    "value": 30,
+    "source_note": "1 per CMT"
+   },
+   {
+    "resource": "PLL (PLLE4)",
+    "value": 60,
+    "source_note": "2 per CMT"
+   },
+   {
+    "resource": "BUFGCE per clock region",
+    "value": 24,
+    "source_note": "UG572: 24 BUFGCE per clock region"
+   },
+   {
+    "resource": "BUFGCTRL per clock region",
+    "value": 8,
+    "source_note": "UG572: 8 BUFGCTRL per clock region"
+   },
+   {
+    "resource": "BUFGCE_DIV per clock region",
+    "value": 4,
+    "source_note": "UG572: 4 BUFGCE_DIV per clock region"
+   },
+   {
+    "resource": "clock routing tracks per clock region",
+    "value": 24,
+    "source_note": "UG572: 24 routing + 24 distribution tracks per HCS row"
+   },
+   {
+    "resource": "GTY transceivers",
+    "value": 120,
+    "source_note": "32.75 Gb/s (also in PSG)"
+   }
+  ],
+  "GAP": "Exact CLOCK-REGION grid count (rows x cols) for VU9P needs DS923/Vivado device DB; CMT count (30) is the sourced clock-management anchor. Per-region buffer structure is exact."
+ }
 }
