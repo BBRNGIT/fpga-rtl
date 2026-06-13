@@ -51,3 +51,9 @@ history_ring:
   fields:
     - {name: TIME, source: IN_BAR_TIME}
     - {name: VOL_i, source: FP_VOL_i, unroll: true}
+
+# Public display view: footprint active snapshots (live per-pip volumes) + memory.
+display_outputs:
+  live: [FP_BID_VOL_0, FP_BID_VOL_1, FP_BID_VOL_2, FP_BID_VOL_3, FP_BID_VOL_4, FP_BID_VOL_5, FP_BID_VOL_6, FP_BID_VOL_7,
+         FP_ASK_VOL_0, FP_ASK_VOL_1, FP_ASK_VOL_2, FP_ASK_VOL_3, FP_ASK_VOL_4, FP_ASK_VOL_5, FP_ASK_VOL_6, FP_ASK_VOL_7]
+  memory: {ring: FP_HIST, rows: 8, fields: [TIME, VOL_0, VOL_1, VOL_2, VOL_3, VOL_4, VOL_5, VOL_6, VOL_7]}

@@ -748,5 +748,18 @@
         "source": "CANDLE_BAR_SEQ"
       }
     ]
+  },
+  "display_outputs": {
+    "live": [
+      "CANDLE_BID_OPEN",
+      "CANDLE_BID_HIGH",
+      "CANDLE_BID_LOW",
+      "CANDLE_BID_CLOSE",
+      "CANDLE_ASK_OPEN",
+      "CANDLE_ASK_HIGH",
+      "CANDLE_ASK_LOW",
+      "CANDLE_ASK_CLOSE"
+    ],
+    "memory": null
   }
 }

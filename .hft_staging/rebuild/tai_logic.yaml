@@ -12,3 +12,7 @@ dff_nodes:
   - {name: TAI_NS, type: u64, fed_by: NS_NEXT, enable: ONE, comment: "accumulated TAI time"}
 seam_outputs:
   - {name: TAI_NS_OUT, source: TAI_NS, type: u64}
+
+# Public display view: TAI time.
+display_outputs:
+  live: [TAI_NS]

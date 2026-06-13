@@ -65,3 +65,8 @@ history_ring:
 seam_outputs:
   - {name: IND_FRAC_UP_PRICE_OUT, source: IND_FRAC_UP_PRICE_REG, type: u64}
   - {name: IND_FRAC_DN_PRICE_OUT, source: IND_FRAC_DN_PRICE_REG, type: u64}
+
+# Public display view: all detected up + down fractals (the FRAC_HIST record store) + current high-water.
+display_outputs:
+  live: [IND_FRAC_UP_PRICE_REG, IND_FRAC_DN_PRICE_REG]
+  memory: {ring: FRAC_HIST, rows: 16, fields: [UP, DN]}

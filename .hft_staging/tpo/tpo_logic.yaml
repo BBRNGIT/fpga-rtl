@@ -43,3 +43,8 @@ history_ring:
   fields:
     - {name: TIME, source: IN_BAR_TIME}
     - {name: TPO_i, source: TPO_TIME_i, unroll: true}
+
+# Public display view: tpo active snapshots (live per-pip time-touches) + memory.
+display_outputs:
+  live: [TPO_TIME_0, TPO_TIME_1, TPO_TIME_2, TPO_TIME_3, TPO_TIME_4, TPO_TIME_5, TPO_TIME_6, TPO_TIME_7]
+  memory: {ring: TPO_HIST, rows: 8, fields: [TIME, TPO_0, TPO_1, TPO_2, TPO_3, TPO_4, TPO_5, TPO_6, TPO_7]}

@@ -257,3 +257,8 @@ seam_outputs:
   - {name: CANDLE_VOLUME_OUT,     source: CANDLE_VOLUME_BID,        type: u64, comment: "Volume relay (read BID and ASK)"}
   - {name: CANDLE_TRUE_RANGE_OUT, source: CANDLE_TRUE_RANGE_BID,    type: u64, comment: "True range relay"}
   - {name: CANDLE_DELTA_OUT,      source: CANDLE_INTRABAR_QTY_DELTA, type: u64, comment: "Intrabar delta relay"}
+
+# Public display view (monitor boundary): candle OHLC for bid and ask.
+display_outputs:
+  live: [CANDLE_BID_OPEN, CANDLE_BID_HIGH, CANDLE_BID_LOW, CANDLE_BID_CLOSE,
+         CANDLE_ASK_OPEN, CANDLE_ASK_HIGH, CANDLE_ASK_LOW, CANDLE_ASK_CLOSE]

@@ -364,5 +364,19 @@
         "source": "NEXT_HD"
       }
     ]
+  },
+  "display_outputs": {
+    "live": [
+      "IND_FRAC_UP_PRICE_REG",
+      "IND_FRAC_DN_PRICE_REG"
+    ],
+    "memory": {
+      "ring": "FRAC_HIST",
+      "rows": 16,
+      "fields": [
+        "UP",
+        "DN"
+      ]
+    }
   }
 }

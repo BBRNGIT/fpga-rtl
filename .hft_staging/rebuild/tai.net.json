@@ -63,6 +63,12 @@
     }
   ],
   "wiring": {},
+  "display_outputs": {
+    "live": [
+      "TAI_NS"
+    ],
+    "memory": null
+  },
   "clock": {
     "power": "TAI_POWER",
     "comment": "TAI timestamp counter; self-runs while powered"
