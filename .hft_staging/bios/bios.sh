@@ -34,9 +34,15 @@ cmd_config(){ echo "[config: system.conf — FPGA + all components]"; sed 's/^/ 
   [ -n "$kv" ] && { printf '%s\n' "$kv" >> "$CONF"; echo "  -> set $kv"; }; }
 cmd_dashboard(){ [ "$(state_get)" = ON ] || { echo "  system is OFF — boot first."; return; }
   local d; d=$(grep '^adapter=' "$CONF"|cut -d= -f2)
-  if grep -qE "^\s*$d\s*:\s*display" "$REG"; then
-    echo "  dashboard -> display adapter '$d' (Phase D wires it to the live fabric)."
-  else echo "  no display adapter registered — console-only; use Status."; fi; }
+  if ! grep -qE "^\s*$d\s*:\s*display" "$REG"; then
+    echo "  no display adapter registered — console-only; use Status."; return; fi
+  echo "  dashboard -> display adapter '$d' (off-fabric; samples the framebuffer, read-only)"
+  # build + run the REAL display path: fabric module -> framebuffer -> display adapter -> TUI
+  python3 "$ROOT/install/synth.py" "$ROOT/rebuild/dom.net.json" 0 >/dev/null 2>/tmp/bios_dash.err
+  if cc -O0 -std=c11 -w -I"$FAB" -I"$ROOT/rebuild" -I"$ROOT/install/gen" -I"$ROOT/display" \
+        "$ROOT/display/display_run.c" "$ROOT/display/tui.c" -o /tmp/bbhft_dash 2>>/tmp/bios_dash.err; then
+    /tmp/bbhft_dash
+  else echo "  dashboard build failed: $(tail -1 /tmp/bios_dash.err)"; fi; }
 
 build_engine || exit 1
 [ -f "$STATE" ] || state_set 0
