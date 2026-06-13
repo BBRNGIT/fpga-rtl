@@ -1,0 +1,14 @@
+# bram_block_logic.yaml — a RAMB36 (36 Kb) block as STORAGE FLIP-FLOPS.
+# memory = flip-flops; 36 Kb / 64 = 576 uniform 64-bit storage words. Each word is
+# written from DIN when WE, holds otherwise (RAM cell = dff). The 576 storage cells
+# ARE the memory (read directly as registers); no separate output lanes.
+module: bram_block
+kind: memory_block
+width: 576
+seam_inputs:
+  - {name: DIN_i, type: u64, unroll: true, comment: "word i data in"}
+  - {name: WE_i,  type: u64, unroll: true, comment: "word i write-enable"}
+comb_nodes:
+  - {name: DPATH_i, cell: buf, inputs: [DIN_i], unroll: true, comment: "word i data path"}
+dff_nodes:
+  - {name: CELL_i, type: u64, unroll: true, fed_by: DPATH_i, enable: WE_i, comment: "storage word i"}

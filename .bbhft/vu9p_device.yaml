@@ -1,0 +1,9 @@
+# vu9p_device.yaml — the FPGA device assembly. ALL tile counts now come from the
+# materialized device model (spec/vu9p_device_model.json); nothing rides here.
+device: vu9p
+tiles:
+  - {type: CLB,  klass: flipflop,  module: clb_slice,  netlist: fpga/clb_slice.net.json}
+  - {type: DSP,  klass: flipflop,  module: dsp48e2,    netlist: fpga/dsp48e2.net.json}
+  - {type: BRAM, klass: flipflop,  module: bram_block, netlist: fpga/bram_block.net.json}
+  - {type: URAM, klass: flipflop,  module: uram_block, netlist: fpga/uram_block.net.json}
+  - {type: GTY,  klass: conductor, module: gty,         netlist: fpga/gty.net.json}
