@@ -209,7 +209,7 @@
         "FIFO_WR_BIN",
         "SLOT_MASK"
       ],
-      "comment": ""
+      "comment": "write slot = wr_bin & (depth-1)"
     },
     {
       "name": "EMPTY",

@@ -1,9 +1,9 @@
 # fifo_rx_logic.yaml — cell-level rebuild of the MAC->internal async CDC FIFO (Cummings).
-# (n+1)-bit gray pointers through dual 2-FF synchronizers; FULL/EMPTY from the synced
+# (n+1)-bit gray pointers through dual 2-FF synchronizers; FULL/EMPTY from synced
 # opposite-domain pointer; 512 packet-wide slots (8 nic-seam lanes each).
-# The RAM is an ADDRESSED block (ram:) -> BRAM with offset addressing (the runtime
-# write index drives the BRAM cell offset, a real address port) — NO fabric decode.
-# bin2gray uses logical >>1 (addsub shift_right + mask). Read is at the consumer seam.
+# The 512-deep dual-port RAM is an ADDRESSED memory (ram:) -> BRAM via offset
+# addressing (the BRAM address port; NO 512-wide fabric decode). bin2gray uses
+# logical >>1 (addsub shift_right + mask). Read is at the consumer seam (head_addr).
 module: fifo_rx
 kind: fifo
 clock: {power: FIFO_POWER, comment: "self-runs while powered, bounded by FIFO_RUN_UNTIL"}
@@ -27,7 +27,7 @@ const_nodes:
   - {name: TOP2_MASK, type: u64, value: 768, comment: "3<<(ptr_bits-2), ptr_bits=10"}
   - {name: LMASK_1, type: u64, value: 9223372036854775807, comment: "low 63-bit mask for lsr >>1"}
 comb_nodes:
-  - {name: WR_IDX, cell: and, inputs: [FIFO_WR_BIN, SLOT_MASK]}
+  - {name: WR_IDX, cell: and, inputs: [FIFO_WR_BIN, SLOT_MASK], comment: "write slot = wr_bin & (depth-1)"}
   - {name: EMPTY, cell: eqmask, inputs: [FIFO_RD_GRAY, FIFO_RQ2_WGRAY]}
   - {name: FULL_CMP, cell: xor, inputs: [FIFO_WQ2_RGRAY, TOP2_MASK]}
   - {name: FULL, cell: eqmask, inputs: [FIFO_WR_GRAY, FULL_CMP]}
