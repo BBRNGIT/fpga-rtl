@@ -58,6 +58,60 @@
       "type": "u64",
       "value": 0,
       "comment": "spread floor / equality probe"
+    },
+    {
+      "name": "MASK_W",
+      "type": "u64",
+      "value": 7,
+      "comment": "width-1 mask (width=8 price-index lanes)"
+    },
+    {
+      "name": "LANE_0",
+      "type": "u64",
+      "value": 0,
+      "comment": ""
+    },
+    {
+      "name": "LANE_1",
+      "type": "u64",
+      "value": 1,
+      "comment": ""
+    },
+    {
+      "name": "LANE_2",
+      "type": "u64",
+      "value": 2,
+      "comment": ""
+    },
+    {
+      "name": "LANE_3",
+      "type": "u64",
+      "value": 3,
+      "comment": ""
+    },
+    {
+      "name": "LANE_4",
+      "type": "u64",
+      "value": 4,
+      "comment": ""
+    },
+    {
+      "name": "LANE_5",
+      "type": "u64",
+      "value": 5,
+      "comment": ""
+    },
+    {
+      "name": "LANE_6",
+      "type": "u64",
+      "value": 6,
+      "comment": ""
+    },
+    {
+      "name": "LANE_7",
+      "type": "u64",
+      "value": 7,
+      "comment": ""
     }
   ],
   "dff_nodes": [
@@ -442,6 +496,384 @@
         "CONSUME"
       ],
       "comment": ""
+    },
+    {
+      "name": "BID_IDX",
+      "cell": "and",
+      "inputs": [
+        "BID_PX",
+        "MASK_W"
+      ],
+      "comment": "bid price-index lane"
+    },
+    {
+      "name": "ASK_IDX",
+      "cell": "and",
+      "inputs": [
+        "ASK_PX",
+        "MASK_W"
+      ],
+      "comment": "ask price-index lane"
+    },
+    {
+      "name": "BIDEQ_0",
+      "cell": "eqmask",
+      "inputs": [
+        "BID_IDX",
+        "LANE_0"
+      ],
+      "comment": ""
+    },
+    {
+      "name": "BID_ACT_0",
+      "cell": "and",
+      "inputs": [
+        "BIDEQ_0",
+        "BID_CHG"
+      ],
+      "comment": "bid activity at price-index 0 this tick"
+    },
+    {
+      "name": "BIDEQ_1",
+      "cell": "eqmask",
+      "inputs": [
+        "BID_IDX",
+        "LANE_1"
+      ],
+      "comment": ""
+    },
+    {
+      "name": "BID_ACT_1",
+      "cell": "and",
+      "inputs": [
+        "BIDEQ_1",
+        "BID_CHG"
+      ],
+      "comment": "bid activity at price-index 1 this tick"
+    },
+    {
+      "name": "BIDEQ_2",
+      "cell": "eqmask",
+      "inputs": [
+        "BID_IDX",
+        "LANE_2"
+      ],
+      "comment": ""
+    },
+    {
+      "name": "BID_ACT_2",
+      "cell": "and",
+      "inputs": [
+        "BIDEQ_2",
+        "BID_CHG"
+      ],
+      "comment": "bid activity at price-index 2 this tick"
+    },
+    {
+      "name": "BIDEQ_3",
+      "cell": "eqmask",
+      "inputs": [
+        "BID_IDX",
+        "LANE_3"
+      ],
+      "comment": ""
+    },
+    {
+      "name": "BID_ACT_3",
+      "cell": "and",
+      "inputs": [
+        "BIDEQ_3",
+        "BID_CHG"
+      ],
+      "comment": "bid activity at price-index 3 this tick"
+    },
+    {
+      "name": "BIDEQ_4",
+      "cell": "eqmask",
+      "inputs": [
+        "BID_IDX",
+        "LANE_4"
+      ],
+      "comment": ""
+    },
+    {
+      "name": "BID_ACT_4",
+      "cell": "and",
+      "inputs": [
+        "BIDEQ_4",
+        "BID_CHG"
+      ],
+      "comment": "bid activity at price-index 4 this tick"
+    },
+    {
+      "name": "BIDEQ_5",
+      "cell": "eqmask",
+      "inputs": [
+        "BID_IDX",
+        "LANE_5"
+      ],
+      "comment": ""
+    },
+    {
+      "name": "BID_ACT_5",
+      "cell": "and",
+      "inputs": [
+        "BIDEQ_5",
+        "BID_CHG"
+      ],
+      "comment": "bid activity at price-index 5 this tick"
+    },
+    {
+      "name": "BIDEQ_6",
+      "cell": "eqmask",
+      "inputs": [
+        "BID_IDX",
+        "LANE_6"
+      ],
+      "comment": ""
+    },
+    {
+      "name": "BID_ACT_6",
+      "cell": "and",
+      "inputs": [
+        "BIDEQ_6",
+        "BID_CHG"
+      ],
+      "comment": "bid activity at price-index 6 this tick"
+    },
+    {
+      "name": "BIDEQ_7",
+      "cell": "eqmask",
+      "inputs": [
+        "BID_IDX",
+        "LANE_7"
+      ],
+      "comment": ""
+    },
+    {
+      "name": "BID_ACT_7",
+      "cell": "and",
+      "inputs": [
+        "BIDEQ_7",
+        "BID_CHG"
+      ],
+      "comment": "bid activity at price-index 7 this tick"
+    },
+    {
+      "name": "ASKEQ_0",
+      "cell": "eqmask",
+      "inputs": [
+        "ASK_IDX",
+        "LANE_0"
+      ],
+      "comment": ""
+    },
+    {
+      "name": "ASK_ACT_0",
+      "cell": "and",
+      "inputs": [
+        "ASKEQ_0",
+        "ASK_CHG"
+      ],
+      "comment": "ask activity at price-index 0 this tick"
+    },
+    {
+      "name": "ASKEQ_1",
+      "cell": "eqmask",
+      "inputs": [
+        "ASK_IDX",
+        "LANE_1"
+      ],
+      "comment": ""
+    },
+    {
+      "name": "ASK_ACT_1",
+      "cell": "and",
+      "inputs": [
+        "ASKEQ_1",
+        "ASK_CHG"
+      ],
+      "comment": "ask activity at price-index 1 this tick"
+    },
+    {
+      "name": "ASKEQ_2",
+      "cell": "eqmask",
+      "inputs": [
+        "ASK_IDX",
+        "LANE_2"
+      ],
+      "comment": ""
+    },
+    {
+      "name": "ASK_ACT_2",
+      "cell": "and",
+      "inputs": [
+        "ASKEQ_2",
+        "ASK_CHG"
+      ],
+      "comment": "ask activity at price-index 2 this tick"
+    },
+    {
+      "name": "ASKEQ_3",
+      "cell": "eqmask",
+      "inputs": [
+        "ASK_IDX",
+        "LANE_3"
+      ],
+      "comment": ""
+    },
+    {
+      "name": "ASK_ACT_3",
+      "cell": "and",
+      "inputs": [
+        "ASKEQ_3",
+        "ASK_CHG"
+      ],
+      "comment": "ask activity at price-index 3 this tick"
+    },
+    {
+      "name": "ASKEQ_4",
+      "cell": "eqmask",
+      "inputs": [
+        "ASK_IDX",
+        "LANE_4"
+      ],
+      "comment": ""
+    },
+    {
+      "name": "ASK_ACT_4",
+      "cell": "and",
+      "inputs": [
+        "ASKEQ_4",
+        "ASK_CHG"
+      ],
+      "comment": "ask activity at price-index 4 this tick"
+    },
+    {
+      "name": "ASKEQ_5",
+      "cell": "eqmask",
+      "inputs": [
+        "ASK_IDX",
+        "LANE_5"
+      ],
+      "comment": ""
+    },
+    {
+      "name": "ASK_ACT_5",
+      "cell": "and",
+      "inputs": [
+        "ASKEQ_5",
+        "ASK_CHG"
+      ],
+      "comment": "ask activity at price-index 5 this tick"
+    },
+    {
+      "name": "ASKEQ_6",
+      "cell": "eqmask",
+      "inputs": [
+        "ASK_IDX",
+        "LANE_6"
+      ],
+      "comment": ""
+    },
+    {
+      "name": "ASK_ACT_6",
+      "cell": "and",
+      "inputs": [
+        "ASKEQ_6",
+        "ASK_CHG"
+      ],
+      "comment": "ask activity at price-index 6 this tick"
+    },
+    {
+      "name": "ASKEQ_7",
+      "cell": "eqmask",
+      "inputs": [
+        "ASK_IDX",
+        "LANE_7"
+      ],
+      "comment": ""
+    },
+    {
+      "name": "ASK_ACT_7",
+      "cell": "and",
+      "inputs": [
+        "ASKEQ_7",
+        "ASK_CHG"
+      ],
+      "comment": "ask activity at price-index 7 this tick"
+    },
+    {
+      "name": "TOUCH_0",
+      "cell": "or",
+      "inputs": [
+        "BID_ACT_0",
+        "ASK_ACT_0"
+      ],
+      "comment": "price-index 0 touched (either side)"
+    },
+    {
+      "name": "TOUCH_1",
+      "cell": "or",
+      "inputs": [
+        "BID_ACT_1",
+        "ASK_ACT_1"
+      ],
+      "comment": "price-index 1 touched (either side)"
+    },
+    {
+      "name": "TOUCH_2",
+      "cell": "or",
+      "inputs": [
+        "BID_ACT_2",
+        "ASK_ACT_2"
+      ],
+      "comment": "price-index 2 touched (either side)"
+    },
+    {
+      "name": "TOUCH_3",
+      "cell": "or",
+      "inputs": [
+        "BID_ACT_3",
+        "ASK_ACT_3"
+      ],
+      "comment": "price-index 3 touched (either side)"
+    },
+    {
+      "name": "TOUCH_4",
+      "cell": "or",
+      "inputs": [
+        "BID_ACT_4",
+        "ASK_ACT_4"
+      ],
+      "comment": "price-index 4 touched (either side)"
+    },
+    {
+      "name": "TOUCH_5",
+      "cell": "or",
+      "inputs": [
+        "BID_ACT_5",
+        "ASK_ACT_5"
+      ],
+      "comment": "price-index 5 touched (either side)"
+    },
+    {
+      "name": "TOUCH_6",
+      "cell": "or",
+      "inputs": [
+        "BID_ACT_6",
+        "ASK_ACT_6"
+      ],
+      "comment": "price-index 6 touched (either side)"
+    },
+    {
+      "name": "TOUCH_7",
+      "cell": "or",
+      "inputs": [
+        "BID_ACT_7",
+        "ASK_ACT_7"
+      ],
+      "comment": "price-index 7 touched (either side)"
     }
   ],
   "seam_nodes": [
@@ -508,6 +940,150 @@
     {
       "name": "DOMBUS_LAST_FEED_TIME",
       "source": "DOM_LAST_FEED_TIME_REG",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_BID_ACT_0",
+      "source": "BID_ACT_0",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_BID_ACT_1",
+      "source": "BID_ACT_1",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_BID_ACT_2",
+      "source": "BID_ACT_2",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_BID_ACT_3",
+      "source": "BID_ACT_3",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_BID_ACT_4",
+      "source": "BID_ACT_4",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_BID_ACT_5",
+      "source": "BID_ACT_5",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_BID_ACT_6",
+      "source": "BID_ACT_6",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_BID_ACT_7",
+      "source": "BID_ACT_7",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_ASK_ACT_0",
+      "source": "ASK_ACT_0",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_ASK_ACT_1",
+      "source": "ASK_ACT_1",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_ASK_ACT_2",
+      "source": "ASK_ACT_2",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_ASK_ACT_3",
+      "source": "ASK_ACT_3",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_ASK_ACT_4",
+      "source": "ASK_ACT_4",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_ASK_ACT_5",
+      "source": "ASK_ACT_5",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_ASK_ACT_6",
+      "source": "ASK_ACT_6",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_ASK_ACT_7",
+      "source": "ASK_ACT_7",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_TOUCH_0",
+      "source": "TOUCH_0",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_TOUCH_1",
+      "source": "TOUCH_1",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_TOUCH_2",
+      "source": "TOUCH_2",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_TOUCH_3",
+      "source": "TOUCH_3",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_TOUCH_4",
+      "source": "TOUCH_4",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_TOUCH_5",
+      "source": "TOUCH_5",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_TOUCH_6",
+      "source": "TOUCH_6",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_TOUCH_7",
+      "source": "TOUCH_7",
       "type": "u64",
       "comment": ""
     }
