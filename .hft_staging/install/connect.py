@@ -80,9 +80,11 @@ def main():
             if prod not in OFF_FABRIC and pnet and not pnet.get("bus_nodes"):
                 outs = {n["name"] for n in pnet.get("seam_nodes", [])}
                 blanes = published_lanes(bus, get)
-                if blanes and not (blanes & outs):
-                    publish_gaps.append(f"{prod} must publish onto {bus} "
-                                        f"(produces none of its {len(blanes)} lanes yet)")
+                missing = blanes - outs
+                if missing:
+                    publish_gaps.append(
+                        f"{prod} -> {bus}: {len(blanes & outs)}/{len(blanes)} lanes published; "
+                        f"{len(missing)} unpublished ({', '.join(sorted(missing)[:3])}, ...)")
             continue
         consumer, seam, producer = c.get("consumer"), c.get("seam"), c.get("producer")
         cnet = get(consumer)

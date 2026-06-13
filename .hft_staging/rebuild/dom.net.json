@@ -446,38 +446,68 @@
   ],
   "seam_nodes": [
     {
-      "name": "DOM_BEST_BID_PRICE_OUT",
+      "name": "DOMBUS_BEST_BID",
       "source": "DOM_BEST_BID_PRICE_REG",
       "type": "u64",
-      "comment": "live snapshot"
+      "comment": ""
     },
     {
-      "name": "DOM_BEST_ASK_PRICE_OUT",
+      "name": "DOMBUS_BEST_ASK",
       "source": "DOM_BEST_ASK_PRICE_REG",
       "type": "u64",
       "comment": ""
     },
     {
-      "name": "DOM_SPREAD_OUT",
+      "name": "DOMBUS_BEST_BID_QTY",
+      "source": "DOM_BEST_BID_QTY_REG",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_BEST_ASK_QTY",
+      "source": "DOM_BEST_ASK_QTY_REG",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_SPREAD",
       "source": "DOM_SPREAD_REG",
       "type": "u64",
       "comment": ""
     },
     {
-      "name": "DOM_MID_PRICE_OUT",
+      "name": "DOMBUS_MID",
       "source": "DOM_MID_PRICE_REG",
       "type": "u64",
       "comment": ""
     },
     {
-      "name": "DOM_TOTAL_BID_QTY_OUT",
+      "name": "DOMBUS_TOTAL_BID_QTY",
       "source": "DOM_TOTAL_BID_QTY_REG",
       "type": "u64",
       "comment": ""
     },
     {
-      "name": "DOM_TOTAL_ASK_QTY_OUT",
+      "name": "DOMBUS_TOTAL_ASK_QTY",
       "source": "DOM_TOTAL_ASK_QTY_REG",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_ADD_COUNT",
+      "source": "DOM_ADD_COUNT_REG",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_CANCEL_COUNT",
+      "source": "DOM_CANCEL_COUNT_REG",
+      "type": "u64",
+      "comment": ""
+    },
+    {
+      "name": "DOMBUS_LAST_FEED_TIME",
+      "source": "DOM_LAST_FEED_TIME_REG",
       "type": "u64",
       "comment": ""
     }

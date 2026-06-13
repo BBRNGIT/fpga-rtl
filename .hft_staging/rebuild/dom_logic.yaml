@@ -89,10 +89,20 @@ display_outputs:
          DOM_SPREAD_REG, DOM_MID_PRICE_REG, DOM_TOTAL_BID_QTY_REG, DOM_TOTAL_ASK_QTY_REG,
          DOM_PKT_COUNT_REG, DOM_ADD_COUNT_REG, DOM_CANCEL_COUNT_REG, DOM_LAST_FEED_TIME_REG]
   memory: {ring: DOM_BOOK, rows: 8, fields: [BID_PX, ASK_PX, TAI]}
+# DOM publishes its per-tick snapshot onto dom_bus (sole writer; indicators sample).
+# Aggregate lanes — DOM drives these from its own live registers (faithful, no invention).
+# The per-price snapshot lanes (DOMBUS_BID_ACT_*/ASK_ACT_*/TOUCH_*), the bar lanes,
+# and DOMBUS_TRADE_COUNT/VALID are NOT published here — they await design (per-price
+# mapping = Index-Doctrine decision; bar relay from timeframe; no trades in price-only feed).
 seam_outputs:
-  - {name: DOM_BEST_BID_PRICE_OUT, source: DOM_BEST_BID_PRICE_REG, type: u64, comment: "live snapshot"}
-  - {name: DOM_BEST_ASK_PRICE_OUT, source: DOM_BEST_ASK_PRICE_REG, type: u64}
-  - {name: DOM_SPREAD_OUT,         source: DOM_SPREAD_REG,         type: u64}
-  - {name: DOM_MID_PRICE_OUT,      source: DOM_MID_PRICE_REG,      type: u64}
-  - {name: DOM_TOTAL_BID_QTY_OUT,  source: DOM_TOTAL_BID_QTY_REG,  type: u64}
-  - {name: DOM_TOTAL_ASK_QTY_OUT,  source: DOM_TOTAL_ASK_QTY_REG,  type: u64}
+  - {name: DOMBUS_BEST_BID,       source: DOM_BEST_BID_PRICE_REG, type: u64}
+  - {name: DOMBUS_BEST_ASK,       source: DOM_BEST_ASK_PRICE_REG, type: u64}
+  - {name: DOMBUS_BEST_BID_QTY,   source: DOM_BEST_BID_QTY_REG,   type: u64}
+  - {name: DOMBUS_BEST_ASK_QTY,   source: DOM_BEST_ASK_QTY_REG,   type: u64}
+  - {name: DOMBUS_SPREAD,         source: DOM_SPREAD_REG,         type: u64}
+  - {name: DOMBUS_MID,            source: DOM_MID_PRICE_REG,      type: u64}
+  - {name: DOMBUS_TOTAL_BID_QTY,  source: DOM_TOTAL_BID_QTY_REG,  type: u64}
+  - {name: DOMBUS_TOTAL_ASK_QTY,  source: DOM_TOTAL_ASK_QTY_REG,  type: u64}
+  - {name: DOMBUS_ADD_COUNT,      source: DOM_ADD_COUNT_REG,      type: u64}
+  - {name: DOMBUS_CANCEL_COUNT,   source: DOM_CANCEL_COUNT_REG,   type: u64}
+  - {name: DOMBUS_LAST_FEED_TIME, source: DOM_LAST_FEED_TIME_REG, type: u64}
