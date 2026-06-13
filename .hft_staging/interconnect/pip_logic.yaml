@@ -1,0 +1,20 @@
+# pip_logic.yaml — PIP (Programmable Interconnect Point): the atom of FPGA routing.
+# Built from primitives: a CONFIG flip-flop (set once at bitstream/config time, like
+# a LUT truth-table or a power bit) + a SWITCH (gate). When the config bit is ON the
+# PIP passes its source wire to its destination wire; when OFF it is open. This is
+# the same family as the LUT6 (config-dff + select). Routing = "turn on these PIPs".
+#
+# A wire carries a 64-bit lane word; the PIP gates the whole word on its config bit.
+module: pip
+kind: interconnect
+seam_inputs:
+  - {name: WIRE_IN,    type: u64, source: "", comment: "source wire (lane word)"}
+  - {name: PIP_CFG_D,  type: bit, source: "", comment: "config data in (bitstream)"}
+  - {name: PIP_CFG_EN, type: bit, source: "", comment: "config load enable (bitstream write)"}
+comb_nodes:
+  - {name: WIRE_OUT_C, cell: gate, inputs: [WIRE_IN, PIP_CFG], comment: "pass wire iff configured ON"}
+dff_nodes:
+  - {name: PIP_CFG, type: bit, fed_by: PIP_CFG_D, enable: PIP_CFG_EN,
+     comment: "config cell: 1=pass, 0=open (operator/bitstream-set, never data-wired)"}
+seam_outputs:
+  - {name: WIRE_OUT, source: WIRE_OUT_C, type: u64, comment: "destination wire (driven iff PIP on)"}
