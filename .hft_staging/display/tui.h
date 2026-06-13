@@ -10,4 +10,8 @@
  * 8 x {bid,ask,tai}). `home` repaints in place (flicker-free); `tag` is a caption. */
 void tui_render_dom(const uint64_t *frame, unsigned long tag, int home);
 
+/* ingress frame: [0..9] adapter latest packet, [10..17] wire lanes.
+ * Renders both panels + a live adapter==wire ingress-integrity check. */
+void tui_render_ingress(const uint64_t *frame, int home);
+
 #endif /* DISPLAY_TUI_H */
