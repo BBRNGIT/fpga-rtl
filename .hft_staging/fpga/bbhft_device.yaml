@@ -1,0 +1,15 @@
+# bbhft_device.yaml — the FULL VU9P container: the original blank's logic/memory/IO
+# PLUS the native clock management (30 CMTs = 30 MMCM + 60 PLL, DS923) and the routing
+# fabric (INT tiles). CLB/DSP/BRAM/URAM/GTY counts come from the device model; the
+# clock + routing counts are declared here (authentic: 30 MMCM, 60 PLL; INT sized to
+# the system pending the VU9P routing DB — see spec clocking_and_structure GAP).
+device: bbhft
+tiles:
+  - {type: CLB,  klass: flipflop,  module: clb_slice,  netlist: fpga/clb_slice.net.json}
+  - {type: DSP,  klass: flipflop,  module: dsp48e2,    netlist: fpga/dsp48e2.net.json}
+  - {type: BRAM, klass: flipflop,  module: bram_block, netlist: fpga/bram_block.net.json}
+  - {type: URAM, klass: flipflop,  module: uram_block, netlist: fpga/uram_block.net.json}
+  - {type: GTY,  klass: conductor, module: gty,         netlist: fpga/gty.net.json}
+  - {type: MMCM, klass: flipflop,  module: mmcm,        netlist: clocking/mmcm.net.json,    count: 30}
+  - {type: PLL,  klass: flipflop,  module: pll,         netlist: clocking/pll.net.json,     count: 60}
+  - {type: INT,  klass: flipflop,  module: int_tile,    netlist: interconnect/int_tile.net.json, count: 256}
