@@ -1,0 +1,590 @@
+{
+  "generated_from": "jobgen.py",
+  "count": 73,
+  "jobs": [
+    {
+      "id": "tool:assemble",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/assemble.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:blockmap",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/blockmap.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:boardparse",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/boardparse.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:build",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/build.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:cast",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/cast.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:catalog",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/catalog.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:configmap",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/configmap.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:dsparse",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/dsparse.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:eda_shapes",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/eda_shapes.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:extract",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/extract.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:figblocks",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/figblocks.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:figdiff",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/figdiff.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:figparse",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/figparse.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:gen_container",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/gen_container.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:hierarchy",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/hierarchy.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:integrate",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/integrate.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:netc",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/netc.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:phys",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/phys.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:phys_lib",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/phys_lib.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:pip_lib",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/pip_lib.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:progress",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/progress.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:psports",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/psports.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:realize",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/realize.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:richtext",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/richtext.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:specgen",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/specgen.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:tabledump",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/tabledump.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:templates",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/templates.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:txports",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/txports.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "tool:vparse",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/vparse.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:device.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/device.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:hierarchy.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/hierarchy.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:board_net.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/board_net.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:catalog.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/catalog.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:configmap.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/configmap.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:container.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/container.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:ds_resources.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/ds_resources.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:figblocks_out.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/figblocks_out.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:figdiff_out.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/figdiff_out.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:figparse_out.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/figparse_out.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:library.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/library.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:phys.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/phys.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:primitives.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/primitives.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:ps_ports.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/ps_ports.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:specgen_out.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/specgen_out.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:tx_ports.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/tx_ports.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:ug1085_richtext.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/ug1085_richtext.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:ug576_figblocks.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/ug576_figblocks.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:ug576_richtext.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/ug576_richtext.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:ug578_figblocks.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/ug578_figblocks.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:ug578_richtext.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/ug578_richtext.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:ug974_prims.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/ug974_prims.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "inv:all_committed",
+      "kind": "integrity",
+      "group": "invariants",
+      "check": "python3 checks_lib.py all_committed",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "inv:clean_layout",
+      "kind": "integrity",
+      "group": "invariants",
+      "check": "python3 checks_lib.py clean_layout",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "inv:configmap_subset_catalog",
+      "kind": "integrity",
+      "group": "invariants",
+      "check": "python3 checks_lib.py configmap_subset_catalog",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "inv:container_compiles",
+      "kind": "integrity",
+      "group": "invariants",
+      "check": "python3 checks_lib.py container_compiles",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "inv:counts_match_ds891",
+      "kind": "integrity",
+      "group": "invariants",
+      "check": "python3 checks_lib.py counts_match_ds891",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "inv:device_tree_consistent",
+      "kind": "integrity",
+      "group": "invariants",
+      "check": "python3 checks_lib.py device_tree_consistent",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "inv:library_validates",
+      "kind": "integrity",
+      "group": "invariants",
+      "check": "python3 checks_lib.py library_validates",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "inv:no_ai_attribution",
+      "kind": "integrity",
+      "group": "invariants",
+      "check": "python3 checks_lib.py no_ai_attribution",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "inv:no_verilog",
+      "kind": "integrity",
+      "group": "invariants",
+      "check": "python3 checks_lib.py no_verilog",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "inv:zero_unmapped",
+      "kind": "integrity",
+      "group": "invariants",
+      "check": "python3 checks_lib.py zero_unmapped",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "inv:zero_untracked",
+      "kind": "integrity",
+      "group": "invariants",
+      "check": "python3 checks_lib.py zero_untracked",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "phase:P1",
+      "kind": "progress",
+      "group": "phases",
+      "check": "python3 -c \"import realize,sys;d,t,_=realize.measure('P1');sys.exit(0 if d>=t and t>0 else 1)\"",
+      "gate": false,
+      "nudge": "advance P1: run `realize.py worklist P1` and execute the next item"
+    },
+    {
+      "id": "phase:P2",
+      "kind": "progress",
+      "group": "phases",
+      "check": "python3 -c \"import realize,sys;d,t,_=realize.measure('P2');sys.exit(0 if d>=t and t>0 else 1)\"",
+      "gate": false,
+      "nudge": "advance P2: run `realize.py worklist P2` and execute the next item"
+    },
+    {
+      "id": "phase:P3",
+      "kind": "progress",
+      "group": "phases",
+      "check": "python3 -c \"import realize,sys;d,t,_=realize.measure('P3');sys.exit(0 if d>=t and t>0 else 1)\"",
+      "gate": false,
+      "nudge": "advance P3: run `realize.py worklist P3` and execute the next item"
+    },
+    {
+      "id": "phase:P4",
+      "kind": "progress",
+      "group": "phases",
+      "check": "python3 -c \"import realize,sys;d,t,_=realize.measure('P4');sys.exit(0 if d>=t and t>0 else 1)\"",
+      "gate": false,
+      "nudge": "advance P4: run `realize.py worklist P4` and execute the next item"
+    },
+    {
+      "id": "phase:P5",
+      "kind": "progress",
+      "group": "phases",
+      "check": "python3 -c \"import realize,sys;d,t,_=realize.measure('P5');sys.exit(0 if d>=t and t>0 else 1)\"",
+      "gate": false,
+      "nudge": "advance P5: run `realize.py worklist P5` and execute the next item"
+    },
+    {
+      "id": "phase:P6",
+      "kind": "progress",
+      "group": "phases",
+      "check": "python3 -c \"import realize,sys;d,t,_=realize.measure('P6');sys.exit(0 if d>=t and t>0 else 1)\"",
+      "gate": false,
+      "nudge": "advance P6: run `realize.py worklist P6` and execute the next item"
+    },
+    {
+      "id": "todo:route",
+      "kind": "progress",
+      "group": "remaining_tools",
+      "check": "test -f /Users/bbrn/fpga-rtl/v3_staging/tools/route.py",
+      "gate": false,
+      "nudge": "build route.py (next phase tool)"
+    },
+    {
+      "id": "todo:clkfab",
+      "kind": "progress",
+      "group": "remaining_tools",
+      "check": "test -f /Users/bbrn/fpga-rtl/v3_staging/tools/clkfab.py",
+      "gate": false,
+      "nudge": "build clkfab.py (next phase tool)"
+    },
+    {
+      "id": "todo:ps_realize",
+      "kind": "progress",
+      "group": "remaining_tools",
+      "check": "test -f /Users/bbrn/fpga-rtl/v3_staging/tools/ps_realize.py",
+      "gate": false,
+      "nudge": "build ps_realize.py (next phase tool)"
+    },
+    {
+      "id": "todo:map",
+      "kind": "progress",
+      "group": "remaining_tools",
+      "check": "test -f /Users/bbrn/fpga-rtl/v3_staging/tools/map.py",
+      "gate": false,
+      "nudge": "build map.py (next phase tool)"
+    },
+    {
+      "id": "todo:unify",
+      "kind": "progress",
+      "group": "remaining_tools",
+      "check": "test -f /Users/bbrn/fpga-rtl/v3_staging/tools/unify.py",
+      "gate": false,
+      "nudge": "build unify.py (next phase tool)"
+    }
+  ]
+}
