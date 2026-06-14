@@ -1,0 +1,48 @@
+{
+  "total_ok": 24,
+  "total": 24,
+  "blocks": {
+    "BUFGCE_1": {
+      "fig": "p20:Fig2-7",
+      "confirmed": [
+        "I0=I",
+        "I1=VDD",
+        "S0=VDD",
+        "S1=GND",
+        "CE0=CE",
+        "CE1=GND",
+        "IGNORE0=GND",
+        "IGNORE1=VDD"
+      ],
+      "gaps": []
+    },
+    "BUFGMUX": {
+      "fig": "p21:Fig2-9",
+      "confirmed": [
+        "I0=I0",
+        "I1=I1",
+        "S0=VDD",
+        "S1=VDD",
+        "CE0=~S",
+        "CE1=S",
+        "IGNORE0=GND",
+        "IGNORE1=GND"
+      ],
+      "gaps": []
+    },
+    "BUFGMUX_CTRL": {
+      "fig": "p24:Fig2-12",
+      "confirmed": [
+        "I0=I0",
+        "I1=I1",
+        "S0=~S",
+        "S1=S",
+        "CE0=VDD",
+        "CE1=VDD",
+        "IGNORE0=GND",
+        "IGNORE1=GND"
+      ],
+      "gaps": []
+    }
+  }
+}

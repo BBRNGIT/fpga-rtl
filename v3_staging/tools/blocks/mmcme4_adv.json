@@ -1,0 +1,278 @@
+{
+  "name": "MMCME4_ADV",
+  "group": "clocking",
+  "spec": "MMCME4_ADV (35-port): clock_switch + MMCME4_BASE + DRP + phase_shift + CDDC handshake.",
+  "ports": [
+    {
+      "name": "CLKIN1",
+      "dir": "in",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKIN2",
+      "dir": "in",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKFBIN",
+      "dir": "in",
+      "kind": "clock"
+    },
+    {
+      "name": "DCLK",
+      "dir": "in",
+      "kind": "clock"
+    },
+    {
+      "name": "PSCLK",
+      "dir": "in",
+      "kind": "clock"
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    },
+    {
+      "name": "PWRDWN",
+      "dir": "in"
+    },
+    {
+      "name": "CLKINSEL",
+      "dir": "in"
+    },
+    {
+      "name": "DWE",
+      "dir": "in"
+    },
+    {
+      "name": "DEN",
+      "dir": "in"
+    },
+    {
+      "name": "PSINCDEC",
+      "dir": "in"
+    },
+    {
+      "name": "PSEN",
+      "dir": "in"
+    },
+    {
+      "name": "CDDCREQ",
+      "dir": "in"
+    },
+    {
+      "name": "DADDR",
+      "dir": "in",
+      "width": 7
+    },
+    {
+      "name": "DI",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "CLKOUT0",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKOUT1",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKOUT2",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKOUT3",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKOUT4",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKOUT5",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKOUT6",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKOUT0B",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKOUT1B",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKOUT2B",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKOUT3B",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKFBOUT",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKFBOUTB",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "LOCKED",
+      "dir": "out"
+    },
+    {
+      "name": "DO",
+      "dir": "out",
+      "width": 16
+    },
+    {
+      "name": "DRDY",
+      "dir": "out"
+    },
+    {
+      "name": "PSDONE",
+      "dir": "out"
+    },
+    {
+      "name": "CLKINSTOPPED",
+      "dir": "out"
+    },
+    {
+      "name": "CLKFBSTOPPED",
+      "dir": "out"
+    },
+    {
+      "name": "CDDCDONE",
+      "dir": "out"
+    }
+  ],
+  "cells": [
+    {
+      "ref": "cswitch",
+      "type": "clock_switch",
+      "conn": {
+        "CLKIN1": "CLKIN1",
+        "CLKIN2": "CLKIN2",
+        "CLKINSEL": "CLKINSEL",
+        "CLKFBIN": "CLKFBIN",
+        "CLKIN": "clkin_sel",
+        "CLKINSTOPPED": "CLKINSTOPPED",
+        "CLKFBSTOPPED": "CLKFBSTOPPED"
+      }
+    },
+    {
+      "ref": "mmcm",
+      "type": "MMCME4_BASE",
+      "conn": {
+        "CLKIN1": "clkin_sel",
+        "CLKFBIN": "CLKFBIN",
+        "RST": "RST",
+        "PWRDWN": "PWRDWN",
+        "CLKOUT0": "CLKOUT0",
+        "CLKOUT1": "CLKOUT1",
+        "CLKOUT2": "CLKOUT2",
+        "CLKOUT3": "CLKOUT3",
+        "CLKOUT4": "CLKOUT4",
+        "CLKOUT5": "CLKOUT5",
+        "CLKOUT6": "CLKOUT6",
+        "CLKOUT0B": "CLKOUT0B",
+        "CLKOUT1B": "CLKOUT1B",
+        "CLKOUT2B": "CLKOUT2B",
+        "CLKOUT3B": "CLKOUT3B",
+        "CLKFBOUT": "CLKFBOUT",
+        "CLKFBOUTB": "CLKFBOUTB",
+        "LOCKED": "LOCKED"
+      }
+    },
+    {
+      "ref": "drp",
+      "type": "drp",
+      "conn": {
+        "DCLK": "DCLK",
+        "DEN": "DEN",
+        "DWE": "DWE",
+        "DRDY": "DRDY",
+        "DADDR[0]": "DADDR[0]",
+        "DADDR[1]": "DADDR[1]",
+        "DADDR[2]": "DADDR[2]",
+        "DADDR[3]": "DADDR[3]",
+        "DADDR[4]": "DADDR[4]",
+        "DADDR[5]": "DADDR[5]",
+        "DADDR[6]": "DADDR[6]",
+        "DI[0]": "DI[0]",
+        "DI[1]": "DI[1]",
+        "DI[2]": "DI[2]",
+        "DI[3]": "DI[3]",
+        "DI[4]": "DI[4]",
+        "DI[5]": "DI[5]",
+        "DI[6]": "DI[6]",
+        "DI[7]": "DI[7]",
+        "DI[8]": "DI[8]",
+        "DI[9]": "DI[9]",
+        "DI[10]": "DI[10]",
+        "DI[11]": "DI[11]",
+        "DI[12]": "DI[12]",
+        "DI[13]": "DI[13]",
+        "DI[14]": "DI[14]",
+        "DI[15]": "DI[15]",
+        "DO[0]": "DO[0]",
+        "DO[1]": "DO[1]",
+        "DO[2]": "DO[2]",
+        "DO[3]": "DO[3]",
+        "DO[4]": "DO[4]",
+        "DO[5]": "DO[5]",
+        "DO[6]": "DO[6]",
+        "DO[7]": "DO[7]",
+        "DO[8]": "DO[8]",
+        "DO[9]": "DO[9]",
+        "DO[10]": "DO[10]",
+        "DO[11]": "DO[11]",
+        "DO[12]": "DO[12]",
+        "DO[13]": "DO[13]",
+        "DO[14]": "DO[14]",
+        "DO[15]": "DO[15]"
+      }
+    },
+    {
+      "ref": "pshift",
+      "type": "phase_shift",
+      "conn": {
+        "PSCLK": "PSCLK",
+        "PSEN": "PSEN",
+        "PSINCDEC": "PSINCDEC",
+        "PSDONE": "PSDONE"
+      }
+    },
+    {
+      "ref": "cddc",
+      "type": "dff_d",
+      "conn": {
+        "D": "CDDCREQ",
+        "CLK": "DCLK",
+        "Q": "CDDCDONE"
+      }
+    }
+  ],
+  "nets": [
+    "clkin_sel"
+  ]
+}

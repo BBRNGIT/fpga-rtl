@@ -1,0 +1,212 @@
+{
+  "name": "div_prog_frac",
+  "group": "clocking",
+  "spec": "UG572 Fig 3-1/3-24 fractional divider, 1/8 resolution. div_prog supplies the integer-divided clock O; a 3-bit phase accumulator (acc += FRAC each O edge) exposes its carry as FRAC_CARRY at the boundary (the +1/8 step pulse). WARNING: the doc's true two-counter / two-VCO-phase topology is NOT reproduced; this is the N/N+1 accumulator realization.",
+  "ports": [
+    {
+      "name": "CLK",
+      "dir": "in",
+      "kind": "clock"
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "FRAC_CARRY",
+      "dir": "out"
+    }
+  ],
+  "cells": [
+    {
+      "ref": "intdiv",
+      "type": "div_prog",
+      "block": "div_prog",
+      "conn": {
+        "CLK": "CLK",
+        "RST": "RST",
+        "O": "O"
+      }
+    },
+    {
+      "ref": "frac0",
+      "type": "cfgcell",
+      "conn": {
+        "Q": "FRAC0"
+      }
+    },
+    {
+      "ref": "frac1",
+      "type": "cfgcell",
+      "conn": {
+        "Q": "FRAC1"
+      }
+    },
+    {
+      "ref": "frac2",
+      "type": "cfgcell",
+      "conn": {
+        "Q": "FRAC2"
+      }
+    },
+    {
+      "ref": "add0_s",
+      "type": "xor",
+      "conn": {
+        "A": "acc0",
+        "B": "FRAC0",
+        "O": "sum0"
+      }
+    },
+    {
+      "ref": "add0_c",
+      "type": "and",
+      "conn": {
+        "A": "acc0",
+        "B": "FRAC0",
+        "O": "c0"
+      }
+    },
+    {
+      "ref": "add1_xa",
+      "type": "xor",
+      "conn": {
+        "A": "acc1",
+        "B": "FRAC1",
+        "O": "s1a"
+      }
+    },
+    {
+      "ref": "add1_s",
+      "type": "xor",
+      "conn": {
+        "A": "s1a",
+        "B": "c0",
+        "O": "sum1"
+      }
+    },
+    {
+      "ref": "add1_ca",
+      "type": "and",
+      "conn": {
+        "A": "acc1",
+        "B": "FRAC1",
+        "O": "c1a"
+      }
+    },
+    {
+      "ref": "add1_cb",
+      "type": "and",
+      "conn": {
+        "A": "s1a",
+        "B": "c0",
+        "O": "c1b"
+      }
+    },
+    {
+      "ref": "add1_co",
+      "type": "or",
+      "conn": {
+        "A": "c1a",
+        "B": "c1b",
+        "O": "c1"
+      }
+    },
+    {
+      "ref": "add2_xa",
+      "type": "xor",
+      "conn": {
+        "A": "acc2",
+        "B": "FRAC2",
+        "O": "s2a"
+      }
+    },
+    {
+      "ref": "add2_s",
+      "type": "xor",
+      "conn": {
+        "A": "s2a",
+        "B": "c1",
+        "O": "sum2"
+      }
+    },
+    {
+      "ref": "add2_ca",
+      "type": "and",
+      "conn": {
+        "A": "acc2",
+        "B": "FRAC2",
+        "O": "c2a"
+      }
+    },
+    {
+      "ref": "add2_cb",
+      "type": "and",
+      "conn": {
+        "A": "s2a",
+        "B": "c1",
+        "O": "c2b"
+      }
+    },
+    {
+      "ref": "add2_co",
+      "type": "or",
+      "conn": {
+        "A": "c2a",
+        "B": "c2b",
+        "O": "FRAC_CARRY"
+      }
+    },
+    {
+      "ref": "acc0_ff",
+      "type": "dff_d",
+      "conn": {
+        "D": "sum0",
+        "CLK": "O",
+        "Q": "acc0"
+      }
+    },
+    {
+      "ref": "acc1_ff",
+      "type": "dff_d",
+      "conn": {
+        "D": "sum1",
+        "CLK": "O",
+        "Q": "acc1"
+      }
+    },
+    {
+      "ref": "acc2_ff",
+      "type": "dff_d",
+      "conn": {
+        "D": "sum2",
+        "CLK": "O",
+        "Q": "acc2"
+      }
+    }
+  ],
+  "nets": [
+    "FRAC0",
+    "FRAC1",
+    "FRAC2",
+    "sum0",
+    "c0",
+    "s1a",
+    "sum1",
+    "c1a",
+    "c1b",
+    "c1",
+    "s2a",
+    "sum2",
+    "c2a",
+    "c2b",
+    "acc0",
+    "acc1",
+    "acc2"
+  ]
+}

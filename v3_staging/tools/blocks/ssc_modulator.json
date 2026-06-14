@@ -1,0 +1,18 @@
+{
+  "name": "ssc_modulator",
+  "group": "clocking",
+  "spec": "UG572 p63-71 spread spectrum clocking. ABSTRACT stub: ports only, decomposition pending. WARNING: triangular-ramp M-perturbation; the exact step / period / SS registers are NOT specified in UG572 (they live in XAPP888). Do not synthesize until the step math is sourced.",
+  "abstract": true,
+  "ports": [
+    {"name": "CLK_MOD", "dir": "in", "kind": "clock"},
+    {"name": "RST", "dir": "in"},
+    {"name": "SS_EN", "dir": "in"},
+    {"name": "SS_MODE_CENTER", "dir": "in"},
+    {"name": "M_BASE", "dir": "in", "width": 7},
+    {"name": "M_EFF", "dir": "out", "width": 7},
+    {"name": "RAMP", "dir": "out", "width": 8},
+    {"name": "DIR", "dir": "out"}
+  ],
+  "cells": [],
+  "nets": []
+}

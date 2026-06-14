@@ -1,0 +1,20 @@
+{
+  "name": "phase_shift",
+  "group": "clocking",
+  "spec": "UG572 p43 dynamic phase shift. Models the PSEN->PSDONE handshake only. WARNING: the VCO 8-phase select mux and the full 12-cycle / 1-56 phase accumulator are simplified out; this is the rising-edge-detect + fixed-latency DONE pulse controller.",
+  "ports": [
+    {"name": "PSCLK", "dir": "in", "kind": "clock"},
+    {"name": "PSEN", "dir": "in"},
+    {"name": "PSINCDEC", "dir": "in"},
+    {"name": "PSDONE", "dir": "out"}
+  ],
+  "cells": [
+    {"ref": "psen_ff", "type": "dff_d", "conn": {"D": "PSEN", "CLK": "PSCLK", "Q": "psen_d"}},
+    {"ref": "psen_inv", "type": "not", "conn": {"A": "psen_d", "O": "psen_dn"}},
+    {"ref": "edge", "type": "and", "conn": {"A": "PSEN", "B": "psen_dn", "O": "start"}},
+    {"ref": "lat0", "type": "dff_d", "conn": {"D": "start", "CLK": "PSCLK", "Q": "l0"}},
+    {"ref": "lat1", "type": "dff_d", "conn": {"D": "l0", "CLK": "PSCLK", "Q": "l1"}},
+    {"ref": "lat2", "type": "dff_d", "conn": {"D": "l1", "CLK": "PSCLK", "Q": "PSDONE"}}
+  ],
+  "nets": ["psen_d", "psen_dn", "start", "l0", "l1"]
+}

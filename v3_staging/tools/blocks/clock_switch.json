@@ -1,0 +1,20 @@
+{
+  "name": "clock_switch",
+  "group": "clocking",
+  "spec": "UG572 Fig 3-8 clock input switchover. NOTE: CLKINSEL polarity not given in UG572 p58; mux selects CLKIN1 when CLKINSEL=1, CLKIN2 when CLKINSEL=0.",
+  "ports": [
+    {"name": "CLKIN1", "dir": "in", "kind": "clock"},
+    {"name": "CLKIN2", "dir": "in", "kind": "clock"},
+    {"name": "CLKINSEL", "dir": "in"},
+    {"name": "CLKFBIN", "dir": "in", "kind": "clock"},
+    {"name": "CLKIN", "dir": "out", "kind": "clock"},
+    {"name": "CLKINSTOPPED", "dir": "out"},
+    {"name": "CLKFBSTOPPED", "dir": "out"}
+  ],
+  "cells": [
+    {"ref": "sel_mux", "type": "mux2", "conn": {"A": "CLKIN2", "B": "CLKIN1", "S": "CLKINSEL", "O": "CLKIN"}},
+    {"ref": "clkin_stop", "type": "clk_stop_det", "conn": {"CLK": "CLKIN", "STOPPED": "CLKINSTOPPED"}},
+    {"ref": "clkfb_stop", "type": "clk_stop_det", "conn": {"CLK": "CLKFBIN", "STOPPED": "CLKFBSTOPPED"}}
+  ],
+  "nets": []
+}

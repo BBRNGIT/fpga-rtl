@@ -1,0 +1,165 @@
+{
+  "name": "PLLE4_ADV",
+  "group": "clocking",
+  "spec": "UG572 Table 3-10: PLLE4_ADV = PLLE4_BASE + DRP only.",
+  "ports": [
+    {
+      "name": "CLKIN",
+      "dir": "in",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKFBIN",
+      "dir": "in",
+      "kind": "clock"
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    },
+    {
+      "name": "PWRDWN",
+      "dir": "in"
+    },
+    {
+      "name": "CLKOUTPHYEN",
+      "dir": "in"
+    },
+    {
+      "name": "DCLK",
+      "dir": "in",
+      "kind": "clock"
+    },
+    {
+      "name": "DEN",
+      "dir": "in"
+    },
+    {
+      "name": "DWE",
+      "dir": "in"
+    },
+    {
+      "name": "DADDR",
+      "dir": "in",
+      "width": 7
+    },
+    {
+      "name": "DI",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "CLKOUT0",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKOUT0B",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKOUT1",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKOUT1B",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKFBOUT",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "CLKOUTPHY",
+      "dir": "out",
+      "kind": "clock"
+    },
+    {
+      "name": "LOCKED",
+      "dir": "out"
+    },
+    {
+      "name": "DO",
+      "dir": "out",
+      "width": 16
+    },
+    {
+      "name": "DRDY",
+      "dir": "out"
+    }
+  ],
+  "cells": [
+    {
+      "ref": "pll",
+      "type": "PLLE4_BASE",
+      "conn": {
+        "CLKIN": "CLKIN",
+        "CLKFBIN": "CLKFBIN",
+        "RST": "RST",
+        "PWRDWN": "PWRDWN",
+        "CLKOUTPHYEN": "CLKOUTPHYEN",
+        "CLKOUT0": "CLKOUT0",
+        "CLKOUT0B": "CLKOUT0B",
+        "CLKOUT1": "CLKOUT1",
+        "CLKOUT1B": "CLKOUT1B",
+        "CLKFBOUT": "CLKFBOUT",
+        "CLKOUTPHY": "CLKOUTPHY",
+        "LOCKED": "LOCKED"
+      }
+    },
+    {
+      "ref": "drp",
+      "type": "drp",
+      "conn": {
+        "DCLK": "DCLK",
+        "DEN": "DEN",
+        "DWE": "DWE",
+        "DRDY": "DRDY",
+        "DADDR[0]": "DADDR[0]",
+        "DADDR[1]": "DADDR[1]",
+        "DADDR[2]": "DADDR[2]",
+        "DADDR[3]": "DADDR[3]",
+        "DADDR[4]": "DADDR[4]",
+        "DADDR[5]": "DADDR[5]",
+        "DADDR[6]": "DADDR[6]",
+        "DI[0]": "DI[0]",
+        "DI[1]": "DI[1]",
+        "DI[2]": "DI[2]",
+        "DI[3]": "DI[3]",
+        "DI[4]": "DI[4]",
+        "DI[5]": "DI[5]",
+        "DI[6]": "DI[6]",
+        "DI[7]": "DI[7]",
+        "DI[8]": "DI[8]",
+        "DI[9]": "DI[9]",
+        "DI[10]": "DI[10]",
+        "DI[11]": "DI[11]",
+        "DI[12]": "DI[12]",
+        "DI[13]": "DI[13]",
+        "DI[14]": "DI[14]",
+        "DI[15]": "DI[15]",
+        "DO[0]": "DO[0]",
+        "DO[1]": "DO[1]",
+        "DO[2]": "DO[2]",
+        "DO[3]": "DO[3]",
+        "DO[4]": "DO[4]",
+        "DO[5]": "DO[5]",
+        "DO[6]": "DO[6]",
+        "DO[7]": "DO[7]",
+        "DO[8]": "DO[8]",
+        "DO[9]": "DO[9]",
+        "DO[10]": "DO[10]",
+        "DO[11]": "DO[11]",
+        "DO[12]": "DO[12]",
+        "DO[13]": "DO[13]",
+        "DO[14]": "DO[14]",
+        "DO[15]": "DO[15]"
+      }
+    }
+  ],
+  "nets": []
+}

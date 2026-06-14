@@ -1,0 +1,15 @@
+{
+  "name": "clk_pip",
+  "group": "routing",
+  "spec": "UG572 Ch1-2 clock routing PIP - config-mux selecting a track driver (drive-rule fabric per Agent D findings).",
+  "ports": [
+    {"name": "I0", "dir": "in", "kind": "clock"},
+    {"name": "I1", "dir": "in", "kind": "clock"},
+    {"name": "O", "dir": "out", "kind": "clock"}
+  ],
+  "cells": [
+    {"ref": "sel_cfg", "type": "cfgcell", "conn": {"Q": "sel"}},
+    {"ref": "pip_mux", "type": "mux2", "conn": {"A": "I0", "B": "I1", "S": "sel", "O": "O"}}
+  ],
+  "nets": ["sel"]
+}

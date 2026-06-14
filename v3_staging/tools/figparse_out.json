@@ -1,0 +1,439 @@
+{
+  "p16:Fig2-4": {
+    "page": 16,
+    "title": "Cascading BUFGCTRLs",
+    "labels": 97,
+    "wires": 18,
+    "bubbles": 8,
+    "nets": [],
+    "inverters": []
+  },
+  "p17:Fig2-5": {
+    "page": 17,
+    "title": "BUFGCTRL Primitive",
+    "labels": 9,
+    "wires": 15,
+    "bubbles": 0,
+    "nets": [],
+    "inverters": []
+  },
+  "p19:Fig2-6": {
+    "page": 19,
+    "title": "BUFGCTRL Timing Diagram",
+    "labels": 19,
+    "wires": 66,
+    "bubbles": 0,
+    "nets": [
+      {
+        "net": [
+          "I0",
+          "TBCCKO_O",
+          "at"
+        ]
+      },
+      {
+        "net": [
+          "I0",
+          "TBCCKO_O"
+        ]
+      }
+    ],
+    "inverters": []
+  },
+  "p20:Fig2-7": {
+    "page": 20,
+    "title": "BUFGCE_1 as BUFGCTRL",
+    "labels": 21,
+    "wires": 19,
+    "bubbles": 0,
+    "nets": [
+      {
+        "net": [
+          "IGNORE1",
+          "VDD"
+        ],
+        "tie": [
+          "1"
+        ]
+      },
+      {
+        "net": [
+          "GND",
+          "IGNORE0"
+        ],
+        "tie": [
+          "0"
+        ]
+      },
+      {
+        "net": [
+          "CE1",
+          "GND"
+        ],
+        "tie": [
+          "0"
+        ]
+      },
+      {
+        "net": [
+          "CE",
+          "CE0"
+        ]
+      },
+      {
+        "net": [
+          "GND",
+          "S1"
+        ],
+        "tie": [
+          "0"
+        ]
+      },
+      {
+        "net": [
+          "S0",
+          "VDD"
+        ],
+        "tie": [
+          "1"
+        ]
+      },
+      {
+        "net": [
+          "I1",
+          "VDD"
+        ],
+        "tie": [
+          "1"
+        ]
+      },
+      {
+        "net": [
+          "I",
+          "I0"
+        ]
+      }
+    ],
+    "inverters": []
+  },
+  "p21:Fig2-8": {
+    "page": 21,
+    "title": "BUFGCE_1 Timing Diagram",
+    "labels": 3,
+    "wires": 27,
+    "bubbles": 0,
+    "nets": [],
+    "inverters": []
+  },
+  "p21:Fig2-9": {
+    "page": 21,
+    "title": "BUFGMUX as BUFGCTRL",
+    "labels": 19,
+    "wires": 22,
+    "bubbles": 4,
+    "nets": [
+      {
+        "net": [
+          "GND",
+          "IGNORE1"
+        ],
+        "tie": [
+          "0"
+        ]
+      },
+      {
+        "net": [
+          "GND",
+          "IGNORE0"
+        ],
+        "tie": [
+          "0"
+        ]
+      },
+      {
+        "net": [
+          "CE1",
+          "S"
+        ]
+      },
+      {
+        "net": [
+          "S1",
+          "VDD"
+        ],
+        "tie": [
+          "1"
+        ]
+      },
+      {
+        "net": [
+          "S0",
+          "VDD"
+        ],
+        "tie": [
+          "1"
+        ]
+      }
+    ],
+    "inverters": [
+      {
+        "out": [
+          "CE0"
+        ],
+        "in": [
+          "CE1",
+          "S"
+        ]
+      }
+    ]
+  },
+  "p22:Fig2-10": {
+    "page": 22,
+    "title": "BUFGMUX Timing Diagram",
+    "labels": 54,
+    "wires": 41,
+    "bubbles": 0,
+    "nets": [],
+    "inverters": []
+  },
+  "p23:Fig2-11": {
+    "page": 23,
+    "title": "BUFGMUX_1 Timing Diagram",
+    "labels": 7,
+    "wires": 29,
+    "bubbles": 0,
+    "nets": [],
+    "inverters": []
+  },
+  "p24:Fig2-12": {
+    "page": 24,
+    "title": "BUFGMUX_CTRL as BUFGCTRL",
+    "labels": 19,
+    "wires": 22,
+    "bubbles": 4,
+    "nets": [
+      {
+        "net": [
+          "GND",
+          "IGNORE1"
+        ],
+        "tie": [
+          "0"
+        ]
+      },
+      {
+        "net": [
+          "GND",
+          "IGNORE0"
+        ],
+        "tie": [
+          "0"
+        ]
+      },
+      {
+        "net": [
+          "CE1",
+          "VDD"
+        ],
+        "tie": [
+          "1"
+        ]
+      },
+      {
+        "net": [
+          "S",
+          "S1"
+        ]
+      },
+      {
+        "net": [
+          "CE0",
+          "VDD"
+        ],
+        "tie": [
+          "1"
+        ]
+      }
+    ],
+    "inverters": [
+      {
+        "out": [
+          "S0"
+        ],
+        "in": [
+          "S",
+          "S1"
+        ]
+      }
+    ]
+  },
+  "p25:Fig2-13": {
+    "page": 25,
+    "title": "BUFGMUX_CTRL Timing Diagram",
+    "labels": 7,
+    "wires": 33,
+    "bubbles": 0,
+    "nets": [],
+    "inverters": []
+  },
+  "p26:Fig2-14": {
+    "page": 26,
+    "title": "Asynchronous MUX with BUFGCTRL Design Example",
+    "labels": 22,
+    "wires": 22,
+    "bubbles": 4,
+    "nets": [
+      {
+        "net": [
+          "IGNORE1",
+          "VDD"
+        ],
+        "tie": [
+          "1"
+        ]
+      },
+      {
+        "net": [
+          "IGNORE0",
+          "VDD"
+        ],
+        "tie": [
+          "1"
+        ]
+      },
+      {
+        "net": [
+          "CE1",
+          "VDD"
+        ],
+        "tie": [
+          "1"
+        ]
+      },
+      {
+        "net": [
+          "S",
+          "S1"
+        ]
+      },
+      {
+        "net": [
+          "CE0",
+          "VDD"
+        ],
+        "tie": [
+          "1"
+        ]
+      }
+    ],
+    "inverters": [
+      {
+        "out": [
+          "S0"
+        ],
+        "in": [
+          "S",
+          "S1"
+        ]
+      }
+    ]
+  },
+  "p26:Fig2-15": {
+    "page": 26,
+    "title": "Asynchronous MUX Timing Diagram",
+    "labels": 11,
+    "wires": 37,
+    "bubbles": 0,
+    "nets": [],
+    "inverters": []
+  },
+  "p27:Fig2-16": {
+    "page": 27,
+    "title": "BUFGMUX_CTRL with a CE and BUFGCTRL",
+    "labels": 20,
+    "wires": 25,
+    "bubbles": 4,
+    "nets": [
+      {
+        "net": [
+          "GND",
+          "IGNORE1"
+        ],
+        "tie": [
+          "0"
+        ]
+      },
+      {
+        "net": [
+          "GND",
+          "IGNORE0"
+        ],
+        "tie": [
+          "0"
+        ]
+      },
+      {
+        "net": [
+          "CE",
+          "CE0",
+          "CE1",
+          "S"
+        ]
+      }
+    ],
+    "inverters": [
+      {
+        "out": [
+          "S0"
+        ],
+        "in": [
+          "S1"
+        ]
+      }
+    ]
+  },
+  "p28:Fig2-17": {
+    "page": 28,
+    "title": "BUFGMUX_CTRL with a CE Timing Diagram",
+    "labels": 14,
+    "wires": 43,
+    "bubbles": 0,
+    "nets": [
+      {
+        "net": [
+          "I0",
+          "I1",
+          "O",
+          "S",
+          "at"
+        ]
+      }
+    ],
+    "inverters": []
+  },
+  "p29:Fig2-18": {
+    "page": 29,
+    "title": "BUFGCE Buffer",
+    "labels": 2,
+    "wires": 4,
+    "bubbles": 0,
+    "nets": [
+      {
+        "net": [
+          "BUFGCE",
+          "CE"
+        ]
+      }
+    ],
+    "inverters": []
+  },
+  "p30:Fig2-19": {
+    "page": 30,
+    "title": "BUFGCE Timing Diagram",
+    "labels": 6,
+    "wires": 29,
+    "bubbles": 0,
+    "nets": [],
+    "inverters": []
+  }
+}

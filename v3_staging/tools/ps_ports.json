@@ -1,0 +1,478 @@
+{
+  "PS_SIGNALS_INTERFACES_AND_PINS": [
+    {
+      "name": "POR_OVERRIDE",
+      "dir": "in"
+    },
+    {
+      "name": "PS_DONE",
+      "dir": "out"
+    },
+    {
+      "name": "PS_ERROR_OUT",
+      "dir": "out"
+    },
+    {
+      "name": "PS_ERROR_STATUS",
+      "dir": "out"
+    },
+    {
+      "name": "PS_INIT_B",
+      "dir": "inout"
+    },
+    {
+      "name": "PS_JTAG_TCK",
+      "dir": "in"
+    },
+    {
+      "name": "PS_JTAG_TDI",
+      "dir": "in"
+    },
+    {
+      "name": "PS_JTAG_TDO",
+      "dir": "out"
+    },
+    {
+      "name": "PS_JTAG_TMS",
+      "dir": "in"
+    },
+    {
+      "name": "PS_MGTREFCLK",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "PS_MODE",
+      "dir": "in"
+    },
+    {
+      "name": "PS_PADI",
+      "dir": "in"
+    },
+    {
+      "name": "PS_PADO",
+      "dir": "out"
+    },
+    {
+      "name": "PS_POR_B",
+      "dir": "in"
+    },
+    {
+      "name": "PS_PROG_B",
+      "dir": "in"
+    },
+    {
+      "name": "PS_REF_CLK",
+      "dir": "in"
+    },
+    {
+      "name": "PS_SRST_B",
+      "dir": "in"
+    }
+  ],
+  "PS_PLATFORM_MANAGEMENT_UNIT": [
+    {
+      "name": "pmu_error_to_pl",
+      "dir": "out"
+    },
+    {
+      "name": "pmu_pl_err",
+      "dir": "in"
+    },
+    {
+      "name": "pmu_psio_gpo",
+      "dir": "out"
+    },
+    {
+      "name": "psio_pmu_gpi",
+      "dir": "in"
+    }
+  ],
+  "PS_DDR_MEMORY_CONTROLLER": [
+    {
+      "name": "PS_DDR_A",
+      "dir": "out"
+    },
+    {
+      "name": "PS_DDR_ACT_N",
+      "dir": "out"
+    },
+    {
+      "name": "PS_DDR_ALERT_N",
+      "dir": "in"
+    },
+    {
+      "name": "PS_DDR_BA",
+      "dir": "out"
+    },
+    {
+      "name": "PS_DDR_BG",
+      "dir": "out"
+    },
+    {
+      "name": "PS_DDR_CK",
+      "dir": "out"
+    },
+    {
+      "name": "PS_DDR_CKE",
+      "dir": "out"
+    },
+    {
+      "name": "PS_DDR_CK_N",
+      "dir": "out"
+    },
+    {
+      "name": "PS_DDR_CS",
+      "dir": "out"
+    },
+    {
+      "name": "PS_DDR_DM",
+      "dir": "out"
+    },
+    {
+      "name": "PS_DDR_DQ",
+      "dir": "inout"
+    },
+    {
+      "name": "PS_DDR_DQS_N",
+      "dir": "inout"
+    },
+    {
+      "name": "PS_DDR_DQS_P",
+      "dir": "inout"
+    },
+    {
+      "name": "PS_DDR_ODT",
+      "dir": "out"
+    },
+    {
+      "name": "PS_DDR_PARITY",
+      "dir": "out"
+    },
+    {
+      "name": "PS_DDR_RAM_RST_N",
+      "dir": "out"
+    },
+    {
+      "name": "PS_DDR_ZQ",
+      "dir": "inout"
+    }
+  ],
+  "PS_DISPLAYPORT_CONTROLLER": [
+    {
+      "name": "dp_live_gfx_alpha_in",
+      "dir": "in",
+      "width": 8
+    },
+    {
+      "name": "dp_live_gfx_pixel1_in",
+      "dir": "in",
+      "width": 36
+    },
+    {
+      "name": "dp_live_video_de_in",
+      "dir": "in"
+    },
+    {
+      "name": "dp_live_video_hsync_in",
+      "dir": "in"
+    },
+    {
+      "name": "dp_live_video_in_clk",
+      "dir": "in"
+    },
+    {
+      "name": "dp_live_video_pixel1_in",
+      "dir": "in",
+      "width": 36
+    },
+    {
+      "name": "dp_live_video_vsync_in",
+      "dir": "in"
+    },
+    {
+      "name": "dp_m_axis_mixed_audio_tdata_out",
+      "dir": "out",
+      "width": 32
+    },
+    {
+      "name": "dp_m_axis_mixed_audio_tid_out",
+      "dir": "out"
+    },
+    {
+      "name": "dp_m_axis_mixed_audio_tvalid_out",
+      "dir": "out"
+    },
+    {
+      "name": "dp_s_axis_live_audio_aclk",
+      "dir": "in"
+    },
+    {
+      "name": "dp_s_axis_live_audio_tdata_in",
+      "dir": "in",
+      "width": 32
+    },
+    {
+      "name": "dp_s_axis_live_audio_tid_in",
+      "dir": "in"
+    },
+    {
+      "name": "dp_s_axis_live_audio_tready_in",
+      "dir": "out"
+    },
+    {
+      "name": "dp_s_axis_live_audio_tvalid_in",
+      "dir": "in"
+    },
+    {
+      "name": "dp_video_hsync_out",
+      "dir": "out"
+    },
+    {
+      "name": "dp_video_pixel1_out",
+      "dir": "out",
+      "width": 36
+    },
+    {
+      "name": "dp_video_vid_de_out",
+      "dir": "out"
+    },
+    {
+      "name": "dp_video_vsync_out",
+      "dir": "out"
+    }
+  ],
+  "PS_GEM_ETHERNET": [
+    {
+      "name": "dma_tx_end_tog",
+      "dir": "out"
+    },
+    {
+      "name": "dma_tx_status_tog",
+      "dir": "in"
+    },
+    {
+      "name": "rx_w_data",
+      "dir": "out",
+      "width": 32
+    },
+    {
+      "name": "rx_w_eop",
+      "dir": "out"
+    },
+    {
+      "name": "rx_w_err",
+      "dir": "out"
+    },
+    {
+      "name": "rx_w_flush",
+      "dir": "out"
+    },
+    {
+      "name": "rx_w_overflow",
+      "dir": "in"
+    },
+    {
+      "name": "rx_w_sop",
+      "dir": "out"
+    },
+    {
+      "name": "rx_w_status",
+      "dir": "out",
+      "width": 45
+    },
+    {
+      "name": "rx_w_wr",
+      "dir": "out"
+    },
+    {
+      "name": "tx_r_status",
+      "dir": "out",
+      "width": 4
+    }
+  ],
+  "PS_PL_AXI_INTERFACES": [
+    {
+      "name": "M_AXI_HPM0",
+      "dir": "master",
+      "kind": "axi4_interface"
+    },
+    {
+      "name": "M_AXI_HPM0_FPD",
+      "dir": "master",
+      "kind": "axi4_interface"
+    },
+    {
+      "name": "M_AXI_HPM0_LPD",
+      "dir": "master",
+      "kind": "axi4_interface"
+    },
+    {
+      "name": "M_AXI_HPM1_FPD",
+      "dir": "master",
+      "kind": "axi4_interface"
+    },
+    {
+      "name": "S_AXI_ACE_FPD",
+      "dir": "slave",
+      "kind": "axi4_interface"
+    },
+    {
+      "name": "S_AXI_ACP_FPD",
+      "dir": "slave",
+      "kind": "axi4_interface"
+    },
+    {
+      "name": "S_AXI_HP0_FPD",
+      "dir": "slave",
+      "kind": "axi4_interface"
+    },
+    {
+      "name": "S_AXI_HP1_FPD",
+      "dir": "slave",
+      "kind": "axi4_interface"
+    },
+    {
+      "name": "S_AXI_HP2_FPD",
+      "dir": "slave",
+      "kind": "axi4_interface"
+    },
+    {
+      "name": "S_AXI_HP3_FPD",
+      "dir": "slave",
+      "kind": "axi4_interface"
+    },
+    {
+      "name": "S_AXI_HPC0_FPD",
+      "dir": "slave",
+      "kind": "axi4_interface"
+    },
+    {
+      "name": "S_AXI_HPC1_FPD",
+      "dir": "slave",
+      "kind": "axi4_interface"
+    },
+    {
+      "name": "S_AXI_HPM0_LPD",
+      "dir": "slave",
+      "kind": "axi4_interface"
+    },
+    {
+      "name": "S_AXI_LPD",
+      "dir": "slave",
+      "kind": "axi4_interface"
+    }
+  ],
+  "PS_POWER_SUPPLY": [
+    {
+      "name": "GND",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "PS_MGTRAVCC",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "PS_MGTRAVTT",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCCADC",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCCAUX",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCCBRAM",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCCINT",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCCO_PSDDR",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCCO_PSIO",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCCO_PSIO0",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCCO_PSIO1",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCCO_PSIO2",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCCO_PSIO3",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCC_PSADC",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCC_PSAUX",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCC_PSBATT",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCC_PSDDR",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCC_PSINTFP",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCC_PSINTLP",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCC_PSIO0",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCC_PSIO3",
+      "dir": "supply",
+      "kind": "power"
+    },
+    {
+      "name": "VCC_PSPLL",
+      "dir": "supply",
+      "kind": "power"
+    }
+  ]
+}

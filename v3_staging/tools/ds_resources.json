@@ -1,0 +1,27 @@
+{
+  "ZU19EG": {
+    "System Logic Cells": "1,143,450",
+    "CLB Flip-Flops": "1,045,440",
+    "CLB LUTs": "522,720",
+    "Distributed RAM (Mb)": "9.8",
+    "Block RAM Blocks": "984",
+    "Block RAM (Mb)": "34.6",
+    "UltraRAM Blocks": "128",
+    "UltraRAM (Mb)": "36.0",
+    "DSP Slices": "1,968",
+    "CMTs": "11",
+    "Max. HP I/O(1)": "572",
+    "Max. HD I/O(2)": "96",
+    "System Monitor": "2",
+    "GTH Transceiver 16.3Gb/s(3)": "44",
+    "GTY Transceivers 32.75Gb/s": "28",
+    "Transceiver Fractional PLLs": "36",
+    "PCIe Gen3 x16": "5",
+    "150G Interlaken": "4",
+    "100G Ethernet w/ RS-FEC": "4",
+    "FFVB1517": "72, 572 16, 0",
+    "FFVC1760": "96, 416 32, 16",
+    "FFVD1760": "48, 260 44, 28",
+    "FFVE1924": "96, 572 44, 0"
+  }
+}

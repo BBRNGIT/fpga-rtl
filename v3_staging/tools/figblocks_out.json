@@ -83,6 +83,17 @@
       },
       {
         "blocks": [
+          "CCI 2-way 2-way Coherency And Bypass QVN",
+          "DDR Memory Controller",
+          "LPD Main To all output Switch ports",
+          "SMMU TCU",
+          "TBU1",
+          "TBU2"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
           "SMMU TCU",
           "TBU2"
         ],
@@ -124,16 +135,6 @@
           "SMMU TCU",
           "TBU1",
           "TBU3"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "CCI 2-way 2-way Coherency And Bypass QVN",
-          "DDR Memory Controller",
-          "LPD Main To all output Switch ports",
-          "SMMU TCU",
-          "TBU1"
         ],
         "signals": []
       },
@@ -1942,6 +1943,1767 @@
       }
     ]
   },
+  "p204:Fig9-4": {
+    "page": 204,
+    "title": "Alarm Signal Routing",
+    "blocks": [
+      "APU GIC",
+      "CONFIG_REG registers",
+      "CSU",
+      "ERROR_STATUS_1",
+      "GIC Proxy",
+      "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+      "PL Outputs",
+      "PL SYSMON",
+      "PMU Global",
+      "PS SYSMON",
+      "RPU GIC",
+      "TAMPER_STATUS"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "APU GIC",
+          "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+          "PMU Global"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CONFIG_REG registers",
+          "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+          "PS SYSMON"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CONFIG_REG registers",
+          "PS SYSMON"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CONFIG_REG registers",
+          "CSU",
+          "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+          "PMU Global",
+          "PS SYSMON"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CSU",
+          "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+          "PS SYSMON"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+          "PL SYSMON"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+          "PL SYSMON"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+          "PL SYSMON"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p205:Fig9-5": {
+    "page": 205,
+    "title": "Controller Interrupts",
+    "blocks": [
+      "AMS Register Set ISR_1",
+      "ERROR_STATUS_1",
+      "PL Outputs",
+      "PL SYSMON",
+      "PMU Global",
+      "PS SYSMON"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "AMS Register Set ISR_1",
+          "PL Outputs"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "PL Outputs",
+          "PL SYSMON"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "AMS Register Set ISR_1",
+          "PL Outputs",
+          "PL SYSMON",
+          "PMU Global"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "AMS Register Set ISR_1",
+          "PMU Global",
+          "PS SYSMON"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "AMS Register Set ISR_1",
+          "PMU Global",
+          "PS SYSMON"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p217:Fig9-6": {
+    "page": 217,
+    "title": "Register Access Paths",
+    "blocks": [
+      "AMS Register Set",
+      "APB to DRP",
+      "AXI Bus Masters",
+      "AXI/APB Interconnect",
+      "JTAG to DRP",
+      "PL Fabric",
+      "PL JTAG TAP Controller",
+      "PLSYSMON Register Set",
+      "PS JTAG DAP Controller",
+      "PSSYSMON Register Set",
+      "to DRP"
+    ],
+    "connections": []
+  },
+  "p226:Fig10-1": {
+    "page": 226,
+    "title": "Global System Address Map",
+    "blocks": [
+      "DDR Memory Controller",
+      "GB DDR Memory Controller",
+      "GB M_AXI_HPM0_FPD",
+      "GB M_AXI_HPM1_FPD",
+      "GB PCIe",
+      "GB PCIe High",
+      "Lower PCIe MB",
+      "MB CSU, PMU, TCM, OCM",
+      "MB CoreSight STMs",
+      "MB FPD Slaves",
+      "MB LPD Slaves",
+      "MB LPD Slaves, CoreSight Ext.",
+      "MB M_AXI_HPM0_LPD MB",
+      "MB M_AXI_HPM1_FPD",
+      "MB RPU LL port",
+      "MB reserved",
+      "M_AXI_HPM0_FPD MB",
+      "M_AXI_HPM1_FPD GB",
+      "Quad-SPI MB",
+      "VCU Slave Interface MB",
+      "reserved GB"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "MB CSU, PMU, TCM, OCM",
+          "reserved GB",
+          "reserved GB"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "GB DDR Memory Controller",
+          "GB M_AXI_HPM0_FPD",
+          "reserved GB"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "MB M_AXI_HPM1_FPD",
+          "Quad-SPI MB"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "GB M_AXI_HPM0_FPD",
+          "GB M_AXI_HPM1_FPD",
+          "GB PCIe High",
+          "reserved GB"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "DDR Memory Controller",
+          "MB M_AXI_HPM0_LPD MB",
+          "VCU Slave Interface MB"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "DDR Memory Controller",
+          "MB M_AXI_HPM0_LPD MB"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p239:Fig11-1": {
+    "page": 239,
+    "title": "Image Search Flowchart",
+    "blocks": [
+      "From the given offset, read the boot header from 0x0 0x48 to",
+      "Increment the MultiBoot offset by",
+      "No",
+      "Yes"
+    ],
+    "connections": []
+  },
+  "p254:Fig11-3": {
+    "page": 254,
+    "title": "CSU DMA Transfer",
+    "blocks": [
+      "csudma.csudma_dst_size[size] <size of destination buffer>",
+      "csudma.csudma_src_size[size] <size of source buffer>"
+    ],
+    "connections": []
+  },
+  "p257:Fig12-1": {
+    "page": 257,
+    "title": "Configuration Security Unit Block Diagram",
+    "blocks": [
+      "AES- GCM",
+      "CSU DMA",
+      "CSU Local Registers",
+      "CSU PMU Switch",
+      "CSU ROM Validation",
+      "CSU Registers",
+      "ECC",
+      "INTC CSU Triple Redundant MicroBlaze",
+      "Key Management",
+      "PCAP",
+      "PUF",
+      "RAM KB)",
+      "ROM KB)",
+      "RSA Multiplier",
+      "SHA-3",
+      "Secure Stream Switch"
+    ],
+    "connections": []
+  },
+  "p263:Fig12-2": {
+    "page": 263,
+    "title": "Key Selection",
+    "blocks": [
+      "AES Key Source Register Selectable",
+      "AES-GCM",
+      "BBRAM",
+      "Boot",
+      "CSU ROM Valid",
+      "CSU Secure Boot",
+      "Device Key",
+      "Family",
+      "Key Update",
+      "Lock",
+      "Operation",
+      "PUF",
+      "ROM Controlled",
+      "eFUSE"
+    ],
+    "connections": []
+  },
+  "p264:Fig12-3": {
+    "page": 264,
+    "title": "BBRAM Programming Interface",
+    "blocks": [
+      "288-bit BBRAM",
+      "APB 256-bit BBRAM Key to CSU",
+      "BBRAM Control",
+      "addr",
+      "ws"
+    ],
+    "connections": []
+  },
+  "p266:Fig12-4": {
+    "page": 266,
+    "title": "Obfuscated Key",
+    "blocks": [
+      "AES-GCM AES-GCM",
+      "AES-GCM Encrypted Image Encrypted Image User Image AES-GCM",
+      "Boot Media (SD or Quad-SPI)",
+      "Family Key",
+      "Obfuscated Key",
+      "Obfuscated Key Load",
+      "Secret Red Key",
+      "Unencrypted Image",
+      "Zynq UltraScale+ MPSoC"
+    ],
+    "connections": []
+  },
+  "p268:Fig12-5": {
+    "page": 268,
+    "title": "Black Key Storage",
+    "blocks": [
+      "AES-GCM",
+      "Encrypted \u201cBlack\u201d Key Device Unique",
+      "FPGA/SoC Unencrypted Bitstream/ FSBL AES-GCM",
+      "Key Decoder",
+      "Key Encoder",
+      "PROM",
+      "PUF Device Unique",
+      "Secret \u201cRed\u201d Key",
+      "Secret \u201cRed\u201d Key during config Only"
+    ],
+    "connections": []
+  },
+  "p270:Fig12-6": {
+    "page": 270,
+    "title": "Block Diagram of PUF Connection in CSU",
+    "blocks": [
+      "AES",
+      "CSU CSU eFUSE AXIM APB APB PUF syndrome data dev_key_sel Key",
+      "CSU MicroBlaze",
+      "CSU Private Registers",
+      "CSU Registers",
+      "PUF",
+      "eFUSE"
+    ],
+    "connections": []
+  },
+  "p273:Fig12-7": {
+    "page": 273,
+    "title": "JTAG Interface Protections",
+    "blocks": [
+      "Enable BSCAN Device Held in Reset",
+      "Failed Boot Non-Secure",
+      "Failed Secure Boot Secure Lockdown",
+      "IDCODE, BYPASS, PS_ERROR_STATUS, JTAG_STATUS, HIGHZ_IO",
+      "IDCODE, BYPASS, STATUS EXTEST PRELOAD/SAMPLE",
+      "JTAG Boot Full JTAG Access",
+      "JTAG Enabled",
+      "JTAG not Enabled",
+      "PS RESET (PORB",
+      "PS in Boot",
+      "SOFT RESET",
+      "Secure BSCAN Mode",
+      "Secure Lockdown",
+      "Successful Boot Non-Secure",
+      "Successful Secure Boot",
+      "Yes"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "PS in Boot",
+          "SOFT RESET"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "PS in Boot",
+          "Secure BSCAN Mode"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p287:Fig12-8": {
+    "page": 287,
+    "title": "High-Level Boot Flow",
+    "blocks": [
+      "Load FSBL and FW1 PMU",
+      "Power Monitoring",
+      "Release CSU",
+      "Release PMU",
+      "Tamper Monitoring"
+    ],
+    "connections": []
+  },
+  "p291:Fig12-10": {
+    "page": 291,
+    "title": "Top-level Hardware Root of the Trust Boot Flow",
+    "blocks": [
+      "Authenticate SPK and authentication header",
+      "Authenticate boot header, FSBL, and PMUFW1",
+      "Calculate the hash of PPK",
+      "Load public key from flash into OCM",
+      "Lockdown",
+      "Optional: decrypt PMUFW1 FSBL and",
+      "Read SPK ID from authentication header",
+      "Read authentication header determine which PPK to use",
+      "Release control to user"
+    ],
+    "connections": []
+  },
+  "p293:Fig12-11": {
+    "page": 293,
+    "title": "Hardware Root of Trust Secure Boot Example",
+    "blocks": [
+      "APU",
+      "CRAM",
+      "CSU",
+      "CSU RAM",
+      "DDR",
+      "OCM",
+      "On-chip Memories",
+      "PL",
+      "PMU",
+      "PMU RAM",
+      "RPU"
+    ],
+    "connections": []
+  },
+  "p295:Fig12-12": {
+    "page": 295,
+    "title": "Key Rolling",
+    "blocks": [
+      "Block IV",
+      "Block IV from boot header",
+      "Block Key",
+      "Device Key",
+      "Dummy IV",
+      "Dummy Key",
+      "ENC Block IV",
+      "ENC Block Key",
+      "ENC Dummy IV",
+      "ENC Dummy Key",
+      "Encrypted FSBL Block",
+      "Encrypted PFW Block",
+      "Encrypted Secure Header",
+      "FSBL Block",
+      "GCM Tag0",
+      "GCM Tag1",
+      "GCM TagN",
+      "Optional Key",
+      "PFW (Optional) FSBL",
+      "PFW Block",
+      "Secure Header Tag",
+      "Use Device Key",
+      "Use OP Key",
+      "Yes"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Use OP Key",
+          "Yes"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Use OP Key",
+          "Yes"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Use Device Key",
+          "Use OP Key"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Block IV",
+          "Block Key"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Block IV",
+          "Block Key"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Block IV",
+          "Block Key"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Block IV",
+          "Block Key"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p297:Fig12-13": {
+    "page": 297,
+    "title": "PPK Revocation",
+    "blocks": [
+      "CSU ROM updates multi-boot register and initiates reset",
+      "DesignPPK0 operational Boot successful?",
+      "Device boots with designPPK1",
+      "Golden designPPK0 operational",
+      "Remote update: download designPPK1",
+      "initiate DesignPPK0 SW reset",
+      "is DesignPPK1 operational",
+      "no",
+      "revokes DesignPPK1 PPK0",
+      "update DesignPPK0 multi-boot register",
+      "updates DesignPPK1 golden Image (if needed)",
+      "yes"
+    ],
+    "connections": []
+  },
+  "p299:Fig12-14": {
+    "page": 299,
+    "title": "SPK Revocation",
+    "blocks": [
+      "CSU ROM updates multi-boot register and initiates reset",
+      "DesignPPK0 operational Boot successful?",
+      "Device boots with designSPK1",
+      "Potential hang",
+      "Remote update: download designSPK1",
+      "changes DesignSPK0 SPK ID",
+      "initiate DesignSPK0 SW reset",
+      "is DesignSPK1 operational",
+      "no",
+      "readback DesignSPK0 SPK ID and verify",
+      "update DesignSPK0 multi-boot register",
+      "verify DesignSPK0 remote update",
+      "yes"
+    ],
+    "connections": []
+  },
+  "p301:Fig12-15": {
+    "page": 301,
+    "title": "Encrypt Only Secure Boot Example",
+    "blocks": [
+      "APU",
+      "CRAM",
+      "CSU",
+      "CSU RAM",
+      "DDR",
+      "OCM",
+      "On-chip Memories",
+      "PL",
+      "PMU",
+      "PMU RAM",
+      "RPU"
+    ],
+    "connections": []
+  },
+  "p303:Fig12-16": {
+    "page": 303,
+    "title": "Secure Boot Image",
+    "blocks": [
+      "AC Header",
+      "BH Signature",
+      "Boot Header 0x000-0xEC0",
+      "BootLoader (FSBL and PMUFW (opt))",
+      "BootLoader BootLoader AC AC",
+      "Header AC BootLoader AC Partition AC Partition AC",
+      "Header Header AC AC",
+      "Image Header Table",
+      "Image Headers (IH1-Ihn)",
+      "PPK",
+      "Partition",
+      "Partition AC",
+      "Partition Header",
+      "Partition Signature",
+      "Partition(n)",
+      "Partition(n) AC",
+      "SPK IDBootLoader",
+      "SPK IDHeader",
+      "SPK IDPartition(n)",
+      "SPK IDPartition1",
+      "SPK Signature",
+      "SPKBootLoader",
+      "SPKHeader",
+      "SPKPartition(n)",
+      "SPKPartition1",
+      "User Defined Field"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "BH Signature",
+          "BH Signature",
+          "BH Signature",
+          "BH Signature",
+          "Boot Header 0x000-0xEC0",
+          "Header AC BootLoader AC Partition AC Partition AC",
+          "Partition Signature",
+          "Partition Signature",
+          "Partition Signature",
+          "Partition Signature",
+          "SPK Signature",
+          "SPK Signature",
+          "SPK Signature",
+          "SPK Signature"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "AC Header",
+          "AC Header",
+          "AC Header",
+          "BH Signature",
+          "BH Signature",
+          "BH Signature",
+          "Boot Header 0x000-0xEC0",
+          "BootLoader (FSBL and PMUFW (opt))",
+          "BootLoader BootLoader AC AC",
+          "Header AC BootLoader AC Partition AC Partition AC",
+          "Header Header AC AC",
+          "Image Header Table",
+          "Image Headers (IH1-Ihn)",
+          "PPK",
+          "PPK",
+          "PPK",
+          "Partition",
+          "Partition AC",
+          "Partition Header",
+          "Partition Header",
+          "Partition Signature",
+          "Partition Signature",
+          "Partition Signature",
+          "SPK IDBootLoader",
+          "SPK IDHeader",
+          "SPK IDPartition1",
+          "SPK Signature",
+          "SPK Signature",
+          "SPK Signature",
+          "SPKBootLoader",
+          "SPKHeader",
+          "SPKPartition1",
+          "User Defined Field",
+          "User Defined Field",
+          "User Defined Field"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "AC Header",
+          "BH Signature",
+          "Header AC BootLoader AC Partition AC Partition AC",
+          "PPK",
+          "Partition Signature",
+          "Partition(n)",
+          "Partition(n) AC",
+          "SPK IDPartition(n)",
+          "SPK Signature",
+          "SPKPartition(n)",
+          "User Defined Field"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p305:Fig12-17": {
+    "page": 305,
+    "title": "OP Key",
+    "blocks": [
+      "Block0 CT",
+      "Block0 IV",
+      "Block0 PT",
+      "Block1 CT",
+      "Block1 IV",
+      "Block1 Key",
+      "DEC DEC DEC PT PlainText CT \u2013CipherText",
+      "Device Key",
+      "Encrypted Secure Header",
+      "OP Key"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Block1 IV",
+          "Block1 Key"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p313:Fig13-1": {
+    "page": 313,
+    "title": "GIC Interrupts Block Diagram",
+    "blocks": [
+      "APU Cortex-A53 MPCore",
+      "CPU0",
+      "CPU1",
+      "CPUn",
+      "Distributor",
+      "GIC (PL390)",
+      "GIC-400",
+      "Interrupt Source Blocks VCU, GPU, DisplayPort)",
+      "MSI",
+      "PCIe",
+      "Top Level IPI",
+      "VCPU0",
+      "VCPUn CPU0",
+      "nViRQ/nVFIQ",
+      "niRQ0/nFIQ0",
+      "niRQ1/nFIQ1"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "APU Cortex-A53 MPCore",
+          "CPU0",
+          "VCPU0"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "APU Cortex-A53 MPCore",
+          "CPU0",
+          "GIC-400",
+          "VCPU0"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "APU Cortex-A53 MPCore",
+          "GIC-400",
+          "VCPUn CPU0"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "APU Cortex-A53 MPCore",
+          "VCPUn CPU0"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Distributor",
+          "GIC-400"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p314:Fig13-2": {
+    "page": 314,
+    "title": "RPU Interrupt Controller Block Diagram",
+    "blocks": [
+      "(ICD) Distributor Controller Interrupt",
+      "Distributor CPU",
+      "Distributor SGI",
+      "IOP",
+      "Shared Peripheral Interrupts (SPI)"
+    ],
+    "connections": []
+  },
+  "p319:Fig13-3": {
+    "page": 319,
+    "title": "APU with Interrupt Virtualization Block Diagram",
+    "blocks": [
+      "CPU Interface",
+      "Distributor",
+      "EnableGrp0",
+      "EnableGrp1",
+      "FIQ",
+      "FIQEn==1",
+      "GIC",
+      "GICD_IGROUP",
+      "Group Interrupt",
+      "Group Virtual Interrupt",
+      "Guest OS Guest OS Guest OS",
+      "Hardware Interrupt",
+      "Hypervisor",
+      "IRQ",
+      "IRQ Assignment",
+      "List Registers",
+      "MPSoC",
+      "Maintenance Interrupt",
+      "Non-secure",
+      "Processor",
+      "Register Updates",
+      "Secure Monitor Secure Software",
+      "System Software",
+      "Virtual CPU Interface",
+      "Virtual Distributor",
+      "vFIQ",
+      "vIRQ"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "CPU Interface",
+          "Distributor"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "FIQEn==1",
+          "GIC",
+          "System Software",
+          "Virtual CPU Interface"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "EnableGrp1",
+          "Processor"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "FIQEn==1",
+          "Secure Monitor Secure Software"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "EnableGrp1",
+          "System Software",
+          "Virtual CPU Interface"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Group Virtual Interrupt",
+          "Virtual Distributor"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p324:Fig13-5": {
+    "page": 324,
+    "title": "IPI Interrupt Channel Architecture",
+    "blocks": [
+      "APU Channel0 MPCore",
+      "All, Channel0 GIC",
+      "All, Channel1 GIC",
+      "All, Channel10 GIC",
+      "All, Channel2 GIC",
+      "All, Channel7 GIC",
+      "All, Channel8 GIC",
+      "All, Channel9 GIC",
+      "Channel0 Channel0",
+      "Channel1 Channel1",
+      "Channel1 RPU0",
+      "Channel10 Channel10",
+      "Channel10 PL",
+      "Channel2 Channel2",
+      "Channel2 RPU1",
+      "Channel7 Channel7",
+      "Channel7 PL",
+      "Channel8 Channel8",
+      "Channel8 PL",
+      "Channel9 Channel9",
+      "Channel9 PL",
+      "PMU PMU_0",
+      "PMU PMU_0 only, IPI0",
+      "PMU PMU_1",
+      "PMU PMU_1 only, IPI1",
+      "PMU PMU_2",
+      "PMU PMU_2 only, IPI2",
+      "PMU PMU_3",
+      "PMU PMU_3 only, IPI3",
+      "PMU_0 PMU_0",
+      "PMU_1 PMU_1",
+      "PMU_2 PMU_2",
+      "PMU_3 PMU_3"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Channel0 Channel0",
+          "Channel0 Channel0"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Channel1 Channel1",
+          "Channel1 Channel1"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p325:Fig13-6": {
+    "page": 325,
+    "title": "IPI Message Passing Architecture",
+    "blocks": [
+      "Request",
+      "Response"
+    ],
+    "connections": []
+  },
+  "p336:Fig14-1": {
+    "page": 336,
+    "title": "Timers System Block Diagram",
+    "blocks": [
+      "APU MPcore Global Timer Counter",
+      "CPU Private Timer",
+      "CSU_SWDT",
+      "FPD_SWDT",
+      "LPD_SWDT",
+      "MIO and EMIO x2 x4 x4",
+      "PPI CPU Private Interrupts",
+      "RPU core0 RPU core1",
+      "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL",
+      "System Triple Timer Counter"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "CPU Private Timer",
+          "PPI CPU Private Interrupts"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "APU MPcore Global Timer Counter",
+          "PPI CPU Private Interrupts"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "FPD_SWDT",
+          "MIO and EMIO x2 x4 x4"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "FPD_SWDT",
+          "MIO and EMIO x2 x4 x4",
+          "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CSU_SWDT",
+          "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "LPD_SWDT",
+          "MIO and EMIO x2 x4 x4",
+          "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "MIO and EMIO x2 x4 x4",
+          "System Triple Timer Counter"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL",
+          "System Triple Timer Counter"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p343:Fig14-2": {
+    "page": 343,
+    "title": "TTC Block Diagram",
+    "blocks": [
+      "32-bit Counter",
+      "Event Timer",
+      "Interrupt",
+      "Pre-scaler",
+      "Status and Control Registers",
+      "Timer/Clock Timer/Clock Timer/Clock"
+    ],
+    "connections": []
+  },
+  "p351:Fig14-3": {
+    "page": 351,
+    "title": "SWDT Block Diagram",
+    "blocks": [
+      "24-bit Counter",
+      "CLKSEL Zero CRV Restart Clock",
+      "IRQ Registers and Control Logic Reset Out",
+      "Pre-scaler"
+    ],
+    "connections": []
+  },
+  "p360:Fig14-4": {
+    "page": 360,
+    "title": "Watchdog Timer Flowchart",
+    "blocks": [
+      "Perform self test. Refer to watchdog timer self-test.",
+      "Restart the watchdog timer. Refer to watchdog timer restart.",
+      "Start watchdog timer device. Refer to watchdog timer start.",
+      "Stop watchdog timer. Refer to watchdog timer stop."
+    ],
+    "connections": []
+  },
+  "p361:Fig14-5": {
+    "page": 361,
+    "title": "Watchdog Timer Timeout Test",
+    "blocks": [
+      "Disable interrupts",
+      "Restart watchdog timer. Refer to watchdog timer restart."
+    ],
+    "connections": []
+  },
+  "p362:Fig14-6": {
+    "page": 362,
+    "title": "Watchdog Timer Polled Mode Flowchart",
+    "blocks": [
+      "Restart timer. Refer to watchdog timer restart.",
+      "Restart watchdog timer. Refer to watchdog timer restart."
+    ],
+    "connections": []
+  },
+  "p366:Fig15-1": {
+    "page": 366,
+    "title": "PS Interconnect",
+    "blocks": [
+      "100Gb",
+      "2-way Cache Coherent Master",
+      "APU ACP MPCore",
+      "BRAM (slave)",
+      "CAN x2",
+      "CCI 2-way 2-way Coherency And Bypass QVN",
+      "CSU Processor",
+      "Coherent Master",
+      "CoreSight",
+      "DAP Controller",
+      "DDR Memory Controller",
+      "DMA FPD",
+      "DisplayPort",
+      "FPD SLCRs",
+      "FPD configs",
+      "GEM x4",
+      "GPIO x78, x96",
+      "GPU PPs",
+      "GPU cfg",
+      "IPI",
+      "Inbound IOP",
+      "Inbound LPD",
+      "LPD DMA",
+      "LPD Main To all output Switch ports",
+      "LPD SLCRs",
+      "LPD SWDT",
+      "NAND",
+      "Non-Coherent Master",
+      "OCM Memory",
+      "OCM Switch",
+      "Outbound IOP",
+      "Outbound LPD",
+      "Outbound SIOU",
+      "PCIe",
+      "PL SysMon",
+      "PMU Processor",
+      "PS SysMon",
+      "Quad-SPI",
+      "RF",
+      "RPU",
+      "RPU GIC",
+      "RPU Switch",
+      "RTC",
+      "SATA",
+      "SDIO x2",
+      "SMMU TCU",
+      "SPI x2",
+      "TBU0",
+      "TBU1",
+      "TBU2",
+      "TBU3",
+      "TBU4",
+      "TBU5",
+      "TBUx",
+      "TCMs",
+      "TTC x4",
+      "UART x2",
+      "USB0 w/DMA",
+      "USB1 w/DMA",
+      "VCU",
+      "eFUSE",
+      "x2"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "RPU",
+          "RPU GIC"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TBU0",
+          "TBU1"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "FPD SLCRs",
+          "FPD configs",
+          "GPU cfg",
+          "PCIe",
+          "SATA"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Outbound SIOU",
+          "PCIe"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Outbound SIOU",
+          "SATA"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CCI 2-way 2-way Coherency And Bypass QVN",
+          "DDR Memory Controller",
+          "LPD Main To all output Switch ports",
+          "SMMU TCU",
+          "TBU1",
+          "TBU2"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Outbound SIOU",
+          "TBU1"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "SMMU TCU",
+          "TBU1",
+          "TBU3"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TBU4",
+          "TBU5"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TBU3",
+          "TBU4"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "SMMU TCU",
+          "TBU2"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RPU",
+          "TCMs"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "LPD DMA",
+          "Outbound LPD"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Outbound LPD",
+          "USB0 w/DMA"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Outbound LPD",
+          "USB1 w/DMA"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "GPU PPs",
+          "Outbound SIOU"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Inbound LPD",
+          "LPD Main To all output Switch ports"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "LPD Main To all output Switch ports",
+          "Outbound IOP"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "LPD Main To all output Switch ports",
+          "Outbound LPD"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "OCM Memory",
+          "OCM Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "LPD Main To all output Switch ports",
+          "OCM Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "OCM Switch",
+          "RPU Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "OCM Switch",
+          "RPU Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RPU",
+          "RPU Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RPU",
+          "RPU Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "LPD Main To all output Switch ports",
+          "RPU Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "DDR Memory Controller",
+          "LPD Main To all output Switch ports"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p370:Fig15-2": {
+    "page": 370,
+    "title": "AXI Timeout Block Architecture",
+    "blocks": [
+      "AXI Master",
+      "AXI Slave",
+      "AXI Timeout Block SLVERR if Timed Out SLVERR if Timed Out"
+    ],
+    "connections": []
+  },
+  "p378:Fig15-3": {
+    "page": 378,
+    "title": "Low Latency and Best Effort Paths through the CCI-",
+    "blocks": [
+      "BE Traffic",
+      "CCI Cache Coherent Interface",
+      "LL Traffic",
+      "Main AXI Switch",
+      "Port Port DDR Controller"
+    ],
+    "connections": []
+  },
+  "p380:Fig15-4": {
+    "page": 380,
+    "title": "End-to-End Path with QVN Enabled",
+    "blocks": [
+      "AXI Port Key",
+      "AXI Port Read Port Arbiter Interface (XPI) AXI Read Ports",
+      "AXI to DRAM cmd Conversion",
+      "BE Traffic",
+      "CAM Scheduler DDRC Req Req",
+      "CCI-400",
+      "DDR PHY",
+      "DRAM",
+      "High Priority Read CAM (HPR)",
+      "LL Traffic",
+      "Low Priority Read CAM (LPR)",
+      "QoS Controller",
+      "and CCI-400",
+      "cnt Up BE Credit Counter cnt Down",
+      "cnt Up LL Credit Counter cnt Down"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "cnt Up BE Credit Counter cnt Down",
+          "cnt Up LL Credit Counter cnt Down"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "cnt Up BE Credit Counter cnt Down",
+          "cnt Up LL Credit Counter cnt Down"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CCI-400",
+          "QoS Controller"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CCI-400",
+          "QoS Controller"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CCI-400",
+          "QoS Controller"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CCI-400",
+          "QoS Controller"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "AXI Port Read Port Arbiter Interface (XPI) AXI Read Ports",
+          "CCI-400"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "AXI Port Read Port Arbiter Interface (XPI) AXI Read Ports",
+          "CCI-400"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "AXI Port Read Port Arbiter Interface (XPI) AXI Read Ports",
+          "CAM Scheduler DDRC Req Req"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p385:Fig16-1": {
+    "page": 385,
+    "title": "System Protection Units",
+    "blocks": [
+      "100Gb",
+      "2-way Cache Coherent Master",
+      "APU ACP MPCore",
+      "BRAM (slave)",
+      "CAN x2",
+      "CCI 2-way 2-way Coherency And Bypass QVN",
+      "CSU Processor",
+      "Coherent Master",
+      "CoreSight",
+      "DAP Controller",
+      "DDR Memory Controller",
+      "DMA FPD",
+      "DisplayPort",
+      "FPD SLCRs",
+      "FPD configs",
+      "GEM x4",
+      "GPIO x78, x96",
+      "GPU PPs",
+      "GPU cfg",
+      "IPI",
+      "Inbound IOP",
+      "Inbound LPD",
+      "LPD DMA",
+      "LPD Main To all output Switch ports",
+      "LPD SLCRs",
+      "LPD SWDT",
+      "NAND",
+      "Non-Coherent Master",
+      "OCM Memory",
+      "OCM Switch",
+      "Outbound IOP",
+      "Outbound LPD",
+      "Outbound SIOU",
+      "PCIe",
+      "PL SysMon",
+      "PMU Processor",
+      "PS SysMon",
+      "Quad-SPI",
+      "RF",
+      "RPU",
+      "RPU GIC",
+      "RPU Switch",
+      "RTC",
+      "SATA",
+      "SDIO x2",
+      "SMMU TCU",
+      "SPI x2",
+      "TBU0",
+      "TBU1",
+      "TBU2",
+      "TBU3",
+      "TBU4",
+      "TBU5",
+      "TBUx",
+      "TCMs",
+      "TTC x4",
+      "UART x2",
+      "USB0 w/DMA",
+      "USB1 w/DMA",
+      "VCU",
+      "eFUSE",
+      "x2"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "RPU",
+          "RPU GIC"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Outbound SIOU",
+          "PCIe"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "FPD SLCRs",
+          "FPD configs",
+          "GPU cfg",
+          "PCIe",
+          "SATA"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Outbound SIOU",
+          "SATA"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CCI 2-way 2-way Coherency And Bypass QVN",
+          "DDR Memory Controller",
+          "LPD Main To all output Switch ports",
+          "Outbound SIOU",
+          "SMMU TCU",
+          "TBU1",
+          "TBU2"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "SMMU TCU",
+          "TBU2"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TBU0",
+          "TBU1"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "SMMU TCU",
+          "TBU1",
+          "TBU3"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TBU4",
+          "TBU5"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TBU3",
+          "TBU4"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RPU",
+          "TCMs"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "LPD DMA",
+          "Outbound LPD"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Outbound LPD",
+          "USB1 w/DMA"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Outbound LPD",
+          "USB0 w/DMA"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "GPU PPs",
+          "Outbound SIOU"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Inbound LPD",
+          "LPD Main To all output Switch ports"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "LPD Main To all output Switch ports",
+          "Outbound IOP"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "LPD Main To all output Switch ports",
+          "Outbound LPD"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "OCM Switch",
+          "RPU Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "LPD Main To all output Switch ports",
+          "OCM Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "OCM Switch",
+          "RPU Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "OCM Memory",
+          "OCM Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RPU",
+          "RPU Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "LPD Main To all output Switch ports",
+          "RPU Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RPU",
+          "RPU Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "DDR Memory Controller",
+          "LPD Main To all output Switch ports"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p393:Fig16-2": {
+    "page": 393,
+    "title": "Arm v8 Modes",
+    "blocks": [
+      "App AArch64 or AArch32",
+      "Hypervisor Mode AArch64 or AArch32",
+      "Non-secure State SVC HVC",
+      "Secure Monitor Mode",
+      "Secure State EL0 EL1 EL2 SMC EL3",
+      "Supervisor (Guest OS1) AArch64 or AArch32",
+      "Supervisor (Guest OS2) AArch64 or AArch32",
+      "Supervisor (Secure OS) AArch64 or AArch32"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "App AArch64 or AArch32",
+          "Supervisor (Guest OS1) AArch64 or AArch32"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "App AArch64 or AArch32",
+          "Supervisor (Guest OS2) AArch64 or AArch32"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "App AArch64 or AArch32",
+          "Supervisor (Guest OS2) AArch64 or AArch32"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Non-secure State SVC HVC",
+          "Secure Monitor Mode"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p400:Fig16-3": {
+    "page": 400,
+    "title": "XMPU Poison Methods Block Diagram",
+    "blocks": [
+      "6HFXUH %ULGJH",
+      "6ZLWFK",
+      "DDR",
+      "FPD_Sink",
+      "FPD_XMPU",
+      "HP3, FPD_DMA",
+      "IOP Switch (to Peripheral Slaves)",
+      "LPD AXI CCI AXI CCI AXI HP0, DisplayPort HP1, HP2",
+      "OCM Memory",
+      "OCM Switch",
+      "OCM_XMPU and DDR_XMPUx"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "6HFXUH %ULGJH",
+          "FPD_XMPU"
+        ],
+        "signals": []
+      }
+    ]
+  },
   "p404:Fig16-4": {
     "page": 404,
     "title": "XPPU Functional Block Diagram",
@@ -2102,6 +3864,17 @@
       },
       {
         "blocks": [
+          "CCI 2-way 2-way Coherency And Bypass QVN",
+          "DDR Memory Controller",
+          "LPD Main To all output Switch ports",
+          "SMMU TCU",
+          "TBU1",
+          "TBU2"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
           "Outbound SIOU",
           "PCIe"
         ],
@@ -2136,16 +3909,6 @@
           "SMMU TCU",
           "TBU1",
           "TBU3"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "CCI 2-way 2-way Coherency And Bypass QVN",
-          "DDR Memory Controller",
-          "LPD Main To all output Switch ports",
-          "SMMU TCU",
-          "TBU1"
         ],
         "signals": []
       },
@@ -5565,6 +7328,17 @@
       },
       {
         "blocks": [
+          "CCI 2-way 2-way Coherency And Bypass QVN",
+          "DDR Memory Controller",
+          "LPD Main To all output Switch ports",
+          "SMMU TCU",
+          "TBU1",
+          "TBU2"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
           "FPD SLCRs",
           "FPD configs",
           "GPU cfg",
@@ -5599,16 +7373,6 @@
           "SMMU TCU",
           "TBU1",
           "TBU3"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "CCI 2-way 2-way Coherency And Bypass QVN",
-          "DDR Memory Controller",
-          "LPD Main To all output Switch ports",
-          "SMMU TCU",
-          "TBU1"
         ],
         "signals": []
       },
@@ -5874,6 +7638,18 @@
       },
       {
         "blocks": [
+          "APU ACP MPCore",
+          "CCI 2-way 2-way Coherency And Bypass QVN",
+          "DDR Memory Controller",
+          "LPD Main To all output Switch ports",
+          "SMMU TCU",
+          "TBU1",
+          "TBU2"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
           "SMMU TCU",
           "TBU2"
         ],
@@ -5915,17 +7691,6 @@
           "SMMU TCU",
           "TBU1",
           "TBU3"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "APU ACP MPCore",
-          "CCI 2-way 2-way Coherency And Bypass QVN",
-          "DDR Memory Controller",
-          "LPD Main To all output Switch ports",
-          "SMMU TCU",
-          "TBU1"
         ],
         "signals": []
       },
@@ -6008,6 +7773,20 @@
       },
       {
         "blocks": [
+          "LPD Main To all output Switch ports",
+          "OCM Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "OCM Switch",
+          "RPU Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
           "OCM Memory",
           "OCM Switch"
         ],
@@ -6015,35 +7794,14 @@
       },
       {
         "blocks": [
-          "LPD Main To all output Switch ports",
-          "OCM Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "OCM Switch",
-          "RPU Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "OCM Switch",
-          "RPU Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "LPD Main To all output Switch ports",
-          "RPU Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
           "RPU",
+          "RPU Switch"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "LPD Main To all output Switch ports",
           "RPU Switch"
         ],
         "signals": []
@@ -6161,7 +7919,8 @@
           "LPD Main To all output Switch ports",
           "Outbound SIOU",
           "SMMU TCU",
-          "TBU1"
+          "TBU1",
+          "TBU2"
         ],
         "signals": []
       },
@@ -6427,7 +8186,8 @@
           "DDR Memory Controller",
           "LPD Main To all output Switch ports",
           "SMMU TCU",
-          "TBU1"
+          "TBU1",
+          "TBU2"
         ],
         "signals": []
       },
@@ -7550,1767 +9310,6 @@
         "blocks": [
           "Cortex-A53 CTI",
           "Cortex-A53 PMU"
-        ],
-        "signals": []
-      }
-    ]
-  },
-  "p204:Fig9-4": {
-    "page": 204,
-    "title": "Alarm Signal Routing",
-    "blocks": [
-      "APU GIC",
-      "CONFIG_REG registers",
-      "CSU",
-      "ERROR_STATUS_1",
-      "GIC Proxy",
-      "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-      "PL Outputs",
-      "PL SYSMON",
-      "PMU Global",
-      "PS SYSMON",
-      "RPU GIC",
-      "TAMPER_STATUS"
-    ],
-    "connections": [
-      {
-        "blocks": [
-          "APU GIC",
-          "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-          "PMU Global"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "CONFIG_REG registers",
-          "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-          "PS SYSMON"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "CONFIG_REG registers",
-          "PS SYSMON"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "CONFIG_REG registers",
-          "CSU",
-          "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-          "PMU Global",
-          "PS SYSMON"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "CSU",
-          "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-          "PS SYSMON"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-          "PL SYSMON"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-          "PL SYSMON"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-          "PL SYSMON"
-        ],
-        "signals": []
-      }
-    ]
-  },
-  "p205:Fig9-5": {
-    "page": 205,
-    "title": "Controller Interrupts",
-    "blocks": [
-      "AMS Register Set ISR_1",
-      "ERROR_STATUS_1",
-      "PL Outputs",
-      "PL SYSMON",
-      "PMU Global",
-      "PS SYSMON"
-    ],
-    "connections": [
-      {
-        "blocks": [
-          "AMS Register Set ISR_1",
-          "PL Outputs"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "PL Outputs",
-          "PL SYSMON"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "AMS Register Set ISR_1",
-          "PL Outputs",
-          "PL SYSMON",
-          "PMU Global"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "AMS Register Set ISR_1",
-          "PMU Global",
-          "PS SYSMON"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "AMS Register Set ISR_1",
-          "PMU Global",
-          "PS SYSMON"
-        ],
-        "signals": []
-      }
-    ]
-  },
-  "p217:Fig9-6": {
-    "page": 217,
-    "title": "Register Access Paths",
-    "blocks": [
-      "AMS Register Set",
-      "APB to DRP",
-      "AXI Bus Masters",
-      "AXI/APB Interconnect",
-      "JTAG to DRP",
-      "PL Fabric",
-      "PL JTAG TAP Controller",
-      "PLSYSMON Register Set",
-      "PS JTAG DAP Controller",
-      "PSSYSMON Register Set",
-      "to DRP"
-    ],
-    "connections": []
-  },
-  "p226:Fig10-1": {
-    "page": 226,
-    "title": "Global System Address Map",
-    "blocks": [
-      "DDR Memory Controller",
-      "GB DDR Memory Controller",
-      "GB M_AXI_HPM0_FPD",
-      "GB M_AXI_HPM1_FPD",
-      "GB PCIe",
-      "GB PCIe High",
-      "Lower PCIe MB",
-      "MB CSU, PMU, TCM, OCM",
-      "MB CoreSight STMs",
-      "MB FPD Slaves",
-      "MB LPD Slaves",
-      "MB LPD Slaves, CoreSight Ext.",
-      "MB M_AXI_HPM0_LPD MB",
-      "MB M_AXI_HPM1_FPD",
-      "MB RPU LL port",
-      "MB reserved",
-      "M_AXI_HPM0_FPD MB",
-      "M_AXI_HPM1_FPD GB",
-      "Quad-SPI MB",
-      "VCU Slave Interface MB",
-      "reserved GB"
-    ],
-    "connections": [
-      {
-        "blocks": [
-          "MB CSU, PMU, TCM, OCM",
-          "reserved GB",
-          "reserved GB"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "GB DDR Memory Controller",
-          "GB M_AXI_HPM0_FPD",
-          "reserved GB"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "MB M_AXI_HPM1_FPD",
-          "Quad-SPI MB"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "GB M_AXI_HPM0_FPD",
-          "GB M_AXI_HPM1_FPD",
-          "GB PCIe High",
-          "reserved GB"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "DDR Memory Controller",
-          "MB M_AXI_HPM0_LPD MB",
-          "VCU Slave Interface MB"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "DDR Memory Controller",
-          "MB M_AXI_HPM0_LPD MB"
-        ],
-        "signals": []
-      }
-    ]
-  },
-  "p239:Fig11-1": {
-    "page": 239,
-    "title": "Image Search Flowchart",
-    "blocks": [
-      "From the given offset, read the boot header from 0x0 0x48 to",
-      "Increment the MultiBoot offset by",
-      "No",
-      "Yes"
-    ],
-    "connections": []
-  },
-  "p254:Fig11-3": {
-    "page": 254,
-    "title": "CSU DMA Transfer",
-    "blocks": [
-      "csudma.csudma_dst_size[size] <size of destination buffer>",
-      "csudma.csudma_src_size[size] <size of source buffer>"
-    ],
-    "connections": []
-  },
-  "p257:Fig12-1": {
-    "page": 257,
-    "title": "Configuration Security Unit Block Diagram",
-    "blocks": [
-      "AES- GCM",
-      "CSU DMA",
-      "CSU Local Registers",
-      "CSU PMU Switch",
-      "CSU ROM Validation",
-      "CSU Registers",
-      "ECC",
-      "INTC CSU Triple Redundant MicroBlaze",
-      "Key Management",
-      "PCAP",
-      "PUF",
-      "RAM KB)",
-      "ROM KB)",
-      "RSA Multiplier",
-      "SHA-3",
-      "Secure Stream Switch"
-    ],
-    "connections": []
-  },
-  "p263:Fig12-2": {
-    "page": 263,
-    "title": "Key Selection",
-    "blocks": [
-      "AES Key Source Register Selectable",
-      "AES-GCM",
-      "BBRAM",
-      "Boot",
-      "CSU ROM Valid",
-      "CSU Secure Boot",
-      "Device Key",
-      "Family",
-      "Key Update",
-      "Lock",
-      "Operation",
-      "PUF",
-      "ROM Controlled",
-      "eFUSE"
-    ],
-    "connections": []
-  },
-  "p264:Fig12-3": {
-    "page": 264,
-    "title": "BBRAM Programming Interface",
-    "blocks": [
-      "288-bit BBRAM",
-      "APB 256-bit BBRAM Key to CSU",
-      "BBRAM Control",
-      "addr",
-      "ws"
-    ],
-    "connections": []
-  },
-  "p266:Fig12-4": {
-    "page": 266,
-    "title": "Obfuscated Key",
-    "blocks": [
-      "AES-GCM AES-GCM",
-      "AES-GCM Encrypted Image Encrypted Image User Image AES-GCM",
-      "Boot Media (SD or Quad-SPI)",
-      "Family Key",
-      "Obfuscated Key",
-      "Obfuscated Key Load",
-      "Secret Red Key",
-      "Unencrypted Image",
-      "Zynq UltraScale+ MPSoC"
-    ],
-    "connections": []
-  },
-  "p268:Fig12-5": {
-    "page": 268,
-    "title": "Black Key Storage",
-    "blocks": [
-      "AES-GCM",
-      "Encrypted \u201cBlack\u201d Key Device Unique",
-      "FPGA/SoC Unencrypted Bitstream/ FSBL AES-GCM",
-      "Key Decoder",
-      "Key Encoder",
-      "PROM",
-      "PUF Device Unique",
-      "Secret \u201cRed\u201d Key",
-      "Secret \u201cRed\u201d Key during config Only"
-    ],
-    "connections": []
-  },
-  "p270:Fig12-6": {
-    "page": 270,
-    "title": "Block Diagram of PUF Connection in CSU",
-    "blocks": [
-      "AES",
-      "CSU CSU eFUSE AXIM APB APB PUF syndrome data dev_key_sel Key",
-      "CSU MicroBlaze",
-      "CSU Private Registers",
-      "CSU Registers",
-      "PUF",
-      "eFUSE"
-    ],
-    "connections": []
-  },
-  "p273:Fig12-7": {
-    "page": 273,
-    "title": "JTAG Interface Protections",
-    "blocks": [
-      "Enable BSCAN Device Held in Reset",
-      "Failed Boot Non-Secure",
-      "Failed Secure Boot Secure Lockdown",
-      "IDCODE, BYPASS, PS_ERROR_STATUS, JTAG_STATUS, HIGHZ_IO",
-      "IDCODE, BYPASS, STATUS EXTEST PRELOAD/SAMPLE",
-      "JTAG Boot Full JTAG Access",
-      "JTAG Enabled",
-      "JTAG not Enabled",
-      "PS RESET (PORB",
-      "PS in Boot",
-      "SOFT RESET",
-      "Secure BSCAN Mode",
-      "Secure Lockdown",
-      "Successful Boot Non-Secure",
-      "Successful Secure Boot",
-      "Yes"
-    ],
-    "connections": [
-      {
-        "blocks": [
-          "PS in Boot",
-          "SOFT RESET"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "PS in Boot",
-          "Secure BSCAN Mode"
-        ],
-        "signals": []
-      }
-    ]
-  },
-  "p287:Fig12-8": {
-    "page": 287,
-    "title": "High-Level Boot Flow",
-    "blocks": [
-      "Load FSBL and FW1 PMU",
-      "Power Monitoring",
-      "Release CSU",
-      "Release PMU",
-      "Tamper Monitoring"
-    ],
-    "connections": []
-  },
-  "p291:Fig12-10": {
-    "page": 291,
-    "title": "Top-level Hardware Root of the Trust Boot Flow",
-    "blocks": [
-      "Authenticate SPK and authentication header",
-      "Authenticate boot header, FSBL, and PMUFW1",
-      "Calculate the hash of PPK",
-      "Load public key from flash into OCM",
-      "Lockdown",
-      "Optional: decrypt PMUFW1 FSBL and",
-      "Read SPK ID from authentication header",
-      "Read authentication header determine which PPK to use",
-      "Release control to user"
-    ],
-    "connections": []
-  },
-  "p293:Fig12-11": {
-    "page": 293,
-    "title": "Hardware Root of Trust Secure Boot Example",
-    "blocks": [
-      "APU",
-      "CRAM",
-      "CSU",
-      "CSU RAM",
-      "DDR",
-      "OCM",
-      "On-chip Memories",
-      "PL",
-      "PMU",
-      "PMU RAM",
-      "RPU"
-    ],
-    "connections": []
-  },
-  "p295:Fig12-12": {
-    "page": 295,
-    "title": "Key Rolling",
-    "blocks": [
-      "Block IV",
-      "Block IV from boot header",
-      "Block Key",
-      "Device Key",
-      "Dummy IV",
-      "Dummy Key",
-      "ENC Block IV",
-      "ENC Block Key",
-      "ENC Dummy IV",
-      "ENC Dummy Key",
-      "Encrypted FSBL Block",
-      "Encrypted PFW Block",
-      "Encrypted Secure Header",
-      "FSBL Block",
-      "GCM Tag0",
-      "GCM Tag1",
-      "GCM TagN",
-      "Optional Key",
-      "PFW (Optional) FSBL",
-      "PFW Block",
-      "Secure Header Tag",
-      "Use Device Key",
-      "Use OP Key",
-      "Yes"
-    ],
-    "connections": [
-      {
-        "blocks": [
-          "Use OP Key",
-          "Yes"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Use OP Key",
-          "Yes"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Use Device Key",
-          "Use OP Key"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Block IV",
-          "Block Key"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Block IV",
-          "Block Key"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Block IV",
-          "Block Key"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Block IV",
-          "Block Key"
-        ],
-        "signals": []
-      }
-    ]
-  },
-  "p297:Fig12-13": {
-    "page": 297,
-    "title": "PPK Revocation",
-    "blocks": [
-      "CSU ROM updates multi-boot register and initiates reset",
-      "DesignPPK0 operational Boot successful?",
-      "Device boots with designPPK1",
-      "Golden designPPK0 operational",
-      "Remote update: download designPPK1",
-      "initiate DesignPPK0 SW reset",
-      "is DesignPPK1 operational",
-      "no",
-      "revokes DesignPPK1 PPK0",
-      "update DesignPPK0 multi-boot register",
-      "updates DesignPPK1 golden Image (if needed)",
-      "yes"
-    ],
-    "connections": []
-  },
-  "p299:Fig12-14": {
-    "page": 299,
-    "title": "SPK Revocation",
-    "blocks": [
-      "CSU ROM updates multi-boot register and initiates reset",
-      "DesignPPK0 operational Boot successful?",
-      "Device boots with designSPK1",
-      "Potential hang",
-      "Remote update: download designSPK1",
-      "changes DesignSPK0 SPK ID",
-      "initiate DesignSPK0 SW reset",
-      "is DesignSPK1 operational",
-      "no",
-      "readback DesignSPK0 SPK ID and verify",
-      "update DesignSPK0 multi-boot register",
-      "verify DesignSPK0 remote update",
-      "yes"
-    ],
-    "connections": []
-  },
-  "p301:Fig12-15": {
-    "page": 301,
-    "title": "Encrypt Only Secure Boot Example",
-    "blocks": [
-      "APU",
-      "CRAM",
-      "CSU",
-      "CSU RAM",
-      "DDR",
-      "OCM",
-      "On-chip Memories",
-      "PL",
-      "PMU",
-      "PMU RAM",
-      "RPU"
-    ],
-    "connections": []
-  },
-  "p303:Fig12-16": {
-    "page": 303,
-    "title": "Secure Boot Image",
-    "blocks": [
-      "AC Header",
-      "BH Signature",
-      "Boot Header 0x000-0xEC0",
-      "BootLoader (FSBL and PMUFW (opt))",
-      "BootLoader BootLoader AC AC",
-      "Header AC BootLoader AC Partition AC Partition AC",
-      "Header Header AC AC",
-      "Image Header Table",
-      "Image Headers (IH1-Ihn)",
-      "PPK",
-      "Partition",
-      "Partition AC",
-      "Partition Header",
-      "Partition Signature",
-      "Partition(n)",
-      "Partition(n) AC",
-      "SPK IDBootLoader",
-      "SPK IDHeader",
-      "SPK IDPartition(n)",
-      "SPK IDPartition1",
-      "SPK Signature",
-      "SPKBootLoader",
-      "SPKHeader",
-      "SPKPartition(n)",
-      "SPKPartition1",
-      "User Defined Field"
-    ],
-    "connections": [
-      {
-        "blocks": [
-          "BH Signature",
-          "BH Signature",
-          "BH Signature",
-          "BH Signature",
-          "Boot Header 0x000-0xEC0",
-          "Header AC BootLoader AC Partition AC Partition AC",
-          "Partition Signature",
-          "Partition Signature",
-          "Partition Signature",
-          "Partition Signature",
-          "SPK Signature",
-          "SPK Signature",
-          "SPK Signature",
-          "SPK Signature"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "AC Header",
-          "AC Header",
-          "AC Header",
-          "BH Signature",
-          "BH Signature",
-          "BH Signature",
-          "Boot Header 0x000-0xEC0",
-          "BootLoader (FSBL and PMUFW (opt))",
-          "BootLoader BootLoader AC AC",
-          "Header AC BootLoader AC Partition AC Partition AC",
-          "Header Header AC AC",
-          "Image Header Table",
-          "Image Headers (IH1-Ihn)",
-          "PPK",
-          "PPK",
-          "PPK",
-          "Partition",
-          "Partition AC",
-          "Partition Header",
-          "Partition Header",
-          "Partition Signature",
-          "Partition Signature",
-          "Partition Signature",
-          "SPK IDBootLoader",
-          "SPK IDHeader",
-          "SPK IDPartition1",
-          "SPK Signature",
-          "SPK Signature",
-          "SPK Signature",
-          "SPKBootLoader",
-          "SPKHeader",
-          "SPKPartition1",
-          "User Defined Field",
-          "User Defined Field",
-          "User Defined Field"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "AC Header",
-          "BH Signature",
-          "Header AC BootLoader AC Partition AC Partition AC",
-          "PPK",
-          "Partition Signature",
-          "Partition(n)",
-          "Partition(n) AC",
-          "SPK IDPartition(n)",
-          "SPK Signature",
-          "SPKPartition(n)",
-          "User Defined Field"
-        ],
-        "signals": []
-      }
-    ]
-  },
-  "p305:Fig12-17": {
-    "page": 305,
-    "title": "OP Key",
-    "blocks": [
-      "Block0 CT",
-      "Block0 IV",
-      "Block0 PT",
-      "Block1 CT",
-      "Block1 IV",
-      "Block1 Key",
-      "DEC DEC DEC PT PlainText CT \u2013CipherText",
-      "Device Key",
-      "Encrypted Secure Header",
-      "OP Key"
-    ],
-    "connections": [
-      {
-        "blocks": [
-          "Block1 IV",
-          "Block1 Key"
-        ],
-        "signals": []
-      }
-    ]
-  },
-  "p313:Fig13-1": {
-    "page": 313,
-    "title": "GIC Interrupts Block Diagram",
-    "blocks": [
-      "APU Cortex-A53 MPCore",
-      "CPU0",
-      "CPU1",
-      "CPUn",
-      "Distributor",
-      "GIC (PL390)",
-      "GIC-400",
-      "Interrupt Source Blocks VCU, GPU, DisplayPort)",
-      "MSI",
-      "PCIe",
-      "Top Level IPI",
-      "VCPU0",
-      "VCPUn CPU0",
-      "nViRQ/nVFIQ",
-      "niRQ0/nFIQ0",
-      "niRQ1/nFIQ1"
-    ],
-    "connections": [
-      {
-        "blocks": [
-          "APU Cortex-A53 MPCore",
-          "CPU0",
-          "VCPU0"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "APU Cortex-A53 MPCore",
-          "CPU0",
-          "GIC-400",
-          "VCPU0"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "APU Cortex-A53 MPCore",
-          "GIC-400",
-          "VCPUn CPU0"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "APU Cortex-A53 MPCore",
-          "VCPUn CPU0"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Distributor",
-          "GIC-400"
-        ],
-        "signals": []
-      }
-    ]
-  },
-  "p314:Fig13-2": {
-    "page": 314,
-    "title": "RPU Interrupt Controller Block Diagram",
-    "blocks": [
-      "(ICD) Distributor Controller Interrupt",
-      "Distributor CPU",
-      "Distributor SGI",
-      "IOP",
-      "Shared Peripheral Interrupts (SPI)"
-    ],
-    "connections": []
-  },
-  "p319:Fig13-3": {
-    "page": 319,
-    "title": "APU with Interrupt Virtualization Block Diagram",
-    "blocks": [
-      "CPU Interface",
-      "Distributor",
-      "EnableGrp0",
-      "EnableGrp1",
-      "FIQ",
-      "FIQEn==1",
-      "GIC",
-      "GICD_IGROUP",
-      "Group Interrupt",
-      "Group Virtual Interrupt",
-      "Guest OS Guest OS Guest OS",
-      "Hardware Interrupt",
-      "Hypervisor",
-      "IRQ",
-      "IRQ Assignment",
-      "List Registers",
-      "MPSoC",
-      "Maintenance Interrupt",
-      "Non-secure",
-      "Processor",
-      "Register Updates",
-      "Secure Monitor Secure Software",
-      "System Software",
-      "Virtual CPU Interface",
-      "Virtual Distributor",
-      "vFIQ",
-      "vIRQ"
-    ],
-    "connections": [
-      {
-        "blocks": [
-          "CPU Interface",
-          "Distributor"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "FIQEn==1",
-          "GIC",
-          "System Software",
-          "Virtual CPU Interface"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "EnableGrp1",
-          "Processor"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "FIQEn==1",
-          "Secure Monitor Secure Software"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "EnableGrp1",
-          "System Software",
-          "Virtual CPU Interface"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Group Virtual Interrupt",
-          "Virtual Distributor"
-        ],
-        "signals": []
-      }
-    ]
-  },
-  "p324:Fig13-5": {
-    "page": 324,
-    "title": "IPI Interrupt Channel Architecture",
-    "blocks": [
-      "APU Channel0 MPCore",
-      "All, Channel0 GIC",
-      "All, Channel1 GIC",
-      "All, Channel10 GIC",
-      "All, Channel2 GIC",
-      "All, Channel7 GIC",
-      "All, Channel8 GIC",
-      "All, Channel9 GIC",
-      "Channel0 Channel0",
-      "Channel1 Channel1",
-      "Channel1 RPU0",
-      "Channel10 Channel10",
-      "Channel10 PL",
-      "Channel2 Channel2",
-      "Channel2 RPU1",
-      "Channel7 Channel7",
-      "Channel7 PL",
-      "Channel8 Channel8",
-      "Channel8 PL",
-      "Channel9 Channel9",
-      "Channel9 PL",
-      "PMU PMU_0",
-      "PMU PMU_0 only, IPI0",
-      "PMU PMU_1",
-      "PMU PMU_1 only, IPI1",
-      "PMU PMU_2",
-      "PMU PMU_2 only, IPI2",
-      "PMU PMU_3",
-      "PMU PMU_3 only, IPI3",
-      "PMU_0 PMU_0",
-      "PMU_1 PMU_1",
-      "PMU_2 PMU_2",
-      "PMU_3 PMU_3"
-    ],
-    "connections": [
-      {
-        "blocks": [
-          "Channel0 Channel0",
-          "Channel0 Channel0"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Channel1 Channel1",
-          "Channel1 Channel1"
-        ],
-        "signals": []
-      }
-    ]
-  },
-  "p325:Fig13-6": {
-    "page": 325,
-    "title": "IPI Message Passing Architecture",
-    "blocks": [
-      "Request",
-      "Response"
-    ],
-    "connections": []
-  },
-  "p336:Fig14-1": {
-    "page": 336,
-    "title": "Timers System Block Diagram",
-    "blocks": [
-      "APU MPcore Global Timer Counter",
-      "CPU Private Timer",
-      "CSU_SWDT",
-      "FPD_SWDT",
-      "LPD_SWDT",
-      "MIO and EMIO x2 x4 x4",
-      "PPI CPU Private Interrupts",
-      "RPU core0 RPU core1",
-      "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL",
-      "System Triple Timer Counter"
-    ],
-    "connections": [
-      {
-        "blocks": [
-          "CPU Private Timer",
-          "PPI CPU Private Interrupts"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "APU MPcore Global Timer Counter",
-          "PPI CPU Private Interrupts"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "FPD_SWDT",
-          "MIO and EMIO x2 x4 x4"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "FPD_SWDT",
-          "MIO and EMIO x2 x4 x4",
-          "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "CSU_SWDT",
-          "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "LPD_SWDT",
-          "MIO and EMIO x2 x4 x4",
-          "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "MIO and EMIO x2 x4 x4",
-          "System Triple Timer Counter"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL",
-          "System Triple Timer Counter"
-        ],
-        "signals": []
-      }
-    ]
-  },
-  "p343:Fig14-2": {
-    "page": 343,
-    "title": "TTC Block Diagram",
-    "blocks": [
-      "32-bit Counter",
-      "Event Timer",
-      "Interrupt",
-      "Pre-scaler",
-      "Status and Control Registers",
-      "Timer/Clock Timer/Clock Timer/Clock"
-    ],
-    "connections": []
-  },
-  "p351:Fig14-3": {
-    "page": 351,
-    "title": "SWDT Block Diagram",
-    "blocks": [
-      "24-bit Counter",
-      "CLKSEL Zero CRV Restart Clock",
-      "IRQ Registers and Control Logic Reset Out",
-      "Pre-scaler"
-    ],
-    "connections": []
-  },
-  "p360:Fig14-4": {
-    "page": 360,
-    "title": "Watchdog Timer Flowchart",
-    "blocks": [
-      "Perform self test. Refer to watchdog timer self-test.",
-      "Restart the watchdog timer. Refer to watchdog timer restart.",
-      "Start watchdog timer device. Refer to watchdog timer start.",
-      "Stop watchdog timer. Refer to watchdog timer stop."
-    ],
-    "connections": []
-  },
-  "p361:Fig14-5": {
-    "page": 361,
-    "title": "Watchdog Timer Timeout Test",
-    "blocks": [
-      "Disable interrupts",
-      "Restart watchdog timer. Refer to watchdog timer restart."
-    ],
-    "connections": []
-  },
-  "p362:Fig14-6": {
-    "page": 362,
-    "title": "Watchdog Timer Polled Mode Flowchart",
-    "blocks": [
-      "Restart timer. Refer to watchdog timer restart.",
-      "Restart watchdog timer. Refer to watchdog timer restart."
-    ],
-    "connections": []
-  },
-  "p366:Fig15-1": {
-    "page": 366,
-    "title": "PS Interconnect",
-    "blocks": [
-      "100Gb",
-      "2-way Cache Coherent Master",
-      "APU ACP MPCore",
-      "BRAM (slave)",
-      "CAN x2",
-      "CCI 2-way 2-way Coherency And Bypass QVN",
-      "CSU Processor",
-      "Coherent Master",
-      "CoreSight",
-      "DAP Controller",
-      "DDR Memory Controller",
-      "DMA FPD",
-      "DisplayPort",
-      "FPD SLCRs",
-      "FPD configs",
-      "GEM x4",
-      "GPIO x78, x96",
-      "GPU PPs",
-      "GPU cfg",
-      "IPI",
-      "Inbound IOP",
-      "Inbound LPD",
-      "LPD DMA",
-      "LPD Main To all output Switch ports",
-      "LPD SLCRs",
-      "LPD SWDT",
-      "NAND",
-      "Non-Coherent Master",
-      "OCM Memory",
-      "OCM Switch",
-      "Outbound IOP",
-      "Outbound LPD",
-      "Outbound SIOU",
-      "PCIe",
-      "PL SysMon",
-      "PMU Processor",
-      "PS SysMon",
-      "Quad-SPI",
-      "RF",
-      "RPU",
-      "RPU GIC",
-      "RPU Switch",
-      "RTC",
-      "SATA",
-      "SDIO x2",
-      "SMMU TCU",
-      "SPI x2",
-      "TBU0",
-      "TBU1",
-      "TBU2",
-      "TBU3",
-      "TBU4",
-      "TBU5",
-      "TBUx",
-      "TCMs",
-      "TTC x4",
-      "UART x2",
-      "USB0 w/DMA",
-      "USB1 w/DMA",
-      "VCU",
-      "eFUSE",
-      "x2"
-    ],
-    "connections": [
-      {
-        "blocks": [
-          "RPU",
-          "RPU GIC"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "TBU0",
-          "TBU1"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "FPD SLCRs",
-          "FPD configs",
-          "GPU cfg",
-          "PCIe",
-          "SATA"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Outbound SIOU",
-          "PCIe"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Outbound SIOU",
-          "SATA"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "CCI 2-way 2-way Coherency And Bypass QVN",
-          "DDR Memory Controller",
-          "LPD Main To all output Switch ports",
-          "SMMU TCU",
-          "TBU1",
-          "TBU2"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Outbound SIOU",
-          "TBU1"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "SMMU TCU",
-          "TBU1",
-          "TBU3"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "TBU4",
-          "TBU5"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "TBU3",
-          "TBU4"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "SMMU TCU",
-          "TBU2"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "RPU",
-          "TCMs"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "LPD DMA",
-          "Outbound LPD"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Outbound LPD",
-          "USB0 w/DMA"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Outbound LPD",
-          "USB1 w/DMA"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "GPU PPs",
-          "Outbound SIOU"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Inbound LPD",
-          "LPD Main To all output Switch ports"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "LPD Main To all output Switch ports",
-          "Outbound IOP"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "LPD Main To all output Switch ports",
-          "Outbound LPD"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "OCM Memory",
-          "OCM Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "LPD Main To all output Switch ports",
-          "OCM Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "OCM Switch",
-          "RPU Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "OCM Switch",
-          "RPU Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "RPU",
-          "RPU Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "RPU",
-          "RPU Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "LPD Main To all output Switch ports",
-          "RPU Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "DDR Memory Controller",
-          "LPD Main To all output Switch ports"
-        ],
-        "signals": []
-      }
-    ]
-  },
-  "p370:Fig15-2": {
-    "page": 370,
-    "title": "AXI Timeout Block Architecture",
-    "blocks": [
-      "AXI Master",
-      "AXI Slave",
-      "AXI Timeout Block SLVERR if Timed Out SLVERR if Timed Out"
-    ],
-    "connections": []
-  },
-  "p378:Fig15-3": {
-    "page": 378,
-    "title": "Low Latency and Best Effort Paths through the CCI-",
-    "blocks": [
-      "BE Traffic",
-      "CCI Cache Coherent Interface",
-      "LL Traffic",
-      "Main AXI Switch",
-      "Port Port DDR Controller"
-    ],
-    "connections": []
-  },
-  "p380:Fig15-4": {
-    "page": 380,
-    "title": "End-to-End Path with QVN Enabled",
-    "blocks": [
-      "AXI Port Key",
-      "AXI Port Read Port Arbiter Interface (XPI) AXI Read Ports",
-      "AXI to DRAM cmd Conversion",
-      "BE Traffic",
-      "CAM Scheduler DDRC Req Req",
-      "CCI-400",
-      "DDR PHY",
-      "DRAM",
-      "High Priority Read CAM (HPR)",
-      "LL Traffic",
-      "Low Priority Read CAM (LPR)",
-      "QoS Controller",
-      "and CCI-400",
-      "cnt Up BE Credit Counter cnt Down",
-      "cnt Up LL Credit Counter cnt Down"
-    ],
-    "connections": [
-      {
-        "blocks": [
-          "cnt Up BE Credit Counter cnt Down",
-          "cnt Up LL Credit Counter cnt Down"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "cnt Up BE Credit Counter cnt Down",
-          "cnt Up LL Credit Counter cnt Down"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "CCI-400",
-          "QoS Controller"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "CCI-400",
-          "QoS Controller"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "CCI-400",
-          "QoS Controller"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "CCI-400",
-          "QoS Controller"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "AXI Port Read Port Arbiter Interface (XPI) AXI Read Ports",
-          "CCI-400"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "AXI Port Read Port Arbiter Interface (XPI) AXI Read Ports",
-          "CCI-400"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "AXI Port Read Port Arbiter Interface (XPI) AXI Read Ports",
-          "CAM Scheduler DDRC Req Req"
-        ],
-        "signals": []
-      }
-    ]
-  },
-  "p385:Fig16-1": {
-    "page": 385,
-    "title": "System Protection Units",
-    "blocks": [
-      "100Gb",
-      "2-way Cache Coherent Master",
-      "APU ACP MPCore",
-      "BRAM (slave)",
-      "CAN x2",
-      "CCI 2-way 2-way Coherency And Bypass QVN",
-      "CSU Processor",
-      "Coherent Master",
-      "CoreSight",
-      "DAP Controller",
-      "DDR Memory Controller",
-      "DMA FPD",
-      "DisplayPort",
-      "FPD SLCRs",
-      "FPD configs",
-      "GEM x4",
-      "GPIO x78, x96",
-      "GPU PPs",
-      "GPU cfg",
-      "IPI",
-      "Inbound IOP",
-      "Inbound LPD",
-      "LPD DMA",
-      "LPD Main To all output Switch ports",
-      "LPD SLCRs",
-      "LPD SWDT",
-      "NAND",
-      "Non-Coherent Master",
-      "OCM Memory",
-      "OCM Switch",
-      "Outbound IOP",
-      "Outbound LPD",
-      "Outbound SIOU",
-      "PCIe",
-      "PL SysMon",
-      "PMU Processor",
-      "PS SysMon",
-      "Quad-SPI",
-      "RF",
-      "RPU",
-      "RPU GIC",
-      "RPU Switch",
-      "RTC",
-      "SATA",
-      "SDIO x2",
-      "SMMU TCU",
-      "SPI x2",
-      "TBU0",
-      "TBU1",
-      "TBU2",
-      "TBU3",
-      "TBU4",
-      "TBU5",
-      "TBUx",
-      "TCMs",
-      "TTC x4",
-      "UART x2",
-      "USB0 w/DMA",
-      "USB1 w/DMA",
-      "VCU",
-      "eFUSE",
-      "x2"
-    ],
-    "connections": [
-      {
-        "blocks": [
-          "RPU",
-          "RPU GIC"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Outbound SIOU",
-          "PCIe"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "FPD SLCRs",
-          "FPD configs",
-          "GPU cfg",
-          "PCIe",
-          "SATA"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Outbound SIOU",
-          "SATA"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "CCI 2-way 2-way Coherency And Bypass QVN",
-          "DDR Memory Controller",
-          "LPD Main To all output Switch ports",
-          "Outbound SIOU",
-          "SMMU TCU",
-          "TBU1",
-          "TBU2"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "SMMU TCU",
-          "TBU2"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "TBU0",
-          "TBU1"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "SMMU TCU",
-          "TBU1",
-          "TBU3"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "TBU4",
-          "TBU5"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "TBU3",
-          "TBU4"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "RPU",
-          "TCMs"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "LPD DMA",
-          "Outbound LPD"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Outbound LPD",
-          "USB1 w/DMA"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Outbound LPD",
-          "USB0 w/DMA"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "GPU PPs",
-          "Outbound SIOU"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Inbound LPD",
-          "LPD Main To all output Switch ports"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "LPD Main To all output Switch ports",
-          "Outbound IOP"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "LPD Main To all output Switch ports",
-          "Outbound LPD"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "OCM Switch",
-          "RPU Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "LPD Main To all output Switch ports",
-          "OCM Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "OCM Switch",
-          "RPU Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "OCM Memory",
-          "OCM Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "RPU",
-          "RPU Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "LPD Main To all output Switch ports",
-          "RPU Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "RPU",
-          "RPU Switch"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "DDR Memory Controller",
-          "LPD Main To all output Switch ports"
-        ],
-        "signals": []
-      }
-    ]
-  },
-  "p393:Fig16-2": {
-    "page": 393,
-    "title": "Arm v8 Modes",
-    "blocks": [
-      "App AArch64 or AArch32",
-      "Hypervisor Mode AArch64 or AArch32",
-      "Non-secure State SVC HVC",
-      "Secure Monitor Mode",
-      "Secure State EL0 EL1 EL2 SMC EL3",
-      "Supervisor (Guest OS1) AArch64 or AArch32",
-      "Supervisor (Guest OS2) AArch64 or AArch32",
-      "Supervisor (Secure OS) AArch64 or AArch32"
-    ],
-    "connections": [
-      {
-        "blocks": [
-          "App AArch64 or AArch32",
-          "Supervisor (Guest OS1) AArch64 or AArch32"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "App AArch64 or AArch32",
-          "Supervisor (Guest OS2) AArch64 or AArch32"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "App AArch64 or AArch32",
-          "Supervisor (Guest OS2) AArch64 or AArch32"
-        ],
-        "signals": []
-      },
-      {
-        "blocks": [
-          "Non-secure State SVC HVC",
-          "Secure Monitor Mode"
-        ],
-        "signals": []
-      }
-    ]
-  },
-  "p400:Fig16-3": {
-    "page": 400,
-    "title": "XMPU Poison Methods Block Diagram",
-    "blocks": [
-      "6HFXUH %ULGJH",
-      "6ZLWFK",
-      "DDR",
-      "FPD_Sink",
-      "FPD_XMPU",
-      "HP3, FPD_DMA",
-      "IOP Switch (to Peripheral Slaves)",
-      "LPD AXI CCI AXI CCI AXI HP0, DisplayPort HP1, HP2",
-      "OCM Memory",
-      "OCM Switch",
-      "OCM_XMPU and DDR_XMPUx"
-    ],
-    "connections": [
-      {
-        "blocks": [
-          "6HFXUH %ULGJH",
-          "FPD_XMPU"
         ],
         "signals": []
       }

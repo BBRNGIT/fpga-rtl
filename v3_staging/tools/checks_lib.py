@@ -73,12 +73,14 @@ def device_tree_consistent():
     red(f"device_tree {dt} node.json ≠ hierarchy {nodes} nodes") if dt and dt != nodes else ok(f"device_tree == hierarchy ({dt} nodes)")
 
 def zero_untracked():
-    out = sh("git status --porcelain v3_staging/tools v3_staging/device 2>/dev/null").stdout.strip()
+    # sh() runs at cwd=ROOT (v3_staging) -> paths are RELATIVE to it ("tools device"), NOT
+    # "v3_staging/tools" (which would resolve to v3_staging/v3_staging/ and silently match nothing).
+    out = sh("git status --porcelain tools device 2>/dev/null").stdout.strip()
     n = len([l for l in out.splitlines() if l.startswith("??")])
     red(f"{n} untracked files in tools/device") if n else ok("0 untracked tool/device files")
 
 def all_committed():
-    out = sh("git status --porcelain v3_staging/tools v3_staging/device 2>/dev/null").stdout.strip()
+    out = sh("git status --porcelain tools device 2>/dev/null").stdout.strip()
     red(f"{len(out.splitlines())} uncommitted changes") if out else ok("working tree clean (tools/device)")
 
 def clean_layout():
