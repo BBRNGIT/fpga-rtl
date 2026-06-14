@@ -1,0 +1,19 @@
+{
+  "id": "Board/USB3/USB_SSTXN",
+  "parent": "Board/USB3",
+  "kind": "assignment",
+  "pin": "PS_MGTRTXN1_505",
+  "ball": "AF40",
+  "dir": "out",
+  "resource": "transceiver(GT/PS-GTR)",
+  "edges": [
+    {
+      "src": "Board/USB3/USB_SSTXN",
+      "dst": "PL/transceiver(GT/PS-GTR)",
+      "kind": "board",
+      "pin": "PS_MGTRTXN1_505",
+      "ball": "AF40",
+      "dir": "out"
+    }
+  ]
+}

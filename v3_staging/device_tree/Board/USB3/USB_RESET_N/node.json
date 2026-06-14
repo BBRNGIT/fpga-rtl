@@ -1,0 +1,19 @@
+{
+  "id": "Board/USB3/USB_RESET_N",
+  "parent": "Board/USB3",
+  "kind": "assignment",
+  "pin": "PS_MIO44_501",
+  "ball": "R29",
+  "dir": "",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/USB3/USB_RESET_N",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO44_501",
+      "ball": "R29",
+      "dir": ""
+    }
+  ]
+}

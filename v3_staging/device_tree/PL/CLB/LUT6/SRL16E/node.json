@@ -1,0 +1,47 @@
+{
+  "id": "PL/CLB/LUT6/SRL16E",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 9,
+  "ports_list": [
+    {
+      "name": "CE",
+      "dir": "in"
+    },
+    {
+      "name": "CLK",
+      "dir": "in"
+    },
+    {
+      "name": "D",
+      "dir": "in"
+    },
+    {
+      "name": "Q",
+      "dir": "out"
+    },
+    {
+      "name": "Depth_Selection:_The_value_placed_on_the_A0_-_A3_inputs_specifies_the_shift_register_depth._Depth_=_(8_*_A3)_+_(4_*_A2)_+_(2_*_A1)_+_A0_+_1",
+      "dir": "in"
+    },
+    {
+      "name": "A0",
+      "dir": "in"
+    },
+    {
+      "name": "A1",
+      "dir": "in"
+    },
+    {
+      "name": "A2",
+      "dir": "in"
+    },
+    {
+      "name": "A3",
+      "dir": "in"
+    }
+  ],
+  "note": "CLB",
+  "source": "ug974 p641",
+  "edges": []
+}

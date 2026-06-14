@@ -1,0 +1,19 @@
+{
+  "id": "Board/Ethernet (PS)/PHY1_TXCTL",
+  "parent": "Board/Ethernet (PS)",
+  "kind": "assignment",
+  "pin": "PS_MIO69_502",
+  "ball": "AE32",
+  "dir": "out",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/Ethernet (PS)/PHY1_TXCTL",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO69_502",
+      "ball": "AE32",
+      "dir": "out"
+    }
+  ]
+}

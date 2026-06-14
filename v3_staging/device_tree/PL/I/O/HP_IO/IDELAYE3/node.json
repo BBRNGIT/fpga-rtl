@@ -1,0 +1,69 @@
+{
+  "id": "PL/I/O/HP_IO/IDELAYE3",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 14,
+  "ports_list": [
+    {
+      "name": "CASC_IN",
+      "dir": "in"
+    },
+    {
+      "name": "CASC_OUT",
+      "dir": "out"
+    },
+    {
+      "name": "CASC_RETURN",
+      "dir": "in"
+    },
+    {
+      "name": "CE",
+      "dir": "in"
+    },
+    {
+      "name": "CLK",
+      "dir": "in"
+    },
+    {
+      "name": "CNTVALUEIN",
+      "dir": "in",
+      "width": 9
+    },
+    {
+      "name": "CNTVALUEOUT",
+      "dir": "out",
+      "width": 9
+    },
+    {
+      "name": "DATAIN",
+      "dir": "in"
+    },
+    {
+      "name": "DATAOUT",
+      "dir": "out"
+    },
+    {
+      "name": "EN_VTC",
+      "dir": "in"
+    },
+    {
+      "name": "IDATAIN",
+      "dir": "in"
+    },
+    {
+      "name": "INC",
+      "dir": "in"
+    },
+    {
+      "name": "LOAD",
+      "dir": "in"
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    }
+  ],
+  "note": "I",
+  "source": "ug974 p357",
+  "edges": []
+}

@@ -1,0 +1,65 @@
+{
+  "id": "PL/I/O/HP_IO/ODELAYE3",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 13,
+  "ports_list": [
+    {
+      "name": "CASC_IN",
+      "dir": "in"
+    },
+    {
+      "name": "CASC_OUT",
+      "dir": "out"
+    },
+    {
+      "name": "CASC_RETURN",
+      "dir": "in"
+    },
+    {
+      "name": "CE",
+      "dir": "in"
+    },
+    {
+      "name": "CLK",
+      "dir": "in"
+    },
+    {
+      "name": "CNTVALUEIN",
+      "dir": "in",
+      "width": 9
+    },
+    {
+      "name": "CNTVALUEOUT",
+      "dir": "out",
+      "width": 9
+    },
+    {
+      "name": "DATAOUT",
+      "dir": "out"
+    },
+    {
+      "name": "EN_VTC",
+      "dir": "in"
+    },
+    {
+      "name": "INC",
+      "dir": "in"
+    },
+    {
+      "name": "LOAD",
+      "dir": "in"
+    },
+    {
+      "name": "ODATAIN",
+      "dir": "in"
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    }
+  ],
+  "note": "I",
+  "source": "ug974 p496",
+  "edges": []
+}

@@ -1,0 +1,37 @@
+{
+  "id": "PL/I/O/HP_IO/RIU_OR",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 6,
+  "ports_list": [
+    {
+      "name": "RIU_RD_DATA",
+      "dir": "out",
+      "width": 16
+    },
+    {
+      "name": "RIU_RD_DATA_LOW",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "RIU_RD_DATA_UPP",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "RIU_RD_VALID",
+      "dir": "out"
+    },
+    {
+      "name": "RIU_RD_VALID_LOW",
+      "dir": "in"
+    },
+    {
+      "name": "RIU_RD_VALID_UPP",
+      "dir": "in"
+    }
+  ],
+  "note": "",
+  "edges": []
+}

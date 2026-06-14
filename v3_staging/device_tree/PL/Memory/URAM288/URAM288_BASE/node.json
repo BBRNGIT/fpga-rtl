@@ -1,0 +1,131 @@
+{
+  "id": "PL/Memory/URAM288/URAM288_BASE",
+  "parent": "PL/Memory/URAM288",
+  "kind": "config",
+  "ports": 28,
+  "ports_list": [
+    {
+      "name": "ADDR_A",
+      "dir": "in",
+      "width": 23
+    },
+    {
+      "name": "ADDR_B",
+      "dir": "in",
+      "width": 23
+    },
+    {
+      "name": "BWE_A",
+      "dir": "in",
+      "width": 9
+    },
+    {
+      "name": "BWE_B",
+      "dir": "in",
+      "width": 9
+    },
+    {
+      "name": "CLK",
+      "dir": "in"
+    },
+    {
+      "name": "DBITERR_A",
+      "dir": "out"
+    },
+    {
+      "name": "DBITERR_B",
+      "dir": "out"
+    },
+    {
+      "name": "DIN_A",
+      "dir": "in",
+      "width": 72
+    },
+    {
+      "name": "DIN_B",
+      "dir": "in",
+      "width": 72
+    },
+    {
+      "name": "DOUT_A",
+      "dir": "out",
+      "width": 72
+    },
+    {
+      "name": "DOUT_B",
+      "dir": "out",
+      "width": 72
+    },
+    {
+      "name": "EN_A",
+      "dir": "in"
+    },
+    {
+      "name": "EN_B",
+      "dir": "in"
+    },
+    {
+      "name": "INJECT_DBITERR_A",
+      "dir": "in"
+    },
+    {
+      "name": "INJECT_DBITERR_B",
+      "dir": "in"
+    },
+    {
+      "name": "INJECT_SBITERR_A",
+      "dir": "in"
+    },
+    {
+      "name": "INJECT_SBITERR_B",
+      "dir": "in"
+    },
+    {
+      "name": "OREG_CE_A",
+      "dir": "in"
+    },
+    {
+      "name": "OREG_CE_B",
+      "dir": "in"
+    },
+    {
+      "name": "OREG_ECC_CE_A",
+      "dir": "in"
+    },
+    {
+      "name": "OREG_ECC_CE_B",
+      "dir": "in"
+    },
+    {
+      "name": "RDB_WR_A",
+      "dir": "in"
+    },
+    {
+      "name": "RDB_WR_B",
+      "dir": "in"
+    },
+    {
+      "name": "RST_A",
+      "dir": "in"
+    },
+    {
+      "name": "RST_B",
+      "dir": "in"
+    },
+    {
+      "name": "SBITERR_A",
+      "dir": "out"
+    },
+    {
+      "name": "SBITERR_B",
+      "dir": "out"
+    },
+    {
+      "name": "SLEEP",
+      "dir": "in"
+    }
+  ],
+  "note": "BLOCKRAM",
+  "source": "ug974 p688",
+  "edges": []
+}

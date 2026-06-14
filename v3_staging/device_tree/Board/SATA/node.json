@@ -1,0 +1,8 @@
+{
+  "id": "Board/SATA",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 18,
+  "note": "transceiver(GT/PS-GTR)",
+  "edges": []
+}

@@ -1,0 +1,19 @@
+{
+  "id": "Board/DisplayPort/505_DP_CLKP",
+  "parent": "Board/DisplayPort",
+  "kind": "assignment",
+  "pin": "PS_MGTREFCLK2P_505",
+  "ball": "AC37",
+  "dir": "",
+  "resource": "GT_refclk",
+  "edges": [
+    {
+      "src": "Board/DisplayPort/505_DP_CLKP",
+      "dst": "PL/GT_refclk",
+      "kind": "board",
+      "pin": "PS_MGTREFCLK2P_505",
+      "ball": "AC37",
+      "dir": ""
+    }
+  ]
+}

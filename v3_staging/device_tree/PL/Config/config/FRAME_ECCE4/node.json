@@ -1,0 +1,10 @@
+{
+  "id": "PL/Config/config/FRAME_ECCE4",
+  "parent": "PL/Config/config",
+  "kind": "config",
+  "ports": 0,
+  "ports_list": [],
+  "note": "hard-IP block \u2014 ports specified in UG576 (not in UG974)",
+  "source": "ug974 p296",
+  "edges": []
+}

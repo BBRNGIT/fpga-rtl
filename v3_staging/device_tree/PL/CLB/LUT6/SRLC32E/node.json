@@ -1,0 +1,36 @@
+{
+  "id": "PL/CLB/LUT6/SRLC32E",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 6,
+  "ports_list": [
+    {
+      "name": "A",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "CE",
+      "dir": "in"
+    },
+    {
+      "name": "CLK",
+      "dir": "in"
+    },
+    {
+      "name": "D",
+      "dir": "in"
+    },
+    {
+      "name": "Q",
+      "dir": "out"
+    },
+    {
+      "name": "Q31",
+      "dir": "out"
+    }
+  ],
+  "note": "CLB",
+  "source": "ug974 p645",
+  "edges": []
+}

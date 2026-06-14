@@ -1,0 +1,19 @@
+{
+  "id": "Board/SFP/QSFP3_LPMODE",
+  "parent": "Board/SFP",
+  "kind": "assignment",
+  "pin": "IO_L12N_AD0N_93",
+  "ball": "C9",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/SFP/QSFP3_LPMODE",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L12N_AD0N_93",
+      "ball": "C9",
+      "dir": ""
+    }
+  ]
+}

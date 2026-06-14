@@ -1,0 +1,19 @@
+{
+  "id": "Board/SFP/QSFP3_SCL",
+  "parent": "Board/SFP",
+  "kind": "assignment",
+  "pin": "IO_L7N_HDGC_AD5N_93",
+  "ball": "D7",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/SFP/QSFP3_SCL",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L7N_HDGC_AD5N_93",
+      "ball": "D7",
+      "dir": ""
+    }
+  ]
+}

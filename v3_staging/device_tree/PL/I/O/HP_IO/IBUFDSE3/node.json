@@ -1,0 +1,37 @@
+{
+  "id": "PL/I/O/HP_IO/IBUFDSE3",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 6,
+  "ports_list": [
+    {
+      "name": "I",
+      "dir": "in"
+    },
+    {
+      "name": "IB",
+      "dir": "in"
+    },
+    {
+      "name": "IBUFDISABLE",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "OSC",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "OSC_EN",
+      "dir": "in",
+      "width": 2
+    }
+  ],
+  "note": "I",
+  "source": "ug974 p343",
+  "edges": []
+}

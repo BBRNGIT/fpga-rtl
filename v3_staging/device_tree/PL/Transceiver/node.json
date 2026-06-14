@@ -1,0 +1,6 @@
+{
+  "id": "PL/Transceiver",
+  "parent": "PL",
+  "kind": "subsystem",
+  "edges": []
+}

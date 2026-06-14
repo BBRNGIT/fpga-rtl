@@ -1,0 +1,19 @@
+{
+  "id": "Board/Configuration Chip pin a/MMC_DAT7",
+  "parent": "Board/Configuration Chip pin a",
+  "kind": "assignment",
+  "pin": "PS_MIO20_500",
+  "ball": "AH34",
+  "dir": "",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/Configuration Chip pin a/MMC_DAT7",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO20_500",
+      "ball": "AH34",
+      "dir": ""
+    }
+  ]
+}

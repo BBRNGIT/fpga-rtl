@@ -1,0 +1,19 @@
+{
+  "id": "Board/SFP/QSFP2_RESETL",
+  "parent": "Board/SFP",
+  "kind": "assignment",
+  "pin": "IO_L4P_AD8P_93",
+  "ball": "F9",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/SFP/QSFP2_RESETL",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L4P_AD8P_93",
+      "ball": "F9",
+      "dir": ""
+    }
+  ]
+}

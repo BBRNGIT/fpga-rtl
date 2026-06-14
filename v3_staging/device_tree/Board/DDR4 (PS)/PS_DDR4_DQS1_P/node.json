@@ -1,0 +1,19 @@
+{
+  "id": "Board/DDR4 (PS)/PS_DDR4_DQS1_P",
+  "parent": "Board/DDR4 (PS)",
+  "kind": "assignment",
+  "pin": "PS_DDR_DQS_P1_504",
+  "ball": "AY32",
+  "dir": "",
+  "resource": "PS_DDR",
+  "edges": [
+    {
+      "src": "Board/DDR4 (PS)/PS_DDR4_DQS1_P",
+      "dst": "PL/PS_DDR",
+      "kind": "board",
+      "pin": "PS_DDR_DQS_P1_504",
+      "ball": "AY32",
+      "dir": ""
+    }
+  ]
+}

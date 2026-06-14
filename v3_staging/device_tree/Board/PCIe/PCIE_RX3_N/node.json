@@ -1,0 +1,19 @@
+{
+  "id": "Board/PCIe/PCIE_RX3_N",
+  "parent": "Board/PCIe",
+  "kind": "assignment",
+  "pin": "MGTHRXN0_227",
+  "ball": "AH3",
+  "dir": "in",
+  "resource": "transceiver(GT/PS-GTR)",
+  "edges": [
+    {
+      "src": "Board/PCIe/PCIE_RX3_N",
+      "dst": "PL/transceiver(GT/PS-GTR)",
+      "kind": "board",
+      "pin": "MGTHRXN0_227",
+      "ball": "AH3",
+      "dir": "in"
+    }
+  ]
+}

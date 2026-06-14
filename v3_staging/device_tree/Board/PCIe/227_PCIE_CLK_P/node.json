@@ -1,0 +1,19 @@
+{
+  "id": "Board/PCIe/227_PCIE_CLK_P",
+  "parent": "Board/PCIe",
+  "kind": "assignment",
+  "pin": "MGTREFCLK0P_227",
+  "ball": "AD12",
+  "dir": "",
+  "resource": "GT_refclk",
+  "edges": [
+    {
+      "src": "Board/PCIe/227_PCIE_CLK_P",
+      "dst": "PL/GT_refclk",
+      "kind": "board",
+      "pin": "MGTREFCLK0P_227",
+      "ball": "AD12",
+      "dir": ""
+    }
+  ]
+}

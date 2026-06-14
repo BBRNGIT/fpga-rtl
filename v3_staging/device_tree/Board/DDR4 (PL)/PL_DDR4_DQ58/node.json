@@ -1,0 +1,19 @@
+{
+  "id": "Board/DDR4 (PL)/PL_DDR4_DQ58",
+  "parent": "Board/DDR4 (PL)",
+  "kind": "assignment",
+  "pin": "IO_L24P_T3U_N10_69",
+  "ball": "C42",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/DDR4 (PL)/PL_DDR4_DQ58",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L24P_T3U_N10_69",
+      "ball": "C42",
+      "dir": ""
+    }
+  ]
+}

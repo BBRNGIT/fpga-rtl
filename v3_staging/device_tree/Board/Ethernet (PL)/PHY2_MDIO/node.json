@@ -1,0 +1,19 @@
+{
+  "id": "Board/Ethernet (PL)/PHY2_MDIO",
+  "parent": "Board/Ethernet (PL)",
+  "kind": "assignment",
+  "pin": "IO_T2U_N12_64",
+  "ball": "AR22",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/Ethernet (PL)/PHY2_MDIO",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_T2U_N12_64",
+      "ball": "AR22",
+      "dir": ""
+    }
+  ]
+}

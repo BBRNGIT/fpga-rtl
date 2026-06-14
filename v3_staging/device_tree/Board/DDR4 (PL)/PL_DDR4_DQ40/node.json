@@ -1,0 +1,19 @@
+{
+  "id": "Board/DDR4 (PL)/PL_DDR4_DQ40",
+  "parent": "Board/DDR4 (PL)",
+  "kind": "assignment",
+  "pin": "IO_L9N_T1L_N5_AD12N_69",
+  "ball": "A30",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/DDR4 (PL)/PL_DDR4_DQ40",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L9N_T1L_N5_AD12N_69",
+      "ball": "A30",
+      "dir": ""
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "Board/SFP/QSFP1_INTL",
+  "parent": "Board/SFP",
+  "kind": "assignment",
+  "pin": "IO_L2P_AD10P_93",
+  "ball": "J8",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/SFP/QSFP1_INTL",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L2P_AD10P_93",
+      "ball": "J8",
+      "dir": ""
+    }
+  ]
+}

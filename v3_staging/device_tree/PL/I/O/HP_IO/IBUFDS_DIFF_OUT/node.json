@@ -1,0 +1,27 @@
+{
+  "id": "PL/I/O/HP_IO/IBUFDS_DIFF_OUT",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 4,
+  "ports_list": [
+    {
+      "name": "I",
+      "dir": "in"
+    },
+    {
+      "name": "IB",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "OB",
+      "dir": "out"
+    }
+  ],
+  "note": "I",
+  "source": "ug974 p321",
+  "edges": []
+}

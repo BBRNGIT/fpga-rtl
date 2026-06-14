@@ -1,0 +1,19 @@
+{
+  "id": "Board/DDR4 (PL)/PL_DDR4_DQ55",
+  "parent": "Board/DDR4 (PL)",
+  "kind": "assignment",
+  "pin": "IO_L17N_T2U_N9_AD10N_69",
+  "ball": "A35",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/DDR4 (PL)/PL_DDR4_DQ55",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L17N_T2U_N9_AD10N_69",
+      "ball": "A35",
+      "dir": ""
+    }
+  ]
+}

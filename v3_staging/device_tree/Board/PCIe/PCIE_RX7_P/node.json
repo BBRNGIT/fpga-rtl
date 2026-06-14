@@ -1,0 +1,19 @@
+{
+  "id": "Board/PCIe/PCIE_RX7_P",
+  "parent": "Board/PCIe",
+  "kind": "assignment",
+  "pin": "MGTHRXP0_226",
+  "ball": "AM4",
+  "dir": "in",
+  "resource": "transceiver(GT/PS-GTR)",
+  "edges": [
+    {
+      "src": "Board/PCIe/PCIE_RX7_P",
+      "dst": "PL/transceiver(GT/PS-GTR)",
+      "kind": "board",
+      "pin": "MGTHRXP0_226",
+      "ball": "AM4",
+      "dir": "in"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "Board/DDR4 (PS)/PS_DDR4_BA0",
+  "parent": "Board/DDR4 (PS)",
+  "kind": "assignment",
+  "pin": "PS_DDR_BA0_504",
+  "ball": "AN37",
+  "dir": "",
+  "resource": "PS_DDR",
+  "edges": [
+    {
+      "src": "Board/DDR4 (PS)/PS_DDR4_BA0",
+      "dst": "PL/PS_DDR",
+      "kind": "board",
+      "pin": "PS_DDR_BA0_504",
+      "ball": "AN37",
+      "dir": ""
+    }
+  ]
+}

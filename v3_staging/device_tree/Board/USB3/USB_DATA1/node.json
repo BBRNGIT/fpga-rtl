@@ -1,0 +1,19 @@
+{
+  "id": "Board/USB3/USB_DATA1",
+  "parent": "Board/USB3",
+  "kind": "assignment",
+  "pin": "PS_MIO57_502",
+  "ball": "AB30",
+  "dir": "",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/USB3/USB_DATA1",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO57_502",
+      "ball": "AB30",
+      "dir": ""
+    }
+  ]
+}

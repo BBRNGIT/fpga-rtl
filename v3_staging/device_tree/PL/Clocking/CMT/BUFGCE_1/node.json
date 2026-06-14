@@ -1,0 +1,23 @@
+{
+  "id": "PL/Clocking/CMT/BUFGCE_1",
+  "parent": "PL/Clocking/CMT",
+  "kind": "config",
+  "ports": 3,
+  "ports_list": [
+    {
+      "name": "CE",
+      "dir": "in"
+    },
+    {
+      "name": "I",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    }
+  ],
+  "note": "CLOCK",
+  "source": "ug974 p224",
+  "edges": []
+}

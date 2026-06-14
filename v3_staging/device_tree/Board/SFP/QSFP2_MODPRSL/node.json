@@ -1,0 +1,19 @@
+{
+  "id": "Board/SFP/QSFP2_MODPRSL",
+  "parent": "Board/SFP",
+  "kind": "assignment",
+  "pin": "IO_L8P_HDGC_AD4P_93",
+  "ball": "D8",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/SFP/QSFP2_MODPRSL",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L8P_HDGC_AD4P_93",
+      "ball": "D8",
+      "dir": ""
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "Board/DisplayPort/GT0_DP_TX_P",
+  "parent": "Board/DisplayPort",
+  "kind": "assignment",
+  "pin": "PS_MGTRTXP3_505",
+  "ball": "AB39",
+  "dir": "out",
+  "resource": "transceiver(GT/PS-GTR)",
+  "edges": [
+    {
+      "src": "Board/DisplayPort/GT0_DP_TX_P",
+      "dst": "PL/transceiver(GT/PS-GTR)",
+      "kind": "board",
+      "pin": "PS_MGTRTXP3_505",
+      "ball": "AB39",
+      "dir": "out"
+    }
+  ]
+}

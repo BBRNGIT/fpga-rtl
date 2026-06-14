@@ -1,0 +1,19 @@
+{
+  "id": "Board/FMC/FMC2_CLK1_M2C_P",
+  "parent": "Board/FMC",
+  "kind": "assignment",
+  "pin": "IO_L13P_T2L_N0_GC_65",
+  "ball": "AR27",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/FMC/FMC2_CLK1_M2C_P",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L13P_T2L_N0_GC_65",
+      "ball": "AR27",
+      "dir": ""
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "id": "PL/CLB/LUT6/RAM32M16",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 26,
+  "ports_list": [
+    {
+      "name": "DOA",
+      "dir": "out",
+      "width": 2
+    },
+    {
+      "name": "DOB",
+      "dir": "out",
+      "width": 2
+    },
+    {
+      "name": "DOC",
+      "dir": "out",
+      "width": 2
+    },
+    {
+      "name": "DOD",
+      "dir": "out",
+      "width": 2
+    },
+    {
+      "name": "DOE",
+      "dir": "out",
+      "width": 2
+    },
+    {
+      "name": "DOF",
+      "dir": "out",
+      "width": 2
+    },
+    {
+      "name": "DOG",
+      "dir": "out",
+      "width": 2
+    },
+    {
+      "name": "DOH",
+      "dir": "out",
+      "width": 2
+    },
+    {
+      "name": "DIA",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DIB",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DIC",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DID",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DIE",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DIF",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DIG",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DIH",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "ADDRA",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "ADDRB",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "ADDRC",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "ADDRD",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "ADDRE",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "ADDRF",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "ADDRG",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "ADDRH",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "WE",
+      "dir": "in"
+    },
+    {
+      "name": "WCLK",
+      "dir": "in"
+    }
+  ],
+  "note": "CLB",
+  "source": "ug974 p547",
+  "edges": []
+}

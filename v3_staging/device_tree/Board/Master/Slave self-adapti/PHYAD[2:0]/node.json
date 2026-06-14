@@ -1,0 +1,19 @@
+{
+  "id": "Board/Master/Slave self-adapti/PHYAD[2:0]",
+  "parent": "Board/Master/Slave self-adapti",
+  "kind": "assignment",
+  "pin": "The_PHY_Address_is_011",
+  "ball": "",
+  "dir": "",
+  "resource": "other",
+  "edges": [
+    {
+      "src": "Board/Master/Slave self-adapti/PHYAD[2:0]",
+      "dst": "PL/other",
+      "kind": "board",
+      "pin": "The_PHY_Address_is_011",
+      "ball": "",
+      "dir": ""
+    }
+  ]
+}

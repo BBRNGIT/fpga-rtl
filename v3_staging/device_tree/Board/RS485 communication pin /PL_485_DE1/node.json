@@ -1,0 +1,19 @@
+{
+  "id": "Board/RS485 communication pin /PL_485_DE1",
+  "parent": "Board/RS485 communication pin ",
+  "kind": "assignment",
+  "pin": "IO_L11P_AD1P_90",
+  "ball": "K14",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/RS485 communication pin /PL_485_DE1",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L11P_AD1P_90",
+      "ball": "K14",
+      "dir": ""
+    }
+  ]
+}

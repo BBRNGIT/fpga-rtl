@@ -1,0 +1,19 @@
+{
+  "id": "Board/ZYNQ pins assignment of /505_PCIE_REFCLK_P",
+  "parent": "Board/ZYNQ pins assignment of ",
+  "kind": "assignment",
+  "pin": "PS_MGTREFCLK0P_505",
+  "ball": "AG37",
+  "dir": "",
+  "resource": "GT_refclk",
+  "edges": [
+    {
+      "src": "Board/ZYNQ pins assignment of /505_PCIE_REFCLK_P",
+      "dst": "PL/GT_refclk",
+      "kind": "board",
+      "pin": "PS_MGTREFCLK0P_505",
+      "ball": "AG37",
+      "dir": ""
+    }
+  ]
+}

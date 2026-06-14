@@ -1,0 +1,19 @@
+{
+  "id": "Board/SFP/QSFP1_RESETL",
+  "parent": "Board/SFP",
+  "kind": "assignment",
+  "pin": "IO_L1N_AD11N_93",
+  "ball": "F6",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/SFP/QSFP1_RESETL",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L1N_AD11N_93",
+      "ball": "F6",
+      "dir": ""
+    }
+  ]
+}

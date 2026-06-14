@@ -1,0 +1,19 @@
+{
+  "id": "Board/SMA/CLKN_D14",
+  "parent": "Board/SMA",
+  "kind": "assignment",
+  "pin": "IO_L14N_T2L_N3_GC_68",
+  "ball": "D14",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/SMA/CLKN_D14",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L14N_T2L_N3_GC_68",
+      "ball": "D14",
+      "dir": ""
+    }
+  ]
+}

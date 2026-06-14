@@ -1,0 +1,19 @@
+{
+  "id": "Board/Configure chip pin assig/MIO8_QSPI1_IO0",
+  "parent": "Board/Configure chip pin assig",
+  "kind": "assignment",
+  "pin": "PS_MIO8_500",
+  "ball": "AK33",
+  "dir": "",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/Configure chip pin assig/MIO8_QSPI1_IO0",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO8_500",
+      "ball": "AK33",
+      "dir": ""
+    }
+  ]
+}

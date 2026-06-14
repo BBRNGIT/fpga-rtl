@@ -1,0 +1,8 @@
+{
+  "id": "Board/SMA",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 6,
+  "note": "PL_IO",
+  "edges": []
+}

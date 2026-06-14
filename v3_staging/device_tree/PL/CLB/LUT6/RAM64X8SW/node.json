@@ -1,0 +1,38 @@
+{
+  "id": "PL/CLB/LUT6/RAM64X8SW",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 6,
+  "ports_list": [
+    {
+      "name": "A",
+      "dir": "in",
+      "width": 6
+    },
+    {
+      "name": "D",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out",
+      "width": 8
+    },
+    {
+      "name": "WCLK",
+      "dir": "in"
+    },
+    {
+      "name": "WE",
+      "dir": "in"
+    },
+    {
+      "name": "WSEL",
+      "dir": "in",
+      "width": 3
+    }
+  ],
+  "note": "CLB",
+  "source": "ug974 p580",
+  "edges": []
+}

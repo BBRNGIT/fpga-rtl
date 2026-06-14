@@ -1,0 +1,71 @@
+{
+  "id": "PL/CLB/LUT6/RAM32X1D",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 15,
+  "ports_list": [
+    {
+      "name": "DPO",
+      "dir": "out"
+    },
+    {
+      "name": "SPO",
+      "dir": "out"
+    },
+    {
+      "name": "A0",
+      "dir": "in"
+    },
+    {
+      "name": "A1",
+      "dir": "in"
+    },
+    {
+      "name": "A2",
+      "dir": "in"
+    },
+    {
+      "name": "A3",
+      "dir": "in"
+    },
+    {
+      "name": "A4",
+      "dir": "in"
+    },
+    {
+      "name": "D",
+      "dir": "in"
+    },
+    {
+      "name": "DPRA0",
+      "dir": "in"
+    },
+    {
+      "name": "DPRA1",
+      "dir": "in"
+    },
+    {
+      "name": "DPRA2",
+      "dir": "in"
+    },
+    {
+      "name": "DPRA3",
+      "dir": "in"
+    },
+    {
+      "name": "DPRA4",
+      "dir": "in"
+    },
+    {
+      "name": "WCLK",
+      "dir": "in"
+    },
+    {
+      "name": "WE",
+      "dir": "in"
+    }
+  ],
+  "note": "verilog template",
+  "source": "ug974 p556",
+  "edges": []
+}

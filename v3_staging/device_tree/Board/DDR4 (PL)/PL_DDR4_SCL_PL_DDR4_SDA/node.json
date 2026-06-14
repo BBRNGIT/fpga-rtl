@@ -1,0 +1,19 @@
+{
+  "id": "Board/DDR4 (PL)/PL_DDR4_SCL_PL_DDR4_SDA",
+  "parent": "Board/DDR4 (PL)",
+  "kind": "assignment",
+  "pin": "IO_L9P_AD3P_93_IO_L9N_AD3N_93",
+  "ball": "",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/DDR4 (PL)/PL_DDR4_SCL_PL_DDR4_SDA",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L9P_AD3P_93_IO_L9N_AD3N_93",
+      "ball": "",
+      "dir": ""
+    }
+  ]
+}

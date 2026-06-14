@@ -1,0 +1,19 @@
+{
+  "id": "Board/Configuration Chip pin a/MMC_CCLK",
+  "parent": "Board/Configuration Chip pin a",
+  "kind": "assignment",
+  "pin": "PS_MIO22_500",
+  "ball": "AH32",
+  "dir": "",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/Configuration Chip pin a/MMC_CCLK",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO22_500",
+      "ball": "AH32",
+      "dir": ""
+    }
+  ]
+}

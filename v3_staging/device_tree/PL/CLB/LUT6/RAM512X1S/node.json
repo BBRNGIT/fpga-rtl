@@ -1,0 +1,32 @@
+{
+  "id": "PL/CLB/LUT6/RAM512X1S",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 5,
+  "ports_list": [
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "D",
+      "dir": "in"
+    },
+    {
+      "name": "A",
+      "dir": "in",
+      "width": 9
+    },
+    {
+      "name": "WE",
+      "dir": "in"
+    },
+    {
+      "name": "WCLK",
+      "dir": "in"
+    }
+  ],
+  "note": "CLB",
+  "source": "ug974 p562",
+  "edges": []
+}

@@ -1,0 +1,39 @@
+{
+  "id": "PL/I/O/HP_IO/IOBUFDS_INTERMDISABLE",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 7,
+  "ports_list": [
+    {
+      "name": "I",
+      "dir": "in"
+    },
+    {
+      "name": "IBUFDISABLE",
+      "dir": "in"
+    },
+    {
+      "name": "INTERMDISABLE",
+      "dir": "in"
+    },
+    {
+      "name": "IO",
+      "dir": "inout"
+    },
+    {
+      "name": "IOB",
+      "dir": "inout"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "T",
+      "dir": "in"
+    }
+  ],
+  "note": "I",
+  "source": "ug974 p388",
+  "edges": []
+}

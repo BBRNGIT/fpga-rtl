@@ -1,0 +1,19 @@
+{
+  "id": "Board/DDR4 (PL)/PL_DDR4_DQ45",
+  "parent": "Board/DDR4 (PL)",
+  "kind": "assignment",
+  "pin": "IO_L8P_T1L_N2_AD5P_69",
+  "ball": "C29",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/DDR4 (PL)/PL_DDR4_DQ45",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L8P_T1L_N2_AD5P_69",
+      "ball": "C29",
+      "dir": ""
+    }
+  ]
+}

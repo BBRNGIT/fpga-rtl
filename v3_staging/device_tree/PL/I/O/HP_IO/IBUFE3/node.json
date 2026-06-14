@@ -1,0 +1,36 @@
+{
+  "id": "PL/I/O/HP_IO/IBUFE3",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 6,
+  "ports_list": [
+    {
+      "name": "I",
+      "dir": "in"
+    },
+    {
+      "name": "IBUFDISABLE",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "OSC",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "OSC_EN",
+      "dir": "in"
+    },
+    {
+      "name": "VREF",
+      "dir": "in"
+    }
+  ],
+  "note": "I",
+  "source": "ug974 p346",
+  "edges": []
+}

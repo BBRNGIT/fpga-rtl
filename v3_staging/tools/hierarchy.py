@@ -67,20 +67,26 @@ for sub, el, role, count, prefixes in PHYS:
             N(f"{eid}/{name}", eid, "config", ports=len(v.get("ports", [])),
               ports_list=v.get("ports", []),                # full port-level netlist detail
               note=v.get("note") or v.get("port_src") or v.get("group") or "", source=v.get("source", ""))
-# any ported catalogue primitive not mapped -> its subsystem bucket (so nothing is dropped)
-def subof(n):
-    n = n.upper()
-    if re.match(r"(GT[HY]E3)", n): return "Transceiver"
-    if re.match(r"(PCIE|CMAC|ILKN)", n): return "Config"
-    g = cat[n].get("group", "")
-    return {"CLB":"CLB","BLOCKRAM":"Memory","REGISTER":"CLB","CLOCK":"Clocking","I":"I/O",
-            "ADVANCED":"Transceiver","CONFIGURATION":"Config","ARITHMETIC":"DSP","PS":"Config"}.get(g, "Config")
+# remaining ported primitives placed by their authoritative PRIMITIVE_GROUP (no name-prefix
+# guessing). PS blocks live under the PS domain (below); E3 transceivers are UltraScale, not in
+# this UltraScale+ part -> honestly excluded. Placement here is group-level; the exact config-bit
+# map is P1 (UG574/573/579), deliberately not faked.
+GROUP_EL = {"CLB": "PL/CLB/dedicated_gate", "REGISTER": "PL/CLB/storage_element",
+            "BLOCKRAM": "PL/Memory/RAMB36E2", "CLOCK": "PL/Clocking/CMT", "I": "PL/I/O/HP_IO",
+            "ADVANCED": "PL/Transceiver/_hard_ip", "CONFIGURATION": "PL/Config/config",
+            "ARITHMETIC": "PL/DSP/DSP48E2"}
 for name in sorted(cat):
-    if name in assigned or not cat[name].get("ports"): continue
-    sub = subof(name); pid = f"PL/{sub}/_unmapped"
-    if not any(x["id"] == pid for x in nodes): N(pid, f"PL/{sub}", "element", role="(config-map TBD in P1)")
-    N(f"{pid}/{name}", pid, "config", ports=len(cat[name]["ports"]),
-      ports_list=cat[name]["ports"], note=cat[name].get("note",""))
+    v = cat[name]
+    if name in assigned or not v.get("ports"): continue
+    g = v.get("group", "")
+    if g == "PS": continue                                   # PS-domain block, placed under PS
+    if re.match(r"GT[HY]E3", name.upper()):                  # UltraScale (E3) — not in ZU19EG (E4)
+        N(f"PL/Transceiver/_not_in_part/{name}", "PL/Transceiver", "excluded", ports=len(v["ports"]),
+          note="UltraScale GTHE3/GTYE3 — ZU19EG is UltraScale+ (uses E4)"); continue
+    pid = GROUP_EL.get(g, "PL/Config/config")
+    if not any(x["id"] == pid for x in nodes):
+        N(pid, pid.rsplit("/", 1)[0], "element", role="(group-level placement; config-map TBD in P1)")
+    N(f"{pid}/{name}", pid, "config", ports=len(v["ports"]), ports_list=v["ports"], note=v.get("note", ""))
 
 # --- PS: blocks -> signal count ---------------------------------------------------------
 for blk, sigs in ps.items():
@@ -181,4 +187,8 @@ if mat:
 
 print(f"hierarchy: {len(nodes)} nodes, {len(edges)} edges -> hierarchy.json + hierarchy.html"
       + (f" + device_tree/ ({sum(1 for n in nodes)} dirs)" if mat else ""))
-print(f"  PL configs mapped to physical element: {len(assigned)} / {sum(1 for n in cat.values() if n.get('ports'))} catalogue primitives")
+_cfg = sum(1 for n in nodes if n["kind"] == "config")
+_exc = sum(1 for n in nodes if n["kind"] == "excluded")
+_unm = sum(1 for n in nodes if "_unmapped" in n["id"])
+print(f"  catalogue placement: {_cfg} configs placed under physical elements, {_unm} unmapped, "
+      f"{_exc} excluded (E3 not in part), PS blocks under PS domain")

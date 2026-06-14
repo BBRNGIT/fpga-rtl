@@ -1,0 +1,51 @@
+{
+  "id": "PL/CLB/LUT6/RAM64X1S",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 10,
+  "ports_list": [
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "A0",
+      "dir": "in"
+    },
+    {
+      "name": "A1",
+      "dir": "in"
+    },
+    {
+      "name": "A2",
+      "dir": "in"
+    },
+    {
+      "name": "A3",
+      "dir": "in"
+    },
+    {
+      "name": "A4",
+      "dir": "in"
+    },
+    {
+      "name": "A5",
+      "dir": "in"
+    },
+    {
+      "name": "D",
+      "dir": "in"
+    },
+    {
+      "name": "WCLK",
+      "dir": "in"
+    },
+    {
+      "name": "WE",
+      "dir": "in"
+    }
+  ],
+  "note": "verilog template",
+  "source": "ug974 p577",
+  "edges": []
+}

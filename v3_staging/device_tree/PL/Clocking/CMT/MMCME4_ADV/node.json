@@ -1,0 +1,154 @@
+{
+  "id": "PL/Clocking/CMT/MMCME4_ADV",
+  "parent": "PL/Clocking/CMT",
+  "kind": "config",
+  "ports": 35,
+  "ports_list": [
+    {
+      "name": "CDDCDONE",
+      "dir": "out"
+    },
+    {
+      "name": "CDDCREQ",
+      "dir": "in"
+    },
+    {
+      "name": "CLKFBIN",
+      "dir": "in"
+    },
+    {
+      "name": "CLKFBOUT",
+      "dir": "out"
+    },
+    {
+      "name": "CLKFBOUTB",
+      "dir": "out"
+    },
+    {
+      "name": "CLKFBSTOPPED",
+      "dir": "out"
+    },
+    {
+      "name": "CLKINSEL",
+      "dir": "in"
+    },
+    {
+      "name": "CLKINSTOPPED",
+      "dir": "out"
+    },
+    {
+      "name": "CLKIN1",
+      "dir": "in"
+    },
+    {
+      "name": "CLKIN2",
+      "dir": "in"
+    },
+    {
+      "name": "CLKOUT0",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT0B",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT1",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT1B",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT2",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT2B",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT3",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT3B",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT4",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT5",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT6",
+      "dir": "out"
+    },
+    {
+      "name": "DADDR",
+      "dir": "in",
+      "width": 7
+    },
+    {
+      "name": "DCLK",
+      "dir": "in"
+    },
+    {
+      "name": "DEN",
+      "dir": "in"
+    },
+    {
+      "name": "DI",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "DO",
+      "dir": "out",
+      "width": 16
+    },
+    {
+      "name": "DRDY",
+      "dir": "out"
+    },
+    {
+      "name": "DWE",
+      "dir": "in"
+    },
+    {
+      "name": "LOCKED",
+      "dir": "out"
+    },
+    {
+      "name": "PSCLK",
+      "dir": "in"
+    },
+    {
+      "name": "PSDONE",
+      "dir": "out"
+    },
+    {
+      "name": "PSEN",
+      "dir": "in"
+    },
+    {
+      "name": "PSINCDEC",
+      "dir": "in"
+    },
+    {
+      "name": "PWRDWN",
+      "dir": "in"
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    }
+  ],
+  "note": "CLOCK",
+  "source": "ug974 p454",
+  "edges": []
+}

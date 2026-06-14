@@ -1,0 +1,19 @@
+{
+  "id": "Board/ZYNQ pins assignment of /PCIE_TX_N",
+  "parent": "Board/ZYNQ pins assignment of ",
+  "kind": "assignment",
+  "pin": "PS_MGTRTXN0_505",
+  "ball": "AH40",
+  "dir": "out",
+  "resource": "transceiver(GT/PS-GTR)",
+  "edges": [
+    {
+      "src": "Board/ZYNQ pins assignment of /PCIE_TX_N",
+      "dst": "PL/transceiver(GT/PS-GTR)",
+      "kind": "board",
+      "pin": "PS_MGTRTXN0_505",
+      "ball": "AH40",
+      "dir": "out"
+    }
+  ]
+}

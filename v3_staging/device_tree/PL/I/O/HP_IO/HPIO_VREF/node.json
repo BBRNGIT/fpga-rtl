@@ -1,0 +1,20 @@
+{
+  "id": "PL/I/O/HP_IO/HPIO_VREF",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 2,
+  "ports_list": [
+    {
+      "name": "FABRIC_VREF_TUNE",
+      "dir": "in",
+      "width": 7
+    },
+    {
+      "name": "VREF",
+      "dir": "out"
+    }
+  ],
+  "note": "I",
+  "source": "ug974 p307",
+  "edges": []
+}

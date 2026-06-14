@@ -1,0 +1,8 @@
+{
+  "id": "Board/DDR4 (PS)",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 117,
+  "note": "PS_DDR",
+  "edges": []
+}

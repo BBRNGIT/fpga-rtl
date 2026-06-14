@@ -1,0 +1,33 @@
+{
+  "id": "PL/I/O/HP_IO/OBUFDS_GTE4_ADV",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 5,
+  "ports_list": [
+    {
+      "name": "CEB",
+      "dir": "in"
+    },
+    {
+      "name": "I",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "OB",
+      "dir": "out"
+    },
+    {
+      "name": "RXRECCLK_SEL",
+      "dir": "in",
+      "width": 2
+    }
+  ],
+  "note": "ADVANCED",
+  "source": "ug974 p487",
+  "edges": []
+}

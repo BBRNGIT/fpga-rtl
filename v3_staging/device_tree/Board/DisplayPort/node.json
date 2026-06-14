@@ -1,0 +1,8 @@
+{
+  "id": "Board/DisplayPort",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 10,
+  "note": "transceiver(GT/PS-GTR)",
+  "edges": []
+}

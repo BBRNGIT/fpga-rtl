@@ -1,0 +1,59 @@
+{
+  "id": "PL/CLB/LUT6/CFGLUT5",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 12,
+  "ports_list": [
+    {
+      "name": "CDI",
+      "dir": "in"
+    },
+    {
+      "name": "CDO",
+      "dir": "out"
+    },
+    {
+      "name": "CE",
+      "dir": "in"
+    },
+    {
+      "name": "CLK",
+      "dir": "in"
+    },
+    {
+      "name": "O5",
+      "dir": "out"
+    },
+    {
+      "name": "O6",
+      "dir": "out"
+    },
+    {
+      "name": "LUT_Inputs:_Logic_inputs_to_the_programmable_look-up_table.",
+      "dir": "in"
+    },
+    {
+      "name": "I0",
+      "dir": "in"
+    },
+    {
+      "name": "I1",
+      "dir": "in"
+    },
+    {
+      "name": "I2",
+      "dir": "in"
+    },
+    {
+      "name": "I3",
+      "dir": "in"
+    },
+    {
+      "name": "I4",
+      "dir": "in"
+    }
+  ],
+  "note": "CLB",
+  "source": "ug974 p243",
+  "edges": []
+}

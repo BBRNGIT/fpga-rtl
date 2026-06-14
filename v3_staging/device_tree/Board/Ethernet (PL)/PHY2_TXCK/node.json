@@ -1,0 +1,19 @@
+{
+  "id": "Board/Ethernet (PL)/PHY2_TXCK",
+  "parent": "Board/Ethernet (PL)",
+  "kind": "assignment",
+  "pin": "IO_L20N_T3L_N3_AD1N_64",
+  "ball": "AM20",
+  "dir": "out",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/Ethernet (PL)/PHY2_TXCK",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L20N_T3L_N3_AD1N_64",
+      "ball": "AM20",
+      "dir": "out"
+    }
+  ]
+}

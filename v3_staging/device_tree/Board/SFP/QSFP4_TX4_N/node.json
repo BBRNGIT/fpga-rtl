@@ -1,0 +1,19 @@
+{
+  "id": "Board/SFP/QSFP4_TX4_N",
+  "parent": "Board/SFP",
+  "kind": "assignment",
+  "pin": "MGTYTXN3_131",
+  "ball": "E37",
+  "dir": "out",
+  "resource": "transceiver(GT/PS-GTR)",
+  "edges": [
+    {
+      "src": "Board/SFP/QSFP4_TX4_N",
+      "dst": "PL/transceiver(GT/PS-GTR)",
+      "kind": "board",
+      "pin": "MGTYTXN3_131",
+      "ball": "E37",
+      "dir": "out"
+    }
+  ]
+}

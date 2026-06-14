@@ -1,0 +1,19 @@
+{
+  "id": "Board/User LED light pin assig/PL_LED1",
+  "parent": "Board/User LED light pin assig",
+  "kind": "assignment",
+  "pin": "IO_L10P_AD10P_94",
+  "ball": "B3",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/User LED light pin assig/PL_LED1",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L10P_AD10P_94",
+      "ball": "B3",
+      "dir": ""
+    }
+  ]
+}

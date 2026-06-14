@@ -1,0 +1,15 @@
+{
+  "id": "PL/I/O/HP_IO/KEEPER",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 1,
+  "ports_list": [
+    {
+      "name": "O",
+      "dir": "inout"
+    }
+  ],
+  "note": "I",
+  "source": "ug974 p401",
+  "edges": []
+}

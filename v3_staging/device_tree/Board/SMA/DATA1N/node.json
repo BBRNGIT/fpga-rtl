@@ -1,0 +1,19 @@
+{
+  "id": "Board/SMA/DATA1N",
+  "parent": "Board/SMA",
+  "kind": "assignment",
+  "pin": "IO_L10N_T1U_N7_QBC_AD4N_68",
+  "ball": "F18",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/SMA/DATA1N",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L10N_T1U_N7_QBC_AD4N_68",
+      "ball": "F18",
+      "dir": ""
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "id": "PL/CLB/LUT6/RAM32X16DR8",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 26,
+  "ports_list": [
+    {
+      "name": "ADDRA",
+      "dir": "in",
+      "width": 6
+    },
+    {
+      "name": "ADDRB",
+      "dir": "in",
+      "width": 6
+    },
+    {
+      "name": "ADDRC",
+      "dir": "in",
+      "width": 6
+    },
+    {
+      "name": "ADDRD",
+      "dir": "in",
+      "width": 6
+    },
+    {
+      "name": "ADDRE",
+      "dir": "in",
+      "width": 6
+    },
+    {
+      "name": "ADDRF",
+      "dir": "in",
+      "width": 6
+    },
+    {
+      "name": "ADDRG",
+      "dir": "in",
+      "width": 6
+    },
+    {
+      "name": "ADDRH",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "DIA",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DIB",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DIC",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DID",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DIE",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DIF",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DIG",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DIH",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DOA",
+      "dir": "out"
+    },
+    {
+      "name": "DOB",
+      "dir": "out"
+    },
+    {
+      "name": "DOC",
+      "dir": "out"
+    },
+    {
+      "name": "DOD",
+      "dir": "out"
+    },
+    {
+      "name": "DOE",
+      "dir": "out"
+    },
+    {
+      "name": "DOF",
+      "dir": "out"
+    },
+    {
+      "name": "DOG",
+      "dir": "out"
+    },
+    {
+      "name": "DOH",
+      "dir": "out",
+      "width": 2
+    },
+    {
+      "name": "WCLK",
+      "dir": "in"
+    },
+    {
+      "name": "WE",
+      "dir": "in"
+    }
+  ],
+  "note": "CLB",
+  "source": "ug974 p552",
+  "edges": []
+}

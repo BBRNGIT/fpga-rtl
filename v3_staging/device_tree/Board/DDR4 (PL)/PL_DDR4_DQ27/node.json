@@ -1,0 +1,19 @@
+{
+  "id": "Board/DDR4 (PL)/PL_DDR4_DQ27",
+  "parent": "Board/DDR4 (PL)",
+  "kind": "assignment",
+  "pin": "IO_L24N_T3U_N11_71",
+  "ball": "A23",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/DDR4 (PL)/PL_DDR4_DQ27",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L24N_T3U_N11_71",
+      "ball": "A23",
+      "dir": ""
+    }
+  ]
+}

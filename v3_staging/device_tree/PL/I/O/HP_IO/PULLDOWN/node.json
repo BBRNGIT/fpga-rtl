@@ -1,0 +1,14 @@
+{
+  "id": "PL/I/O/HP_IO/PULLDOWN",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 1,
+  "ports_list": [
+    {
+      "name": "O",
+      "dir": "out"
+    }
+  ],
+  "note": "",
+  "edges": []
+}

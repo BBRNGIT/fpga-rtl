@@ -1,0 +1,19 @@
+{
+  "id": "Board/Clock/PS_PADO_503",
+  "parent": "Board/Clock",
+  "kind": "assignment",
+  "pin": "PS_PADO_503",
+  "ball": "AE27",
+  "dir": "",
+  "resource": "PS",
+  "edges": [
+    {
+      "src": "Board/Clock/PS_PADO_503",
+      "dst": "PL/PS",
+      "kind": "board",
+      "pin": "PS_PADO_503",
+      "ball": "AE27",
+      "dir": ""
+    }
+  ]
+}

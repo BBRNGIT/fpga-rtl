@@ -1,0 +1,19 @@
+{
+  "id": "Board/FMC/FMC1_CLK1_N",
+  "parent": "Board/FMC",
+  "kind": "assignment",
+  "pin": "IO_L12N_T1U_N11_GC_67",
+  "ball": "AT10",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/FMC/FMC1_CLK1_N",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L12N_T1U_N11_GC_67",
+      "ball": "AT10",
+      "dir": ""
+    }
+  ]
+}

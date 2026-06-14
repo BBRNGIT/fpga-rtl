@@ -1,0 +1,8 @@
+{
+  "id": "Board/MIPI",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 10,
+  "note": "PL_IO",
+  "edges": []
+}

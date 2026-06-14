@@ -1,0 +1,8 @@
+{
+  "id": "Board/Ethernet (PL)",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 15,
+  "note": "PL_IO",
+  "edges": []
+}

@@ -1,0 +1,19 @@
+{
+  "id": "Board/DDR4 (PS)/PS_DDR4_DQ25",
+  "parent": "Board/DDR4 (PS)",
+  "kind": "assignment",
+  "pin": "PS_DDR_DQ25_504",
+  "ball": "AU33",
+  "dir": "",
+  "resource": "PS_DDR",
+  "edges": [
+    {
+      "src": "Board/DDR4 (PS)/PS_DDR4_DQ25",
+      "dst": "PL/PS_DDR",
+      "kind": "board",
+      "pin": "PS_DDR_DQ25_504",
+      "ball": "AU33",
+      "dir": ""
+    }
+  ]
+}

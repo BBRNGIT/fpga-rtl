@@ -1,0 +1,83 @@
+{
+  "id": "PL/Clocking/CMT/MMCME4_BASE",
+  "parent": "PL/Clocking/CMT",
+  "kind": "config",
+  "ports": 18,
+  "ports_list": [
+    {
+      "name": "CLKFBIN",
+      "dir": "in"
+    },
+    {
+      "name": "CLKFBOUT",
+      "dir": "out"
+    },
+    {
+      "name": "CLKFBOUTB",
+      "dir": "out"
+    },
+    {
+      "name": "CLKIN1",
+      "dir": "in"
+    },
+    {
+      "name": "CLKOUT0",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT0B",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT1",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT1B",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT2",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT2B",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT3",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT3B",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT4",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT5",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT6",
+      "dir": "out"
+    },
+    {
+      "name": "LOCKED",
+      "dir": "out"
+    },
+    {
+      "name": "PWRDWN",
+      "dir": "in"
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    }
+  ],
+  "note": "CLOCK",
+  "source": "ug974 p463",
+  "edges": []
+}

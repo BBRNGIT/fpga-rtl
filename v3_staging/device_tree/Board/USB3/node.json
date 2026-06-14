@@ -1,0 +1,8 @@
+{
+  "id": "Board/USB3",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 23,
+  "note": "PS_MIO",
+  "edges": []
+}

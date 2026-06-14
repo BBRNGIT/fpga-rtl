@@ -1,0 +1,19 @@
+{
+  "id": "Board/SD/SD_CD",
+  "parent": "Board/SD",
+  "kind": "assignment",
+  "pin": "PS_MIO45_501",
+  "ball": "T29",
+  "dir": "",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/SD/SD_CD",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO45_501",
+      "ball": "T29",
+      "dir": ""
+    }
+  ]
+}

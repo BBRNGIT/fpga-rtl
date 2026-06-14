@@ -1,0 +1,8 @@
+{
+  "id": "Board/Master/Slave self-adapti",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 1,
+  "note": "other",
+  "edges": []
+}

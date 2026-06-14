@@ -1,0 +1,19 @@
+{
+  "id": "Board/RS485 communication pin /PL_485_RXD2",
+  "parent": "Board/RS485 communication pin ",
+  "kind": "assignment",
+  "pin": "IO_L10N_AD10N_91",
+  "ball": "B10",
+  "dir": "in",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/RS485 communication pin /PL_485_RXD2",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L10N_AD10N_91",
+      "ball": "B10",
+      "dir": "in"
+    }
+  ]
+}

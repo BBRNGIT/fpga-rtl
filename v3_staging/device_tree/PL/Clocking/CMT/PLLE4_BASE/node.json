@@ -1,0 +1,59 @@
+{
+  "id": "PL/Clocking/CMT/PLLE4_BASE",
+  "parent": "PL/Clocking/CMT",
+  "kind": "config",
+  "ports": 12,
+  "ports_list": [
+    {
+      "name": "CLKFBIN",
+      "dir": "in"
+    },
+    {
+      "name": "CLKFBOUT",
+      "dir": "out"
+    },
+    {
+      "name": "CLKIN",
+      "dir": "in"
+    },
+    {
+      "name": "CLKOUTPHY",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUTPHYEN",
+      "dir": "in"
+    },
+    {
+      "name": "CLKOUT0",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT0B",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT1",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT1B",
+      "dir": "out"
+    },
+    {
+      "name": "LOCKED",
+      "dir": "out"
+    },
+    {
+      "name": "PWRDWN",
+      "dir": "in"
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    }
+  ],
+  "note": "CLOCK",
+  "source": "ug974 p523",
+  "edges": []
+}

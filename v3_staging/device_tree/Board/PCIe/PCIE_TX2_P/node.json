@@ -1,0 +1,19 @@
+{
+  "id": "Board/PCIe/PCIE_TX2_P",
+  "parent": "Board/PCIe",
+  "kind": "assignment",
+  "pin": "MGTHTXP1_227",
+  "ball": "AF8",
+  "dir": "out",
+  "resource": "transceiver(GT/PS-GTR)",
+  "edges": [
+    {
+      "src": "Board/PCIe/PCIE_TX2_P",
+      "dst": "PL/transceiver(GT/PS-GTR)",
+      "kind": "board",
+      "pin": "MGTHTXP1_227",
+      "ball": "AF8",
+      "dir": "out"
+    }
+  ]
+}

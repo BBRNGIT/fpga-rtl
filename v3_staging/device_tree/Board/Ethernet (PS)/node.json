@@ -1,0 +1,8 @@
+{
+  "id": "Board/Ethernet (PS)",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 14,
+  "note": "PS_MIO",
+  "edges": []
+}

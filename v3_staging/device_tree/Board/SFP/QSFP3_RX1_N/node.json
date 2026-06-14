@@ -1,0 +1,19 @@
+{
+  "id": "Board/SFP/QSFP3_RX1_N",
+  "parent": "Board/SFP",
+  "kind": "assignment",
+  "pin": "MGTYRXN0_130",
+  "ball": "L42",
+  "dir": "in",
+  "resource": "transceiver(GT/PS-GTR)",
+  "edges": [
+    {
+      "src": "Board/SFP/QSFP3_RX1_N",
+      "dst": "PL/transceiver(GT/PS-GTR)",
+      "kind": "board",
+      "pin": "MGTYRXN0_130",
+      "ball": "L42",
+      "dir": "in"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "PL/I/O/HP_IO/IDDRE1",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 6,
+  "ports_list": [
+    {
+      "name": "C",
+      "dir": "in"
+    },
+    {
+      "name": "CB",
+      "dir": "in"
+    },
+    {
+      "name": "D",
+      "dir": "in"
+    },
+    {
+      "name": "Q1",
+      "dir": "out"
+    },
+    {
+      "name": "Q2",
+      "dir": "out"
+    },
+    {
+      "name": "R",
+      "dir": "in"
+    }
+  ],
+  "note": "REGISTER",
+  "source": "ug974 p352",
+  "edges": []
+}

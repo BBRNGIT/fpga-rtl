@@ -1,0 +1,19 @@
+{
+  "id": "Board/Keys ZYNQ pin assignment/PL_KEY",
+  "parent": "Board/Keys ZYNQ pin assignment",
+  "kind": "assignment",
+  "pin": "IO_L5P_HDGC_94",
+  "ball": "D4",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/Keys ZYNQ pin assignment/PL_KEY",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L5P_HDGC_94",
+      "ball": "D4",
+      "dir": ""
+    }
+  ]
+}

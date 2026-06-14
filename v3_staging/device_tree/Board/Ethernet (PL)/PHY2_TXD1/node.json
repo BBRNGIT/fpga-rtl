@@ -1,0 +1,19 @@
+{
+  "id": "Board/Ethernet (PL)/PHY2_TXD1",
+  "parent": "Board/Ethernet (PL)",
+  "kind": "assignment",
+  "pin": "IO_L24N_T3U_N11_64",
+  "ball": "AK22",
+  "dir": "out",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/Ethernet (PL)/PHY2_TXD1",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L24N_T3U_N11_64",
+      "ball": "AK22",
+      "dir": "out"
+    }
+  ]
+}

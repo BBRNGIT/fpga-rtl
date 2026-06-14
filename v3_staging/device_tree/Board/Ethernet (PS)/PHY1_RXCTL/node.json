@@ -1,0 +1,19 @@
+{
+  "id": "Board/Ethernet (PS)/PHY1_RXCTL",
+  "parent": "Board/Ethernet (PS)",
+  "kind": "assignment",
+  "pin": "PS_MIO75_502",
+  "ball": "AF33",
+  "dir": "in",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/Ethernet (PS)/PHY1_RXCTL",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO75_502",
+      "ball": "AF33",
+      "dir": "in"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "Board/RS485 communication pin ",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 6,
+  "note": "PL_IO",
+  "edges": []
+}

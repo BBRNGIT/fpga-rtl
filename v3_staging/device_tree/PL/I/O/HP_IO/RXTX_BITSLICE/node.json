@@ -1,0 +1,152 @@
+{
+  "id": "PL/I/O/HP_IO/RXTX_BITSLICE",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 33,
+  "ports_list": [
+    {
+      "name": "D",
+      "dir": "in",
+      "width": 8
+    },
+    {
+      "name": "DATAIN",
+      "dir": "in"
+    },
+    {
+      "name": "FIFO_EMPTY",
+      "dir": "out"
+    },
+    {
+      "name": "FIFO_RD_CLK",
+      "dir": "in"
+    },
+    {
+      "name": "FIFO_RD_EN",
+      "dir": "in"
+    },
+    {
+      "name": "FIFO_WRCLK_OUT",
+      "dir": "out"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "Q",
+      "dir": "out",
+      "width": 8
+    },
+    {
+      "name": "RX_BIT_CTRL_IN",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "RX_BIT_CTRL_OUT",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "RX_CE",
+      "dir": "in"
+    },
+    {
+      "name": "RX_CLK",
+      "dir": "in"
+    },
+    {
+      "name": "RX_CNTVALUEIN",
+      "dir": "in",
+      "width": 9
+    },
+    {
+      "name": "RX_CNTVALUEOUT",
+      "dir": "out",
+      "width": 9
+    },
+    {
+      "name": "RX_EN_VTC",
+      "dir": "in"
+    },
+    {
+      "name": "RX_INC",
+      "dir": "in"
+    },
+    {
+      "name": "RX_LOAD",
+      "dir": "in"
+    },
+    {
+      "name": "RX_RST",
+      "dir": "in"
+    },
+    {
+      "name": "RX_RST_DLY",
+      "dir": "in"
+    },
+    {
+      "name": "T",
+      "dir": "in"
+    },
+    {
+      "name": "TBYTE_IN",
+      "dir": "in"
+    },
+    {
+      "name": "T_OUT",
+      "dir": "out"
+    },
+    {
+      "name": "TX_BIT_CTRL_IN",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_OUT",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "TX_CE",
+      "dir": "in"
+    },
+    {
+      "name": "TX_CLK",
+      "dir": "in"
+    },
+    {
+      "name": "TX_CNTVALUEIN",
+      "dir": "in",
+      "width": 9
+    },
+    {
+      "name": "TX_CNTVALUEOUT",
+      "dir": "out",
+      "width": 9
+    },
+    {
+      "name": "TX_EN_VTC",
+      "dir": "in"
+    },
+    {
+      "name": "TX_INC",
+      "dir": "in"
+    },
+    {
+      "name": "TX_LOAD",
+      "dir": "in"
+    },
+    {
+      "name": "TX_RST",
+      "dir": "in"
+    },
+    {
+      "name": "TX_RST_DLY",
+      "dir": "in"
+    }
+  ],
+  "note": "",
+  "edges": []
+}

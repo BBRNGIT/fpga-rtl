@@ -1,0 +1,19 @@
+{
+  "id": "Board/Ethernet (PS)/PHY1_MDC",
+  "parent": "Board/Ethernet (PS)",
+  "kind": "assignment",
+  "pin": "PS_MIO76_502",
+  "ball": "AH31",
+  "dir": "",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/Ethernet (PS)/PHY1_MDC",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO76_502",
+      "ball": "AH31",
+      "dir": ""
+    }
+  ]
+}

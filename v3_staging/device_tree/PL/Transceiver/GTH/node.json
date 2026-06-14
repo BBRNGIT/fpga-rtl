@@ -1,0 +1,8 @@
+{
+  "id": "PL/Transceiver/GTH",
+  "parent": "PL/Transceiver",
+  "kind": "element",
+  "role": "16.3Gb/s transceiver",
+  "count": 44,
+  "edges": []
+}

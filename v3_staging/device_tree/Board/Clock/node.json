@@ -1,0 +1,8 @@
+{
+  "id": "Board/Clock",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 2,
+  "note": "PS",
+  "edges": []
+}

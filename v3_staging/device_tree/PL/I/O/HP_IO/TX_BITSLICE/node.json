@@ -1,0 +1,89 @@
+{
+  "id": "PL/I/O/HP_IO/TX_BITSLICE",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 18,
+  "ports_list": [
+    {
+      "name": "CE",
+      "dir": "in"
+    },
+    {
+      "name": "CLK",
+      "dir": "in"
+    },
+    {
+      "name": "CNTVALUEIN",
+      "dir": "in",
+      "width": 9
+    },
+    {
+      "name": "CNTVALUEOUT",
+      "dir": "out",
+      "width": 9
+    },
+    {
+      "name": "D",
+      "dir": "in",
+      "width": 8
+    },
+    {
+      "name": "EN_VTC",
+      "dir": "in"
+    },
+    {
+      "name": "INC",
+      "dir": "in"
+    },
+    {
+      "name": "LOAD",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    },
+    {
+      "name": "RST_DLY",
+      "dir": "in"
+    },
+    {
+      "name": "RX_BIT_CTRL_IN",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "RX_BIT_CTRL_OUT",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "T",
+      "dir": "in"
+    },
+    {
+      "name": "TBYTE_IN",
+      "dir": "in"
+    },
+    {
+      "name": "T_OUT",
+      "dir": "out"
+    },
+    {
+      "name": "TX_BIT_CTRL_IN",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_OUT",
+      "dir": "out",
+      "width": 40
+    }
+  ],
+  "note": "",
+  "edges": []
+}

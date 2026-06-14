@@ -1,0 +1,19 @@
+{
+  "id": "Board/CAN/CAN0_TX",
+  "parent": "Board/CAN",
+  "kind": "assignment",
+  "pin": "PS_MIO35_501",
+  "ball": "N29",
+  "dir": "out",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/CAN/CAN0_TX",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO35_501",
+      "ball": "N29",
+      "dir": "out"
+    }
+  ]
+}

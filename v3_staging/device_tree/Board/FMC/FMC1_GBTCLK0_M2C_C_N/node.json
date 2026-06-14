@@ -1,0 +1,19 @@
+{
+  "id": "Board/FMC/FMC1_GBTCLK0_M2C_C_N",
+  "parent": "Board/FMC",
+  "kind": "assignment",
+  "pin": "MGTREFCLK1N_230",
+  "ball": "U9",
+  "dir": "",
+  "resource": "GT_refclk",
+  "edges": [
+    {
+      "src": "Board/FMC/FMC1_GBTCLK0_M2C_C_N",
+      "dst": "PL/GT_refclk",
+      "kind": "board",
+      "pin": "MGTREFCLK1N_230",
+      "ball": "U9",
+      "dir": ""
+    }
+  ]
+}

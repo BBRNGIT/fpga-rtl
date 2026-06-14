@@ -1,0 +1,299 @@
+{
+  "id": "PL/Memory/URAM288/URAM288",
+  "parent": "PL/Memory/URAM288",
+  "kind": "config",
+  "ports": 66,
+  "ports_list": [
+    {
+      "name": "ADDR_A",
+      "dir": "in",
+      "width": 23
+    },
+    {
+      "name": "ADDR_B",
+      "dir": "in",
+      "width": 23
+    },
+    {
+      "name": "BWE_A",
+      "dir": "in",
+      "width": 9
+    },
+    {
+      "name": "BWE_B",
+      "dir": "in",
+      "width": 9
+    },
+    {
+      "name": "CAS_IN_ADDR_A",
+      "dir": "in",
+      "width": 23
+    },
+    {
+      "name": "CAS_IN_ADDR_B",
+      "dir": "in",
+      "width": 23
+    },
+    {
+      "name": "CAS_IN_BWE_A",
+      "dir": "in",
+      "width": 9
+    },
+    {
+      "name": "CAS_IN_BWE_B",
+      "dir": "in",
+      "width": 9
+    },
+    {
+      "name": "CAS_IN_DBITERR_A",
+      "dir": "in"
+    },
+    {
+      "name": "CAS_IN_DBITERR_B",
+      "dir": "in"
+    },
+    {
+      "name": "CAS_IN_DIN_A",
+      "dir": "in",
+      "width": 72
+    },
+    {
+      "name": "CAS_IN_DIN_B",
+      "dir": "in",
+      "width": 72
+    },
+    {
+      "name": "CAS_IN_DOUT_A",
+      "dir": "in",
+      "width": 72
+    },
+    {
+      "name": "CAS_IN_DOUT_B",
+      "dir": "in",
+      "width": 72
+    },
+    {
+      "name": "CAS_IN_EN_A",
+      "dir": "in"
+    },
+    {
+      "name": "CAS_IN_EN_B",
+      "dir": "in"
+    },
+    {
+      "name": "CAS_IN_RDACCESS_A",
+      "dir": "in"
+    },
+    {
+      "name": "CAS_IN_RDACCESS_B",
+      "dir": "in"
+    },
+    {
+      "name": "CAS_IN_RDB_WR_A",
+      "dir": "in"
+    },
+    {
+      "name": "CAS_IN_RDB_WR_B",
+      "dir": "in"
+    },
+    {
+      "name": "CAS_IN_SBITERR_A",
+      "dir": "in"
+    },
+    {
+      "name": "CAS_IN_SBITERR_B",
+      "dir": "in"
+    },
+    {
+      "name": "CAS_OUT_ADDR_A",
+      "dir": "out",
+      "width": 23
+    },
+    {
+      "name": "CAS_OUT_ADDR_B",
+      "dir": "out",
+      "width": 23
+    },
+    {
+      "name": "CAS_OUT_BWE_A",
+      "dir": "out",
+      "width": 9
+    },
+    {
+      "name": "CAS_OUT_BWE_B",
+      "dir": "out",
+      "width": 9
+    },
+    {
+      "name": "CAS_OUT_DBITERR_A",
+      "dir": "out"
+    },
+    {
+      "name": "CAS_OUT_DBITERR_B",
+      "dir": "out"
+    },
+    {
+      "name": "CAS_OUT_DIN_A",
+      "dir": "out",
+      "width": 72
+    },
+    {
+      "name": "CAS_OUT_DIN_B",
+      "dir": "out",
+      "width": 72
+    },
+    {
+      "name": "CAS_OUT_DOUT_A",
+      "dir": "out",
+      "width": 72
+    },
+    {
+      "name": "CAS_OUT_DOUT_B",
+      "dir": "out",
+      "width": 72
+    },
+    {
+      "name": "CAS_OUT_EN_A",
+      "dir": "out"
+    },
+    {
+      "name": "CAS_OUT_EN_B",
+      "dir": "out"
+    },
+    {
+      "name": "CAS_OUT_RDACCESS_A",
+      "dir": "out"
+    },
+    {
+      "name": "CAS_OUT_RDACCESS_B",
+      "dir": "out"
+    },
+    {
+      "name": "CAS_OUT_RDB_WR_A",
+      "dir": "out"
+    },
+    {
+      "name": "CAS_OUT_RDB_WR_B",
+      "dir": "out"
+    },
+    {
+      "name": "CAS_OUT_SBITERR_A",
+      "dir": "out"
+    },
+    {
+      "name": "CAS_OUT_SBITERR_B",
+      "dir": "out"
+    },
+    {
+      "name": "CLK",
+      "dir": "in"
+    },
+    {
+      "name": "DBITERR_A",
+      "dir": "out"
+    },
+    {
+      "name": "DBITERR_B",
+      "dir": "out"
+    },
+    {
+      "name": "DIN_A",
+      "dir": "in",
+      "width": 72
+    },
+    {
+      "name": "DIN_B",
+      "dir": "in",
+      "width": 72
+    },
+    {
+      "name": "DOUT_A",
+      "dir": "out",
+      "width": 72
+    },
+    {
+      "name": "DOUT_B",
+      "dir": "out",
+      "width": 72
+    },
+    {
+      "name": "EN_A",
+      "dir": "in"
+    },
+    {
+      "name": "EN_B",
+      "dir": "in"
+    },
+    {
+      "name": "INJECT_DBITERR_A",
+      "dir": "in"
+    },
+    {
+      "name": "INJECT_DBITERR_B",
+      "dir": "in"
+    },
+    {
+      "name": "INJECT_SBITERR_A",
+      "dir": "in"
+    },
+    {
+      "name": "INJECT_SBITERR_B",
+      "dir": "in"
+    },
+    {
+      "name": "OREG_CE_A",
+      "dir": "in"
+    },
+    {
+      "name": "OREG_CE_B",
+      "dir": "in"
+    },
+    {
+      "name": "OREG_ECC_CE_A",
+      "dir": "in"
+    },
+    {
+      "name": "OREG_ECC_CE_B",
+      "dir": "in"
+    },
+    {
+      "name": "RDACCESS_A",
+      "dir": "out"
+    },
+    {
+      "name": "RDACCESS_B",
+      "dir": "out"
+    },
+    {
+      "name": "RDB_WR_A",
+      "dir": "in"
+    },
+    {
+      "name": "RDB_WR_B",
+      "dir": "in"
+    },
+    {
+      "name": "RST_A",
+      "dir": "in"
+    },
+    {
+      "name": "RST_B",
+      "dir": "in"
+    },
+    {
+      "name": "SBITERR_A",
+      "dir": "out"
+    },
+    {
+      "name": "SBITERR_B",
+      "dir": "out"
+    },
+    {
+      "name": "SLEEP",
+      "dir": "in"
+    }
+  ],
+  "note": "BLOCKRAM",
+  "source": "ug974 p680",
+  "edges": []
+}

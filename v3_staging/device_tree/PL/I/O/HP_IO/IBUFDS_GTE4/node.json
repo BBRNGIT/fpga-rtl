@@ -1,0 +1,31 @@
+{
+  "id": "PL/I/O/HP_IO/IBUFDS_GTE4",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 5,
+  "ports_list": [
+    {
+      "name": "CEB",
+      "dir": "in"
+    },
+    {
+      "name": "I",
+      "dir": "in"
+    },
+    {
+      "name": "IB",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "ODIV2",
+      "dir": "out"
+    }
+  ],
+  "note": "ADVANCED",
+  "source": "ug974 p334",
+  "edges": []
+}

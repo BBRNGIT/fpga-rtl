@@ -1,0 +1,8 @@
+{
+  "id": "PL/Memory/RAMB18E2",
+  "parent": "PL/Memory",
+  "kind": "element",
+  "role": "18Kb block RAM",
+  "count": 1968,
+  "edges": []
+}

@@ -1,0 +1,19 @@
+{
+  "id": "Board/DDR4 (PL)/PL_DDR4_BG0",
+  "parent": "Board/DDR4 (PL)",
+  "kind": "assignment",
+  "pin": "IO_L17N_T2U_N9_AD10N_70",
+  "ball": "D28",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/DDR4 (PL)/PL_DDR4_BG0",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L17N_T2U_N9_AD10N_70",
+      "ball": "D28",
+      "dir": ""
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "id": "PL/I/O/HP_IO/IBUFDS",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 3,
+  "ports_list": [
+    {
+      "name": "I",
+      "dir": "in"
+    },
+    {
+      "name": "IB",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    }
+  ],
+  "note": "I",
+  "source": "ug974 p319",
+  "edges": []
+}

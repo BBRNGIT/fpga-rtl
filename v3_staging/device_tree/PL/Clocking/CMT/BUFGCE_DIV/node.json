@@ -1,0 +1,27 @@
+{
+  "id": "PL/Clocking/CMT/BUFGCE_DIV",
+  "parent": "PL/Clocking/CMT",
+  "kind": "config",
+  "ports": 4,
+  "ports_list": [
+    {
+      "name": "CE",
+      "dir": "in"
+    },
+    {
+      "name": "CLR",
+      "dir": "in"
+    },
+    {
+      "name": "I",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    }
+  ],
+  "note": "CLOCK",
+  "source": "ug974 p226",
+  "edges": []
+}

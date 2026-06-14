@@ -1,0 +1,19 @@
+{
+  "id": "PL/I/O/HP_IO/DCIRESET",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 2,
+  "ports_list": [
+    {
+      "name": "LOCKED",
+      "dir": "out"
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    }
+  ],
+  "note": "I",
+  "source": "ug974 p248",
+  "edges": []
+}

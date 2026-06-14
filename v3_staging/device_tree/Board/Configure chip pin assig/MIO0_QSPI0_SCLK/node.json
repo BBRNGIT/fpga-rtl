@@ -1,0 +1,19 @@
+{
+  "id": "Board/Configure chip pin assig/MIO0_QSPI0_SCLK",
+  "parent": "Board/Configure chip pin assig",
+  "kind": "assignment",
+  "pin": "PS_MIO0_500",
+  "ball": "AM33",
+  "dir": "",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/Configure chip pin assig/MIO0_QSPI0_SCLK",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO0_500",
+      "ball": "AM33",
+      "dir": ""
+    }
+  ]
+}

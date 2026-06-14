@@ -1,0 +1,82 @@
+{
+  "id": "PL/Config/config/STARTUPE3",
+  "parent": "PL/Config/config",
+  "kind": "config",
+  "ports": 17,
+  "ports_list": [
+    {
+      "name": "CFGCLK",
+      "dir": "out"
+    },
+    {
+      "name": "CFGMCLK",
+      "dir": "out"
+    },
+    {
+      "name": "DI",
+      "dir": "out",
+      "width": 4
+    },
+    {
+      "name": "DO",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "DTS",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "EOS",
+      "dir": "out"
+    },
+    {
+      "name": "FCSBO",
+      "dir": "in"
+    },
+    {
+      "name": "FCSBTS",
+      "dir": "in"
+    },
+    {
+      "name": "GSR",
+      "dir": "in"
+    },
+    {
+      "name": "GTS",
+      "dir": "in"
+    },
+    {
+      "name": "KEYCLEARB",
+      "dir": "in"
+    },
+    {
+      "name": "PACK",
+      "dir": "in"
+    },
+    {
+      "name": "PREQ",
+      "dir": "out"
+    },
+    {
+      "name": "USRCCLKO",
+      "dir": "in"
+    },
+    {
+      "name": "USRCCLKTS",
+      "dir": "in"
+    },
+    {
+      "name": "USRDONEO",
+      "dir": "in"
+    },
+    {
+      "name": "USRDONETS",
+      "dir": "in"
+    }
+  ],
+  "note": "CONFIGURATION",
+  "source": "ug974 p649",
+  "edges": []
+}

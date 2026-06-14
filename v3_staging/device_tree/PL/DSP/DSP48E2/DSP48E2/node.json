@@ -1,0 +1,244 @@
+{
+  "id": "PL/DSP/DSP48E2/DSP48E2",
+  "parent": "PL/DSP/DSP48E2",
+  "kind": "config",
+  "ports": 54,
+  "ports_list": [
+    {
+      "name": "XOROUT",
+      "dir": "out",
+      "width": 8
+    },
+    {
+      "name": "Cascade:_Cascade_Ports",
+      "dir": "in"
+    },
+    {
+      "name": "ACIN",
+      "dir": "in",
+      "width": 30
+    },
+    {
+      "name": "ACOUT",
+      "dir": "out",
+      "width": 30
+    },
+    {
+      "name": "BCIN",
+      "dir": "in",
+      "width": 18
+    },
+    {
+      "name": "BCOUT",
+      "dir": "out",
+      "width": 18
+    },
+    {
+      "name": "CARRYCASCIN",
+      "dir": "in"
+    },
+    {
+      "name": "CARRYCASCOUT",
+      "dir": "out"
+    },
+    {
+      "name": "MULTSIGNIN",
+      "dir": "in"
+    },
+    {
+      "name": "MULTSIGNOUT",
+      "dir": "out"
+    },
+    {
+      "name": "PCIN",
+      "dir": "in",
+      "width": 48
+    },
+    {
+      "name": "PCOUT",
+      "dir": "out",
+      "width": 48
+    },
+    {
+      "name": "Control:_Control_Inputs/Status_Bits",
+      "dir": "in"
+    },
+    {
+      "name": "ALUMODE",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "CARRYINSEL",
+      "dir": "in",
+      "width": 3
+    },
+    {
+      "name": "CLK",
+      "dir": "in"
+    },
+    {
+      "name": "INMODE",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "OPMODE",
+      "dir": "in",
+      "width": 9
+    },
+    {
+      "name": "OVERFLOW",
+      "dir": "out"
+    },
+    {
+      "name": "PATTERNBDETECT",
+      "dir": "out"
+    },
+    {
+      "name": "PATTERNDETECT",
+      "dir": "out"
+    },
+    {
+      "name": "UNDERFLOW",
+      "dir": "out"
+    },
+    {
+      "name": "Data:_Data_Ports",
+      "dir": "in"
+    },
+    {
+      "name": "A",
+      "dir": "in",
+      "width": 30
+    },
+    {
+      "name": "B",
+      "dir": "in",
+      "width": 18
+    },
+    {
+      "name": "C",
+      "dir": "in",
+      "width": 48
+    },
+    {
+      "name": "CARRYIN",
+      "dir": "in"
+    },
+    {
+      "name": "CARRYOUT",
+      "dir": "out",
+      "width": 4
+    },
+    {
+      "name": "D",
+      "dir": "in",
+      "width": 27
+    },
+    {
+      "name": "P",
+      "dir": "out",
+      "width": 48
+    },
+    {
+      "name": "Reset/Clock_Enable:_Reset/Clock_Enable_Inputs.",
+      "dir": "in"
+    },
+    {
+      "name": "CEAD",
+      "dir": "in"
+    },
+    {
+      "name": "CEALUMODE",
+      "dir": "in"
+    },
+    {
+      "name": "CEA1",
+      "dir": "in"
+    },
+    {
+      "name": "CEA2",
+      "dir": "in"
+    },
+    {
+      "name": "CEB1",
+      "dir": "in"
+    },
+    {
+      "name": "CEB2",
+      "dir": "in"
+    },
+    {
+      "name": "CEC",
+      "dir": "in"
+    },
+    {
+      "name": "CECARRYIN",
+      "dir": "in"
+    },
+    {
+      "name": "CECTRL",
+      "dir": "in"
+    },
+    {
+      "name": "CED",
+      "dir": "in"
+    },
+    {
+      "name": "CEINMODE",
+      "dir": "in"
+    },
+    {
+      "name": "CEM",
+      "dir": "in"
+    },
+    {
+      "name": "CEP",
+      "dir": "in"
+    },
+    {
+      "name": "RSTA",
+      "dir": "in"
+    },
+    {
+      "name": "RSTALLCARRYIN",
+      "dir": "in"
+    },
+    {
+      "name": "RSTALUMODE",
+      "dir": "in"
+    },
+    {
+      "name": "RSTB",
+      "dir": "in"
+    },
+    {
+      "name": "RSTC",
+      "dir": "in"
+    },
+    {
+      "name": "RSTCTRL",
+      "dir": "in"
+    },
+    {
+      "name": "RSTD",
+      "dir": "in"
+    },
+    {
+      "name": "RSTINMODE",
+      "dir": "in"
+    },
+    {
+      "name": "RSTM",
+      "dir": "in"
+    },
+    {
+      "name": "RSTP",
+      "dir": "in"
+    }
+  ],
+  "note": "ARITHMETIC",
+  "source": "ug974 p253",
+  "edges": []
+}

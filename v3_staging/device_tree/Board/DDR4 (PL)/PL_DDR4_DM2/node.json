@@ -1,0 +1,19 @@
+{
+  "id": "Board/DDR4 (PL)/PL_DDR4_DM2",
+  "parent": "Board/DDR4 (PL)",
+  "kind": "assignment",
+  "pin": "IO_L13P_T2L_N0_GC_QBC_71",
+  "ball": "G22",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/DDR4 (PL)/PL_DDR4_DM2",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L13P_T2L_N0_GC_QBC_71",
+      "ball": "G22",
+      "dir": ""
+    }
+  ]
+}

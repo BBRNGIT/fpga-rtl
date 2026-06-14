@@ -1,0 +1,8 @@
+{
+  "id": "Board/CAN",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 4,
+  "note": "PS_MIO",
+  "edges": []
+}

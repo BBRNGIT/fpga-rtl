@@ -1,0 +1,279 @@
+{
+  "id": "PL/I/O/HP_IO/BITSLICE_CONTROL",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 57,
+  "ports_list": [
+    {
+      "name": "CLK_FROM_EXT",
+      "dir": "in"
+    },
+    {
+      "name": "CLK_TO_EXT_NORTH",
+      "dir": "out"
+    },
+    {
+      "name": "CLK_TO_EXT_SOUTH",
+      "dir": "out"
+    },
+    {
+      "name": "DLY_RDY",
+      "dir": "out"
+    },
+    {
+      "name": "DYN_DCI",
+      "dir": "out",
+      "width": 7
+    },
+    {
+      "name": "EN_VTC",
+      "dir": "in"
+    },
+    {
+      "name": "NCLK_NIBBLE_IN",
+      "dir": "in"
+    },
+    {
+      "name": "NCLK_NIBBLE_OUT",
+      "dir": "out"
+    },
+    {
+      "name": "PCLK_NIBBLE_IN",
+      "dir": "in"
+    },
+    {
+      "name": "PCLK_NIBBLE_OUT",
+      "dir": "out"
+    },
+    {
+      "name": "PHY_RDCS0",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "PHY_RDCS1",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "PHY_RDEN",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "PHY_WRCS0",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "PHY_WRCS1",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "PLL_CLK",
+      "dir": "in"
+    },
+    {
+      "name": "REFCLK",
+      "dir": "in"
+    },
+    {
+      "name": "RIU_ADDR",
+      "dir": "in",
+      "width": 6
+    },
+    {
+      "name": "RIU_CLK",
+      "dir": "in"
+    },
+    {
+      "name": "RIU_NIBBLE_SEL",
+      "dir": "in"
+    },
+    {
+      "name": "RIU_RD_DATA",
+      "dir": "out",
+      "width": 16
+    },
+    {
+      "name": "RIU_VALID",
+      "dir": "out"
+    },
+    {
+      "name": "RIU_WR_DATA",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "RIU_WR_EN",
+      "dir": "in"
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    },
+    {
+      "name": "RX_BIT_CTRL_IN0",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "RX_BIT_CTRL_IN1",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "RX_BIT_CTRL_IN2",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "RX_BIT_CTRL_IN3",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "RX_BIT_CTRL_IN4",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "RX_BIT_CTRL_IN5",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "RX_BIT_CTRL_IN6",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "RX_BIT_CTRL_OUT0",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "RX_BIT_CTRL_OUT1",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "RX_BIT_CTRL_OUT2",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "RX_BIT_CTRL_OUT3",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "RX_BIT_CTRL_OUT4",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "RX_BIT_CTRL_OUT5",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "RX_BIT_CTRL_OUT6",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "TBYTE_IN",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "TX_BIT_CTRL_IN_TRI",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_IN0",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_IN1",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_IN2",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_IN3",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_IN4",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_IN5",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_IN6",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_OUT_TRI",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_OUT0",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_OUT1",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_OUT2",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_OUT3",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_OUT4",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_OUT5",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_OUT6",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "VTC_RDY",
+      "dir": "out"
+    }
+  ],
+  "note": "I",
+  "source": "ug974 p203",
+  "edges": []
+}

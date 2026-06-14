@@ -1,0 +1,7 @@
+{
+  "id": "PL/CLB/dedicated_gate",
+  "parent": "PL/CLB",
+  "kind": "element",
+  "role": "(group-level placement; config-map TBD in P1)",
+  "edges": []
+}

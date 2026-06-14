@@ -1,0 +1,40 @@
+{
+  "id": "PL/I/O/HP_IO/OSERDESE3",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 7,
+  "ports_list": [
+    {
+      "name": "CLK",
+      "dir": "in"
+    },
+    {
+      "name": "CLKDIV",
+      "dir": "in"
+    },
+    {
+      "name": "D",
+      "dir": "in",
+      "width": 8
+    },
+    {
+      "name": "OQ",
+      "dir": "out"
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    },
+    {
+      "name": "T",
+      "dir": "in"
+    },
+    {
+      "name": "T_OUT",
+      "dir": "out"
+    }
+  ],
+  "note": "I",
+  "source": "ug974 p502",
+  "edges": []
+}

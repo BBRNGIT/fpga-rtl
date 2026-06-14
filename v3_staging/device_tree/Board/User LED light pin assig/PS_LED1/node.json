@@ -1,0 +1,19 @@
+{
+  "id": "Board/User LED light pin assig/PS_LED1",
+  "parent": "Board/User LED light pin assig",
+  "kind": "assignment",
+  "pin": "PS_MIO42_501",
+  "ball": "T30",
+  "dir": "",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/User LED light pin assig/PS_LED1",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO42_501",
+      "ball": "T30",
+      "dir": ""
+    }
+  ]
+}

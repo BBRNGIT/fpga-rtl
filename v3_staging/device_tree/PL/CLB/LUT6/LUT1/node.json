@@ -1,0 +1,19 @@
+{
+  "id": "PL/CLB/LUT6/LUT1",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 2,
+  "ports_list": [
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "I0",
+      "dir": "in"
+    }
+  ],
+  "note": "verilog template",
+  "source": "ug974 p409",
+  "edges": []
+}

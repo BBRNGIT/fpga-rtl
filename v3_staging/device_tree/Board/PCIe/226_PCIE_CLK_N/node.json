@@ -1,0 +1,19 @@
+{
+  "id": "Board/PCIe/226_PCIE_CLK_N",
+  "parent": "Board/PCIe",
+  "kind": "assignment",
+  "pin": "MGTREFCLK0N_226",
+  "ball": "AF11",
+  "dir": "",
+  "resource": "GT_refclk",
+  "edges": [
+    {
+      "src": "Board/PCIe/226_PCIE_CLK_N",
+      "dst": "PL/GT_refclk",
+      "kind": "board",
+      "pin": "MGTREFCLK0N_226",
+      "ball": "AF11",
+      "dir": ""
+    }
+  ]
+}

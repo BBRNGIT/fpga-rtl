@@ -1,0 +1,55 @@
+{
+  "id": "PL/Config/config/BSCANE2",
+  "parent": "PL/Config/config",
+  "kind": "config",
+  "ports": 11,
+  "ports_list": [
+    {
+      "name": "CAPTURE",
+      "dir": "out"
+    },
+    {
+      "name": "DRCK",
+      "dir": "out"
+    },
+    {
+      "name": "RESET",
+      "dir": "out"
+    },
+    {
+      "name": "RUNTEST",
+      "dir": "out"
+    },
+    {
+      "name": "SEL",
+      "dir": "out"
+    },
+    {
+      "name": "SHIFT",
+      "dir": "out"
+    },
+    {
+      "name": "TCK",
+      "dir": "out"
+    },
+    {
+      "name": "TDI",
+      "dir": "out"
+    },
+    {
+      "name": "TDO",
+      "dir": "in"
+    },
+    {
+      "name": "TMS",
+      "dir": "out"
+    },
+    {
+      "name": "UPDATE",
+      "dir": "out"
+    }
+  ],
+  "note": "CONFIGURATION",
+  "source": "ug974 p211",
+  "edges": []
+}

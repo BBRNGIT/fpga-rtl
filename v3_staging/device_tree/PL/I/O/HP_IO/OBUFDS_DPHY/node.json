@@ -1,0 +1,39 @@
+{
+  "id": "PL/I/O/HP_IO/OBUFDS_DPHY",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 7,
+  "ports_list": [
+    {
+      "name": "HSTX_I",
+      "dir": "in"
+    },
+    {
+      "name": "HSTX_T",
+      "dir": "in"
+    },
+    {
+      "name": "LPTX_I_N",
+      "dir": "in"
+    },
+    {
+      "name": "LPTX_I_P",
+      "dir": "in"
+    },
+    {
+      "name": "LPTX_T",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "OB",
+      "dir": "out"
+    }
+  ],
+  "note": "I",
+  "source": "ug974 p479",
+  "edges": []
+}

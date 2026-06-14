@@ -1,0 +1,43 @@
+{
+  "id": "PL/CLB/LUT6/LUT6_2",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 8,
+  "ports_list": [
+    {
+      "name": "I0",
+      "dir": "in"
+    },
+    {
+      "name": "I1",
+      "dir": "in"
+    },
+    {
+      "name": "I2",
+      "dir": "in"
+    },
+    {
+      "name": "I3",
+      "dir": "in"
+    },
+    {
+      "name": "I4",
+      "dir": "in"
+    },
+    {
+      "name": "I5",
+      "dir": "in"
+    },
+    {
+      "name": "O5",
+      "dir": "out"
+    },
+    {
+      "name": "O6",
+      "dir": "out"
+    }
+  ],
+  "note": "CLB",
+  "source": "ug974 p430",
+  "edges": []
+}

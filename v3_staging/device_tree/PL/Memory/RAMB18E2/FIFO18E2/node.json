@@ -1,0 +1,181 @@
+{
+  "id": "PL/Memory/RAMB18E2/FIFO18E2",
+  "parent": "PL/Memory/RAMB18E2",
+  "kind": "config",
+  "ports": 40,
+  "ports_list": [
+    {
+      "name": "Cascade_Signals:_Signals_used_when_cascading_more_than_one_FIFO.",
+      "dir": "in"
+    },
+    {
+      "name": "CASDIN",
+      "dir": "in",
+      "width": 32
+    },
+    {
+      "name": "CASDINP",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "CASDOMUX",
+      "dir": "in"
+    },
+    {
+      "name": "CASDOMUXEN",
+      "dir": "in"
+    },
+    {
+      "name": "CASDOUT",
+      "dir": "out",
+      "width": 32
+    },
+    {
+      "name": "CASDOUTP",
+      "dir": "out",
+      "width": 4
+    },
+    {
+      "name": "CASNXTEMPTY",
+      "dir": "out"
+    },
+    {
+      "name": "CASNXTRDEN",
+      "dir": "in"
+    },
+    {
+      "name": "CASOREGIMUX",
+      "dir": "in"
+    },
+    {
+      "name": "CASOREGIMUXEN",
+      "dir": "in"
+    },
+    {
+      "name": "CASPRVEMPTY",
+      "dir": "in"
+    },
+    {
+      "name": "CASPRVRDEN",
+      "dir": "out"
+    },
+    {
+      "name": "Read_Control_Signals:_Read_clock,_enable,_and_reset_input_signals.",
+      "dir": "in"
+    },
+    {
+      "name": "RDCLK",
+      "dir": "in"
+    },
+    {
+      "name": "RDEN",
+      "dir": "in"
+    },
+    {
+      "name": "REGCE",
+      "dir": "in"
+    },
+    {
+      "name": "RSTREG",
+      "dir": "in"
+    },
+    {
+      "name": "SLEEP",
+      "dir": "in"
+    },
+    {
+      "name": "Read_Data:_Read_output_data.",
+      "dir": "in"
+    },
+    {
+      "name": "DOUT",
+      "dir": "out",
+      "width": 32
+    },
+    {
+      "name": "DOUTP",
+      "dir": "out",
+      "width": 4
+    },
+    {
+      "name": "Status:_Flags_and_other_FIFO_status_outputs.",
+      "dir": "in"
+    },
+    {
+      "name": "EMPTY",
+      "dir": "out"
+    },
+    {
+      "name": "FULL",
+      "dir": "out"
+    },
+    {
+      "name": "PROGEMPTY",
+      "dir": "out"
+    },
+    {
+      "name": "PROGFULL",
+      "dir": "out"
+    },
+    {
+      "name": "RDCOUNT",
+      "dir": "out",
+      "width": 13
+    },
+    {
+      "name": "RDERR",
+      "dir": "out"
+    },
+    {
+      "name": "RDRSTBUSY",
+      "dir": "out"
+    },
+    {
+      "name": "WRCOUNT",
+      "dir": "out",
+      "width": 13
+    },
+    {
+      "name": "WRERR",
+      "dir": "out"
+    },
+    {
+      "name": "WRRSTBUSY",
+      "dir": "out"
+    },
+    {
+      "name": "Write_Control_Signals:_Write_clock_and_enable_input_signals.",
+      "dir": "in"
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    },
+    {
+      "name": "WRCLK",
+      "dir": "in"
+    },
+    {
+      "name": "WREN",
+      "dir": "in"
+    },
+    {
+      "name": "Write_Data:_Write_input_data.",
+      "dir": "in"
+    },
+    {
+      "name": "DIN",
+      "dir": "in",
+      "width": 32
+    },
+    {
+      "name": "DINP",
+      "dir": "in",
+      "width": 4
+    }
+  ],
+  "note": "BLOCKRAM",
+  "source": "ug974 p280",
+  "edges": []
+}

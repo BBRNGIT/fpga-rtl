@@ -1,0 +1,31 @@
+{
+  "id": "PL/CLB/storage_element/FDCE",
+  "parent": "PL/CLB/storage_element",
+  "kind": "config",
+  "ports": 5,
+  "ports_list": [
+    {
+      "name": "C",
+      "dir": "in"
+    },
+    {
+      "name": "CE",
+      "dir": "in"
+    },
+    {
+      "name": "CLR",
+      "dir": "in"
+    },
+    {
+      "name": "D",
+      "dir": "in"
+    },
+    {
+      "name": "Q",
+      "dir": "out"
+    }
+  ],
+  "note": "REGISTER",
+  "source": "ug974 p268",
+  "edges": []
+}

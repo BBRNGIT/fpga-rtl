@@ -1,0 +1,45 @@
+{
+  "id": "PL/Config/config/ICAPE3",
+  "parent": "PL/Config/config",
+  "kind": "config",
+  "ports": 8,
+  "ports_list": [
+    {
+      "name": "AVAIL",
+      "dir": "out"
+    },
+    {
+      "name": "CLK",
+      "dir": "in"
+    },
+    {
+      "name": "CSIB",
+      "dir": "in"
+    },
+    {
+      "name": "I",
+      "dir": "in",
+      "width": 32
+    },
+    {
+      "name": "O",
+      "dir": "out",
+      "width": 32
+    },
+    {
+      "name": "PRDONE",
+      "dir": "out"
+    },
+    {
+      "name": "PRERROR",
+      "dir": "out"
+    },
+    {
+      "name": "RDWRB",
+      "dir": "in"
+    }
+  ],
+  "note": "CONFIGURATION",
+  "source": "ug974 p349",
+  "edges": []
+}

@@ -1,0 +1,19 @@
+{
+  "id": "Board/Ethernet (PL)/PHY2_RXD3",
+  "parent": "Board/Ethernet (PL)",
+  "kind": "assignment",
+  "pin": "IO_L21N_T3L_N5_AD8N_64",
+  "ball": "AL21",
+  "dir": "in",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/Ethernet (PL)/PHY2_RXD3",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L21N_T3L_N5_AD8N_64",
+      "ball": "AL21",
+      "dir": "in"
+    }
+  ]
+}

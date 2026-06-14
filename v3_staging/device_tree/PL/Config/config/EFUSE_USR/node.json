@@ -1,0 +1,16 @@
+{
+  "id": "PL/Config/config/EFUSE_USR",
+  "parent": "PL/Config/config",
+  "kind": "config",
+  "ports": 1,
+  "ports_list": [
+    {
+      "name": "EFUSEUSR",
+      "dir": "out",
+      "width": 32
+    }
+  ],
+  "note": "CONFIGURATION",
+  "source": "ug974 p266",
+  "edges": []
+}

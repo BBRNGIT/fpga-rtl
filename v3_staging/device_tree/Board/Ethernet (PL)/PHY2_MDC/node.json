@@ -1,0 +1,19 @@
+{
+  "id": "Board/Ethernet (PL)/PHY2_MDC",
+  "parent": "Board/Ethernet (PL)",
+  "kind": "assignment",
+  "pin": "IO_T1U_N12_64",
+  "ball": "AW21",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/Ethernet (PL)/PHY2_MDC",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_T1U_N12_64",
+      "ball": "AW21",
+      "dir": ""
+    }
+  ]
+}

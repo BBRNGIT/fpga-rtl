@@ -1,0 +1,223 @@
+{
+  "id": "PL/CLB/LUT6/RAMB18E2",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 48,
+  "ports_list": [
+    {
+      "name": "Cascade_Signals:_Signals_used_when_cascading_more_than_one_RAMB18E2_components",
+      "dir": "in"
+    },
+    {
+      "name": "CASDIMUXA",
+      "dir": "in"
+    },
+    {
+      "name": "CASDIMUXB",
+      "dir": "in"
+    },
+    {
+      "name": "CASDINA",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "CASDINB",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "CASDINPA",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "CASDINPB",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "CASDOMUXA",
+      "dir": "in"
+    },
+    {
+      "name": "CASDOMUXB",
+      "dir": "in"
+    },
+    {
+      "name": "CASDOMUXEN_A",
+      "dir": "in"
+    },
+    {
+      "name": "CASDOMUXEN_B",
+      "dir": "in"
+    },
+    {
+      "name": "CASDOUTA",
+      "dir": "out",
+      "width": 16
+    },
+    {
+      "name": "CASDOUTB",
+      "dir": "out",
+      "width": 16
+    },
+    {
+      "name": "CASDOUTPA",
+      "dir": "out",
+      "width": 2
+    },
+    {
+      "name": "CASDOUTPB",
+      "dir": "out",
+      "width": 2
+    },
+    {
+      "name": "CASOREGIMUXA",
+      "dir": "in"
+    },
+    {
+      "name": "CASOREGIMUXB",
+      "dir": "in"
+    },
+    {
+      "name": "CASOREGIMUXEN_A",
+      "dir": "in"
+    },
+    {
+      "name": "CASOREGIMUXEN_B",
+      "dir": "in"
+    },
+    {
+      "name": "Port_A_Address/Control_Signals:_Port_A_address_and_control_(clock,_reset,_enables,_etc.)_signals.",
+      "dir": "in"
+    },
+    {
+      "name": "ADDRARDADDR",
+      "dir": "in",
+      "width": 14
+    },
+    {
+      "name": "ADDRENA",
+      "dir": "in"
+    },
+    {
+      "name": "CLKARDCLK",
+      "dir": "in"
+    },
+    {
+      "name": "ENARDEN",
+      "dir": "in"
+    },
+    {
+      "name": "REGCEAREGCE",
+      "dir": "in"
+    },
+    {
+      "name": "RSTRAMARSTRAM",
+      "dir": "in"
+    },
+    {
+      "name": "RSTREGARSTREG",
+      "dir": "in"
+    },
+    {
+      "name": "WEA",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "Port_A_Data:_Port_A_data_signals.",
+      "dir": "in"
+    },
+    {
+      "name": "DINADIN",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "DINPADINP",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DOUTADOUT",
+      "dir": "out",
+      "width": 16
+    },
+    {
+      "name": "DOUTPADOUTP",
+      "dir": "out",
+      "width": 2
+    },
+    {
+      "name": "Port_B_Address/Control_Signals:_Port_B_address_and_control_(clock,_reset,_enables,_etc.).",
+      "dir": "in"
+    },
+    {
+      "name": "ADDRBWRADDR",
+      "dir": "in",
+      "width": 14
+    },
+    {
+      "name": "ADDRENB",
+      "dir": "in"
+    },
+    {
+      "name": "CLKBWRCLK",
+      "dir": "in"
+    },
+    {
+      "name": "ENBWREN",
+      "dir": "in"
+    },
+    {
+      "name": "REGCEB",
+      "dir": "in"
+    },
+    {
+      "name": "RSTRAMB",
+      "dir": "in"
+    },
+    {
+      "name": "RSTREGB",
+      "dir": "in"
+    },
+    {
+      "name": "SLEEP",
+      "dir": "in"
+    },
+    {
+      "name": "WEBWE",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "Port_B_Data:_Port_B_data_signals.",
+      "dir": "in"
+    },
+    {
+      "name": "DINBDIN",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "DINPBDINP",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "DOUTBDOUT",
+      "dir": "out",
+      "width": 16
+    },
+    {
+      "name": "DOUTPBDOUTP",
+      "dir": "out",
+      "width": 2
+    }
+  ],
+  "note": "BLOCKRAM",
+  "source": "ug974 p583",
+  "edges": []
+}

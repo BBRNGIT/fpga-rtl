@@ -1,0 +1,52 @@
+{
+  "id": "PL/I/O/HP_IO/ISERDESE3",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 10,
+  "ports_list": [
+    {
+      "name": "CLK",
+      "dir": "in"
+    },
+    {
+      "name": "CLK_B",
+      "dir": "in"
+    },
+    {
+      "name": "CLKDIV",
+      "dir": "in"
+    },
+    {
+      "name": "D",
+      "dir": "in"
+    },
+    {
+      "name": "FIFO_EMPTY",
+      "dir": "out"
+    },
+    {
+      "name": "FIFO_RD_CLK",
+      "dir": "in"
+    },
+    {
+      "name": "FIFO_RD_EN",
+      "dir": "in"
+    },
+    {
+      "name": "INTERNAL_DIVCLK",
+      "dir": "out"
+    },
+    {
+      "name": "Q",
+      "dir": "out",
+      "width": 8
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    }
+  ],
+  "note": "I",
+  "source": "ug974 p397",
+  "edges": []
+}

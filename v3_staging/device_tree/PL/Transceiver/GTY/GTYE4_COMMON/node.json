@@ -1,0 +1,340 @@
+{
+  "id": "PL/Transceiver/GTY/GTYE4_COMMON",
+  "parent": "PL/Transceiver/GTY",
+  "kind": "config",
+  "ports": 77,
+  "ports_list": [
+    {
+      "name": "BGBYPASSB",
+      "dir": "in"
+    },
+    {
+      "name": "BGMONITORENB",
+      "dir": "in"
+    },
+    {
+      "name": "BGPDB",
+      "dir": "in"
+    },
+    {
+      "name": "BGRCALOVRD",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "BGRCALOVRDENB",
+      "dir": "in"
+    },
+    {
+      "name": "CEB",
+      "dir": "in"
+    },
+    {
+      "name": "GTNORTHREFCLK00",
+      "dir": "in"
+    },
+    {
+      "name": "GTNORTHREFCLK01",
+      "dir": "in"
+    },
+    {
+      "name": "GTNORTHREFCLK10",
+      "dir": "in"
+    },
+    {
+      "name": "GTNORTHREFCLK11",
+      "dir": "in"
+    },
+    {
+      "name": "GTREFCLK00",
+      "dir": "in"
+    },
+    {
+      "name": "GTREFCLK01",
+      "dir": "in"
+    },
+    {
+      "name": "GTREFCLK10",
+      "dir": "in"
+    },
+    {
+      "name": "GTREFCLK11",
+      "dir": "in"
+    },
+    {
+      "name": "GTRESETSEL",
+      "dir": "in"
+    },
+    {
+      "name": "GTRXRESETSEL",
+      "dir": "in"
+    },
+    {
+      "name": "GTSOUTHREFCLK00",
+      "dir": "in"
+    },
+    {
+      "name": "GTSOUTHREFCLK01",
+      "dir": "in"
+    },
+    {
+      "name": "GTSOUTHREFCLK10",
+      "dir": "in"
+    },
+    {
+      "name": "GTSOUTHREFCLK11",
+      "dir": "in"
+    },
+    {
+      "name": "GTTXRESETSEL",
+      "dir": "in"
+    },
+    {
+      "name": "PMARSVD0",
+      "dir": "in",
+      "width": 8
+    },
+    {
+      "name": "PMARSVD1",
+      "dir": "in",
+      "width": 8
+    },
+    {
+      "name": "QPLL0CLK",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL0CLKRSVD0",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL0CLKRSVD1",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL0FBCLKLOST",
+      "dir": "out"
+    },
+    {
+      "name": "QPLL0FBDIV",
+      "dir": "in",
+      "width": 8
+    },
+    {
+      "name": "QPLL0FREQLOCK",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL0LOCK",
+      "dir": "out"
+    },
+    {
+      "name": "QPLL0LOCKDETCLK",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL0LOCKEN",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL0OUTCLK",
+      "dir": "out"
+    },
+    {
+      "name": "QPLL0OUTREFCLK",
+      "dir": "out"
+    },
+    {
+      "name": "QPLL0PD",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL0REFCLK",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL0REFCLKLOST",
+      "dir": "out"
+    },
+    {
+      "name": "QPLL0REFCLKSEL",
+      "dir": "in",
+      "width": 3
+    },
+    {
+      "name": "QPLL0RESET",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL1CLK",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL1CLKRSVD0",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL1CLKRSVD1",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL1FBCLKLOST",
+      "dir": "out"
+    },
+    {
+      "name": "QPLL1FBDIV",
+      "dir": "in",
+      "width": 8
+    },
+    {
+      "name": "QPLL1FREQLOCK",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL1LOCK",
+      "dir": "out"
+    },
+    {
+      "name": "QPLL1LOCKDETCLK",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL1LOCKEN",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL1OUTCLK",
+      "dir": "out"
+    },
+    {
+      "name": "QPLL1OUTREFCLK",
+      "dir": "out"
+    },
+    {
+      "name": "QPLL1PD",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL1REFCLK",
+      "dir": "in"
+    },
+    {
+      "name": "QPLL1REFCLKLOST",
+      "dir": "out"
+    },
+    {
+      "name": "QPLL1REFCLKSEL",
+      "dir": "in",
+      "width": 3
+    },
+    {
+      "name": "QPLL1RESET",
+      "dir": "in"
+    },
+    {
+      "name": "QPLLDMONITOR0",
+      "dir": "out",
+      "width": 8
+    },
+    {
+      "name": "QPLLDMONITOR1",
+      "dir": "out",
+      "width": 8
+    },
+    {
+      "name": "QPLLRSVD1",
+      "dir": "in",
+      "width": 8
+    },
+    {
+      "name": "QPLLRSVD2",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "QPLLRSVD3",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "QPLLRSVD4",
+      "dir": "in",
+      "width": 8
+    },
+    {
+      "name": "RCALENB",
+      "dir": "in"
+    },
+    {
+      "name": "REFCLKOUTMONITOR0",
+      "dir": "out"
+    },
+    {
+      "name": "REFCLKOUTMONITOR1",
+      "dir": "out"
+    },
+    {
+      "name": "RESETOVRD",
+      "dir": "in"
+    },
+    {
+      "name": "SDM0DATA",
+      "dir": "in",
+      "width": 25
+    },
+    {
+      "name": "SDM0FINALOUT",
+      "dir": "out",
+      "width": 4
+    },
+    {
+      "name": "SDM0RESET",
+      "dir": "in"
+    },
+    {
+      "name": "SDM0TESTDATA",
+      "dir": "out",
+      "width": 15
+    },
+    {
+      "name": "SDM0TOGGLE",
+      "dir": "in"
+    },
+    {
+      "name": "SDM0WIDTH",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "SDM1DATA",
+      "dir": "in",
+      "width": 25
+    },
+    {
+      "name": "SDM1FINALOUT",
+      "dir": "out",
+      "width": 4
+    },
+    {
+      "name": "SDM1RESET",
+      "dir": "in"
+    },
+    {
+      "name": "SDM1TESTDATA",
+      "dir": "out",
+      "width": 15
+    },
+    {
+      "name": "SDM1TOGGLE",
+      "dir": "in"
+    },
+    {
+      "name": "SDM1WIDTH",
+      "dir": "in",
+      "width": 2
+    }
+  ],
+  "note": "UG578 port-description chapter",
+  "source": "ug974 p304",
+  "edges": []
+}

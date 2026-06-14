@@ -1,0 +1,127 @@
+{
+  "id": "PL/I/O/HP_IO/RX_BITSLICE",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 27,
+  "ports_list": [
+    {
+      "name": "CE",
+      "dir": "in"
+    },
+    {
+      "name": "CE_EXT",
+      "dir": "in"
+    },
+    {
+      "name": "CLK",
+      "dir": "in"
+    },
+    {
+      "name": "CLK_EXT",
+      "dir": "in"
+    },
+    {
+      "name": "CNTVALUEIN",
+      "dir": "in",
+      "width": 9
+    },
+    {
+      "name": "CNTVALUEIN_EXT",
+      "dir": "in",
+      "width": 9
+    },
+    {
+      "name": "CNTVALUEOUT",
+      "dir": "out",
+      "width": 9
+    },
+    {
+      "name": "CNTVALUEOUT_EXT",
+      "dir": "out",
+      "width": 9
+    },
+    {
+      "name": "DATAIN",
+      "dir": "in"
+    },
+    {
+      "name": "EN_VTC",
+      "dir": "in"
+    },
+    {
+      "name": "EN_VTC_EXT",
+      "dir": "in"
+    },
+    {
+      "name": "FIFO_EMPTY",
+      "dir": "out"
+    },
+    {
+      "name": "FIFO_RD_CLK",
+      "dir": "in"
+    },
+    {
+      "name": "FIFO_RD_EN",
+      "dir": "in"
+    },
+    {
+      "name": "FIFO_WRCLK_OUT",
+      "dir": "out"
+    },
+    {
+      "name": "INC",
+      "dir": "in"
+    },
+    {
+      "name": "INC_EXT",
+      "dir": "in"
+    },
+    {
+      "name": "LOAD",
+      "dir": "in"
+    },
+    {
+      "name": "LOAD_EXT",
+      "dir": "in"
+    },
+    {
+      "name": "Q",
+      "dir": "out",
+      "width": 8
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    },
+    {
+      "name": "RST_DLY",
+      "dir": "in"
+    },
+    {
+      "name": "RST_DLY_EXT",
+      "dir": "in"
+    },
+    {
+      "name": "RX_BIT_CTRL_IN",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "RX_BIT_CTRL_OUT",
+      "dir": "out",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_IN",
+      "dir": "in",
+      "width": 40
+    },
+    {
+      "name": "TX_BIT_CTRL_OUT",
+      "dir": "out",
+      "width": 40
+    }
+  ],
+  "note": "",
+  "edges": []
+}

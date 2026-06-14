@@ -1,0 +1,19 @@
+{
+  "id": "Board/MIPI/MIPI_CLK_P",
+  "parent": "Board/MIPI",
+  "kind": "assignment",
+  "pin": "IO_L1P_T0L_N0_DBC_68",
+  "ball": "P15",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/MIPI/MIPI_CLK_P",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L1P_T0L_N0_DBC_68",
+      "ball": "P15",
+      "dir": ""
+    }
+  ]
+}

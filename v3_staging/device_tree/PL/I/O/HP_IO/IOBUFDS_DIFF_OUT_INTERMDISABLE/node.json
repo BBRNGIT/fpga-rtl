@@ -1,0 +1,47 @@
+{
+  "id": "PL/I/O/HP_IO/IOBUFDS_DIFF_OUT_INTERMDISABLE",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 9,
+  "ports_list": [
+    {
+      "name": "I",
+      "dir": "in"
+    },
+    {
+      "name": "IBUFDISABLE",
+      "dir": "in"
+    },
+    {
+      "name": "INTERMDISABLE",
+      "dir": "in"
+    },
+    {
+      "name": "IO",
+      "dir": "inout"
+    },
+    {
+      "name": "IOB",
+      "dir": "inout"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "OB",
+      "dir": "out"
+    },
+    {
+      "name": "TM",
+      "dir": "in"
+    },
+    {
+      "name": "TS",
+      "dir": "in"
+    }
+  ],
+  "note": "I",
+  "source": "ug974 p385",
+  "edges": []
+}

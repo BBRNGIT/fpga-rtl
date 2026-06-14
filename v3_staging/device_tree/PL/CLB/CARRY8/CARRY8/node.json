@@ -1,0 +1,39 @@
+{
+  "id": "PL/CLB/CARRY8/CARRY8",
+  "parent": "PL/CLB/CARRY8",
+  "kind": "config",
+  "ports": 6,
+  "ports_list": [
+    {
+      "name": "CI",
+      "dir": "in"
+    },
+    {
+      "name": "CI_TOP",
+      "dir": "in"
+    },
+    {
+      "name": "CO",
+      "dir": "out",
+      "width": 8
+    },
+    {
+      "name": "DI",
+      "dir": "in",
+      "width": 8
+    },
+    {
+      "name": "O",
+      "dir": "out",
+      "width": 8
+    },
+    {
+      "name": "S",
+      "dir": "in",
+      "width": 8
+    }
+  ],
+  "note": "CLB",
+  "source": "ug974 p241",
+  "edges": []
+}

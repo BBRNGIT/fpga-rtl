@@ -1,0 +1,1012 @@
+{
+  "id": "PL/Transceiver/GTY/GTYE4_CHANNEL",
+  "parent": "PL/Transceiver/GTY",
+  "kind": "config",
+  "ports": 238,
+  "ports_list": [
+    {
+      "name": "CDRSTEPDIR",
+      "dir": "in"
+    },
+    {
+      "name": "CDRSTEPSQ",
+      "dir": "in"
+    },
+    {
+      "name": "CDRSTEPSX",
+      "dir": "in"
+    },
+    {
+      "name": "CFGRESET",
+      "dir": "in"
+    },
+    {
+      "name": "CPLLFBCLKLOST",
+      "dir": "out"
+    },
+    {
+      "name": "CPLLFREQLOCK",
+      "dir": "in"
+    },
+    {
+      "name": "CPLLLOCK",
+      "dir": "out"
+    },
+    {
+      "name": "CPLLLOCKDETCLK",
+      "dir": "in"
+    },
+    {
+      "name": "CPLLLOCKEN",
+      "dir": "in"
+    },
+    {
+      "name": "CPLLPD",
+      "dir": "in"
+    },
+    {
+      "name": "CPLLREFCLKLOST",
+      "dir": "out"
+    },
+    {
+      "name": "CPLLREFCLKSEL",
+      "dir": "in",
+      "width": 3
+    },
+    {
+      "name": "CPLLRESET",
+      "dir": "in"
+    },
+    {
+      "name": "DMONFIFORESET",
+      "dir": "in"
+    },
+    {
+      "name": "DMONITORCLK",
+      "dir": "in"
+    },
+    {
+      "name": "DMONITOROUT",
+      "dir": "out",
+      "width": 17
+    },
+    {
+      "name": "DMONITOROUTCLK",
+      "dir": "out"
+    },
+    {
+      "name": "DRPADDR",
+      "dir": "in",
+      "width": 10
+    },
+    {
+      "name": "DRPCLK",
+      "dir": "in"
+    },
+    {
+      "name": "DRPDI",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "DRPDO",
+      "dir": "out",
+      "width": 16
+    },
+    {
+      "name": "DRPEN",
+      "dir": "in"
+    },
+    {
+      "name": "DRPRDY",
+      "dir": "out"
+    },
+    {
+      "name": "DRPRST",
+      "dir": "in"
+    },
+    {
+      "name": "DRPWE",
+      "dir": "in"
+    },
+    {
+      "name": "EYESCANDATAERROR",
+      "dir": "out"
+    },
+    {
+      "name": "EYESCANMODE",
+      "dir": "in"
+    },
+    {
+      "name": "EYESCANRESET",
+      "dir": "in"
+    },
+    {
+      "name": "EYESCANTRIGGER",
+      "dir": "in"
+    },
+    {
+      "name": "FREQOS",
+      "dir": "in"
+    },
+    {
+      "name": "GTGREFCLK",
+      "dir": "in"
+    },
+    {
+      "name": "GTNORTHREFCLK0",
+      "dir": "in"
+    },
+    {
+      "name": "GTNORTHREFCLK1",
+      "dir": "in"
+    },
+    {
+      "name": "GTPOWERGOOD",
+      "dir": "out"
+    },
+    {
+      "name": "GTREFCLK0",
+      "dir": "in"
+    },
+    {
+      "name": "GTREFCLK1",
+      "dir": "in"
+    },
+    {
+      "name": "GTREFCLKMONITOR",
+      "dir": "out"
+    },
+    {
+      "name": "GTRXRESET",
+      "dir": "in"
+    },
+    {
+      "name": "GTSOUTHREFCLK0",
+      "dir": "in"
+    },
+    {
+      "name": "GTSOUTHREFCLK1",
+      "dir": "in"
+    },
+    {
+      "name": "GTTXRESET",
+      "dir": "in"
+    },
+    {
+      "name": "GTYRXN",
+      "dir": "in"
+    },
+    {
+      "name": "GTYRXP",
+      "dir": "in"
+    },
+    {
+      "name": "INCPCTRL",
+      "dir": "in"
+    },
+    {
+      "name": "LOOPBACK",
+      "dir": "in",
+      "width": 3
+    },
+    {
+      "name": "MGTYTXN",
+      "dir": "out"
+    },
+    {
+      "name": "MGTYTXP",
+      "dir": "out"
+    },
+    {
+      "name": "PCIEEQRXEQADAPTDONE",
+      "dir": "in"
+    },
+    {
+      "name": "PCIERATEGEN3",
+      "dir": "out"
+    },
+    {
+      "name": "PCIERATEIDLE",
+      "dir": "out"
+    },
+    {
+      "name": "PCIERATEQPLLPD",
+      "dir": "out"
+    },
+    {
+      "name": "PCIERATEQPLLRESET",
+      "dir": "out"
+    },
+    {
+      "name": "PCIERSTIDLE",
+      "dir": "in"
+    },
+    {
+      "name": "PCIERSTTXSYNCSTART",
+      "dir": "in"
+    },
+    {
+      "name": "PCIESYNCTXSYNCDONE",
+      "dir": "out"
+    },
+    {
+      "name": "PCIEUSERGEN3RDY",
+      "dir": "out"
+    },
+    {
+      "name": "PCIEUSERPHYSTATUSRST",
+      "dir": "out"
+    },
+    {
+      "name": "PCIEUSERRATEDONE",
+      "dir": "in"
+    },
+    {
+      "name": "PCIEUSERRATESTART",
+      "dir": "out"
+    },
+    {
+      "name": "PCSRSVDOUT",
+      "dir": "out"
+    },
+    {
+      "name": "PHYSTATUS",
+      "dir": "out"
+    },
+    {
+      "name": "RESETEXCEPTION",
+      "dir": "out"
+    },
+    {
+      "name": "RSOSINTDONE",
+      "dir": "out"
+    },
+    {
+      "name": "RX8B10BEN",
+      "dir": "in"
+    },
+    {
+      "name": "RXAFECFOKEN",
+      "dir": "in"
+    },
+    {
+      "name": "RXBUFRESET",
+      "dir": "in"
+    },
+    {
+      "name": "RXBUFSTATUS",
+      "dir": "out",
+      "width": 3
+    },
+    {
+      "name": "RXCDRFREQRESET",
+      "dir": "in"
+    },
+    {
+      "name": "RXCDRHOLD",
+      "dir": "in"
+    },
+    {
+      "name": "RXCDRLOCK",
+      "dir": "out"
+    },
+    {
+      "name": "RXCDROVRDEN",
+      "dir": "in"
+    },
+    {
+      "name": "RXCDRPHDONE",
+      "dir": "out"
+    },
+    {
+      "name": "RXCDRRESET",
+      "dir": "in"
+    },
+    {
+      "name": "RXCDRRESETRSV",
+      "dir": "in"
+    },
+    {
+      "name": "RXCHANBONDSEQ",
+      "dir": "out"
+    },
+    {
+      "name": "RXCHANISALIGNED",
+      "dir": "out"
+    },
+    {
+      "name": "RXCHANREALIGN",
+      "dir": "out"
+    },
+    {
+      "name": "RXCHBONDEN",
+      "dir": "in"
+    },
+    {
+      "name": "RXCHBONDI",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "RXCHBONDLEVEL",
+      "dir": "in",
+      "width": 3
+    },
+    {
+      "name": "RXCHBONDMASTER",
+      "dir": "in"
+    },
+    {
+      "name": "RXCHBONDO",
+      "dir": "out",
+      "width": 5
+    },
+    {
+      "name": "RXCHBONDSLAVE",
+      "dir": "in"
+    },
+    {
+      "name": "RXCKCALDONE",
+      "dir": "out"
+    },
+    {
+      "name": "RXCKCALRESET",
+      "dir": "in"
+    },
+    {
+      "name": "RXCKCALSTART",
+      "dir": "in",
+      "width": 7
+    },
+    {
+      "name": "RXCLKCORCNT",
+      "dir": "out",
+      "width": 2
+    },
+    {
+      "name": "RXCOMINITDET",
+      "dir": "out"
+    },
+    {
+      "name": "RXCOMSASDET",
+      "dir": "out"
+    },
+    {
+      "name": "RXCOMWAKEDET",
+      "dir": "out"
+    },
+    {
+      "name": "RXCTRL0",
+      "dir": "out",
+      "width": 16
+    },
+    {
+      "name": "RXCTRL1",
+      "dir": "out",
+      "width": 16
+    },
+    {
+      "name": "RXCTRL2",
+      "dir": "out",
+      "width": 8
+    },
+    {
+      "name": "RXCTRL3",
+      "dir": "out",
+      "width": 8
+    },
+    {
+      "name": "RXDATA",
+      "dir": "out",
+      "width": 128
+    },
+    {
+      "name": "RXDATAEXTENDRSVD",
+      "dir": "out"
+    },
+    {
+      "name": "RXDFEAGCCTRL",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "RXDFECFOKFCNUM",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "RXDFECFOKFEN",
+      "dir": "in"
+    },
+    {
+      "name": "RXDFECFOKFPULSE",
+      "dir": "in"
+    },
+    {
+      "name": "RXDFELPMRESET",
+      "dir": "in"
+    },
+    {
+      "name": "RXDFEVSEN",
+      "dir": "in"
+    },
+    {
+      "name": "RXDFEXYDEN",
+      "dir": "in"
+    },
+    {
+      "name": "RXDLYBYPASS",
+      "dir": "in"
+    },
+    {
+      "name": "RXDLYEN",
+      "dir": "in"
+    },
+    {
+      "name": "RXDLYOVRDEN",
+      "dir": "in"
+    },
+    {
+      "name": "RXDLYSRESET",
+      "dir": "in"
+    },
+    {
+      "name": "RXDLYSRESETDONE",
+      "dir": "out"
+    },
+    {
+      "name": "RXELECIDLE",
+      "dir": "out"
+    },
+    {
+      "name": "RXELECIDLEMODE",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "RXLPMEN",
+      "dir": "in"
+    },
+    {
+      "name": "RXMONITOROUT",
+      "dir": "out",
+      "width": 8
+    },
+    {
+      "name": "RXMONITORSEL",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "RXOOBRESET",
+      "dir": "in"
+    },
+    {
+      "name": "RXOSCALRESET",
+      "dir": "in"
+    },
+    {
+      "name": "RXOSINTCFG",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "RXOSINTDONE",
+      "dir": "out"
+    },
+    {
+      "name": "RXOSINTEN",
+      "dir": "in"
+    },
+    {
+      "name": "RXOSINTOVRDEN",
+      "dir": "in"
+    },
+    {
+      "name": "RXOSINTSTARTED",
+      "dir": "out"
+    },
+    {
+      "name": "RXOSINTSTROBE",
+      "dir": "in"
+    },
+    {
+      "name": "RXOSINTSTROBEDONE",
+      "dir": "out"
+    },
+    {
+      "name": "RXOSINTSTROBESTARTED",
+      "dir": "in"
+    },
+    {
+      "name": "RXOUTCLK",
+      "dir": "out"
+    },
+    {
+      "name": "RXOUTCLKFABRIC",
+      "dir": "out"
+    },
+    {
+      "name": "RXOUTCLKPCS",
+      "dir": "out"
+    },
+    {
+      "name": "RXOUTCLKSEL",
+      "dir": "in",
+      "width": 3
+    },
+    {
+      "name": "RXPCSRESET",
+      "dir": "in"
+    },
+    {
+      "name": "RXPD",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "RXPHALIGN",
+      "dir": "in"
+    },
+    {
+      "name": "RXPHALIGNDONE",
+      "dir": "out"
+    },
+    {
+      "name": "RXPHALIGNEN",
+      "dir": "in"
+    },
+    {
+      "name": "RXPHALIGNERR",
+      "dir": "out"
+    },
+    {
+      "name": "RXPHDLYPD",
+      "dir": "in"
+    },
+    {
+      "name": "RXPHDLYRESET",
+      "dir": "in"
+    },
+    {
+      "name": "RXPHOVRDEN",
+      "dir": "in"
+    },
+    {
+      "name": "RXPLLCLKSEL",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "RXPMARESET",
+      "dir": "in"
+    },
+    {
+      "name": "RXPMARESETDONE",
+      "dir": "out"
+    },
+    {
+      "name": "RXPOLARITY",
+      "dir": "in"
+    },
+    {
+      "name": "RXPRBSCNTRESET",
+      "dir": "in"
+    },
+    {
+      "name": "RXPRBSERR",
+      "dir": "out"
+    },
+    {
+      "name": "RXPRBSLOCKED",
+      "dir": "out"
+    },
+    {
+      "name": "RXPRBSSEL",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "RXPRGDIVRESETDONE",
+      "dir": "out"
+    },
+    {
+      "name": "RXPROGDIVRESET",
+      "dir": "in"
+    },
+    {
+      "name": "RXRATE",
+      "dir": "in",
+      "width": 3
+    },
+    {
+      "name": "RXRATEDONE",
+      "dir": "out"
+    },
+    {
+      "name": "RXRATEMODE",
+      "dir": "in"
+    },
+    {
+      "name": "RXRESETDONE",
+      "dir": "out"
+    },
+    {
+      "name": "RXSLIPOUTCLK",
+      "dir": "in"
+    },
+    {
+      "name": "RXSLIPPMA",
+      "dir": "in"
+    },
+    {
+      "name": "RXSTATUS",
+      "dir": "out",
+      "width": 3
+    },
+    {
+      "name": "RXSYNCALLIN",
+      "dir": "in"
+    },
+    {
+      "name": "RXSYNCDONE",
+      "dir": "out"
+    },
+    {
+      "name": "RXSYNCIN",
+      "dir": "in"
+    },
+    {
+      "name": "RXSYNCMODE",
+      "dir": "in"
+    },
+    {
+      "name": "RXSYNCOUT",
+      "dir": "out"
+    },
+    {
+      "name": "RXSYSCLKSEL",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "RXTERMINATION",
+      "dir": "in"
+    },
+    {
+      "name": "RXUSERRDY",
+      "dir": "in"
+    },
+    {
+      "name": "RXUSRCLK",
+      "dir": "in"
+    },
+    {
+      "name": "RXUSRCLK2",
+      "dir": "in"
+    },
+    {
+      "name": "TX8B10BBYPASS",
+      "dir": "in",
+      "width": 8
+    },
+    {
+      "name": "TX8B10BEN",
+      "dir": "in"
+    },
+    {
+      "name": "TXBUFDIFFCTRL",
+      "dir": "in",
+      "width": 3
+    },
+    {
+      "name": "TXBUFSTATUS",
+      "dir": "out",
+      "width": 2
+    },
+    {
+      "name": "TXCOMFINISH",
+      "dir": "out"
+    },
+    {
+      "name": "TXCOMINIT",
+      "dir": "in"
+    },
+    {
+      "name": "TXCOMSAS",
+      "dir": "in"
+    },
+    {
+      "name": "TXCOMWAKE",
+      "dir": "in"
+    },
+    {
+      "name": "TXCTRL0",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "TXCTRL1",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "TXCTRL2",
+      "dir": "in",
+      "width": 8
+    },
+    {
+      "name": "TXDATA",
+      "dir": "in",
+      "width": 128
+    },
+    {
+      "name": "TXDATAEXTENDRSVD",
+      "dir": "in"
+    },
+    {
+      "name": "TXDCCDONE",
+      "dir": "out"
+    },
+    {
+      "name": "TXDCCFORCESTART",
+      "dir": "out"
+    },
+    {
+      "name": "TXDCCRESET",
+      "dir": "out"
+    },
+    {
+      "name": "TXDEEMPH",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "TXDETECTRX",
+      "dir": "in"
+    },
+    {
+      "name": "TXDIFFCTRL",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "TXDIFFPD",
+      "dir": "in"
+    },
+    {
+      "name": "TXDLYBYPASS",
+      "dir": "in"
+    },
+    {
+      "name": "TXDLYEN",
+      "dir": "in"
+    },
+    {
+      "name": "TXDLYHOLD",
+      "dir": "in"
+    },
+    {
+      "name": "TXDLYOVRDEN",
+      "dir": "in"
+    },
+    {
+      "name": "TXDLYSRESET",
+      "dir": "in"
+    },
+    {
+      "name": "TXDLYSRESETDONE",
+      "dir": "out"
+    },
+    {
+      "name": "TXDLYUPDOWN",
+      "dir": "in"
+    },
+    {
+      "name": "TXELECIDLE",
+      "dir": "in"
+    },
+    {
+      "name": "TXINHIBIT",
+      "dir": "in"
+    },
+    {
+      "name": "TXMAINCURSOR",
+      "dir": "in",
+      "width": 7
+    },
+    {
+      "name": "TXMARGIN",
+      "dir": "in",
+      "width": 3
+    },
+    {
+      "name": "TXOUTCLK",
+      "dir": "out"
+    },
+    {
+      "name": "TXOUTCLKFABRIC",
+      "dir": "out"
+    },
+    {
+      "name": "TXOUTCLKPCS",
+      "dir": "out"
+    },
+    {
+      "name": "TXOUTCLKSEL",
+      "dir": "in",
+      "width": 3
+    },
+    {
+      "name": "TXPCSRESET",
+      "dir": "in"
+    },
+    {
+      "name": "TXPD",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "TXPDELECIDLEMODE",
+      "dir": "in"
+    },
+    {
+      "name": "TXPHALIGN",
+      "dir": "in"
+    },
+    {
+      "name": "TXPHALIGNDONE",
+      "dir": "out"
+    },
+    {
+      "name": "TXPHALIGNEN",
+      "dir": "in"
+    },
+    {
+      "name": "TXPHDLYPD",
+      "dir": "in"
+    },
+    {
+      "name": "TXPHDLYRESET",
+      "dir": "in"
+    },
+    {
+      "name": "TXPHDLYTSTCLK",
+      "dir": "in"
+    },
+    {
+      "name": "TXPHINIT",
+      "dir": "in"
+    },
+    {
+      "name": "TXPHINITDONE",
+      "dir": "out"
+    },
+    {
+      "name": "TXPHOVRDEN",
+      "dir": "in"
+    },
+    {
+      "name": "TXPIPPMEN",
+      "dir": "in"
+    },
+    {
+      "name": "TXPIPPMOVRDEN",
+      "dir": "in"
+    },
+    {
+      "name": "TXPIPPMPD",
+      "dir": "in"
+    },
+    {
+      "name": "TXPIPPMSEL",
+      "dir": "in"
+    },
+    {
+      "name": "TXPIPPMSTEPSIZE",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "TXPISOPD",
+      "dir": "in"
+    },
+    {
+      "name": "TXPLLCLKSEL",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "TXPMARESET",
+      "dir": "in"
+    },
+    {
+      "name": "TXPMARESETDONE",
+      "dir": "out"
+    },
+    {
+      "name": "TXPOLARITY",
+      "dir": "in"
+    },
+    {
+      "name": "TXPOSTCURSOR",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "TXPRECURSOR",
+      "dir": "in",
+      "width": 5
+    },
+    {
+      "name": "TXPRGDIVRESETDONE",
+      "dir": "out"
+    },
+    {
+      "name": "TXPROGDIVRESET",
+      "dir": "in"
+    },
+    {
+      "name": "TXRATE",
+      "dir": "in",
+      "width": 3
+    },
+    {
+      "name": "TXRATEDONE",
+      "dir": "out"
+    },
+    {
+      "name": "TXRATEMODE",
+      "dir": "in"
+    },
+    {
+      "name": "TXRESETDONE",
+      "dir": "out"
+    },
+    {
+      "name": "TXSWING",
+      "dir": "in"
+    },
+    {
+      "name": "TXSYNCALLIN",
+      "dir": "in"
+    },
+    {
+      "name": "TXSYNCDONE",
+      "dir": "out"
+    },
+    {
+      "name": "TXSYNCIN",
+      "dir": "in"
+    },
+    {
+      "name": "TXSYNCMODE",
+      "dir": "in"
+    },
+    {
+      "name": "TXSYNCOUT",
+      "dir": "out"
+    },
+    {
+      "name": "TXSYSCLKSEL",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "TXUSERRDY",
+      "dir": "in"
+    },
+    {
+      "name": "TXUSRCLK",
+      "dir": "in"
+    },
+    {
+      "name": "TXUSRCLK2",
+      "dir": "in"
+    }
+  ],
+  "note": "UG578 port-description chapter",
+  "source": "ug974 p303",
+  "edges": []
+}

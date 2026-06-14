@@ -1,0 +1,159 @@
+{
+  "id": "PL/Config/config/SYSMONE1",
+  "parent": "PL/Config/config",
+  "kind": "config",
+  "ports": 35,
+  "ports_list": [
+    {
+      "name": "ALARMS:_SYSMON_alarm_ports.",
+      "dir": "in"
+    },
+    {
+      "name": "ALM",
+      "dir": "out",
+      "width": 16
+    },
+    {
+      "name": "OT",
+      "dir": "out"
+    },
+    {
+      "name": "Auxiliary_Analog-Input_Pairs:_Sixteen_auxiliary_analog_input_pairs._In_addition_to_the_dedicated_differential_analog_input,_SYSMON_can_access_16_differential_analog_inputs_by_configuring_digital_I/O_as_analog_inputs._These_inputs_can_also_be_enabled_preconfiguration_via_the_JTAG_port.",
+      "dir": "in"
+    },
+    {
+      "name": "VAUXN",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "VAUXP",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "CONTROL_and_CLOCK:_SYSMON_reset,_conversion_start_and_clock_inputs.",
+      "dir": "in"
+    },
+    {
+      "name": "CONVST",
+      "dir": "in"
+    },
+    {
+      "name": "CONVSTCLK",
+      "dir": "in"
+    },
+    {
+      "name": "RESET",
+      "dir": "in"
+    },
+    {
+      "name": "Dedicated_Analog_Input_Pair:_One_dedicated_analog_input_pair._SYSMON_has_one_pair_of_dedicated_analog_input_pins_that_provide_a_differential_analog_input._If_you_are_designing_with_SYSMON_but_not_using_the_dedicated_external_channel_of_VP_and_VN,_connect_both_VP_and_VN_to_analog_ground.",
+      "dir": "in"
+    },
+    {
+      "name": "VN",
+      "dir": "in"
+    },
+    {
+      "name": "VP",
+      "dir": "in"
+    },
+    {
+      "name": "Dynamic_Reconfiguration_Port_(DRP):_Dynamic_Reconfiguration_Ports,_ports_used_to_access_and_control_the_System_Monitor_block.",
+      "dir": "in"
+    },
+    {
+      "name": "DADDR",
+      "dir": "in",
+      "width": 8
+    },
+    {
+      "name": "DCLK",
+      "dir": "in"
+    },
+    {
+      "name": "DEN",
+      "dir": "in"
+    },
+    {
+      "name": "DI",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "DO",
+      "dir": "out",
+      "width": 16
+    },
+    {
+      "name": "DRDY",
+      "dir": "out"
+    },
+    {
+      "name": "DWE",
+      "dir": "in"
+    },
+    {
+      "name": "I2C_Interface:_Ports_used_with_the_I2C_DRP_interface.",
+      "dir": "in"
+    },
+    {
+      "name": "I2C_SCLK",
+      "dir": "in"
+    },
+    {
+      "name": "I2C_SCLK_TS",
+      "dir": "out"
+    },
+    {
+      "name": "I2C_SDA",
+      "dir": "in"
+    },
+    {
+      "name": "I2C_SDA_TS",
+      "dir": "out"
+    },
+    {
+      "name": "STATUS:_SYSMON_status_ports.",
+      "dir": "in"
+    },
+    {
+      "name": "BUSY",
+      "dir": "out"
+    },
+    {
+      "name": "CHANNEL",
+      "dir": "out",
+      "width": 6
+    },
+    {
+      "name": "EOC",
+      "dir": "out"
+    },
+    {
+      "name": "EOS",
+      "dir": "out"
+    },
+    {
+      "name": "JTAGBUSY",
+      "dir": "out"
+    },
+    {
+      "name": "JTAGLOCKED",
+      "dir": "out"
+    },
+    {
+      "name": "JTAGMODIFIED",
+      "dir": "out"
+    },
+    {
+      "name": "MUXADDR",
+      "dir": "out",
+      "width": 5
+    }
+  ],
+  "note": "ADVANCED",
+  "source": "ug974 p652",
+  "edges": []
+}

@@ -1,0 +1,19 @@
+{
+  "id": "Board/Configuration Chip pin a/MMC_RSTN",
+  "parent": "Board/Configuration Chip pin a",
+  "kind": "assignment",
+  "pin": "PS_MIO23_500",
+  "ball": "AG35",
+  "dir": "",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/Configuration Chip pin a/MMC_RSTN",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO23_500",
+      "ball": "AG35",
+      "dir": ""
+    }
+  ]
+}

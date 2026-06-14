@@ -1,0 +1,31 @@
+{
+  "id": "PL/Config/config/DNA_PORTE2",
+  "parent": "PL/Config/config",
+  "kind": "config",
+  "ports": 5,
+  "ports_list": [
+    {
+      "name": "CLK",
+      "dir": "in"
+    },
+    {
+      "name": "DIN",
+      "dir": "in"
+    },
+    {
+      "name": "DOUT",
+      "dir": "out"
+    },
+    {
+      "name": "READ",
+      "dir": "in"
+    },
+    {
+      "name": "SHIFT",
+      "dir": "in"
+    }
+  ],
+  "note": "CONFIGURATION",
+  "source": "ug974 p250",
+  "edges": []
+}

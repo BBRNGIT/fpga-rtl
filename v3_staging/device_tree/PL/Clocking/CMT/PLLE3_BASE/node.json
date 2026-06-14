@@ -1,0 +1,71 @@
+{
+  "id": "PL/Clocking/CMT/PLLE3_BASE",
+  "parent": "PL/Clocking/CMT",
+  "kind": "config",
+  "ports": 15,
+  "ports_list": [
+    {
+      "name": "CLKIN",
+      "dir": "in"
+    },
+    {
+      "name": "LOCKED",
+      "dir": "out"
+    },
+    {
+      "name": "Clock_Outputs:_User_configurable_clock_outputs_that_can_be_divided_versions_of_the_VCO_phase_outputs_(user_controllable)_from_1_(bypassed)_to_256._The_output_clocks_are_phase_aligned_to_each_other_(unless_phase_shifted)_and_aligned_to_the_input_clock_with_a_proper_feedback_configuration.",
+      "dir": "in"
+    },
+    {
+      "name": "CLKOUTPHY",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT0",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT0B",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT1",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT1B",
+      "dir": "out"
+    },
+    {
+      "name": "Control_Ports:_PLL_control_ports.",
+      "dir": "in"
+    },
+    {
+      "name": "CLKOUTPHYEN",
+      "dir": "in"
+    },
+    {
+      "name": "PWRDWN",
+      "dir": "in"
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    },
+    {
+      "name": "Feedback_Clocks:_Required_ports_to_form_the_feedback_path_for_the_PLL_phase_alignment_capabilities.",
+      "dir": "in"
+    },
+    {
+      "name": "CLKFBIN",
+      "dir": "in"
+    },
+    {
+      "name": "CLKFBOUT",
+      "dir": "out"
+    }
+  ],
+  "note": "CLOCK",
+  "source": "ug974 p513",
+  "edges": []
+}

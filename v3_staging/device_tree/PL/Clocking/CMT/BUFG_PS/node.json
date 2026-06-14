@@ -1,0 +1,19 @@
+{
+  "id": "PL/Clocking/CMT/BUFG_PS",
+  "parent": "PL/Clocking/CMT",
+  "kind": "config",
+  "ports": 2,
+  "ports_list": [
+    {
+      "name": "I",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    }
+  ],
+  "note": "CLOCK",
+  "source": "ug974 p220",
+  "edges": []
+}

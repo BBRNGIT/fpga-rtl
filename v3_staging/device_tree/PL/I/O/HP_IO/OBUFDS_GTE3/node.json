@@ -1,0 +1,27 @@
+{
+  "id": "PL/I/O/HP_IO/OBUFDS_GTE3",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 4,
+  "ports_list": [
+    {
+      "name": "CEB",
+      "dir": "in"
+    },
+    {
+      "name": "I",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "OB",
+      "dir": "out"
+    }
+  ],
+  "note": "ADVANCED",
+  "source": "ug974 p481",
+  "edges": []
+}

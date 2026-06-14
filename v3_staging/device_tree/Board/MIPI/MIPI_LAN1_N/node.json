@@ -1,0 +1,19 @@
+{
+  "id": "Board/MIPI/MIPI_LAN1_N",
+  "parent": "Board/MIPI",
+  "kind": "assignment",
+  "pin": "IO_L3N_T0L_N5_AD15N_68",
+  "ball": "M16",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/MIPI/MIPI_LAN1_N",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L3N_T0L_N5_AD15N_68",
+      "ball": "M16",
+      "dir": ""
+    }
+  ]
+}

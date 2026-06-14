@@ -1,0 +1,19 @@
+{
+  "id": "Board/SATA/SATA4_RX_N",
+  "parent": "Board/SATA",
+  "kind": "assignment",
+  "pin": "MGTHRXN3_228",
+  "ball": "AA1",
+  "dir": "in",
+  "resource": "transceiver(GT/PS-GTR)",
+  "edges": [
+    {
+      "src": "Board/SATA/SATA4_RX_N",
+      "dst": "PL/transceiver(GT/PS-GTR)",
+      "kind": "board",
+      "pin": "MGTHRXN3_228",
+      "ball": "AA1",
+      "dir": "in"
+    }
+  ]
+}

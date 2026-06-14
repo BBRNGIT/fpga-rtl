@@ -1,0 +1,19 @@
+{
+  "id": "Board/ZYNQ pins assignment of /PCIE_RSTN_MIO37",
+  "parent": "Board/ZYNQ pins assignment of ",
+  "kind": "assignment",
+  "pin": "PS_MIO37_501",
+  "ball": "N30",
+  "dir": "",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/ZYNQ pins assignment of /PCIE_RSTN_MIO37",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO37_501",
+      "ball": "N30",
+      "dir": ""
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "Board/SATA/SATA_CLK_P",
+  "parent": "Board/SATA",
+  "kind": "assignment",
+  "pin": "MGTREFCLK0P_228",
+  "ball": "AB12",
+  "dir": "",
+  "resource": "GT_refclk",
+  "edges": [
+    {
+      "src": "Board/SATA/SATA_CLK_P",
+      "dst": "PL/GT_refclk",
+      "kind": "board",
+      "pin": "MGTREFCLK0P_228",
+      "ball": "AB12",
+      "dir": ""
+    }
+  ]
+}

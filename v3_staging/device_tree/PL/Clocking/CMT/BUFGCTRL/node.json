@@ -1,0 +1,47 @@
+{
+  "id": "PL/Clocking/CMT/BUFGCTRL",
+  "parent": "PL/Clocking/CMT",
+  "kind": "config",
+  "ports": 9,
+  "ports_list": [
+    {
+      "name": "CE0",
+      "dir": "in"
+    },
+    {
+      "name": "CE1",
+      "dir": "in"
+    },
+    {
+      "name": "IGNORE0",
+      "dir": "in"
+    },
+    {
+      "name": "IGNORE1",
+      "dir": "in"
+    },
+    {
+      "name": "I0",
+      "dir": "in"
+    },
+    {
+      "name": "I1",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "S0",
+      "dir": "in"
+    },
+    {
+      "name": "S1",
+      "dir": "in"
+    }
+  ],
+  "note": "CLOCK",
+  "source": "ug974 p229",
+  "edges": []
+}

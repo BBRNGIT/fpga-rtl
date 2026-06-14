@@ -1,0 +1,273 @@
+{
+  "id": "PL/CLB/LUT6/RAMB36E2",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 60,
+  "ports_list": [
+    {
+      "name": "Cascade_Signals:_Signals_used_when_cascading_more_than_one_RAMB36E2_components",
+      "dir": "in"
+    },
+    {
+      "name": "CASDIMUXA",
+      "dir": "in"
+    },
+    {
+      "name": "CASDIMUXB",
+      "dir": "in"
+    },
+    {
+      "name": "CASDINA",
+      "dir": "in",
+      "width": 32
+    },
+    {
+      "name": "CASDINB",
+      "dir": "in",
+      "width": 32
+    },
+    {
+      "name": "CASDINPA",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "CASDINPB",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "CASDOMUXA",
+      "dir": "in"
+    },
+    {
+      "name": "CASDOMUXB",
+      "dir": "in"
+    },
+    {
+      "name": "CASDOMUXEN_A",
+      "dir": "in"
+    },
+    {
+      "name": "CASDOMUXEN_B",
+      "dir": "in"
+    },
+    {
+      "name": "CASDOUTA",
+      "dir": "out",
+      "width": 32
+    },
+    {
+      "name": "CASDOUTB",
+      "dir": "out",
+      "width": 32
+    },
+    {
+      "name": "CASDOUTPA",
+      "dir": "out",
+      "width": 4
+    },
+    {
+      "name": "CASDOUTPB",
+      "dir": "out",
+      "width": 4
+    },
+    {
+      "name": "CASINDBITERR",
+      "dir": "in"
+    },
+    {
+      "name": "CASINSBITERR",
+      "dir": "in"
+    },
+    {
+      "name": "CASOREGIMUXA",
+      "dir": "in"
+    },
+    {
+      "name": "CASOREGIMUXB",
+      "dir": "in"
+    },
+    {
+      "name": "CASOREGIMUXEN_A",
+      "dir": "in"
+    },
+    {
+      "name": "CASOREGIMUXEN_B",
+      "dir": "in"
+    },
+    {
+      "name": "CASOUTDBITERR",
+      "dir": "out"
+    },
+    {
+      "name": "CASOUTSBITERR",
+      "dir": "out"
+    },
+    {
+      "name": "ECC_Signals:_Error_Correction_Circuitry_ports",
+      "dir": "in"
+    },
+    {
+      "name": "DBITERR",
+      "dir": "out"
+    },
+    {
+      "name": "ECCPARITY",
+      "dir": "out",
+      "width": 8
+    },
+    {
+      "name": "ECCPIPECE",
+      "dir": "in"
+    },
+    {
+      "name": "INJECTDBITERR",
+      "dir": "in"
+    },
+    {
+      "name": "INJECTSBITERR",
+      "dir": "in"
+    },
+    {
+      "name": "RDADDRECC",
+      "dir": "out",
+      "width": 9
+    },
+    {
+      "name": "SBITERR",
+      "dir": "out"
+    },
+    {
+      "name": "Port_A_Address/Control_Signals:_Port_A_address_and_control_(clock,_reset,_enables,_etc.)_signals.",
+      "dir": "in"
+    },
+    {
+      "name": "ADDRARDADDR",
+      "dir": "in",
+      "width": 15
+    },
+    {
+      "name": "ADDRENA",
+      "dir": "in"
+    },
+    {
+      "name": "CLKARDCLK",
+      "dir": "in"
+    },
+    {
+      "name": "ENARDEN",
+      "dir": "in"
+    },
+    {
+      "name": "REGCEAREGCE",
+      "dir": "in"
+    },
+    {
+      "name": "RSTRAMARSTRAM",
+      "dir": "in"
+    },
+    {
+      "name": "RSTREGARSTREG",
+      "dir": "in"
+    },
+    {
+      "name": "SLEEP",
+      "dir": "in"
+    },
+    {
+      "name": "WEA",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "Port_A_Data:_Port_A_data_signals.",
+      "dir": "in"
+    },
+    {
+      "name": "DINADIN",
+      "dir": "in",
+      "width": 32
+    },
+    {
+      "name": "DINPADINP",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "DOUTADOUT",
+      "dir": "out",
+      "width": 32
+    },
+    {
+      "name": "DOUTPADOUTP",
+      "dir": "out",
+      "width": 4
+    },
+    {
+      "name": "Port_B_Address/Control_Signals:_Port_B_address_and_control_(clock,_reset,_enables,_etc.).",
+      "dir": "in"
+    },
+    {
+      "name": "ADDRBWRADDR",
+      "dir": "in",
+      "width": 15
+    },
+    {
+      "name": "ADDRENB",
+      "dir": "in"
+    },
+    {
+      "name": "CLKBWRCLK",
+      "dir": "in"
+    },
+    {
+      "name": "ENBWREN",
+      "dir": "in"
+    },
+    {
+      "name": "REGCEB",
+      "dir": "in"
+    },
+    {
+      "name": "RSTRAMB",
+      "dir": "in"
+    },
+    {
+      "name": "RSTREGB",
+      "dir": "in"
+    },
+    {
+      "name": "WEBWE",
+      "dir": "in",
+      "width": 8
+    },
+    {
+      "name": "Port_B_Data:_Port_B_data_signals.",
+      "dir": "in"
+    },
+    {
+      "name": "DINBDIN",
+      "dir": "in",
+      "width": 32
+    },
+    {
+      "name": "DINPBDINP",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "DOUTBDOUT",
+      "dir": "out",
+      "width": 32
+    },
+    {
+      "name": "DOUTPBDOUTP",
+      "dir": "out",
+      "width": 4
+    }
+  ],
+  "note": "BLOCKRAM",
+  "source": "ug974 p600",
+  "edges": []
+}

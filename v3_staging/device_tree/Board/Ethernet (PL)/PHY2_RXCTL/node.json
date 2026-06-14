@@ -1,0 +1,19 @@
+{
+  "id": "Board/Ethernet (PL)/PHY2_RXCTL",
+  "parent": "Board/Ethernet (PL)",
+  "kind": "assignment",
+  "pin": "IO_L14N_T2L_N3_GC_64",
+  "ball": "AU19",
+  "dir": "in",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/Ethernet (PL)/PHY2_RXCTL",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L14N_T2L_N3_GC_64",
+      "ball": "AU19",
+      "dir": "in"
+    }
+  ]
+}

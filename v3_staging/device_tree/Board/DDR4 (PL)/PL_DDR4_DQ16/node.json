@@ -1,0 +1,19 @@
+{
+  "id": "Board/DDR4 (PL)/PL_DDR4_DQ16",
+  "parent": "Board/DDR4 (PL)",
+  "kind": "assignment",
+  "pin": "IO_L17N_T2U_N9_AD10N_71",
+  "ball": "D21",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/DDR4 (PL)/PL_DDR4_DQ16",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L17N_T2U_N9_AD10N_71",
+      "ball": "D21",
+      "dir": ""
+    }
+  ]
+}

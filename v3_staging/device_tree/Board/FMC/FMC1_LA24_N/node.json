@@ -1,0 +1,19 @@
+{
+  "id": "Board/FMC/FMC1_LA24_N",
+  "parent": "Board/FMC",
+  "kind": "assignment",
+  "pin": "IO_L9N_T1L_N5_AD12N_67",
+  "ball": "AW10",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/FMC/FMC1_LA24_N",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L9N_T1L_N5_AD12N_67",
+      "ball": "AW10",
+      "dir": ""
+    }
+  ]
+}

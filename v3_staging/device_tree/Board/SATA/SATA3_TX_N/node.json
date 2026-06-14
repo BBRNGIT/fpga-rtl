@@ -1,0 +1,19 @@
+{
+  "id": "Board/SATA/SATA3_TX_N",
+  "parent": "Board/SATA",
+  "kind": "assignment",
+  "pin": "MGTHTXN2_228",
+  "ball": "AA5",
+  "dir": "out",
+  "resource": "transceiver(GT/PS-GTR)",
+  "edges": [
+    {
+      "src": "Board/SATA/SATA3_TX_N",
+      "dst": "PL/transceiver(GT/PS-GTR)",
+      "kind": "board",
+      "pin": "MGTHTXN2_228",
+      "ball": "AA5",
+      "dir": "out"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "Board/Keys ZYNQ pin assignment/PS_KEY",
+  "parent": "Board/Keys ZYNQ pin assignment",
+  "kind": "assignment",
+  "pin": "PS_MIO26_501",
+  "ball": "L27",
+  "dir": "",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/Keys ZYNQ pin assignment/PS_KEY",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO26_501",
+      "ball": "L27",
+      "dir": ""
+    }
+  ]
+}

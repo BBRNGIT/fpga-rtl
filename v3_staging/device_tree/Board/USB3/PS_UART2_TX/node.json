@@ -1,0 +1,19 @@
+{
+  "id": "Board/USB3/PS_UART2_TX",
+  "parent": "Board/USB3",
+  "kind": "assignment",
+  "pin": "PS_MIO32_501",
+  "ball": "M30",
+  "dir": "out",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/USB3/PS_UART2_TX",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO32_501",
+      "ball": "M30",
+      "dir": "out"
+    }
+  ]
+}

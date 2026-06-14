@@ -1,0 +1,19 @@
+{
+  "id": "Board/USB3/PL_UART_RX",
+  "parent": "Board/USB3",
+  "kind": "assignment",
+  "pin": "IO_L7P_HDGC_94",
+  "ball": "C6",
+  "dir": "in",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/USB3/PL_UART_RX",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L7P_HDGC_94",
+      "ball": "C6",
+      "dir": "in"
+    }
+  ]
+}

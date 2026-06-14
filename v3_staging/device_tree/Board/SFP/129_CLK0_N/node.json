@@ -1,0 +1,19 @@
+{
+  "id": "Board/SFP/129_CLK0_N",
+  "parent": "Board/SFP",
+  "kind": "assignment",
+  "pin": "MGTREFCLK0N_129",
+  "ball": "W33",
+  "dir": "",
+  "resource": "GT_refclk",
+  "edges": [
+    {
+      "src": "Board/SFP/129_CLK0_N",
+      "dst": "PL/GT_refclk",
+      "kind": "board",
+      "pin": "MGTREFCLK0N_129",
+      "ball": "W33",
+      "dir": ""
+    }
+  ]
+}

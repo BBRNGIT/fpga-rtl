@@ -1,0 +1,22 @@
+{
+  "id": "PL/CLB/dedicated_gate/AND2B1L",
+  "parent": "PL/CLB/dedicated_gate",
+  "kind": "config",
+  "ports": 3,
+  "ports_list": [
+    {
+      "name": "DI",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "SRI",
+      "dir": "in"
+    }
+  ],
+  "note": "",
+  "edges": []
+}

@@ -1,0 +1,19 @@
+{
+  "id": "Board/DDR4 (PL)/PL_DDR4_A13",
+  "parent": "Board/DDR4 (PL)",
+  "kind": "assignment",
+  "pin": "IO_L7P_T1L_N0_QBC_AD13P_70",
+  "ball": "K27",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/DDR4 (PL)/PL_DDR4_A13",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L7P_T1L_N0_QBC_AD13P_70",
+      "ball": "K27",
+      "dir": ""
+    }
+  ]
+}

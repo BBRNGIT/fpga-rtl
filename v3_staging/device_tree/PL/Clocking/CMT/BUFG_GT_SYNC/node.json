@@ -1,0 +1,31 @@
+{
+  "id": "PL/Clocking/CMT/BUFG_GT_SYNC",
+  "parent": "PL/Clocking/CMT",
+  "kind": "config",
+  "ports": 5,
+  "ports_list": [
+    {
+      "name": "CE",
+      "dir": "in"
+    },
+    {
+      "name": "CESYNC",
+      "dir": "out"
+    },
+    {
+      "name": "CLK",
+      "dir": "in"
+    },
+    {
+      "name": "CLR",
+      "dir": "in"
+    },
+    {
+      "name": "CLRSYNC",
+      "dir": "out"
+    }
+  ],
+  "note": "CLOCK",
+  "source": "ug974 p218",
+  "edges": []
+}

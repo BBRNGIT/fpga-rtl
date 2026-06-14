@@ -1,0 +1,8 @@
+{
+  "id": "Board/PCIe",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 36,
+  "note": "transceiver(GT/PS-GTR)",
+  "edges": []
+}

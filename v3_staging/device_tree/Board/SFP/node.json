@@ -1,0 +1,8 @@
+{
+  "id": "Board/SFP",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 100,
+  "note": "transceiver(GT/PS-GTR)",
+  "edges": []
+}

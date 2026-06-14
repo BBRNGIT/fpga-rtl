@@ -1,0 +1,19 @@
+{
+  "id": "Board/Configure chip pin assig/MIO5_QSPI0_SS_B",
+  "parent": "Board/Configure chip pin assig",
+  "kind": "assignment",
+  "pin": "PS_MIO5_500",
+  "ball": "AL32",
+  "dir": "",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/Configure chip pin assig/MIO5_QSPI0_SS_B",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO5_500",
+      "ball": "AL32",
+      "dir": ""
+    }
+  ]
+}

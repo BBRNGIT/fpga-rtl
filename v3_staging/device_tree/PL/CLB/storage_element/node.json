@@ -1,0 +1,8 @@
+{
+  "id": "PL/CLB/storage_element",
+  "parent": "PL/CLB",
+  "kind": "element",
+  "role": "configurable FF/latch (CE, sync/async set/reset)",
+  "count": 1045440,
+  "edges": []
+}

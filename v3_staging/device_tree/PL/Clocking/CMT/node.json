@@ -1,0 +1,8 @@
+{
+  "id": "PL/Clocking/CMT",
+  "parent": "PL/Clocking",
+  "kind": "element",
+  "role": "clock mgmt tile (MMCM+PLL)",
+  "count": 11,
+  "edges": []
+}

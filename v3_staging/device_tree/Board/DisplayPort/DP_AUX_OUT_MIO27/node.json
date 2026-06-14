@@ -1,0 +1,19 @@
+{
+  "id": "Board/DisplayPort/DP_AUX_OUT_MIO27",
+  "parent": "Board/DisplayPort",
+  "kind": "assignment",
+  "pin": "PS_MIO27_501",
+  "ball": "L29",
+  "dir": "",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/DisplayPort/DP_AUX_OUT_MIO27",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO27_501",
+      "ball": "L29",
+      "dir": ""
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "id": "PL/Clocking/CMT/PLLE3_ADV",
+  "parent": "PL/Clocking/CMT",
+  "kind": "config",
+  "ports": 23,
+  "ports_list": [
+    {
+      "name": "CLKIN",
+      "dir": "in"
+    },
+    {
+      "name": "LOCKED",
+      "dir": "out"
+    },
+    {
+      "name": "Clock_Outputs:_User_configurable_clock_outputs_that_can_be_divided_versions_of_the_VCO_phase_outputs_(user_controllable)_from_1_(bypassed)_to_256._The_output_clocks_are_phase_aligned_to_each_other_(unless_phase_shifted)_and_aligned_to_the_input_clock_with_a_proper_feedback_configuration.",
+      "dir": "in"
+    },
+    {
+      "name": "CLKOUTPHY",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT0",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT0B",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT1",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT1B",
+      "dir": "out"
+    },
+    {
+      "name": "Control_Ports:_PLL_control_ports.",
+      "dir": "in"
+    },
+    {
+      "name": "CLKOUTPHYEN",
+      "dir": "in"
+    },
+    {
+      "name": "PWRDWN",
+      "dir": "in"
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    },
+    {
+      "name": "DRP_Ports:_Ports_used_when_using_the_dynamic_reconfigurable_ports_for_reading_and_writing_the_configuration_of_the_PLL.",
+      "dir": "in"
+    },
+    {
+      "name": "DADDR",
+      "dir": "in",
+      "width": 7
+    },
+    {
+      "name": "DCLK",
+      "dir": "in"
+    },
+    {
+      "name": "DEN",
+      "dir": "in"
+    },
+    {
+      "name": "DI",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "DO",
+      "dir": "out",
+      "width": 16
+    },
+    {
+      "name": "DRDY",
+      "dir": "out"
+    },
+    {
+      "name": "DWE",
+      "dir": "in"
+    },
+    {
+      "name": "Feedback_Clocks:_Required_ports_to_form_the_feedback_path_for_the_PLL_phase_alignment_capabilities.",
+      "dir": "in"
+    },
+    {
+      "name": "CLKFBIN",
+      "dir": "in"
+    },
+    {
+      "name": "CLKFBOUT",
+      "dir": "out"
+    }
+  ],
+  "note": "CLOCK",
+  "source": "ug974 p507",
+  "edges": []
+}

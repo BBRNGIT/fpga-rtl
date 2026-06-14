@@ -1,0 +1,27 @@
+{
+  "id": "PL/CLB/MUXF/MUXF7",
+  "parent": "PL/CLB/MUXF",
+  "kind": "config",
+  "ports": 4,
+  "ports_list": [
+    {
+      "name": "I0",
+      "dir": "in"
+    },
+    {
+      "name": "I1",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "S",
+      "dir": "in"
+    }
+  ],
+  "note": "CLB",
+  "source": "ug974 p469",
+  "edges": []
+}

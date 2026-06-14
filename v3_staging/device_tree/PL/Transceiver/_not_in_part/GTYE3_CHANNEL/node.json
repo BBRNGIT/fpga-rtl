@@ -1,0 +1,8 @@
+{
+  "id": "PL/Transceiver/_not_in_part/GTYE3_CHANNEL",
+  "parent": "PL/Transceiver",
+  "kind": "excluded",
+  "ports": 238,
+  "note": "UltraScale GTHE3/GTYE3 \u2014 ZU19EG is UltraScale+ (uses E4)",
+  "edges": []
+}

@@ -1,0 +1,8 @@
+{
+  "id": "Board/ZYNQ pins assignment of ",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 7,
+  "note": "transceiver(GT/PS-GTR)",
+  "edges": []
+}

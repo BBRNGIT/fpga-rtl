@@ -1,0 +1,19 @@
+{
+  "id": "Board/Ethernet (PL)/PHY2_TXD3",
+  "parent": "Board/Ethernet (PL)",
+  "kind": "assignment",
+  "pin": "IO_L23N_T3U_N9_64",
+  "ball": "AJ20",
+  "dir": "out",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/Ethernet (PL)/PHY2_TXD3",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L23N_T3U_N9_64",
+      "ball": "AJ20",
+      "dir": "out"
+    }
+  ]
+}

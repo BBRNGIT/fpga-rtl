@@ -1,0 +1,27 @@
+{
+  "id": "Board/FMC/FMC2_GBTCLK1_M2C",
+  "parent": "Board/FMC",
+  "kind": "assignment",
+  "pin": "MGTREFCLK0P_224",
+  "ball": "AK12",
+  "dir": "",
+  "resource": "GT_refclk",
+  "edges": [
+    {
+      "src": "Board/FMC/FMC2_GBTCLK1_M2C",
+      "dst": "PL/GT_refclk",
+      "kind": "board",
+      "pin": "MGTREFCLK0N_224",
+      "ball": "AK11",
+      "dir": ""
+    },
+    {
+      "src": "Board/FMC/FMC2_GBTCLK1_M2C",
+      "dst": "PL/GT_refclk",
+      "kind": "board",
+      "pin": "MGTREFCLK0P_224",
+      "ball": "AK12",
+      "dir": ""
+    }
+  ]
+}

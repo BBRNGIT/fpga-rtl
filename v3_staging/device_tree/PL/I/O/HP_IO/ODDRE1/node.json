@@ -1,0 +1,31 @@
+{
+  "id": "PL/I/O/HP_IO/ODDRE1",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 5,
+  "ports_list": [
+    {
+      "name": "C",
+      "dir": "in"
+    },
+    {
+      "name": "D1",
+      "dir": "in"
+    },
+    {
+      "name": "D2",
+      "dir": "in"
+    },
+    {
+      "name": "Q",
+      "dir": "out"
+    },
+    {
+      "name": "SR",
+      "dir": "in"
+    }
+  ],
+  "note": "REGISTER",
+  "source": "ug974 p493",
+  "edges": []
+}

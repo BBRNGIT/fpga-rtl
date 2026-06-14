@@ -1,0 +1,40 @@
+{
+  "id": "PL/Clocking/CMT/BUFG_GT",
+  "parent": "PL/Clocking/CMT",
+  "kind": "config",
+  "ports": 7,
+  "ports_list": [
+    {
+      "name": "CE",
+      "dir": "in"
+    },
+    {
+      "name": "CEMASK",
+      "dir": "in"
+    },
+    {
+      "name": "CLR",
+      "dir": "in"
+    },
+    {
+      "name": "CLRMASK",
+      "dir": "in"
+    },
+    {
+      "name": "DIV",
+      "dir": "in",
+      "width": 3
+    },
+    {
+      "name": "I",
+      "dir": "in"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    }
+  ],
+  "note": "CLOCK",
+  "source": "ug974 p216",
+  "edges": []
+}

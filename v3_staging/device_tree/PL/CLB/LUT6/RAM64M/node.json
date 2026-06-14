@@ -1,0 +1,71 @@
+{
+  "id": "PL/CLB/LUT6/RAM64M",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 14,
+  "ports_list": [
+    {
+      "name": "DOA",
+      "dir": "out"
+    },
+    {
+      "name": "DOB",
+      "dir": "out"
+    },
+    {
+      "name": "DOC",
+      "dir": "out"
+    },
+    {
+      "name": "DOD",
+      "dir": "out"
+    },
+    {
+      "name": "DIA",
+      "dir": "in"
+    },
+    {
+      "name": "DIB",
+      "dir": "in"
+    },
+    {
+      "name": "DIC",
+      "dir": "in"
+    },
+    {
+      "name": "DID",
+      "dir": "in"
+    },
+    {
+      "name": "ADDRA",
+      "dir": "in",
+      "width": 6
+    },
+    {
+      "name": "ADDRB",
+      "dir": "in",
+      "width": 6
+    },
+    {
+      "name": "ADDRC",
+      "dir": "in",
+      "width": 6
+    },
+    {
+      "name": "ADDRD",
+      "dir": "in",
+      "width": 6
+    },
+    {
+      "name": "WE",
+      "dir": "in"
+    },
+    {
+      "name": "WCLK",
+      "dir": "in"
+    }
+  ],
+  "note": "CLB",
+  "source": "ug974 p565",
+  "edges": []
+}

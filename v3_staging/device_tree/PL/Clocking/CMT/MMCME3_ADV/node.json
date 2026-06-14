@@ -1,0 +1,182 @@
+{
+  "id": "PL/Clocking/CMT/MMCME3_ADV",
+  "parent": "PL/Clocking/CMT",
+  "kind": "config",
+  "ports": 42,
+  "ports_list": [
+    {
+      "name": "CDDCREQ",
+      "dir": "in"
+    },
+    {
+      "name": "Clock_Inputs:_MMCM_input_clock(s)._Connect_CLKIN2_if_input_clock_multiplexing_feature_is_used.",
+      "dir": "in"
+    },
+    {
+      "name": "CLKIN1",
+      "dir": "in"
+    },
+    {
+      "name": "CLKIN2",
+      "dir": "in"
+    },
+    {
+      "name": "Clock_Outputs:_User_configurable_clock_outputs_that_can_be_divided_versions_of_the_VCO_phase_outputs_(user_controllable)_from_1_(bypassed)_to_128._The_output_clocks_are_phase_aligned_to_each_other_(unless_phase_shifted)_and_aligned_to_the_input_clock_with_a_proper_feedback_configuration._The_CLKOUT#B_outputs_are_180_degrees_out_of_phase_with_the_non-B_outputs.",
+      "dir": "in"
+    },
+    {
+      "name": "CLKOUT0",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT0B",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT1",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT1B",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT2",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT2B",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT3",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT3B",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT4",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT5",
+      "dir": "out"
+    },
+    {
+      "name": "CLKOUT6",
+      "dir": "out"
+    },
+    {
+      "name": "Control_Ports:_MMCM_control_ports.",
+      "dir": "in"
+    },
+    {
+      "name": "CLKINSEL",
+      "dir": "in"
+    },
+    {
+      "name": "PWRDWN",
+      "dir": "in"
+    },
+    {
+      "name": "RST",
+      "dir": "in"
+    },
+    {
+      "name": "DRP_Ports:_Ports_used_when_using_the_dynamic_reconfigurable_ports_for_reading_and_writing_the_configuration_of_the_MMCM.",
+      "dir": "in"
+    },
+    {
+      "name": "DADDR",
+      "dir": "in",
+      "width": 7
+    },
+    {
+      "name": "DCLK",
+      "dir": "in"
+    },
+    {
+      "name": "DEN",
+      "dir": "in"
+    },
+    {
+      "name": "DI",
+      "dir": "in",
+      "width": 16
+    },
+    {
+      "name": "DO",
+      "dir": "out",
+      "width": 16
+    },
+    {
+      "name": "DRDY",
+      "dir": "out"
+    },
+    {
+      "name": "DWE",
+      "dir": "in"
+    },
+    {
+      "name": "Dynamic_Phase_Shift_Ports:_Ports_used_when_using_the_dynamic_phase_shift_capability_of_the_MMCM.",
+      "dir": "in"
+    },
+    {
+      "name": "PSCLK",
+      "dir": "in"
+    },
+    {
+      "name": "PSDONE",
+      "dir": "out"
+    },
+    {
+      "name": "PSEN",
+      "dir": "in"
+    },
+    {
+      "name": "PSINCDEC",
+      "dir": "in"
+    },
+    {
+      "name": "Feedback:_Required_ports_to_form_the_feedback_path_for_the_MMCM_phase_alignment_capabilities.",
+      "dir": "in"
+    },
+    {
+      "name": "CLKFBIN",
+      "dir": "in"
+    },
+    {
+      "name": "CLKFBOUT",
+      "dir": "out"
+    },
+    {
+      "name": "CLKFBOUTB",
+      "dir": "out"
+    },
+    {
+      "name": "Status_Ports:_MMCM_status_ports.",
+      "dir": "in"
+    },
+    {
+      "name": "CDDCDONE",
+      "dir": "out"
+    },
+    {
+      "name": "CLKFBSTOPPED",
+      "dir": "out"
+    },
+    {
+      "name": "CLKINSTOPPED",
+      "dir": "out"
+    },
+    {
+      "name": "LOCKED",
+      "dir": "out"
+    }
+  ],
+  "note": "CLOCK",
+  "source": "ug974 p437",
+  "edges": []
+}

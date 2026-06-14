@@ -1,0 +1,19 @@
+{
+  "id": "Board/Ethernet (PS)/PHY1_RXD1",
+  "parent": "Board/Ethernet (PS)",
+  "kind": "assignment",
+  "pin": "PS_MIO72_502",
+  "ball": "AF32",
+  "dir": "in",
+  "resource": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/Ethernet (PS)/PHY1_RXD1",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "pin": "PS_MIO72_502",
+      "ball": "AF32",
+      "dir": "in"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "id": "PL/I/O/HP_IO/IOBUFDSE3",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 9,
+  "ports_list": [
+    {
+      "name": "DCITERMDISABLE",
+      "dir": "in"
+    },
+    {
+      "name": "I",
+      "dir": "in"
+    },
+    {
+      "name": "IBUFDISABLE",
+      "dir": "in"
+    },
+    {
+      "name": "IO",
+      "dir": "inout"
+    },
+    {
+      "name": "IOB",
+      "dir": "inout"
+    },
+    {
+      "name": "O",
+      "dir": "out"
+    },
+    {
+      "name": "OSC",
+      "dir": "in",
+      "width": 4
+    },
+    {
+      "name": "OSC_EN",
+      "dir": "in",
+      "width": 2
+    },
+    {
+      "name": "T",
+      "dir": "in"
+    }
+  ],
+  "note": "I",
+  "source": "ug974 p391",
+  "edges": []
+}

@@ -1,0 +1,8 @@
+{
+  "id": "Board/Keys ZYNQ pin assignment",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 2,
+  "note": "PS_MIO",
+  "edges": []
+}

@@ -1,0 +1,19 @@
+{
+  "id": "Board/FMC/FMC1_DP0_C2M_P",
+  "parent": "Board/FMC",
+  "kind": "assignment",
+  "pin": "MGTHTXP3_231",
+  "ball": "H4",
+  "dir": "",
+  "resource": "transceiver(GT/PS-GTR)",
+  "edges": [
+    {
+      "src": "Board/FMC/FMC1_DP0_C2M_P",
+      "dst": "PL/transceiver(GT/PS-GTR)",
+      "kind": "board",
+      "pin": "MGTHTXP3_231",
+      "ball": "H4",
+      "dir": ""
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "Board/MIPI/CAM_CLK",
+  "parent": "Board/MIPI",
+  "kind": "assignment",
+  "pin": "IO_L6P_HDGC_91",
+  "ball": "F13",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/MIPI/CAM_CLK",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L6P_HDGC_91",
+      "ball": "F13",
+      "dir": ""
+    }
+  ]
+}

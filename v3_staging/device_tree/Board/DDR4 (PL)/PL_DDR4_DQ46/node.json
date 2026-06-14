@@ -1,0 +1,19 @@
+{
+  "id": "Board/DDR4 (PL)/PL_DDR4_DQ46",
+  "parent": "Board/DDR4 (PL)",
+  "kind": "assignment",
+  "pin": "IO_L12P_T1U_N10_GC_69",
+  "ball": "C30",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/DDR4 (PL)/PL_DDR4_DQ46",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L12P_T1U_N10_GC_69",
+      "ball": "C30",
+      "dir": ""
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "Board/DDR4 (PL)/PL_DDR4_DM8",
+  "parent": "Board/DDR4 (PL)",
+  "kind": "assignment",
+  "pin": "IO_L19P_T3L_N0_DBC_AD9P_70",
+  "ball": "C28",
+  "dir": "",
+  "resource": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/DDR4 (PL)/PL_DDR4_DM8",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "pin": "IO_L19P_T3L_N0_DBC_AD9P_70",
+      "ball": "C28",
+      "dir": ""
+    }
+  ]
+}
