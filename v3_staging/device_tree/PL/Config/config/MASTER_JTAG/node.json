@@ -1,9 +1,0 @@
-{
-  "id": "PL/Config/config/MASTER_JTAG",
-  "parent": "PL/Config/config",
-  "kind": "config",
-  "ports": 4,
-  "note": "CONFIGURATION",
-  "source": "ug974 p435",
-  "edges": []
-}

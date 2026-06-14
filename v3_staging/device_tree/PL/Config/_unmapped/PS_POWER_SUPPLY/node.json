@@ -1,8 +1,0 @@
-{
-  "id": "PL/Config/_unmapped/PS_POWER_SUPPLY",
-  "parent": "PL/Config/_unmapped",
-  "kind": "config",
-  "ports": 22,
-  "note": "",
-  "edges": []
-}

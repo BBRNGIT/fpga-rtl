@@ -1,9 +1,0 @@
-{
-  "id": "PL/CLB/storage_element/FDRE",
-  "parent": "PL/CLB/storage_element",
-  "kind": "config",
-  "ports": 5,
-  "note": "REGISTER",
-  "source": "ug974 p274",
-  "edges": []
-}

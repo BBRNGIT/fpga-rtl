@@ -1,8 +1,0 @@
-{
-  "id": "PL/Config/_unmapped/PS_DDR_MEMORY_CONTROLLER",
-  "parent": "PL/Config/_unmapped",
-  "kind": "config",
-  "ports": 17,
-  "note": "",
-  "edges": []
-}

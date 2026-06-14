@@ -1,9 +1,0 @@
-{
-  "id": "PL/Transceiver/GTH/GTHE4_COMMON",
-  "parent": "PL/Transceiver/GTH",
-  "kind": "config",
-  "ports": 76,
-  "note": "UG576 port-description chapter",
-  "source": "ug974 p300",
-  "edges": []
-}

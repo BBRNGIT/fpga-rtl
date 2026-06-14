@@ -1,7 +1,0 @@
-{
-  "id": "PL/Config/_unmapped",
-  "parent": "PL/Config",
-  "kind": "element",
-  "role": "(config-map TBD in P1)",
-  "edges": []
-}

@@ -1,9 +1,0 @@
-{
-  "id": "PL/I/O/HP_IO/IOBUFDSE3",
-  "parent": "PL/I/O/HP_IO",
-  "kind": "config",
-  "ports": 9,
-  "note": "I",
-  "source": "ug974 p391",
-  "edges": []
-}

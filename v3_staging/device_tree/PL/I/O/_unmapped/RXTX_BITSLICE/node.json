@@ -1,8 +1,0 @@
-{
-  "id": "PL/I/O/_unmapped/RXTX_BITSLICE",
-  "parent": "PL/I/O/_unmapped",
-  "kind": "config",
-  "ports": 33,
-  "note": "",
-  "edges": []
-}

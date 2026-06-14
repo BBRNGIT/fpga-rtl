@@ -1,9 +1,0 @@
-{
-  "id": "PL/I/O/HP_IO/IDDRE1",
-  "parent": "PL/I/O/HP_IO",
-  "kind": "config",
-  "ports": 6,
-  "note": "REGISTER",
-  "source": "ug974 p352",
-  "edges": []
-}

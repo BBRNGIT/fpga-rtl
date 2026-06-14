@@ -1,9 +1,0 @@
-{
-  "id": "PL/Config/config/STARTUPE3",
-  "parent": "PL/Config/config",
-  "kind": "config",
-  "ports": 17,
-  "note": "CONFIGURATION",
-  "source": "ug974 p649",
-  "edges": []
-}

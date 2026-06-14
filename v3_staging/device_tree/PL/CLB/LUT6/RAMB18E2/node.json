@@ -1,9 +1,0 @@
-{
-  "id": "PL/CLB/LUT6/RAMB18E2",
-  "parent": "PL/CLB/LUT6",
-  "kind": "config",
-  "ports": 48,
-  "note": "BLOCKRAM",
-  "source": "ug974 p583",
-  "edges": []
-}

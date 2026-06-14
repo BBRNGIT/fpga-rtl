@@ -1,8 +1,0 @@
-{
-  "id": "PL/CLB/LUT6",
-  "parent": "PL/CLB",
-  "kind": "element",
-  "role": "6-input LUT / distributed-RAM / SRL (SLICEM)",
-  "count": 522720,
-  "edges": []
-}

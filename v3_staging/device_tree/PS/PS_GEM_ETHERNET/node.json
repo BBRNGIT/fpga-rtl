@@ -1,8 +1,0 @@
-{
-  "id": "PS/PS_GEM_ETHERNET",
-  "parent": "PS",
-  "kind": "subsystem",
-  "count": 11,
-  "note": "UG1085",
-  "edges": []
-}

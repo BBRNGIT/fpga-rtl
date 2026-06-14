@@ -1,9 +1,0 @@
-{
-  "id": "PL/I/O/HP_IO/ODELAYE3",
-  "parent": "PL/I/O/HP_IO",
-  "kind": "config",
-  "ports": 13,
-  "note": "I",
-  "source": "ug974 p496",
-  "edges": []
-}

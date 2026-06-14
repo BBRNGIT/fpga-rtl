@@ -1,8 +1,0 @@
-{
-  "id": "PL/Transceiver/_unmapped/GTHE3_CHANNEL",
-  "parent": "PL/Transceiver/_unmapped",
-  "kind": "config",
-  "ports": 246,
-  "note": "",
-  "edges": []
-}

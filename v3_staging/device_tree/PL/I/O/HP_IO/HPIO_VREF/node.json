@@ -1,9 +1,0 @@
-{
-  "id": "PL/I/O/HP_IO/HPIO_VREF",
-  "parent": "PL/I/O/HP_IO",
-  "kind": "config",
-  "ports": 2,
-  "note": "I",
-  "source": "ug974 p307",
-  "edges": []
-}

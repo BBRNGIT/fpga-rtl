@@ -1,9 +1,0 @@
-{
-  "id": "PL/Config/config/SYSMONE4",
-  "parent": "PL/Config/config",
-  "kind": "config",
-  "ports": 38,
-  "note": "ADVANCED",
-  "source": "ug974 p661",
-  "edges": []
-}

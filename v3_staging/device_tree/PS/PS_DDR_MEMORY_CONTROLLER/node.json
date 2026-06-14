@@ -1,8 +1,0 @@
-{
-  "id": "PS/PS_DDR_MEMORY_CONTROLLER",
-  "parent": "PS",
-  "kind": "subsystem",
-  "count": 17,
-  "note": "UG1085",
-  "edges": []
-}

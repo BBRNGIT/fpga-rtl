@@ -1,8 +1,0 @@
-{
-  "id": "PL/Transceiver/GTY",
-  "parent": "PL/Transceiver",
-  "kind": "element",
-  "role": "32.75Gb/s transceiver",
-  "count": 28,
-  "edges": []
-}

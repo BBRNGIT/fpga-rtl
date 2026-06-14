@@ -65,6 +65,7 @@ for sub, el, role, count, prefixes in PHYS:
         if any(name.upper().startswith(p) for p in prefixes):
             v = cat[name]; assigned.add(name)
             N(f"{eid}/{name}", eid, "config", ports=len(v.get("ports", [])),
+              ports_list=v.get("ports", []),                # full port-level netlist detail
               note=v.get("note") or v.get("port_src") or v.get("group") or "", source=v.get("source", ""))
 # any ported catalogue primitive not mapped -> its subsystem bucket (so nothing is dropped)
 def subof(n):
@@ -78,7 +79,8 @@ for name in sorted(cat):
     if name in assigned or not cat[name].get("ports"): continue
     sub = subof(name); pid = f"PL/{sub}/_unmapped"
     if not any(x["id"] == pid for x in nodes): N(pid, f"PL/{sub}", "element", role="(config-map TBD in P1)")
-    N(f"{pid}/{name}", pid, "config", ports=len(cat[name]["ports"]), note=cat[name].get("note",""))
+    N(f"{pid}/{name}", pid, "config", ports=len(cat[name]["ports"]),
+      ports_list=cat[name]["ports"], note=cat[name].get("note",""))
 
 # --- PS: blocks -> signal count ---------------------------------------------------------
 for blk, sigs in ps.items():
@@ -90,10 +92,19 @@ peri = defaultdict(Counter)
 for r in board: peri[r.get("iface","?")][r.get("resource","?")] += 1
 for iface, rc in sorted(peri.items(), key=lambda kv:-sum(kv[1].values())):
     N(f"Board/{iface}", "Board", "peripheral", count=sum(rc.values()), note=rc.most_common(1)[0][0])
+# EVERY individual pin/ball assignment as a leaf (the real external netlist — not aggregated)
+for r in board:
+    sig = (r.get("signal") or "").strip()
+    if not sig: continue
+    N(f"Board/{r.get('iface','?')}/{sig}", f"Board/{r.get('iface','?')}", "assignment",
+      pin=r.get("pin",""), ball=r.get("ball",""), dir=r.get("dir",""), resource=r.get("resource",""))
 
-# --- edges: board(resource->iface), figures(block<->block), PS-PL routing(src->dst) -----
-for iface, rc in peri.items():
-    for res, n in rc.items(): edges.append({"src": f"Board/{iface}", "dst": f"PL/{res}", "kind": "board", "n": n})
+# --- edges: per-signal board assignment -> resource ; figures ; PS-PL routing ----------
+for r in board:
+    sig = (r.get("signal") or "").strip()
+    if not sig: continue
+    edges.append({"src": f"Board/{r.get('iface','?')}/{sig}", "dst": f"PL/{r.get('resource','?')}",
+                  "kind": "board", "pin": r.get("pin",""), "ball": r.get("ball",""), "dir": r.get("dir","")})
 for k, v in fig.items():
     for c in v.get("connections", []):
         b = c.get("blocks", [])
@@ -101,6 +112,12 @@ for k, v in fig.items():
             edges.append({"src": b[i], "dst": b[i+1], "kind": "figure", "fig": k, "signals": c.get("signals", [])[:4]})
 for r in routing:
     edges.append({"src": f"PS:{r.get('source','')}", "dst": f"PS:{r.get('destination','')}", "kind": "routing", "name": r.get("name","")})
+# UG572 clock-fabric nets (figparse): each net = pins wired together (clock distribution)
+for k, v in L("figparse_out.json", {}).items():
+    for net in v.get("nets", []):
+        labs = net.get("net", [])
+        for i in range(len(labs)-1):
+            edges.append({"src": f"clk:{labs[i]}", "dst": f"clk:{labs[i+1]}", "kind": "clocknet", "fig": k})
 
 json.dump({"nodes": nodes, "edges": edges}, open(os.path.join(ROOT, "hierarchy.json"), "w"), indent=2)
 
@@ -114,6 +131,9 @@ def render(nid):
     cnt = f" <b>×{n['count']:,}</b>" if n.get("count") else ""
     meta = []
     if n.get("role"): meta.append(esc(n["role"]))
+    if n.get("kind") == "assignment":
+        meta.append(f"pin {esc(n.get('pin','?'))} · ball {esc(n.get('ball','?'))}"
+                    + (f" · {esc(n['dir'])}" if n.get("dir") else "") + f" → {esc(n.get('resource',''))}")
     if n.get("ports") is not None: meta.append(f"{n['ports']} ports")
     if n.get("note"): meta.append(esc(n["note"]))
     label = esc(n.get("label", nid.split("/")[-1]))
@@ -133,7 +153,7 @@ details>summary{{cursor:pointer;list-style:none}}details>summary::-webkit-detail
 summary:before{{content:'▶ ';color:var(--d)}}details[open]>summary:before{{content:'▼ '}}
 .leaf{{padding-left:14px;color:var(--d)}}
 .k{{font-size:9px;text-transform:uppercase;letter-spacing:.04em;padding:1px 5px;border-radius:8px;background:var(--p);border:1px solid var(--l)}}
-.k-device{{color:#1f6feb}}.k-domain{{color:#a371f7}}.k-subsystem{{color:#3fb950}}.k-element{{color:#e3b341}}.k-config{{color:var(--d)}}.k-peripheral{{color:#ff7b72}}
+.k-device{{color:#1f6feb}}.k-domain{{color:#a371f7}}.k-subsystem{{color:#3fb950}}.k-element{{color:#e3b341}}.k-config{{color:var(--d)}}.k-peripheral{{color:#ff7b72}}.k-assignment{{color:#56d4dd}}
 .nm{{font-weight:600}}.m{{color:var(--d);font-size:11px}}.c{{color:var(--d);font-size:10px}}
 .cards{{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}}.card{{background:var(--p);border:1px solid var(--l);border-radius:8px;padding:8px 12px}}.card b{{font-size:15px}}.card span{{color:var(--d);font-size:11px;display:block}}</style>
 <h1>XCZU19EG — hierarchical netlist (physical-proof view)</h1>

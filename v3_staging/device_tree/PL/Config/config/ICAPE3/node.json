@@ -1,9 +1,0 @@
-{
-  "id": "PL/Config/config/ICAPE3",
-  "parent": "PL/Config/config",
-  "kind": "config",
-  "ports": 8,
-  "note": "CONFIGURATION",
-  "source": "ug974 p349",
-  "edges": []
-}

@@ -1,9 +1,0 @@
-{
-  "id": "PL/DSP/DSP48E2/DSP48E2",
-  "parent": "PL/DSP/DSP48E2",
-  "kind": "config",
-  "ports": 54,
-  "note": "ARITHMETIC",
-  "source": "ug974 p253",
-  "edges": []
-}

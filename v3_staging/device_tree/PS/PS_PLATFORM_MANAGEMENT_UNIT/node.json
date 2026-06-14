@@ -1,8 +1,0 @@
-{
-  "id": "PS/PS_PLATFORM_MANAGEMENT_UNIT",
-  "parent": "PS",
-  "kind": "subsystem",
-  "count": 4,
-  "note": "UG1085",
-  "edges": []
-}

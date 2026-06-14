@@ -1,9 +1,0 @@
-{
-  "id": "PL/CLB/LUT6/RAMB36E2",
-  "parent": "PL/CLB/LUT6",
-  "kind": "config",
-  "ports": 60,
-  "note": "BLOCKRAM",
-  "source": "ug974 p600",
-  "edges": []
-}

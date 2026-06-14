@@ -1,9 +1,0 @@
-{
-  "id": "PL/Config/config/DNA_PORTE2",
-  "parent": "PL/Config/config",
-  "kind": "config",
-  "ports": 5,
-  "note": "CONFIGURATION",
-  "source": "ug974 p250",
-  "edges": []
-}

@@ -1,8 +1,0 @@
-{
-  "id": "PL/CLB/CARRY8",
-  "parent": "PL/CLB",
-  "kind": "element",
-  "role": "carry chain",
-  "count": 65340,
-  "edges": []
-}

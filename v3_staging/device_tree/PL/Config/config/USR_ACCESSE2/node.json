@@ -1,9 +1,0 @@
-{
-  "id": "PL/Config/config/USR_ACCESSE2",
-  "parent": "PL/Config/config",
-  "kind": "config",
-  "ports": 3,
-  "note": "CONFIGURATION",
-  "source": "ug974 p693",
-  "edges": []
-}

@@ -1,8 +1,0 @@
-{
-  "id": "PL/Memory/RAMB36E2",
-  "parent": "PL/Memory",
-  "kind": "element",
-  "role": "36Kb block RAM",
-  "count": 984,
-  "edges": []
-}

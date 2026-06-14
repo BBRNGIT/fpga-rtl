@@ -1,8 +1,0 @@
-{
-  "id": "PL/I/O/_unmapped/PULLDOWN",
-  "parent": "PL/I/O/_unmapped",
-  "kind": "config",
-  "ports": 1,
-  "note": "",
-  "edges": []
-}

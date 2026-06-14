@@ -1,8 +1,0 @@
-{
-  "id": "PL/CLB/MUXF",
-  "parent": "PL/CLB",
-  "kind": "element",
-  "role": "wide function mux (F7/F8/F9)",
-  "count": null,
-  "edges": []
-}

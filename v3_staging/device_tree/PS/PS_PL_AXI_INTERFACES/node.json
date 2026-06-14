@@ -1,8 +1,0 @@
-{
-  "id": "PS/PS_PL_AXI_INTERFACES",
-  "parent": "PS",
-  "kind": "subsystem",
-  "count": 14,
-  "note": "UG1085",
-  "edges": []
-}

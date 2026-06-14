@@ -1,9 +1,0 @@
-{
-  "id": "PL/I/O/HP_IO/IOBUFDS_INTERMDISABLE",
-  "parent": "PL/I/O/HP_IO",
-  "kind": "config",
-  "ports": 7,
-  "note": "I",
-  "source": "ug974 p388",
-  "edges": []
-}

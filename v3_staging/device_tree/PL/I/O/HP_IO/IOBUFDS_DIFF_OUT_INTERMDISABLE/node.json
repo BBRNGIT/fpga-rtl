@@ -1,9 +1,0 @@
-{
-  "id": "PL/I/O/HP_IO/IOBUFDS_DIFF_OUT_INTERMDISABLE",
-  "parent": "PL/I/O/HP_IO",
-  "kind": "config",
-  "ports": 9,
-  "note": "I",
-  "source": "ug974 p385",
-  "edges": []
-}

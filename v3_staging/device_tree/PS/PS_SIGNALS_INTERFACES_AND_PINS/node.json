@@ -1,8 +1,0 @@
-{
-  "id": "PS/PS_SIGNALS_INTERFACES_AND_PINS",
-  "parent": "PS",
-  "kind": "subsystem",
-  "count": 17,
-  "note": "UG1085",
-  "edges": []
-}

@@ -1,9 +1,0 @@
-{
-  "id": "PL/CLB/LUT6/RAM256X1D",
-  "parent": "PL/CLB/LUT6",
-  "kind": "config",
-  "ports": 7,
-  "note": "CLB",
-  "source": "ug974 p537",
-  "edges": []
-}

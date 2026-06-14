@@ -1,8 +1,0 @@
-{
-  "id": "PS/PS_DISPLAYPORT_CONTROLLER",
-  "parent": "PS",
-  "kind": "subsystem",
-  "count": 19,
-  "note": "UG1085",
-  "edges": []
-}

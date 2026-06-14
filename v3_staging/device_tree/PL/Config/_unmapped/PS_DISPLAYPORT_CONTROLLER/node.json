@@ -1,8 +1,0 @@
-{
-  "id": "PL/Config/_unmapped/PS_DISPLAYPORT_CONTROLLER",
-  "parent": "PL/Config/_unmapped",
-  "kind": "config",
-  "ports": 19,
-  "note": "",
-  "edges": []
-}

@@ -1,8 +1,0 @@
-{
-  "id": "PL/I/O/_unmapped/RIU_OR",
-  "parent": "PL/I/O/_unmapped",
-  "kind": "config",
-  "ports": 6,
-  "note": "",
-  "edges": []
-}

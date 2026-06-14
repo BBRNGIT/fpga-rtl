@@ -1,9 +1,0 @@
-{
-  "id": "PL/Memory/URAM288/URAM288",
-  "parent": "PL/Memory/URAM288",
-  "kind": "config",
-  "ports": 66,
-  "note": "BLOCKRAM",
-  "source": "ug974 p680",
-  "edges": []
-}

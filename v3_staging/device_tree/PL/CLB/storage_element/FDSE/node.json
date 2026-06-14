@@ -1,9 +1,0 @@
-{
-  "id": "PL/CLB/storage_element/FDSE",
-  "parent": "PL/CLB/storage_element",
-  "kind": "config",
-  "ports": 5,
-  "note": "REGISTER",
-  "source": "ug974 p277",
-  "edges": []
-}

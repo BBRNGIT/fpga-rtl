@@ -1,8 +1,0 @@
-{
-  "id": "PS/PS_POWER_SUPPLY",
-  "parent": "PS",
-  "kind": "subsystem",
-  "count": 22,
-  "note": "UG1085",
-  "edges": []
-}

@@ -1,9 +1,0 @@
-{
-  "id": "PL/CLB/MUXF/MUXF7",
-  "parent": "PL/CLB/MUXF",
-  "kind": "config",
-  "ports": 4,
-  "note": "CLB",
-  "source": "ug974 p469",
-  "edges": []
-}

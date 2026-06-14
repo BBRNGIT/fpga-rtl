@@ -1,9 +1,0 @@
-{
-  "id": "PL/Clocking/CMT/PLLE3_BASE",
-  "parent": "PL/Clocking/CMT",
-  "kind": "config",
-  "ports": 15,
-  "note": "CLOCK",
-  "source": "ug974 p513",
-  "edges": []
-}

@@ -1,9 +1,0 @@
-{
-  "id": "PL/CLB/CARRY8/CARRY8",
-  "parent": "PL/CLB/CARRY8",
-  "kind": "config",
-  "ports": 6,
-  "note": "CLB",
-  "source": "ug974 p241",
-  "edges": []
-}

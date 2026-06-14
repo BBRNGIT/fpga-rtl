@@ -1,8 +1,0 @@
-{
-  "id": "PL/DSP/DSP48E2",
-  "parent": "PL/DSP",
-  "kind": "element",
-  "role": "DSP slice",
-  "count": 1968,
-  "edges": []
-}

@@ -1,9 +1,0 @@
-{
-  "id": "PL/Memory/RAMB18E2/FIFO18E2",
-  "parent": "PL/Memory/RAMB18E2",
-  "kind": "config",
-  "ports": 40,
-  "note": "BLOCKRAM",
-  "source": "ug974 p280",
-  "edges": []
-}
