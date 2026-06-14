@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "mode": "execution-plane",
+  "sourceAgentPath": "/Users/bbrn/__0agt/.claude/agents/AGNT",
+  "targetPath": "/Users/bbrn/FPGA-RTL",
+  "targetInfo": {
+    "name": "FPGA-RTL",
+    "type": "hardware-design",
+    "description": "C-as-RTL FPGA design framework for Xilinx XCZU19EG (Zynq UltraScale+ MPSoC)",
+    "environment": "development",
+    "url": "https://github.com/bbrn/FPGA-RTL",
+    "createdAt": "2026-06-14T13:04:08Z"
+  },
+  "credentials": {
+    "priority": ["sshAgent", "environment", "config", "manual"],
+    "strategies": {
+      "sshAgent": { "enabled": true },
+      "environment": { "enabled": true },
+      "config": { "enabled": true },
+      "manual": { "enabled": false }
+    }
+  },
+  "gitStrategy": {
+    "mode": "auto"
+  },
+  "hookExecution": {
+    "mode": "local"
+  },
+  "memory": {
+    "location": "target"
+  },
+  "rollback": {
+    "strategy": "auto"
+  }
+}
