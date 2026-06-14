@@ -106,7 +106,12 @@ def run(pdf, pages, out):
         caps = sorted(figures_on_page(page), key=lambda c: c[1])
         if not caps: continue
         wires, diags, rects_all, _ = eda.collect(page.get_drawings())
-        wires = [w for w in wires if w not in eda.triangle_flat_sides(diags, wires)]
+        # triangle/symbol-body exclusion is O(diags^2) and only matters for gate schematics;
+        # block diagrams have ~no gate triangles, so skip it on diagonal-dense pages (keeps
+        # the dense interconnect figures from dominating wall-clock; accuracy-neutral here).
+        if len(diags) <= 250:
+            flat = eda.triangle_flat_sides(diags, wires)
+            wires = [w for w in wires if w not in flat]
         words = [(w[0], w[1], w[2], w[3], w[4]) for w in page.get_text("words")]
         PA = page.rect.width * page.rect.height
         prev = 70.0
