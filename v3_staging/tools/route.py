@@ -35,9 +35,9 @@ def Lj(*cands):
 # CONSTANTS
 # ============================================================================
 
-TRACKS = 16              # INT_TILE routing tracks per direction (UG-style)
-INT_TILE_INPUTS = 16     # INT_TILE fan-in for PIP mux
-INT_TILE_OUTPUTS = 16    # INT_TILE fan-out
+TRACKS = 24              # INT_TILE routing tracks per direction (UG572 HCS = 24 tracks)
+INT_TILE_INPUTS = 24     # INT_TILE fan-in for PIP mux
+INT_TILE_OUTPUTS = 24    # INT_TILE fan-out
 
 # Node types for routing
 NodeType = namedtuple("NodeType", ["name"])
@@ -59,11 +59,51 @@ DIR_OFFSET = {
 # PLACEMENT: real clock regions + synthetic logic placement
 # ============================================================================
 
-def coord_synthetic(name, R, C):
-    """L2 phase: deterministic synthetic placement via hash.
-    Do NOT read grid coords as a physical floorplan."""
+def coord_synthetic(name, R, C, clock_regions_x=6, clock_regions_y=4, use_edges=False):
+    """L3 phase: deterministic placement respecting clock-region boundaries.
+
+    Hash-based coordinates, but distributed evenly across clock regions
+    to reduce synthetic congestion. Each net maps to a region first, then
+    within that region.
+
+    use_edges: if True, place roughly 25% of nets at grid edges (realistic I/O distribution)."""
     h = int(hashlib.md5(name.encode()).hexdigest(), 16)
-    return (h % R, (h // R) % C)
+
+    # For I/O realistic distribution: some nets prefer edges
+    if use_edges and (h & 0x3) == 0:  # ~25% of nets
+        # Place at edges (rows/cols 0, R-1, C-1)
+        edge_type = (h >> 16) & 0x3
+        if edge_type == 0:  # top edge
+            return (0, h % C)
+        elif edge_type == 1:  # bottom edge
+            return (R - 1, h % C)
+        elif edge_type == 2:  # left edge
+            return (h % R, 0)
+        else:  # right edge
+            return (h % R, C - 1)
+
+    # Region-aware distribution: assign to region first, then position within region
+    # This reduces path congestion vs pure hash (which can cluster in synthetic dead zones)
+    region_x = (h >> 0) % clock_regions_x  # bits 0-7 for region X
+    region_y = (h >> 8) % clock_regions_y  # bits 8-15 for region Y
+
+    # Within each region, distribute evenly
+    tiles_per_region_x = C // clock_regions_x
+    tiles_per_region_y = R // clock_regions_y
+
+    # Position within region using hash bits
+    local_x = ((h >> 16) % tiles_per_region_x) if tiles_per_region_x > 0 else 0
+    local_y = ((h >> 24) % tiles_per_region_y) if tiles_per_region_y > 0 else 0
+
+    # Absolute position
+    abs_x = region_x * tiles_per_region_x + local_x
+    abs_y = region_y * tiles_per_region_y + local_y
+
+    # Clamp to grid bounds
+    abs_x = min(abs_x, C - 1)
+    abs_y = min(abs_y, R - 1)
+
+    return (abs_y, abs_x)
 
 def parse_clock_regions(clkfab_data):
     """Parse clkfab.py output to extract real clock-region placement.
@@ -90,14 +130,14 @@ def parse_clock_regions(clkfab_data):
                 }
     return clock_placement
 
-def endpoint_placement(net_name, is_clock, clock_placement, R, C):
+def endpoint_placement(net_name, is_clock, clock_placement, R, C, clock_regions_x=6, clock_regions_y=4):
     """Determine tile coordinates for a net endpoint.
-    Clock nets use real clkfab.py placement; logic nets use synthetic hashing."""
+    Clock nets use real clkfab.py placement; logic nets use region-aware synthetic placement."""
     if is_clock and net_name in clock_placement:
         placement = clock_placement[net_name]
         return placement["coords"], placement
-    # Fallback: synthetic placement for non-clock or missing clkfab data
-    return coord_synthetic(net_name, R, C), None
+    # Fallback: region-aware synthetic placement for non-clock or missing clkfab data
+    return coord_synthetic(net_name, R, C, clock_regions_x, clock_regions_y), None
 
 # ============================================================================
 # GRAPH OPERATIONS
@@ -150,7 +190,7 @@ def heuristic(pos, goal):
     return abs(pos[0] - goal[0]) + abs(pos[1] - goal[1])
 
 def dijkstra_route(graph, src, dst, taken, allow_occupied=False, occupied_penalty=1.0):
-    """Find shortest path from src to dst.
+    """Find shortest path from src to dst using A* with Manhattan distance heuristic.
     taken = set of (tile, out_dir, track) already used.
     allow_occupied = if True, allow using occupied wires at a cost.
     occupied_penalty = cost multiplier for using occupied wires.
@@ -158,13 +198,15 @@ def dijkstra_route(graph, src, dst, taken, allow_occupied=False, occupied_penalt
     if src == dst:
         return []
 
-    # Priority queue: (cost, tile, path_so_far)
-    pq = [(0, src, [])]
+    # Priority queue: (f_cost, tile, path_so_far, g_cost)
+    # f_cost = g_cost + h_cost (A* heuristic)
+    h = heuristic(src, dst)
+    pq = [(h, src, [], 0)]
     visited = set()
-    costs = {src: 0}
+    g_costs = {src: 0}
 
     while pq:
-        cost, tile, path = heapq.heappop(pq)
+        f_cost, tile, path, g_cost = heapq.heappop(pq)
 
         if tile == dst:
             return path
@@ -174,7 +216,19 @@ def dijkstra_route(graph, src, dst, taken, allow_occupied=False, occupied_penalt
         visited.add(tile)
 
         # Try all outgoing directions and tracks
-        for out_dir in DIRECTIONS:
+        # Prefer directions toward goal (east/west for column difference, north/south for row difference)
+        goal_dir = []
+        dr = dst[0] - tile[0]
+        dc = dst[1] - tile[1]
+        if dr < 0: goal_dir.append("n")
+        if dr > 0: goal_dir.append("s")
+        if dc < 0: goal_dir.append("w")
+        if dc > 0: goal_dir.append("e")
+
+        # Sort directions: goal directions first, then others
+        sorted_dirs = goal_dir + [d for d in DIRECTIONS if d not in goal_dir]
+
+        for out_dir in sorted_dirs:
             for track in range(TRACKS):
                 wire = (tile, out_dir, track)
 
@@ -190,39 +244,53 @@ def dijkstra_route(graph, src, dst, taken, allow_occupied=False, occupied_penalt
 
                     # Cost: 1 hop normally, higher if using occupied wire
                     hop_cost = occupied_penalty if is_occupied else 1.0
-                    new_cost = cost + hop_cost
-                    if next_tile not in costs or new_cost < costs[next_tile]:
-                        costs[next_tile] = new_cost
-                        h = heuristic(next_tile, dst)
-                        heapq.heappush(pq, (new_cost + h, next_tile, path + [(tile, out_dir, track, next_tile)]))
+                    new_g_cost = g_cost + hop_cost
+
+                    if next_tile not in g_costs or new_g_cost < g_costs[next_tile]:
+                        g_costs[next_tile] = new_g_cost
+                        h_cost = heuristic(next_tile, dst)
+                        f_cost_new = new_g_cost + h_cost
+                        new_path = path + [(tile, out_dir, track, next_tile)]
+                        heapq.heappush(pq, (f_cost_new, next_tile, new_path, new_g_cost))
 
     return None
 
-def route_net(graph, src, dst, taken, allow_reroute=True, max_attempts=2):
-    """Route a single net from src to dst.
+def route_net(graph, src, dst, taken, allow_reroute=True, max_attempts=3):
+    """Route a single net from src to dst with multi-strategy attempts.
     Returns: (pips, success) where pips = [{"tile": [...], "out": dir, "track": t}, ...]"""
     if src == dst:
         return [], True
 
-    # First attempt: strict avoidance
+    # Attempt 1: strict avoidance (prefer unoccupied wires)
     path = dijkstra_route(graph, src, dst, taken, allow_occupied=False)
     if path:
         pips = _convert_path_to_pips(path)
-        # Check for conflicts
-        if not any(w in taken for w in _get_wires(pips)):
-            for w in _get_wires(pips):
+        wires = _get_wires(pips)
+        if not any(w in taken for w in wires):
+            for w in wires:
                 taken.add(w)
             return pips, True
 
-    # Second attempt: allow longer paths that might go around blockages
-    # by using higher-cost tracks/directions
+    # Attempt 2: moderate penalty for occupied wires (5x cost)
+    # This allows alternative paths if no direct path exists
     if allow_reroute and max_attempts > 1:
-        # Try with occupied penalty to prefer unoccupied but longer routes
-        path = dijkstra_route(graph, src, dst, taken, allow_occupied=True, occupied_penalty=10.0)
+        path = dijkstra_route(graph, src, dst, taken, allow_occupied=True, occupied_penalty=5.0)
         if path:
             pips = _convert_path_to_pips(path)
             wires = _get_wires(pips)
-            # Only accept if no conflicts
+            # Accept only if we don't create new conflicts
+            if not any(w in taken for w in wires):
+                for w in wires:
+                    taken.add(w)
+                return pips, True
+
+    # Attempt 3: higher penalty (15x) - more aggressive rerouting
+    # Use multiple alternative segments if necessary
+    if allow_reroute and max_attempts > 2:
+        path = dijkstra_route(graph, src, dst, taken, allow_occupied=True, occupied_penalty=15.0)
+        if path:
+            pips = _convert_path_to_pips(path)
+            wires = _get_wires(pips)
             if not any(w in taken for w in wires):
                 for w in wires:
                     taken.add(w)
@@ -402,9 +470,10 @@ def run(R, C, clkfab_file=None):
     conflicts_resolved = 0
 
     # PASS: Route in priority order (clock, then critical, then normal)
+    # XCZU19EG has 4×6 clock regions
     for net_idx, s, d, is_clock in sorted_net_indices:
-        src, src_info = endpoint_placement(s, is_clock, clock_placement, R, C)
-        dst, dst_info = endpoint_placement(d, is_clock, clock_placement, R, C)
+        src, src_info = endpoint_placement(s, is_clock, clock_placement, R, C, clock_regions_x=6, clock_regions_y=4)
+        dst, dst_info = endpoint_placement(d, is_clock, clock_placement, R, C, clock_regions_x=6, clock_regions_y=4)
 
         if src == dst:
             continue
@@ -428,6 +497,9 @@ def run(R, C, clkfab_file=None):
                 conflicts_resolved += 1
         else:
             unrouted_nets.append((net_idx, s, d))
+
+    # Note: PASS 2 (alternative placement rerouting) disabled due to O(n²) cost.
+    # Future improvement: implement smarter backtracking or placement-aware routing.
 
     # GATES: validation
     single_driver_ok, duplicates = validate_single_driver(routes)

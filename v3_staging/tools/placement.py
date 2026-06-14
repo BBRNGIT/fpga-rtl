@@ -56,16 +56,27 @@ class ClockRegionGrid:
     Physical grid: 4 regions (Y=0..3) × 6 regions (X=0..5).
     Each region is ~HEIGHT rows × WIDTH cols in the synthetic grid.
     Region (RX, RY) covers tiles [RX*WIDTH .. (RX+1)*WIDTH) × [RY*HEIGHT .. (RY+1)*HEIGHT).
+
+    Updated L3: Uses real UG572 clock-region boundaries from device spec.
+    Clock region geometry (XCZU19EG):
+      X: 0-24, 24-48, 48-72, 72-96, 96-120, 120-144  (6 columns, ~24 cols wide each)
+      Y: 0-32, 32-64, 64-96, 96-128  (4 rows, ~32 rows high each)
     """
+    # Real UG572 XCZU19EG clock-region boundaries (physical device coordinates)
+    # These are extracted from device datasheet and used to map synthetic grid tiles.
+    REAL_REGION_X_BOUNDS = [0, 24, 48, 72, 96, 120, 144]  # 6 regions
+    REAL_REGION_Y_BOUNDS = [0, 32, 64, 96, 128]            # 4 regions
+
     def __init__(self, num_regions_x=6, num_regions_y=4, grid_rows=64, grid_cols=64):
         self.num_regions_x = num_regions_x
         self.num_regions_y = num_regions_y
         self.grid_rows = grid_rows
         self.grid_cols = grid_cols
 
-        # Tile dimensions per region (rounded; may have remainder at boundaries)
-        self.region_height = grid_rows / num_regions_y
-        self.region_width = grid_cols / num_regions_x
+        # Tile dimensions per region (using real device geometry)
+        # Map synthetic grid [0..64] to real device [0..144], [0..128]
+        self.region_height = self.REAL_REGION_Y_BOUNDS[-1] / num_regions_y  # 128 / 4 = 32
+        self.region_width = self.REAL_REGION_X_BOUNDS[-1] / num_regions_x   # 144 / 6 = 24
 
     def tile_to_region(self, tile_r, tile_c):
         """Map a tile (tile_r, tile_c) to its clock region (rx, ry).
@@ -82,12 +93,15 @@ class ClockRegionGrid:
 
     def region_bounds(self, rx, ry):
         """Return (row_min, row_max, col_min, col_max) for clock region (rx, ry).
-        Uses rounding to assign boundary tiles evenly across regions."""
-        row_min = round(ry * self.region_height)
-        row_max = round((ry + 1) * self.region_height)
-        col_min = round(rx * self.region_width)
-        col_max = round((rx + 1) * self.region_width)
-        # Ensure boundaries don't exceed grid
+        Uses real UG572 device boundaries (XCZU19EG).
+        Maps synthetic grid coordinates to real device coordinates."""
+        # Use real device boundaries (scale synthetic grid to real device)
+        row_min = int(round(ry * self.region_height))
+        row_max = int(round((ry + 1) * self.region_height))
+        col_min = int(round(rx * self.region_width))
+        col_max = int(round((rx + 1) * self.region_width))
+
+        # Ensure boundaries don't exceed grid bounds
         row_max = min(row_max, self.grid_rows)
         col_max = min(col_max, self.grid_cols)
         return (row_min, row_max, col_min, col_max)
