@@ -1,6 +1,6 @@
 {
   "generated_from": "jobgen.py",
-  "count": 78,
+  "count": 81,
   "jobs": [
     {
       "id": "tool:assemble",
@@ -131,6 +131,14 @@
       "nudge": ""
     },
     {
+      "id": "tool:map",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/map.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
       "id": "tool:netc",
       "kind": "integrity",
       "group": "tools",
@@ -243,6 +251,14 @@
       "nudge": ""
     },
     {
+      "id": "tool:unify",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/unify.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
       "id": "tool:vparse",
       "kind": "integrity",
       "group": "tools",
@@ -279,6 +295,14 @@
       "kind": "integrity",
       "group": "artifacts",
       "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/device/library.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:loadmap.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/device/loadmap.json'))\"",
       "gate": true,
       "nudge": ""
     },
