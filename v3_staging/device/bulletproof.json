@@ -1,0 +1,680 @@
+{
+  "ts": 1781446934,
+  "bulletproof": true,
+  "integrity": {
+    "green": 63,
+    "total": 63
+  },
+  "progress": {
+    "green": 1,
+    "total": 11
+  },
+  "jobs": [
+    {
+      "id": "tool:assemble",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:blockmap",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:boardparse",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:build",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:cast",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:catalog",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:configmap",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:dsparse",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:eda_shapes",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:extract",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:figblocks",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:figdiff",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:figparse",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:gen_container",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:hierarchy",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:integrate",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:netc",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:phys",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:phys_lib",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:pip_lib",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:progress",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:psports",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:realize",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:richtext",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:specgen",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:tabledump",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:templates",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:txports",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:vparse",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:bulletproof.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:container.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:device.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:library.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:board_net.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:catalog.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:configmap.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:ds_resources.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:figblocks_out.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:figdiff_out.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:figparse_out.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:jobs.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:phys.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:primitives.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:ps_ports.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:specgen_out.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:tx_ports.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:ug1085_richtext.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:ug576_figblocks.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:ug576_richtext.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:ug578_figblocks.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:ug578_richtext.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:ug974_prims.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "inv:all_committed",
+      "kind": "integrity",
+      "group": "invariants",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "working tree clean (tools/device)"
+    },
+    {
+      "id": "inv:clean_layout",
+      "kind": "integrity",
+      "group": "invariants",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "tools/ has no generated artifacts"
+    },
+    {
+      "id": "inv:configmap_subset_catalog",
+      "kind": "integrity",
+      "group": "invariants",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "all 130 configmap members \u2286 catalog"
+    },
+    {
+      "id": "inv:container_compiles",
+      "kind": "integrity",
+      "group": "invariants",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "container compiles + POST exit 0"
+    },
+    {
+      "id": "inv:counts_match_ds891",
+      "kind": "integrity",
+      "group": "invariants",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "element counts == DS891 (FF/LUT/DSP)"
+    },
+    {
+      "id": "inv:device_tree_consistent",
+      "kind": "integrity",
+      "group": "invariants",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "device_tree == hierarchy (0 nodes)"
+    },
+    {
+      "id": "inv:library_validates",
+      "kind": "integrity",
+      "group": "invariants",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "library passes netc"
+    },
+    {
+      "id": "inv:no_ai_attribution",
+      "kind": "integrity",
+      "group": "invariants",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "no AI attribution in recent commits"
+    },
+    {
+      "id": "inv:no_verilog",
+      "kind": "integrity",
+      "group": "invariants",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "no Verilog/VHDL/TCL in tree (Law #1)"
+    },
+    {
+      "id": "inv:zero_unmapped",
+      "kind": "integrity",
+      "group": "invariants",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "0 _unmapped nodes"
+    },
+    {
+      "id": "inv:zero_untracked",
+      "kind": "integrity",
+      "group": "invariants",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "0 untracked tool/device files"
+    },
+    {
+      "id": "phase:P1",
+      "kind": "progress",
+      "group": "phases",
+      "gate": false,
+      "nudge": "advance P1: run `realize.py worklist P1` and execute the next item",
+      "green": false,
+      "msg": "fail"
+    },
+    {
+      "id": "phase:P2",
+      "kind": "progress",
+      "group": "phases",
+      "gate": false,
+      "nudge": "advance P2: run `realize.py worklist P2` and execute the next item",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "phase:P3",
+      "kind": "progress",
+      "group": "phases",
+      "gate": false,
+      "nudge": "advance P3: run `realize.py worklist P3` and execute the next item",
+      "green": false,
+      "msg": "fail"
+    },
+    {
+      "id": "phase:P4",
+      "kind": "progress",
+      "group": "phases",
+      "gate": false,
+      "nudge": "advance P4: run `realize.py worklist P4` and execute the next item",
+      "green": false,
+      "msg": "fail"
+    },
+    {
+      "id": "phase:P5",
+      "kind": "progress",
+      "group": "phases",
+      "gate": false,
+      "nudge": "advance P5: run `realize.py worklist P5` and execute the next item",
+      "green": false,
+      "msg": "fail"
+    },
+    {
+      "id": "phase:P6",
+      "kind": "progress",
+      "group": "phases",
+      "gate": false,
+      "nudge": "advance P6: run `realize.py worklist P6` and execute the next item",
+      "green": false,
+      "msg": "fail"
+    },
+    {
+      "id": "todo:route",
+      "kind": "progress",
+      "group": "remaining_tools",
+      "gate": false,
+      "nudge": "build route.py (next phase tool)",
+      "green": false,
+      "msg": "fail"
+    },
+    {
+      "id": "todo:clkfab",
+      "kind": "progress",
+      "group": "remaining_tools",
+      "gate": false,
+      "nudge": "build clkfab.py (next phase tool)",
+      "green": false,
+      "msg": "fail"
+    },
+    {
+      "id": "todo:ps_realize",
+      "kind": "progress",
+      "group": "remaining_tools",
+      "gate": false,
+      "nudge": "build ps_realize.py (next phase tool)",
+      "green": false,
+      "msg": "fail"
+    },
+    {
+      "id": "todo:map",
+      "kind": "progress",
+      "group": "remaining_tools",
+      "gate": false,
+      "nudge": "build map.py (next phase tool)",
+      "green": false,
+      "msg": "fail"
+    },
+    {
+      "id": "todo:unify",
+      "kind": "progress",
+      "group": "remaining_tools",
+      "gate": false,
+      "nudge": "build unify.py (next phase tool)",
+      "green": false,
+      "msg": "fail"
+    }
+  ]
+}

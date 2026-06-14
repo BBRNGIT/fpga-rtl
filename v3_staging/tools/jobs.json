@@ -1,6 +1,6 @@
 {
   "generated_from": "jobgen.py",
-  "count": 73,
+  "count": 74,
   "jobs": [
     {
       "id": "tool:assemble",
@@ -235,18 +235,34 @@
       "nudge": ""
     },
     {
-      "id": "artifact:device.json",
+      "id": "artifact:bulletproof.json",
       "kind": "integrity",
       "group": "artifacts",
-      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/device.json'))\"",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/device/bulletproof.json'))\"",
       "gate": true,
       "nudge": ""
     },
     {
-      "id": "artifact:hierarchy.json",
+      "id": "artifact:container.json",
       "kind": "integrity",
       "group": "artifacts",
-      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/hierarchy.json'))\"",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/device/container.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:device.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/device/device.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:library.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/device/library.json'))\"",
       "gate": true,
       "nudge": ""
     },
@@ -271,14 +287,6 @@
       "kind": "integrity",
       "group": "artifacts",
       "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/configmap.json'))\"",
-      "gate": true,
-      "nudge": ""
-    },
-    {
-      "id": "artifact:container.json",
-      "kind": "integrity",
-      "group": "artifacts",
-      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/container.json'))\"",
       "gate": true,
       "nudge": ""
     },
@@ -315,10 +323,10 @@
       "nudge": ""
     },
     {
-      "id": "artifact:library.json",
+      "id": "artifact:jobs.json",
       "kind": "integrity",
       "group": "artifacts",
-      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/library.json'))\"",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/tools/jobs.json'))\"",
       "gate": true,
       "nudge": ""
     },

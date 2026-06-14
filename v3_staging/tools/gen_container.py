@@ -10,7 +10,8 @@ TOOL OUTPUT — do not hand-edit. Usage: gen_container.py
 """
 import json, os, re
 HERE = os.path.dirname(os.path.abspath(__file__))
-c = json.load(open(os.path.join(HERE, "container.json")))
+DEV = os.path.join(os.path.dirname(HERE), "device")
+c = json.load(open(os.path.join(DEV, "container.json")))
 def ident(s): return re.sub(r"[^A-Za-z0-9_]", "_", s).lower()
 
 els = [e for e in c["elements"] if e.get("count")]              # counted types form the fabric arrays
@@ -29,7 +30,7 @@ lines += ["};", f"enum {{ CAST_TYPES = {len(els)} }};",
           f"static const unsigned long long CAST_TOTAL = {c['totals']['total_placed_instances']}ULL;",
           f"static const unsigned long long CAST_SLICES = {c['grid']['slices']}ULL;",
           "#endif"]
-open(os.path.join(HERE, "container_gen.h"), "w").write("\n".join(lines) + "\n")
+open(os.path.join(DEV, "container_gen.h"), "w").write("\n".join(lines) + "\n")
 
 post = '''/* container_post.c — GENERATED power-on POST for the blank container. */
 #include <stdio.h>
@@ -48,6 +49,6 @@ int main(void){
     return total==CAST_TOTAL?0:1;
 }
 '''
-open(os.path.join(HERE, "container_post.c"), "w").write(post)
+open(os.path.join(DEV, "container_post.c"), "w").write(post)
 print(f"gen_container: emitted container_gen.h ({len(els)} fabric arrays) + container_post.c")
 print(f"  total instances in arrays: {c['totals']['total_placed_instances']:,}")

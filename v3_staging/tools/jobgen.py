@@ -18,7 +18,8 @@ for p in sorted(glob.glob(os.path.join(HERE, "*.py"))):
     jobs.append(J(f"tool:{m}", "integrity", "tools", f"python3 -m py_compile {p}", gate=True))
 
 # INTEGRITY · per-artifact (parses as JSON)
-for p in sorted(glob.glob(os.path.join(HERE, "*.json")) + glob.glob(os.path.join(os.path.dirname(HERE), "*.json"))):
+_root = os.path.dirname(HERE)
+for p in sorted(glob.glob(os.path.join(HERE, "*.json")) + glob.glob(os.path.join(_root, "device", "*.json"))):
     n = os.path.basename(p)
     jobs.append(J(f"artifact:{n}", "integrity", "artifacts",
                   f"python3 -c \"import json;json.load(open(r'{p}'))\"", gate=True))

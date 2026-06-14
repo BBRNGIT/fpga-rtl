@@ -18,10 +18,13 @@ Usage:
 """
 import sys, os, json, argparse
 HERE = os.path.dirname(os.path.abspath(__file__))
+DEVICE = os.path.join(os.path.dirname(HERE), "device")     # generated artifacts live here
 
 def load(p, d=None):
-    try: return json.load(open(os.path.join(HERE, p)))
-    except Exception: return d
+    for base in (HERE, DEVICE):                            # data in tools/, generated in device/
+        try: return json.load(open(os.path.join(base, p)))
+        except Exception: continue
+    return d
 
 # ---- the canonical phases (the roadmap, as data) --------------------------------------
 PHASES = [
@@ -95,7 +98,7 @@ def measure(pid):
             f"{len(cm)} physical elements realized (configmap) + {len(lib.get('blocks',{}))} blocks in library.json"
     if pid == "P2":
         cont = load("container.json", {})
-        cast = os.path.exists(os.path.join(HERE, "container_gen.h")) and bool(cont.get("elements"))
+        cast = os.path.exists(os.path.join(DEVICE, "container_gen.h")) and bool(cont.get("elements"))
         n = cont.get("totals", {}).get("total_placed_instances", 0)
         return (1 if cast else 0), 1, (f"blank cast: {len(cont.get('elements',[]))} types, {n:,} instances, compiles+POSTs" if cast else "container not cast")
     if pid == "P3":

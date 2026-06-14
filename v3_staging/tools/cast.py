@@ -61,7 +61,7 @@ totals = {"physical_element_types": len(elements),
           "system_logic_cells_DS891": num("System Logic Cells"),
           "uncounted_element_types": sum(1 for e in elements if not e["count"])}
 json.dump({"part": list(ds.keys())[0] if ds else "?", "elements": elements,
-           "grid": grid, "totals": totals}, open(os.path.join(HERE, "container.json"), "w"), indent=2)
+           "grid": grid, "totals": totals}, open(os.path.join(os.path.dirname(HERE), "device", "container.json"), "w"), indent=2)
 
 print(f"cast: blank container — {len(elements)} physical element types, "
       f"{placed:,} instances placed on synthesized grid -> container.json")

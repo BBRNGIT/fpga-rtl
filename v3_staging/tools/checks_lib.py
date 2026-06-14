@@ -8,7 +8,7 @@ jobs.json entry (via jobgen.py).
 import sys, os, json, glob, subprocess, re
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 def L(p):
-    for base in (HERE, ROOT):
+    for base in (HERE, os.path.join(ROOT, "device"), ROOT):   # data in tools/, generated in device/
         fp = os.path.join(base, p)
         if os.path.exists(fp): return json.load(open(fp))
     raise FileNotFoundError(p)

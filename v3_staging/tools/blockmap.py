@@ -31,7 +31,7 @@ def esc(s): return html.escape(str(s))
 def main():
     net = load(os.path.join(HERE, "board_net.json"), [])
     inv = load(os.path.join(HERE, "ds_resources.json"), {}).get("ZU19EG", {})
-    dev = load(os.path.join(ROOT, "device.json"), {"blocks": {}})
+    dev = load(os.path.join(ROOT, "device", "device.json"), {"blocks": {}})
     prims = load(os.path.join(HERE, "catalog.json"), {})       # complete parts list (142, ports+params+hard-IP notes)
     prims = {k: v for k, v in prims.items() if not k.startswith("xpm_")}
     transcribed = {k for k, b in dev["blocks"].items() if not b.get("abstract")}
