@@ -1,0 +1,15 @@
+{
+  "id": "Board/MIPI",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 10,
+  "note": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/MIPI",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "n": 10
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "PL/Memory/URAM288",
+  "parent": "PL/Memory",
+  "kind": "element",
+  "role": "288Kb UltraRAM",
+  "count": 128,
+  "edges": []
+}

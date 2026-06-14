@@ -1,0 +1,9 @@
+{
+  "id": "PL/CLB/storage_element/LDCE",
+  "parent": "PL/CLB/storage_element",
+  "kind": "config",
+  "ports": 5,
+  "note": "REGISTER",
+  "source": "ug974 p403",
+  "edges": []
+}

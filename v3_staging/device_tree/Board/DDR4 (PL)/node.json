@@ -1,0 +1,15 @@
+{
+  "id": "Board/DDR4 (PL)",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 133,
+  "note": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/DDR4 (PL)",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "n": 133
+    }
+  ]
+}

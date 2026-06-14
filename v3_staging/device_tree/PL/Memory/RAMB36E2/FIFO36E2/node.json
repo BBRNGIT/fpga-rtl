@@ -1,0 +1,9 @@
+{
+  "id": "PL/Memory/RAMB36E2/FIFO36E2",
+  "parent": "PL/Memory/RAMB36E2",
+  "kind": "config",
+  "ports": 46,
+  "note": "BLOCKRAM",
+  "source": "ug974 p287",
+  "edges": []
+}

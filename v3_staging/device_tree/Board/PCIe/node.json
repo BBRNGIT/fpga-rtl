@@ -1,0 +1,21 @@
+{
+  "id": "Board/PCIe",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 36,
+  "note": "transceiver(GT/PS-GTR)",
+  "edges": [
+    {
+      "src": "Board/PCIe",
+      "dst": "PL/transceiver(GT/PS-GTR)",
+      "kind": "board",
+      "n": 32
+    },
+    {
+      "src": "Board/PCIe",
+      "dst": "PL/GT_refclk",
+      "kind": "board",
+      "n": 4
+    }
+  ]
+}

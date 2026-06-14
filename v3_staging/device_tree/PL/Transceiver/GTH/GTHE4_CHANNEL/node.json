@@ -1,0 +1,9 @@
+{
+  "id": "PL/Transceiver/GTH/GTHE4_CHANNEL",
+  "parent": "PL/Transceiver/GTH",
+  "kind": "config",
+  "ports": 246,
+  "note": "UG576 port-description chapter",
+  "source": "ug974 p299",
+  "edges": []
+}

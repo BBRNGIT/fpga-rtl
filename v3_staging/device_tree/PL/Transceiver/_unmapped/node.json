@@ -1,0 +1,7 @@
+{
+  "id": "PL/Transceiver/_unmapped",
+  "parent": "PL/Transceiver",
+  "kind": "element",
+  "role": "(config-map TBD in P1)",
+  "edges": []
+}

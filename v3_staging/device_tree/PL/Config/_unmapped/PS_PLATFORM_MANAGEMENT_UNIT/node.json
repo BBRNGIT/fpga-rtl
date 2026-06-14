@@ -1,0 +1,8 @@
+{
+  "id": "PL/Config/_unmapped/PS_PLATFORM_MANAGEMENT_UNIT",
+  "parent": "PL/Config/_unmapped",
+  "kind": "config",
+  "ports": 4,
+  "note": "",
+  "edges": []
+}

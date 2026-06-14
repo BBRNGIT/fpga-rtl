@@ -1,0 +1,9 @@
+{
+  "id": "PL/Transceiver/GTY/GTYE4_COMMON",
+  "parent": "PL/Transceiver/GTY",
+  "kind": "config",
+  "ports": 77,
+  "note": "UG578 port-description chapter",
+  "source": "ug974 p304",
+  "edges": []
+}

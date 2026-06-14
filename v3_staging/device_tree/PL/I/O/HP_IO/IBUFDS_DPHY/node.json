@@ -1,0 +1,9 @@
+{
+  "id": "PL/I/O/HP_IO/IBUFDS_DPHY",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 7,
+  "note": "I",
+  "source": "ug974 p329",
+  "edges": []
+}

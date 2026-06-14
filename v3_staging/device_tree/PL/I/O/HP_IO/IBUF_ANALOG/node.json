@@ -1,0 +1,9 @@
+{
+  "id": "PL/I/O/HP_IO/IBUF_ANALOG",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 2,
+  "note": "I",
+  "source": "ug974 p311",
+  "edges": []
+}

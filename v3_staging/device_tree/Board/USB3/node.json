@@ -1,0 +1,27 @@
+{
+  "id": "Board/USB3",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 23,
+  "note": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/USB3",
+      "dst": "PL/transceiver(GT/PS-GTR)",
+      "kind": "board",
+      "n": 4
+    },
+    {
+      "src": "Board/USB3",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "n": 17
+    },
+    {
+      "src": "Board/USB3",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "n": 2
+    }
+  ]
+}

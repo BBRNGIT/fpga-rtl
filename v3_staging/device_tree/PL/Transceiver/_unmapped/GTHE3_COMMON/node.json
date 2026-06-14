@@ -1,0 +1,8 @@
+{
+  "id": "PL/Transceiver/_unmapped/GTHE3_COMMON",
+  "parent": "PL/Transceiver/_unmapped",
+  "kind": "config",
+  "ports": 76,
+  "note": "",
+  "edges": []
+}

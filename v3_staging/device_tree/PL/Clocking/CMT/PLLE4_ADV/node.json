@@ -1,0 +1,9 @@
+{
+  "id": "PL/Clocking/CMT/PLLE4_ADV",
+  "parent": "PL/Clocking/CMT",
+  "kind": "config",
+  "ports": 19,
+  "note": "CLOCK",
+  "source": "ug974 p518",
+  "edges": []
+}

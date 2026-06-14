@@ -1,0 +1,9 @@
+{
+  "id": "PL/Transceiver/GTY/GTYE4_CHANNEL",
+  "parent": "PL/Transceiver/GTY",
+  "kind": "config",
+  "ports": 238,
+  "note": "UG578 port-description chapter",
+  "source": "ug974 p303",
+  "edges": []
+}

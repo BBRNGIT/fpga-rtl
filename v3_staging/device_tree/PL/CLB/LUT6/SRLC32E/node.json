@@ -1,0 +1,9 @@
+{
+  "id": "PL/CLB/LUT6/SRLC32E",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 6,
+  "note": "CLB",
+  "source": "ug974 p645",
+  "edges": []
+}

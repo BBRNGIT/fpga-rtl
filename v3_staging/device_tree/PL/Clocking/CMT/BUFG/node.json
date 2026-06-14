@@ -1,0 +1,9 @@
+{
+  "id": "PL/Clocking/CMT/BUFG",
+  "parent": "PL/Clocking/CMT",
+  "kind": "config",
+  "ports": 2,
+  "note": "CLOCK",
+  "source": "ug974 p214",
+  "edges": []
+}

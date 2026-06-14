@@ -1,0 +1,9 @@
+{
+  "id": "PL/Config/config/BSCANE2",
+  "parent": "PL/Config/config",
+  "kind": "config",
+  "ports": 11,
+  "note": "CONFIGURATION",
+  "source": "ug974 p211",
+  "edges": []
+}

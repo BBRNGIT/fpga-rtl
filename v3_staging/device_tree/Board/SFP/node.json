@@ -1,0 +1,27 @@
+{
+  "id": "Board/SFP",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 100,
+  "note": "transceiver(GT/PS-GTR)",
+  "edges": [
+    {
+      "src": "Board/SFP",
+      "dst": "PL/transceiver(GT/PS-GTR)",
+      "kind": "board",
+      "n": 64
+    },
+    {
+      "src": "Board/SFP",
+      "dst": "PL/GT_refclk",
+      "kind": "board",
+      "n": 8
+    },
+    {
+      "src": "Board/SFP",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "n": 28
+    }
+  ]
+}

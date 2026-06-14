@@ -1,0 +1,8 @@
+{
+  "id": "PL/Config/_unmapped/PS_PL_AXI_INTERFACES",
+  "parent": "PL/Config/_unmapped",
+  "kind": "config",
+  "ports": 14,
+  "note": "",
+  "edges": []
+}

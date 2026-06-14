@@ -1,0 +1,8 @@
+{
+  "id": "PL/Config/config",
+  "parent": "PL/Config",
+  "kind": "element",
+  "role": "configuration / boot / system",
+  "count": null,
+  "edges": []
+}

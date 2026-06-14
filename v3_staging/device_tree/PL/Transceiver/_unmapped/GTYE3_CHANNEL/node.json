@@ -1,0 +1,8 @@
+{
+  "id": "PL/Transceiver/_unmapped/GTYE3_CHANNEL",
+  "parent": "PL/Transceiver/_unmapped",
+  "kind": "config",
+  "ports": 238,
+  "note": "",
+  "edges": []
+}

@@ -1,0 +1,15 @@
+{
+  "id": "Board/Clock",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 2,
+  "note": "PS",
+  "edges": [
+    {
+      "src": "Board/Clock",
+      "dst": "PL/PS",
+      "kind": "board",
+      "n": 2
+    }
+  ]
+}

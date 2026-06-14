@@ -1,0 +1,9 @@
+{
+  "id": "PL/I/O/HP_IO/IBUFDS_GTE3",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 5,
+  "note": "ADVANCED",
+  "source": "ug974 p332",
+  "edges": []
+}

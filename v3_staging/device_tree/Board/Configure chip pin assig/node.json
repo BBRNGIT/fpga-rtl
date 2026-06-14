@@ -1,0 +1,15 @@
+{
+  "id": "Board/Configure chip pin assig",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 12,
+  "note": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/Configure chip pin assig",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "n": 12
+    }
+  ]
+}

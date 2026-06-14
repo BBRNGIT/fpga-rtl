@@ -1,0 +1,9 @@
+{
+  "id": "PL/Clocking/CMT/MMCME4_BASE",
+  "parent": "PL/Clocking/CMT",
+  "kind": "config",
+  "ports": 18,
+  "note": "CLOCK",
+  "source": "ug974 p463",
+  "edges": []
+}

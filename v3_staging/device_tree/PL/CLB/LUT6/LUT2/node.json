@@ -1,0 +1,9 @@
+{
+  "id": "PL/CLB/LUT6/LUT2",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 3,
+  "note": "verilog template",
+  "source": "ug974 p412",
+  "edges": []
+}

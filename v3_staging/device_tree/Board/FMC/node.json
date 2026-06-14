@@ -1,0 +1,27 @@
+{
+  "id": "Board/FMC",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 268,
+  "note": "PL_IO",
+  "edges": [
+    {
+      "src": "Board/FMC",
+      "dst": "PL/GT_refclk",
+      "kind": "board",
+      "n": 8
+    },
+    {
+      "src": "Board/FMC",
+      "dst": "PL/transceiver(GT/PS-GTR)",
+      "kind": "board",
+      "n": 64
+    },
+    {
+      "src": "Board/FMC",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "n": 196
+    }
+  ]
+}

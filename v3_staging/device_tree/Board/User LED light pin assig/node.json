@@ -1,0 +1,21 @@
+{
+  "id": "Board/User LED light pin assig",
+  "parent": "Board",
+  "kind": "peripheral",
+  "count": 2,
+  "note": "PS_MIO",
+  "edges": [
+    {
+      "src": "Board/User LED light pin assig",
+      "dst": "PL/PS_MIO",
+      "kind": "board",
+      "n": 1
+    },
+    {
+      "src": "Board/User LED light pin assig",
+      "dst": "PL/PL_IO",
+      "kind": "board",
+      "n": 1
+    }
+  ]
+}

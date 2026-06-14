@@ -1,0 +1,9 @@
+{
+  "id": "PL/CLB/LUT6/LUT5",
+  "parent": "PL/CLB/LUT6",
+  "kind": "config",
+  "ports": 6,
+  "note": "CLB",
+  "source": "ug974 p421",
+  "edges": []
+}

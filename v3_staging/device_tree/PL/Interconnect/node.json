@@ -1,0 +1,7 @@
+{
+  "id": "PL/Interconnect",
+  "parent": "PL",
+  "kind": "subsystem",
+  "note": "INT tiles / PIP crossbar \u2014 synthesized from primitives (P3)",
+  "edges": []
+}

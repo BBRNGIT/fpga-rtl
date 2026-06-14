@@ -1,0 +1,8 @@
+{
+  "id": "PL/Config/_unmapped/PS_GEM_ETHERNET",
+  "parent": "PL/Config/_unmapped",
+  "kind": "config",
+  "ports": 11,
+  "note": "",
+  "edges": []
+}

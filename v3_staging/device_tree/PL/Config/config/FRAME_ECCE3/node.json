@@ -1,0 +1,9 @@
+{
+  "id": "PL/Config/config/FRAME_ECCE3",
+  "parent": "PL/Config/config",
+  "kind": "config",
+  "ports": 0,
+  "note": "hard-IP block \u2014 ports specified in PG187 (not in UG974)",
+  "source": "ug974 p295",
+  "edges": []
+}

@@ -1,0 +1,9 @@
+{
+  "id": "PL/I/O/HP_IO/IBUFDS_IBUFDISABLE",
+  "parent": "PL/I/O/HP_IO",
+  "kind": "config",
+  "ports": 4,
+  "note": "I",
+  "source": "ug974 p337",
+  "edges": []
+}
