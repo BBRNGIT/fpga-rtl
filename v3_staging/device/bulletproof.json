@@ -1,12 +1,12 @@
 {
-  "ts": 1781446934,
+  "ts": 1781447175,
   "bulletproof": true,
   "integrity": {
-    "green": 63,
-    "total": 63
+    "green": 65,
+    "total": 65
   },
   "progress": {
-    "green": 1,
+    "green": 3,
     "total": 11
   },
   "jobs": [
@@ -227,6 +227,15 @@
       "msg": "ok"
     },
     {
+      "id": "tool:route",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
       "id": "tool:specgen",
       "kind": "integrity",
       "group": "tools",
@@ -300,6 +309,15 @@
     },
     {
       "id": "artifact:library.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:routes.json",
       "kind": "integrity",
       "group": "artifacts",
       "gate": true,
@@ -601,8 +619,8 @@
       "group": "phases",
       "gate": false,
       "nudge": "advance P3: run `realize.py worklist P3` and execute the next item",
-      "green": false,
-      "msg": "fail"
+      "green": true,
+      "msg": "ok"
     },
     {
       "id": "phase:P4",
@@ -637,8 +655,8 @@
       "group": "remaining_tools",
       "gate": false,
       "nudge": "build route.py (next phase tool)",
-      "green": false,
-      "msg": "fail"
+      "green": true,
+      "msg": "ok"
     },
     {
       "id": "todo:clkfab",
