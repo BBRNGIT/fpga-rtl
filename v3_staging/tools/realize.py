@@ -85,12 +85,14 @@ PHASES = [
 def measure(pid):
     """returns (done:int, total:int, note:str) read live from disk artifacts."""
     if pid == "P1":
-        cat = load("catalog.json", {})
+        cat = load("catalog.json", {}); cm = load("configmap.json", {})
         lib = load("library.json", {"blocks": {}, "primitives": {}})
-        realized = set(lib.get("blocks", {})) | set(lib.get("primitives", {}))
-        targets = {k for k, v in cat.items() if v.get("ports")}     # ported primitives are the worklist
-        done = len(targets & realized)
-        return done, len(targets), f"{len(lib.get('primitives',{}))} atoms + {len(lib.get('blocks',{}))} blocks in library.json"
+        covered = set()
+        for d in cm.values(): covered |= set(d.get("members", []))   # catalogue entries config-mapped
+        covered |= (set(lib.get("blocks", {})) & set(cat))           # + directly-realized blocks
+        targets = {k for k, v in cat.items() if v.get("ports")}
+        return len(covered & targets), len(targets), \
+            f"{len(cm)} physical elements realized (configmap) + {len(lib.get('blocks',{}))} blocks in library.json"
     if pid == "P2":
         return (1 if os.path.exists(os.path.join(HERE, "..", "..", ".bbhft")) else 0), 1, "container cast?"
     return 0, 1, "not started"

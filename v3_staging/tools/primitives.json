@@ -1,0 +1,238 @@
+{
+  "_doc": "Tier-0 primitive LEAVES \u2014 the axioms. Everything else is generated from PDF ports + decomposition templates (assemble.py). Leaves are hand-declared because they have no decomposition (they ARE the bottom). Digital gates + storage + conductors + behavioral-analog leaves.",
+  "not": {
+    "pins": [
+      "A",
+      "O"
+    ],
+    "out": [
+      "O"
+    ]
+  },
+  "buf": {
+    "pins": [
+      "A",
+      "O"
+    ],
+    "out": [
+      "O"
+    ]
+  },
+  "and": {
+    "pins": [
+      "A",
+      "B",
+      "O"
+    ],
+    "out": [
+      "O"
+    ]
+  },
+  "or": {
+    "pins": [
+      "A",
+      "B",
+      "O"
+    ],
+    "out": [
+      "O"
+    ]
+  },
+  "xor": {
+    "pins": [
+      "A",
+      "B",
+      "O"
+    ],
+    "out": [
+      "O"
+    ]
+  },
+  "nand": {
+    "pins": [
+      "A",
+      "B",
+      "O"
+    ],
+    "out": [
+      "O"
+    ]
+  },
+  "nor": {
+    "pins": [
+      "A",
+      "B",
+      "O"
+    ],
+    "out": [
+      "O"
+    ]
+  },
+  "xnor": {
+    "pins": [
+      "A",
+      "B",
+      "O"
+    ],
+    "out": [
+      "O"
+    ]
+  },
+  "dff_d": {
+    "pins": [
+      "D",
+      "CLK",
+      "Q"
+    ],
+    "out": [
+      "Q"
+    ],
+    "state": true
+  },
+  "latch_d": {
+    "pins": [
+      "D",
+      "G",
+      "Q"
+    ],
+    "out": [
+      "Q"
+    ],
+    "state": true
+  },
+  "cfgcell": {
+    "pins": [
+      "Q"
+    ],
+    "out": [
+      "Q"
+    ],
+    "const": true
+  },
+  "iobuf_in": {
+    "pins": [
+      "PAD",
+      "O"
+    ],
+    "out": [
+      "O"
+    ]
+  },
+  "iobuf_out": {
+    "pins": [
+      "I",
+      "PAD"
+    ],
+    "out": [
+      "PAD"
+    ]
+  },
+  "pfd": {
+    "pins": [
+      "CLKREF",
+      "CLKFB",
+      "UP",
+      "DN"
+    ],
+    "out": [
+      "UP",
+      "DN"
+    ],
+    "analog": true
+  },
+  "charge_pump": {
+    "pins": [
+      "UP",
+      "DN",
+      "VCTRL"
+    ],
+    "out": [
+      "VCTRL"
+    ],
+    "analog": true
+  },
+  "vco": {
+    "pins": [
+      "VCTRL",
+      "CLK"
+    ],
+    "out": [
+      "CLK"
+    ],
+    "analog": true,
+    "state": true
+  },
+  "lock_det": {
+    "pins": [
+      "UP",
+      "DN",
+      "LOCKED"
+    ],
+    "out": [
+      "LOCKED"
+    ],
+    "analog": true
+  },
+  "clk_stop_det": {
+    "pins": [
+      "CLK",
+      "STOPPED"
+    ],
+    "out": [
+      "STOPPED"
+    ],
+    "analog": true
+  },
+  "loop_filter": {
+    "pins": [
+      "VCTRL_IN",
+      "VCTRL_OUT"
+    ],
+    "out": [
+      "VCTRL_OUT"
+    ],
+    "analog": true
+  },
+  "vco8": {
+    "pins": [
+      "VCTRL",
+      "P0",
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5",
+      "P6",
+      "P7"
+    ],
+    "out": [
+      "P0",
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5",
+      "P6",
+      "P7"
+    ],
+    "analog": true,
+    "state": true
+  },
+  "storage_element": {
+    "pins": [
+      "D",
+      "C",
+      "CE",
+      "SR",
+      "Q",
+      "G",
+      "GE"
+    ],
+    "out": [
+      "Q"
+    ],
+    "state": true,
+    "config": "FF/latch; SRTYPE sync|async; SRVAL set|reset; INIT; IS_*_INVERTED (UG574)",
+    "_note": "physical CLB storage element \u2014 FDRE/FDSE/FDCE/FDPE/LD* are configs (configmap.json)"
+  }
+}

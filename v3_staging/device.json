@@ -1,0 +1,3747 @@
+{
+  "primitives": {
+    "not": {
+      "pins": [
+        "A",
+        "O"
+      ],
+      "out": [
+        "O"
+      ]
+    },
+    "buf": {
+      "pins": [
+        "A",
+        "O"
+      ],
+      "out": [
+        "O"
+      ]
+    },
+    "and": {
+      "pins": [
+        "A",
+        "B",
+        "O"
+      ],
+      "out": [
+        "O"
+      ]
+    },
+    "or": {
+      "pins": [
+        "A",
+        "B",
+        "O"
+      ],
+      "out": [
+        "O"
+      ]
+    },
+    "xor": {
+      "pins": [
+        "A",
+        "B",
+        "O"
+      ],
+      "out": [
+        "O"
+      ]
+    },
+    "nand": {
+      "pins": [
+        "A",
+        "B",
+        "O"
+      ],
+      "out": [
+        "O"
+      ]
+    },
+    "nor": {
+      "pins": [
+        "A",
+        "B",
+        "O"
+      ],
+      "out": [
+        "O"
+      ]
+    },
+    "xnor": {
+      "pins": [
+        "A",
+        "B",
+        "O"
+      ],
+      "out": [
+        "O"
+      ]
+    },
+    "dff_d": {
+      "pins": [
+        "D",
+        "CLK",
+        "Q"
+      ],
+      "out": [
+        "Q"
+      ],
+      "state": true
+    },
+    "latch_d": {
+      "pins": [
+        "D",
+        "G",
+        "Q"
+      ],
+      "out": [
+        "Q"
+      ],
+      "state": true
+    },
+    "cfgcell": {
+      "pins": [
+        "Q"
+      ],
+      "out": [
+        "Q"
+      ],
+      "const": true
+    },
+    "iobuf_in": {
+      "pins": [
+        "PAD",
+        "O"
+      ],
+      "out": [
+        "O"
+      ]
+    },
+    "iobuf_out": {
+      "pins": [
+        "I",
+        "PAD"
+      ],
+      "out": [
+        "PAD"
+      ]
+    },
+    "pfd": {
+      "pins": [
+        "CLKREF",
+        "CLKFB",
+        "UP",
+        "DN"
+      ],
+      "out": [
+        "UP",
+        "DN"
+      ],
+      "analog": true
+    },
+    "charge_pump": {
+      "pins": [
+        "UP",
+        "DN",
+        "VCTRL"
+      ],
+      "out": [
+        "VCTRL"
+      ],
+      "analog": true
+    },
+    "vco": {
+      "pins": [
+        "VCTRL",
+        "CLK"
+      ],
+      "out": [
+        "CLK"
+      ],
+      "analog": true,
+      "state": true
+    },
+    "lock_det": {
+      "pins": [
+        "UP",
+        "DN",
+        "LOCKED"
+      ],
+      "out": [
+        "LOCKED"
+      ],
+      "analog": true
+    },
+    "clk_stop_det": {
+      "pins": [
+        "CLK",
+        "STOPPED"
+      ],
+      "out": [
+        "STOPPED"
+      ],
+      "analog": true
+    },
+    "loop_filter": {
+      "pins": [
+        "VCTRL_IN",
+        "VCTRL_OUT"
+      ],
+      "out": [
+        "VCTRL_OUT"
+      ],
+      "analog": true
+    },
+    "vco8": {
+      "pins": [
+        "VCTRL",
+        "P0",
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5",
+        "P6",
+        "P7"
+      ],
+      "out": [
+        "P0",
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5",
+        "P6",
+        "P7"
+      ],
+      "analog": true,
+      "state": true
+    },
+    "storage_element": {
+      "pins": [
+        "D",
+        "C",
+        "CE",
+        "SR",
+        "Q",
+        "G",
+        "GE"
+      ],
+      "out": [
+        "Q"
+      ],
+      "state": true,
+      "config": "FF/latch; SRTYPE sync|async; SRVAL set|reset; INIT; IS_*_INVERTED (UG574)",
+      "_note": "physical CLB storage element \u2014 FDRE/FDSE/FDCE/FDPE/LD* are configs (configmap.json)"
+    }
+  },
+  "blocks": {
+    "mux2": {
+      "spec": "O=(A&~S)|(B&S)",
+      "group": "Tier-0 compositions",
+      "array": "",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "A",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "B",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "S",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": null
+        }
+      ],
+      "insts": [
+        {
+          "ref": "not_s",
+          "type": "not",
+          "conn": {
+            "A": "S",
+            "O": "Sn"
+          }
+        },
+        {
+          "ref": "and_a",
+          "type": "and",
+          "conn": {
+            "A": "A",
+            "B": "Sn",
+            "O": "na"
+          }
+        },
+        {
+          "ref": "and_b",
+          "type": "and",
+          "conn": {
+            "A": "B",
+            "B": "S",
+            "O": "nb"
+          }
+        },
+        {
+          "ref": "or_o",
+          "type": "or",
+          "conn": {
+            "A": "na",
+            "B": "nb",
+            "O": "O"
+          }
+        }
+      ],
+      "nets": [
+        "Sn",
+        "na",
+        "nb"
+      ]
+    },
+    "BUFGCTRL": {
+      "spec": "UG572 Fig 2-5",
+      "group": "Clock management",
+      "array": "24 BUFGCE + 8 BUFGCTRL + 4 BUFGCE_DIV / clock region",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "I0",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "I1",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "S0",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "S1",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "CE0",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "CE1",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "IGNORE0",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "IGNORE1",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": "clock"
+        }
+      ],
+      "insts": [
+        {
+          "ref": "and0",
+          "type": "and",
+          "conn": {
+            "A": "S0",
+            "B": "CE0",
+            "O": "g0"
+          }
+        },
+        {
+          "ref": "lat0",
+          "type": "latch_d",
+          "conn": {
+            "D": "g0",
+            "G": "~I0",
+            "Q": "l0"
+          }
+        },
+        {
+          "ref": "ig0",
+          "type": "mux2",
+          "conn": {
+            "A": "l0",
+            "B": "g0",
+            "S": "IGNORE0",
+            "O": "sel0"
+          }
+        },
+        {
+          "ref": "a0",
+          "type": "and",
+          "conn": {
+            "A": "I0",
+            "B": "sel0",
+            "O": "a0n"
+          }
+        },
+        {
+          "ref": "and1",
+          "type": "and",
+          "conn": {
+            "A": "S1",
+            "B": "CE1",
+            "O": "g1"
+          }
+        },
+        {
+          "ref": "lat1",
+          "type": "latch_d",
+          "conn": {
+            "D": "g1",
+            "G": "~I1",
+            "Q": "l1"
+          }
+        },
+        {
+          "ref": "ig1",
+          "type": "mux2",
+          "conn": {
+            "A": "l1",
+            "B": "g1",
+            "S": "IGNORE1",
+            "O": "sel1"
+          }
+        },
+        {
+          "ref": "a1",
+          "type": "and",
+          "conn": {
+            "A": "I1",
+            "B": "sel1",
+            "O": "a1n"
+          }
+        },
+        {
+          "ref": "oro",
+          "type": "or",
+          "conn": {
+            "A": "a0n",
+            "B": "a1n",
+            "O": "O"
+          }
+        }
+      ],
+      "nets": [
+        "g0",
+        "l0",
+        "sel0",
+        "a0n",
+        "g1",
+        "l1",
+        "sel1",
+        "a1n"
+      ]
+    },
+    "BUFGCE": {
+      "spec": "UG572 Fig 2-18/Table 2-5",
+      "group": "Clock management",
+      "array": "",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "I",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "CE",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": "clock"
+        }
+      ],
+      "insts": [
+        {
+          "ref": "n_i",
+          "type": "not",
+          "conn": {
+            "A": "I",
+            "O": "ni"
+          }
+        },
+        {
+          "ref": "lat",
+          "type": "latch_d",
+          "conn": {
+            "D": "CE",
+            "G": "ni",
+            "Q": "ceg"
+          }
+        },
+        {
+          "ref": "ao",
+          "type": "and",
+          "conn": {
+            "A": "I",
+            "B": "ceg",
+            "O": "O"
+          }
+        }
+      ],
+      "nets": [
+        "ni",
+        "ceg"
+      ]
+    },
+    "BUFCE_LEAF": {
+      "spec": "UG572 Table 2-7",
+      "group": "Clock management",
+      "array": "",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "I",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "CE",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": "clock"
+        }
+      ],
+      "insts": [
+        {
+          "ref": "n_i",
+          "type": "not",
+          "conn": {
+            "A": "I",
+            "O": "ni"
+          }
+        },
+        {
+          "ref": "lat",
+          "type": "latch_d",
+          "conn": {
+            "D": "CE",
+            "G": "ni",
+            "Q": "ceg"
+          }
+        },
+        {
+          "ref": "ao",
+          "type": "and",
+          "conn": {
+            "A": "I",
+            "B": "ceg",
+            "O": "O"
+          }
+        }
+      ],
+      "nets": [
+        "ni",
+        "ceg"
+      ]
+    },
+    "BUFG": {
+      "spec": "UG572 Fig 2-20",
+      "group": "Clock management",
+      "array": "",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "I",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": "clock"
+        }
+      ],
+      "insts": [
+        {
+          "ref": "bg",
+          "type": "BUFGCE",
+          "conn": {
+            "I": "I",
+            "CE": "1",
+            "O": "O"
+          }
+        }
+      ],
+      "nets": []
+    },
+    "BUFG_PS": {
+      "spec": "UG572 p34",
+      "group": "Clock management",
+      "array": "",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "I",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": "clock"
+        }
+      ],
+      "insts": [
+        {
+          "ref": "b",
+          "type": "buf",
+          "conn": {
+            "A": "I",
+            "O": "O"
+          }
+        }
+      ],
+      "nets": []
+    },
+    "BUFGCE_1": {
+      "spec": "UG572 Table 2-1/Fig 2-7",
+      "group": "Clock management",
+      "array": "",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "I",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "CE",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": "clock"
+        }
+      ],
+      "insts": [
+        {
+          "ref": "bc",
+          "type": "BUFGCTRL",
+          "conn": {
+            "I0": "I",
+            "I1": "1",
+            "S0": "1",
+            "S1": "0",
+            "CE0": "CE",
+            "CE1": "0",
+            "IGNORE0": "0",
+            "IGNORE1": "1",
+            "O": "O"
+          }
+        }
+      ],
+      "nets": []
+    },
+    "BUFGMUX": {
+      "spec": "UG572 Fig 2-9",
+      "group": "Clock management",
+      "array": "",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "I0",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "I1",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "S",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": "clock"
+        }
+      ],
+      "insts": [
+        {
+          "ref": "ns",
+          "type": "not",
+          "conn": {
+            "A": "S",
+            "O": "nsv"
+          }
+        },
+        {
+          "ref": "bc",
+          "type": "BUFGCTRL",
+          "conn": {
+            "I0": "I0",
+            "I1": "I1",
+            "S0": "1",
+            "S1": "1",
+            "CE0": "nsv",
+            "CE1": "S",
+            "IGNORE0": "0",
+            "IGNORE1": "0",
+            "O": "O"
+          }
+        }
+      ],
+      "nets": [
+        "nsv"
+      ]
+    },
+    "BUFGMUX_1": {
+      "spec": "UG572 Fig 2-11",
+      "group": "Clock management",
+      "array": "",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "I0",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "I1",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "S",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": "clock"
+        }
+      ],
+      "insts": [
+        {
+          "ref": "ns",
+          "type": "not",
+          "conn": {
+            "A": "S",
+            "O": "nsv"
+          }
+        },
+        {
+          "ref": "bc",
+          "type": "BUFGCTRL",
+          "conn": {
+            "I0": "I0",
+            "I1": "I1",
+            "S0": "1",
+            "S1": "1",
+            "CE0": "nsv",
+            "CE1": "S",
+            "IGNORE0": "0",
+            "IGNORE1": "0",
+            "O": "O"
+          }
+        }
+      ],
+      "nets": [
+        "nsv"
+      ]
+    },
+    "BUFGMUX_CTRL": {
+      "spec": "UG572 Fig 2-12",
+      "group": "Clock management",
+      "array": "",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "I0",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "I1",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "S",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": "clock"
+        }
+      ],
+      "insts": [
+        {
+          "ref": "ns",
+          "type": "not",
+          "conn": {
+            "A": "S",
+            "O": "nsv"
+          }
+        },
+        {
+          "ref": "bc",
+          "type": "BUFGCTRL",
+          "conn": {
+            "I0": "I0",
+            "I1": "I1",
+            "S0": "nsv",
+            "S1": "S",
+            "CE0": "1",
+            "CE1": "1",
+            "IGNORE0": "0",
+            "IGNORE1": "0",
+            "O": "O"
+          }
+        }
+      ],
+      "nets": [
+        "nsv"
+      ]
+    },
+    "BUFG_GT_SYNC": {
+      "spec": "UG572 Fig 2-21",
+      "group": "Clock management",
+      "array": "",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "CLK",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "CE",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "CLR",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "CESYNC",
+          "dir": "out",
+          "kind": null
+        },
+        {
+          "name": "CLRSYNC",
+          "dir": "out",
+          "kind": null
+        }
+      ],
+      "insts": [
+        {
+          "ref": "ce0",
+          "type": "dff_d",
+          "conn": {
+            "D": "CE",
+            "CLK": "CLK",
+            "Q": "ce_s0"
+          }
+        },
+        {
+          "ref": "ce1",
+          "type": "dff_d",
+          "conn": {
+            "D": "ce_s0",
+            "CLK": "CLK",
+            "Q": "CESYNC"
+          }
+        },
+        {
+          "ref": "clr0",
+          "type": "dff_d",
+          "conn": {
+            "D": "CLR",
+            "CLK": "CLK",
+            "Q": "clr_s0"
+          }
+        },
+        {
+          "ref": "clr1",
+          "type": "dff_d",
+          "conn": {
+            "D": "clr_s0",
+            "CLK": "CLK",
+            "Q": "CLRSYNC"
+          }
+        }
+      ],
+      "nets": [
+        "ce_s0",
+        "clr_s0"
+      ]
+    },
+    "div_prog": {
+      "spec": "UG572 Eq 3-1/3-2 (M/D/O counters)",
+      "group": "Clock management",
+      "array": "",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "CLK",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "RST",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": "clock"
+        }
+      ],
+      "insts": [
+        {
+          "ref": "cfg_0",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "DIVCFG[0]"
+          }
+        },
+        {
+          "ref": "cfg_1",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "DIVCFG[1]"
+          }
+        },
+        {
+          "ref": "cfg_2",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "DIVCFG[2]"
+          }
+        },
+        {
+          "ref": "cfg_3",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "DIVCFG[3]"
+          }
+        },
+        {
+          "ref": "cfg_4",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "DIVCFG[4]"
+          }
+        },
+        {
+          "ref": "cfg_5",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "DIVCFG[5]"
+          }
+        },
+        {
+          "ref": "cfg_6",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "DIVCFG[6]"
+          }
+        },
+        {
+          "ref": "eq_0",
+          "type": "xnor",
+          "conn": {
+            "A": "Q[0]",
+            "B": "DIVCFG[0]",
+            "O": "eq[0]"
+          }
+        },
+        {
+          "ref": "eq_1",
+          "type": "xnor",
+          "conn": {
+            "A": "Q[1]",
+            "B": "DIVCFG[1]",
+            "O": "eq[1]"
+          }
+        },
+        {
+          "ref": "eq_2",
+          "type": "xnor",
+          "conn": {
+            "A": "Q[2]",
+            "B": "DIVCFG[2]",
+            "O": "eq[2]"
+          }
+        },
+        {
+          "ref": "eq_3",
+          "type": "xnor",
+          "conn": {
+            "A": "Q[3]",
+            "B": "DIVCFG[3]",
+            "O": "eq[3]"
+          }
+        },
+        {
+          "ref": "eq_4",
+          "type": "xnor",
+          "conn": {
+            "A": "Q[4]",
+            "B": "DIVCFG[4]",
+            "O": "eq[4]"
+          }
+        },
+        {
+          "ref": "eq_5",
+          "type": "xnor",
+          "conn": {
+            "A": "Q[5]",
+            "B": "DIVCFG[5]",
+            "O": "eq[5]"
+          }
+        },
+        {
+          "ref": "eq_6",
+          "type": "xnor",
+          "conn": {
+            "A": "Q[6]",
+            "B": "DIVCFG[6]",
+            "O": "eq[6]"
+          }
+        },
+        {
+          "ref": "tc_1",
+          "type": "and",
+          "conn": {
+            "A": "eq[0]",
+            "B": "eq[1]",
+            "O": "tc[1]"
+          }
+        },
+        {
+          "ref": "tc_2",
+          "type": "and",
+          "conn": {
+            "A": "tc[1]",
+            "B": "eq[2]",
+            "O": "tc[2]"
+          }
+        },
+        {
+          "ref": "tc_3",
+          "type": "and",
+          "conn": {
+            "A": "tc[2]",
+            "B": "eq[3]",
+            "O": "tc[3]"
+          }
+        },
+        {
+          "ref": "tc_4",
+          "type": "and",
+          "conn": {
+            "A": "tc[3]",
+            "B": "eq[4]",
+            "O": "tc[4]"
+          }
+        },
+        {
+          "ref": "tc_5",
+          "type": "and",
+          "conn": {
+            "A": "tc[4]",
+            "B": "eq[5]",
+            "O": "tc[5]"
+          }
+        },
+        {
+          "ref": "tc_6",
+          "type": "and",
+          "conn": {
+            "A": "tc[5]",
+            "B": "eq[6]",
+            "O": "tc[6]"
+          }
+        },
+        {
+          "ref": "rsto",
+          "type": "or",
+          "conn": {
+            "A": "RST",
+            "B": "tc[6]",
+            "O": "rst_eff"
+          }
+        },
+        {
+          "ref": "nrst",
+          "type": "not",
+          "conn": {
+            "A": "rst_eff",
+            "O": "nrst"
+          }
+        },
+        {
+          "ref": "cin_1",
+          "type": "and",
+          "conn": {
+            "A": "1",
+            "B": "Q[0]",
+            "O": "cin[1]"
+          }
+        },
+        {
+          "ref": "cin_2",
+          "type": "and",
+          "conn": {
+            "A": "cin[1]",
+            "B": "Q[1]",
+            "O": "cin[2]"
+          }
+        },
+        {
+          "ref": "cin_3",
+          "type": "and",
+          "conn": {
+            "A": "cin[2]",
+            "B": "Q[2]",
+            "O": "cin[3]"
+          }
+        },
+        {
+          "ref": "cin_4",
+          "type": "and",
+          "conn": {
+            "A": "cin[3]",
+            "B": "Q[3]",
+            "O": "cin[4]"
+          }
+        },
+        {
+          "ref": "cin_5",
+          "type": "and",
+          "conn": {
+            "A": "cin[4]",
+            "B": "Q[4]",
+            "O": "cin[5]"
+          }
+        },
+        {
+          "ref": "cin_6",
+          "type": "and",
+          "conn": {
+            "A": "cin[5]",
+            "B": "Q[5]",
+            "O": "cin[6]"
+          }
+        },
+        {
+          "ref": "xr_0",
+          "type": "xor",
+          "conn": {
+            "A": "Q[0]",
+            "B": "1",
+            "O": "nxt[0]"
+          }
+        },
+        {
+          "ref": "xr_1",
+          "type": "xor",
+          "conn": {
+            "A": "Q[1]",
+            "B": "cin[1]",
+            "O": "nxt[1]"
+          }
+        },
+        {
+          "ref": "xr_2",
+          "type": "xor",
+          "conn": {
+            "A": "Q[2]",
+            "B": "cin[2]",
+            "O": "nxt[2]"
+          }
+        },
+        {
+          "ref": "xr_3",
+          "type": "xor",
+          "conn": {
+            "A": "Q[3]",
+            "B": "cin[3]",
+            "O": "nxt[3]"
+          }
+        },
+        {
+          "ref": "xr_4",
+          "type": "xor",
+          "conn": {
+            "A": "Q[4]",
+            "B": "cin[4]",
+            "O": "nxt[4]"
+          }
+        },
+        {
+          "ref": "xr_5",
+          "type": "xor",
+          "conn": {
+            "A": "Q[5]",
+            "B": "cin[5]",
+            "O": "nxt[5]"
+          }
+        },
+        {
+          "ref": "xr_6",
+          "type": "xor",
+          "conn": {
+            "A": "Q[6]",
+            "B": "cin[6]",
+            "O": "nxt[6]"
+          }
+        },
+        {
+          "ref": "da_0",
+          "type": "and",
+          "conn": {
+            "A": "nxt[0]",
+            "B": "nrst",
+            "O": "d[0]"
+          }
+        },
+        {
+          "ref": "da_1",
+          "type": "and",
+          "conn": {
+            "A": "nxt[1]",
+            "B": "nrst",
+            "O": "d[1]"
+          }
+        },
+        {
+          "ref": "da_2",
+          "type": "and",
+          "conn": {
+            "A": "nxt[2]",
+            "B": "nrst",
+            "O": "d[2]"
+          }
+        },
+        {
+          "ref": "da_3",
+          "type": "and",
+          "conn": {
+            "A": "nxt[3]",
+            "B": "nrst",
+            "O": "d[3]"
+          }
+        },
+        {
+          "ref": "da_4",
+          "type": "and",
+          "conn": {
+            "A": "nxt[4]",
+            "B": "nrst",
+            "O": "d[4]"
+          }
+        },
+        {
+          "ref": "da_5",
+          "type": "and",
+          "conn": {
+            "A": "nxt[5]",
+            "B": "nrst",
+            "O": "d[5]"
+          }
+        },
+        {
+          "ref": "da_6",
+          "type": "and",
+          "conn": {
+            "A": "nxt[6]",
+            "B": "nrst",
+            "O": "d[6]"
+          }
+        },
+        {
+          "ref": "ff_0",
+          "type": "dff_d",
+          "conn": {
+            "D": "d[0]",
+            "CLK": "CLK",
+            "Q": "Q[0]"
+          }
+        },
+        {
+          "ref": "ff_1",
+          "type": "dff_d",
+          "conn": {
+            "D": "d[1]",
+            "CLK": "CLK",
+            "Q": "Q[1]"
+          }
+        },
+        {
+          "ref": "ff_2",
+          "type": "dff_d",
+          "conn": {
+            "D": "d[2]",
+            "CLK": "CLK",
+            "Q": "Q[2]"
+          }
+        },
+        {
+          "ref": "ff_3",
+          "type": "dff_d",
+          "conn": {
+            "D": "d[3]",
+            "CLK": "CLK",
+            "Q": "Q[3]"
+          }
+        },
+        {
+          "ref": "ff_4",
+          "type": "dff_d",
+          "conn": {
+            "D": "d[4]",
+            "CLK": "CLK",
+            "Q": "Q[4]"
+          }
+        },
+        {
+          "ref": "ff_5",
+          "type": "dff_d",
+          "conn": {
+            "D": "d[5]",
+            "CLK": "CLK",
+            "Q": "Q[5]"
+          }
+        },
+        {
+          "ref": "ff_6",
+          "type": "dff_d",
+          "conn": {
+            "D": "d[6]",
+            "CLK": "CLK",
+            "Q": "Q[6]"
+          }
+        },
+        {
+          "ref": "otog",
+          "type": "xor",
+          "conn": {
+            "A": "O",
+            "B": "tc[6]",
+            "O": "otog"
+          }
+        },
+        {
+          "ref": "off",
+          "type": "dff_d",
+          "conn": {
+            "D": "otog",
+            "CLK": "CLK",
+            "Q": "O"
+          }
+        }
+      ],
+      "nets": [
+        "Q",
+        "eq",
+        "tc",
+        "cin",
+        "nxt",
+        "d",
+        "rst_eff",
+        "nrst",
+        "otog"
+      ]
+    },
+    "BUFGCE_DIV": {
+      "spec": "UG572 Table 2-8",
+      "group": "Clock management",
+      "array": "4 BUFGCE_DIV / clock region",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "I",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "CE",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "CLR",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": "clock"
+        }
+      ],
+      "insts": [
+        {
+          "ref": "gate",
+          "type": "BUFGCE",
+          "conn": {
+            "I": "I",
+            "CE": "CE",
+            "O": "gi"
+          }
+        },
+        {
+          "ref": "dv",
+          "type": "div_prog",
+          "conn": {
+            "CLK": "gi",
+            "RST": "CLR",
+            "O": "O"
+          }
+        }
+      ],
+      "nets": [
+        "gi"
+      ]
+    },
+    "BUFG_GT": {
+      "spec": "UG572 Fig 2-21",
+      "group": "Clock management",
+      "array": "24 BUFG_GT + 14 BUFG_GT_SYNC / GT Quad (UltraScale+)",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "I",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "CE",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "CEMASK",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "CLR",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "CLRMASK",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "DIV[0]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "DIV[1]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "DIV[2]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": "clock"
+        }
+      ],
+      "insts": [
+        {
+          "ref": "cem",
+          "type": "or",
+          "conn": {
+            "A": "CE",
+            "B": "CEMASK",
+            "O": "ce_eff"
+          }
+        },
+        {
+          "ref": "ncm",
+          "type": "not",
+          "conn": {
+            "A": "CLRMASK",
+            "O": "nclrm"
+          }
+        },
+        {
+          "ref": "clm",
+          "type": "and",
+          "conn": {
+            "A": "CLR",
+            "B": "nclrm",
+            "O": "clr_eff"
+          }
+        },
+        {
+          "ref": "sync",
+          "type": "BUFG_GT_SYNC",
+          "conn": {
+            "CLK": "I",
+            "CE": "ce_eff",
+            "CLR": "clr_eff",
+            "CESYNC": "cesync",
+            "CLRSYNC": "clrsync"
+          }
+        },
+        {
+          "ref": "gate",
+          "type": "BUFGCE",
+          "conn": {
+            "I": "I",
+            "CE": "cesync",
+            "O": "gi"
+          }
+        },
+        {
+          "ref": "dv",
+          "type": "div_prog",
+          "conn": {
+            "CLK": "gi",
+            "RST": "clrsync",
+            "O": "O"
+          }
+        }
+      ],
+      "nets": [
+        "ce_eff",
+        "nclrm",
+        "clr_eff",
+        "cesync",
+        "clrsync",
+        "gi"
+      ]
+    },
+    "MMCME4_BASE": {
+      "spec": "UG572 Fig 3-2/Table 3-1 (UG974 MMCME4_BASE)",
+      "group": "Clock management",
+      "array": "1 MMCM / CMT",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "CLKIN1",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKFBIN",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "RST",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "PWRDWN",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "CLKOUT0",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKOUT1",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKOUT2",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKOUT3",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKOUT4",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKOUT5",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKOUT6",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKOUT0B",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKOUT1B",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKOUT2B",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKOUT3B",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKFBOUT",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKFBOUTB",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "LOCKED",
+          "dir": "out",
+          "kind": null
+        }
+      ],
+      "insts": [
+        {
+          "ref": "dd",
+          "type": "div_prog",
+          "conn": {
+            "CLK": "CLKIN1",
+            "RST": "RST",
+            "O": "clkin_d"
+          }
+        },
+        {
+          "ref": "pf",
+          "type": "pfd",
+          "conn": {
+            "CLKREF": "clkin_d",
+            "CLKFB": "CLKFBIN",
+            "UP": "up",
+            "DN": "dn"
+          }
+        },
+        {
+          "ref": "cp",
+          "type": "charge_pump",
+          "conn": {
+            "UP": "up",
+            "DN": "dn",
+            "VCTRL": "vctrl"
+          }
+        },
+        {
+          "ref": "vc",
+          "type": "vco",
+          "conn": {
+            "VCTRL": "vctrl",
+            "CLK": "vcoclk"
+          }
+        },
+        {
+          "ref": "ld",
+          "type": "lock_det",
+          "conn": {
+            "UP": "up",
+            "DN": "dn",
+            "LOCKED": "LOCKED"
+          }
+        },
+        {
+          "ref": "o0",
+          "type": "div_prog",
+          "conn": {
+            "CLK": "vcoclk",
+            "RST": "RST",
+            "O": "CLKOUT0"
+          }
+        },
+        {
+          "ref": "o1",
+          "type": "div_prog",
+          "conn": {
+            "CLK": "vcoclk",
+            "RST": "RST",
+            "O": "CLKOUT1"
+          }
+        },
+        {
+          "ref": "o2",
+          "type": "div_prog",
+          "conn": {
+            "CLK": "vcoclk",
+            "RST": "RST",
+            "O": "CLKOUT2"
+          }
+        },
+        {
+          "ref": "o3",
+          "type": "div_prog",
+          "conn": {
+            "CLK": "vcoclk",
+            "RST": "RST",
+            "O": "CLKOUT3"
+          }
+        },
+        {
+          "ref": "o4",
+          "type": "div_prog",
+          "conn": {
+            "CLK": "vcoclk",
+            "RST": "RST",
+            "O": "CLKOUT4"
+          }
+        },
+        {
+          "ref": "o5",
+          "type": "div_prog",
+          "conn": {
+            "CLK": "vcoclk",
+            "RST": "RST",
+            "O": "CLKOUT5"
+          }
+        },
+        {
+          "ref": "o6",
+          "type": "div_prog",
+          "conn": {
+            "CLK": "vcoclk",
+            "RST": "RST",
+            "O": "CLKOUT6"
+          }
+        },
+        {
+          "ref": "mm",
+          "type": "div_prog",
+          "conn": {
+            "CLK": "vcoclk",
+            "RST": "RST",
+            "O": "CLKFBOUT"
+          }
+        },
+        {
+          "ref": "b_CLKOUT0B",
+          "type": "not",
+          "conn": {
+            "A": "CLKOUT0",
+            "O": "CLKOUT0B"
+          }
+        },
+        {
+          "ref": "b_CLKOUT1B",
+          "type": "not",
+          "conn": {
+            "A": "CLKOUT1",
+            "O": "CLKOUT1B"
+          }
+        },
+        {
+          "ref": "b_CLKOUT2B",
+          "type": "not",
+          "conn": {
+            "A": "CLKOUT2",
+            "O": "CLKOUT2B"
+          }
+        },
+        {
+          "ref": "b_CLKOUT3B",
+          "type": "not",
+          "conn": {
+            "A": "CLKOUT3",
+            "O": "CLKOUT3B"
+          }
+        },
+        {
+          "ref": "b_CLKFBOUTB",
+          "type": "not",
+          "conn": {
+            "A": "CLKFBOUT",
+            "O": "CLKFBOUTB"
+          }
+        }
+      ],
+      "nets": [
+        "clkin_d",
+        "up",
+        "dn",
+        "vctrl",
+        "vcoclk"
+      ]
+    },
+    "PLLE4_BASE": {
+      "spec": "UG974 PLLE4_BASE",
+      "group": "Clock management",
+      "array": "2 PLL / CMT",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "CLKIN",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKFBIN",
+          "dir": "in",
+          "kind": "clock"
+        },
+        {
+          "name": "RST",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "PWRDWN",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "CLKOUTPHYEN",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "CLKOUT0",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKOUT0B",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKOUT1",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKOUT1B",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKFBOUT",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "CLKOUTPHY",
+          "dir": "out",
+          "kind": "clock"
+        },
+        {
+          "name": "LOCKED",
+          "dir": "out",
+          "kind": null
+        }
+      ],
+      "insts": [
+        {
+          "ref": "dd",
+          "type": "div_prog",
+          "conn": {
+            "CLK": "CLKIN",
+            "RST": "RST",
+            "O": "clkin_d"
+          }
+        },
+        {
+          "ref": "pf",
+          "type": "pfd",
+          "conn": {
+            "CLKREF": "clkin_d",
+            "CLKFB": "CLKFBIN",
+            "UP": "up",
+            "DN": "dn"
+          }
+        },
+        {
+          "ref": "cp",
+          "type": "charge_pump",
+          "conn": {
+            "UP": "up",
+            "DN": "dn",
+            "VCTRL": "vctrl"
+          }
+        },
+        {
+          "ref": "vc",
+          "type": "vco",
+          "conn": {
+            "VCTRL": "vctrl",
+            "CLK": "vcoclk"
+          }
+        },
+        {
+          "ref": "ld",
+          "type": "lock_det",
+          "conn": {
+            "UP": "up",
+            "DN": "dn",
+            "LOCKED": "LOCKED"
+          }
+        },
+        {
+          "ref": "o0",
+          "type": "div_prog",
+          "conn": {
+            "CLK": "vcoclk",
+            "RST": "RST",
+            "O": "CLKOUT0"
+          }
+        },
+        {
+          "ref": "o1",
+          "type": "div_prog",
+          "conn": {
+            "CLK": "vcoclk",
+            "RST": "RST",
+            "O": "CLKOUT1"
+          }
+        },
+        {
+          "ref": "mm",
+          "type": "div_prog",
+          "conn": {
+            "CLK": "vcoclk",
+            "RST": "RST",
+            "O": "CLKFBOUT"
+          }
+        },
+        {
+          "ref": "b_CLKOUT0B",
+          "type": "not",
+          "conn": {
+            "A": "CLKOUT0",
+            "O": "CLKOUT0B"
+          }
+        },
+        {
+          "ref": "b_CLKOUT1B",
+          "type": "not",
+          "conn": {
+            "A": "CLKOUT1",
+            "O": "CLKOUT1B"
+          }
+        },
+        {
+          "ref": "op",
+          "type": "div_prog",
+          "conn": {
+            "CLK": "vcoclk",
+            "RST": "RST",
+            "O": "phyraw"
+          }
+        },
+        {
+          "ref": "pg",
+          "type": "and",
+          "conn": {
+            "A": "phyraw",
+            "B": "CLKOUTPHYEN",
+            "O": "CLKOUTPHY"
+          }
+        }
+      ],
+      "nets": [
+        "clkin_d",
+        "up",
+        "dn",
+        "vctrl",
+        "vcoclk",
+        "phyraw"
+      ]
+    },
+    "MUXF7": {
+      "spec": "UG574 MUXF7 (2:1)",
+      "group": "CLB logic",
+      "array": "",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "I0",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "I1",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "S",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": null
+        }
+      ],
+      "insts": [
+        {
+          "ref": "m",
+          "type": "mux2",
+          "conn": {
+            "A": "I0",
+            "B": "I1",
+            "S": "S",
+            "O": "O"
+          }
+        }
+      ],
+      "nets": []
+    },
+    "MUXF8": {
+      "spec": "UG574 MUXF8 (2:1)",
+      "group": "CLB logic",
+      "array": "",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "I0",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "I1",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "S",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": null
+        }
+      ],
+      "insts": [
+        {
+          "ref": "m",
+          "type": "mux2",
+          "conn": {
+            "A": "I0",
+            "B": "I1",
+            "S": "S",
+            "O": "O"
+          }
+        }
+      ],
+      "nets": []
+    },
+    "MUXF9": {
+      "spec": "UG574 MUXF9 (2:1)",
+      "group": "CLB logic",
+      "array": "",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "I0",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "I1",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "S",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": null
+        }
+      ],
+      "insts": [
+        {
+          "ref": "m",
+          "type": "mux2",
+          "conn": {
+            "A": "I0",
+            "B": "I1",
+            "S": "S",
+            "O": "O"
+          }
+        }
+      ],
+      "nets": []
+    },
+    "CARRY8": {
+      "spec": "UG574 CARRY8 (MUXCY+XOR ripple; CI_TOP split)",
+      "group": "CLB logic",
+      "array": "",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "CI",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "CI_TOP",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "DI[0]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "DI[1]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "DI[2]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "DI[3]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "DI[4]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "DI[5]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "DI[6]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "DI[7]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "S[0]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "S[1]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "S[2]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "S[3]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "S[4]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "S[5]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "S[6]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "S[7]",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "O[0]",
+          "dir": "out",
+          "kind": null
+        },
+        {
+          "name": "O[1]",
+          "dir": "out",
+          "kind": null
+        },
+        {
+          "name": "O[2]",
+          "dir": "out",
+          "kind": null
+        },
+        {
+          "name": "O[3]",
+          "dir": "out",
+          "kind": null
+        },
+        {
+          "name": "O[4]",
+          "dir": "out",
+          "kind": null
+        },
+        {
+          "name": "O[5]",
+          "dir": "out",
+          "kind": null
+        },
+        {
+          "name": "O[6]",
+          "dir": "out",
+          "kind": null
+        },
+        {
+          "name": "O[7]",
+          "dir": "out",
+          "kind": null
+        },
+        {
+          "name": "CO[0]",
+          "dir": "out",
+          "kind": null
+        },
+        {
+          "name": "CO[1]",
+          "dir": "out",
+          "kind": null
+        },
+        {
+          "name": "CO[2]",
+          "dir": "out",
+          "kind": null
+        },
+        {
+          "name": "CO[3]",
+          "dir": "out",
+          "kind": null
+        },
+        {
+          "name": "CO[4]",
+          "dir": "out",
+          "kind": null
+        },
+        {
+          "name": "CO[5]",
+          "dir": "out",
+          "kind": null
+        },
+        {
+          "name": "CO[6]",
+          "dir": "out",
+          "kind": null
+        },
+        {
+          "name": "CO[7]",
+          "dir": "out",
+          "kind": null
+        }
+      ],
+      "insts": [
+        {
+          "ref": "split",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "SPLIT"
+          }
+        },
+        {
+          "ref": "topmux",
+          "type": "mux2",
+          "conn": {
+            "A": "co[3]",
+            "B": "CI_TOP",
+            "S": "SPLIT",
+            "O": "ci4"
+          }
+        },
+        {
+          "ref": "x0",
+          "type": "xor",
+          "conn": {
+            "A": "S[0]",
+            "B": "CI",
+            "O": "O[0]"
+          }
+        },
+        {
+          "ref": "m0",
+          "type": "mux2",
+          "conn": {
+            "A": "DI[0]",
+            "B": "CI",
+            "S": "S[0]",
+            "O": "co[0]"
+          }
+        },
+        {
+          "ref": "cob0",
+          "type": "buf",
+          "conn": {
+            "A": "co[0]",
+            "O": "CO[0]"
+          }
+        },
+        {
+          "ref": "x1",
+          "type": "xor",
+          "conn": {
+            "A": "S[1]",
+            "B": "co[0]",
+            "O": "O[1]"
+          }
+        },
+        {
+          "ref": "m1",
+          "type": "mux2",
+          "conn": {
+            "A": "DI[1]",
+            "B": "co[0]",
+            "S": "S[1]",
+            "O": "co[1]"
+          }
+        },
+        {
+          "ref": "cob1",
+          "type": "buf",
+          "conn": {
+            "A": "co[1]",
+            "O": "CO[1]"
+          }
+        },
+        {
+          "ref": "x2",
+          "type": "xor",
+          "conn": {
+            "A": "S[2]",
+            "B": "co[1]",
+            "O": "O[2]"
+          }
+        },
+        {
+          "ref": "m2",
+          "type": "mux2",
+          "conn": {
+            "A": "DI[2]",
+            "B": "co[1]",
+            "S": "S[2]",
+            "O": "co[2]"
+          }
+        },
+        {
+          "ref": "cob2",
+          "type": "buf",
+          "conn": {
+            "A": "co[2]",
+            "O": "CO[2]"
+          }
+        },
+        {
+          "ref": "x3",
+          "type": "xor",
+          "conn": {
+            "A": "S[3]",
+            "B": "co[2]",
+            "O": "O[3]"
+          }
+        },
+        {
+          "ref": "m3",
+          "type": "mux2",
+          "conn": {
+            "A": "DI[3]",
+            "B": "co[2]",
+            "S": "S[3]",
+            "O": "co[3]"
+          }
+        },
+        {
+          "ref": "cob3",
+          "type": "buf",
+          "conn": {
+            "A": "co[3]",
+            "O": "CO[3]"
+          }
+        },
+        {
+          "ref": "x4",
+          "type": "xor",
+          "conn": {
+            "A": "S[4]",
+            "B": "ci4",
+            "O": "O[4]"
+          }
+        },
+        {
+          "ref": "m4",
+          "type": "mux2",
+          "conn": {
+            "A": "DI[4]",
+            "B": "ci4",
+            "S": "S[4]",
+            "O": "co[4]"
+          }
+        },
+        {
+          "ref": "cob4",
+          "type": "buf",
+          "conn": {
+            "A": "co[4]",
+            "O": "CO[4]"
+          }
+        },
+        {
+          "ref": "x5",
+          "type": "xor",
+          "conn": {
+            "A": "S[5]",
+            "B": "co[4]",
+            "O": "O[5]"
+          }
+        },
+        {
+          "ref": "m5",
+          "type": "mux2",
+          "conn": {
+            "A": "DI[5]",
+            "B": "co[4]",
+            "S": "S[5]",
+            "O": "co[5]"
+          }
+        },
+        {
+          "ref": "cob5",
+          "type": "buf",
+          "conn": {
+            "A": "co[5]",
+            "O": "CO[5]"
+          }
+        },
+        {
+          "ref": "x6",
+          "type": "xor",
+          "conn": {
+            "A": "S[6]",
+            "B": "co[5]",
+            "O": "O[6]"
+          }
+        },
+        {
+          "ref": "m6",
+          "type": "mux2",
+          "conn": {
+            "A": "DI[6]",
+            "B": "co[5]",
+            "S": "S[6]",
+            "O": "co[6]"
+          }
+        },
+        {
+          "ref": "cob6",
+          "type": "buf",
+          "conn": {
+            "A": "co[6]",
+            "O": "CO[6]"
+          }
+        },
+        {
+          "ref": "x7",
+          "type": "xor",
+          "conn": {
+            "A": "S[7]",
+            "B": "co[6]",
+            "O": "O[7]"
+          }
+        },
+        {
+          "ref": "m7",
+          "type": "mux2",
+          "conn": {
+            "A": "DI[7]",
+            "B": "co[6]",
+            "S": "S[7]",
+            "O": "co[7]"
+          }
+        },
+        {
+          "ref": "cob7",
+          "type": "buf",
+          "conn": {
+            "A": "co[7]",
+            "O": "CO[7]"
+          }
+        }
+      ],
+      "nets": [
+        "co",
+        "ci4",
+        "SPLIT"
+      ]
+    },
+    "LUT6": {
+      "spec": "UG574 LUT6 = 64-bit INIT SRAM + 6-level 2:1 mux tree",
+      "group": "CLB logic",
+      "array": "",
+      "abstract": false,
+      "ports": [
+        {
+          "name": "I0",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "I1",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "I2",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "I3",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "I4",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "I5",
+          "dir": "in",
+          "kind": null
+        },
+        {
+          "name": "O",
+          "dir": "out",
+          "kind": null
+        }
+      ],
+      "insts": [
+        {
+          "ref": "i0",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[0]"
+          }
+        },
+        {
+          "ref": "i1",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[1]"
+          }
+        },
+        {
+          "ref": "i2",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[2]"
+          }
+        },
+        {
+          "ref": "i3",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[3]"
+          }
+        },
+        {
+          "ref": "i4",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[4]"
+          }
+        },
+        {
+          "ref": "i5",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[5]"
+          }
+        },
+        {
+          "ref": "i6",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[6]"
+          }
+        },
+        {
+          "ref": "i7",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[7]"
+          }
+        },
+        {
+          "ref": "i8",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[8]"
+          }
+        },
+        {
+          "ref": "i9",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[9]"
+          }
+        },
+        {
+          "ref": "i10",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[10]"
+          }
+        },
+        {
+          "ref": "i11",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[11]"
+          }
+        },
+        {
+          "ref": "i12",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[12]"
+          }
+        },
+        {
+          "ref": "i13",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[13]"
+          }
+        },
+        {
+          "ref": "i14",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[14]"
+          }
+        },
+        {
+          "ref": "i15",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[15]"
+          }
+        },
+        {
+          "ref": "i16",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[16]"
+          }
+        },
+        {
+          "ref": "i17",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[17]"
+          }
+        },
+        {
+          "ref": "i18",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[18]"
+          }
+        },
+        {
+          "ref": "i19",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[19]"
+          }
+        },
+        {
+          "ref": "i20",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[20]"
+          }
+        },
+        {
+          "ref": "i21",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[21]"
+          }
+        },
+        {
+          "ref": "i22",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[22]"
+          }
+        },
+        {
+          "ref": "i23",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[23]"
+          }
+        },
+        {
+          "ref": "i24",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[24]"
+          }
+        },
+        {
+          "ref": "i25",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[25]"
+          }
+        },
+        {
+          "ref": "i26",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[26]"
+          }
+        },
+        {
+          "ref": "i27",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[27]"
+          }
+        },
+        {
+          "ref": "i28",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[28]"
+          }
+        },
+        {
+          "ref": "i29",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[29]"
+          }
+        },
+        {
+          "ref": "i30",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[30]"
+          }
+        },
+        {
+          "ref": "i31",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[31]"
+          }
+        },
+        {
+          "ref": "i32",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[32]"
+          }
+        },
+        {
+          "ref": "i33",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[33]"
+          }
+        },
+        {
+          "ref": "i34",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[34]"
+          }
+        },
+        {
+          "ref": "i35",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[35]"
+          }
+        },
+        {
+          "ref": "i36",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[36]"
+          }
+        },
+        {
+          "ref": "i37",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[37]"
+          }
+        },
+        {
+          "ref": "i38",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[38]"
+          }
+        },
+        {
+          "ref": "i39",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[39]"
+          }
+        },
+        {
+          "ref": "i40",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[40]"
+          }
+        },
+        {
+          "ref": "i41",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[41]"
+          }
+        },
+        {
+          "ref": "i42",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[42]"
+          }
+        },
+        {
+          "ref": "i43",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[43]"
+          }
+        },
+        {
+          "ref": "i44",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[44]"
+          }
+        },
+        {
+          "ref": "i45",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[45]"
+          }
+        },
+        {
+          "ref": "i46",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[46]"
+          }
+        },
+        {
+          "ref": "i47",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[47]"
+          }
+        },
+        {
+          "ref": "i48",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[48]"
+          }
+        },
+        {
+          "ref": "i49",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[49]"
+          }
+        },
+        {
+          "ref": "i50",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[50]"
+          }
+        },
+        {
+          "ref": "i51",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[51]"
+          }
+        },
+        {
+          "ref": "i52",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[52]"
+          }
+        },
+        {
+          "ref": "i53",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[53]"
+          }
+        },
+        {
+          "ref": "i54",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[54]"
+          }
+        },
+        {
+          "ref": "i55",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[55]"
+          }
+        },
+        {
+          "ref": "i56",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[56]"
+          }
+        },
+        {
+          "ref": "i57",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[57]"
+          }
+        },
+        {
+          "ref": "i58",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[58]"
+          }
+        },
+        {
+          "ref": "i59",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[59]"
+          }
+        },
+        {
+          "ref": "i60",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[60]"
+          }
+        },
+        {
+          "ref": "i61",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[61]"
+          }
+        },
+        {
+          "ref": "i62",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[62]"
+          }
+        },
+        {
+          "ref": "i63",
+          "type": "cfgcell",
+          "conn": {
+            "Q": "INIT[63]"
+          }
+        },
+        {
+          "ref": "mx0_0",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[0]",
+            "B": "INIT[1]",
+            "S": "I0",
+            "O": "n0_0"
+          }
+        },
+        {
+          "ref": "mx0_1",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[2]",
+            "B": "INIT[3]",
+            "S": "I0",
+            "O": "n0_1"
+          }
+        },
+        {
+          "ref": "mx0_2",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[4]",
+            "B": "INIT[5]",
+            "S": "I0",
+            "O": "n0_2"
+          }
+        },
+        {
+          "ref": "mx0_3",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[6]",
+            "B": "INIT[7]",
+            "S": "I0",
+            "O": "n0_3"
+          }
+        },
+        {
+          "ref": "mx0_4",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[8]",
+            "B": "INIT[9]",
+            "S": "I0",
+            "O": "n0_4"
+          }
+        },
+        {
+          "ref": "mx0_5",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[10]",
+            "B": "INIT[11]",
+            "S": "I0",
+            "O": "n0_5"
+          }
+        },
+        {
+          "ref": "mx0_6",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[12]",
+            "B": "INIT[13]",
+            "S": "I0",
+            "O": "n0_6"
+          }
+        },
+        {
+          "ref": "mx0_7",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[14]",
+            "B": "INIT[15]",
+            "S": "I0",
+            "O": "n0_7"
+          }
+        },
+        {
+          "ref": "mx0_8",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[16]",
+            "B": "INIT[17]",
+            "S": "I0",
+            "O": "n0_8"
+          }
+        },
+        {
+          "ref": "mx0_9",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[18]",
+            "B": "INIT[19]",
+            "S": "I0",
+            "O": "n0_9"
+          }
+        },
+        {
+          "ref": "mx0_10",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[20]",
+            "B": "INIT[21]",
+            "S": "I0",
+            "O": "n0_10"
+          }
+        },
+        {
+          "ref": "mx0_11",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[22]",
+            "B": "INIT[23]",
+            "S": "I0",
+            "O": "n0_11"
+          }
+        },
+        {
+          "ref": "mx0_12",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[24]",
+            "B": "INIT[25]",
+            "S": "I0",
+            "O": "n0_12"
+          }
+        },
+        {
+          "ref": "mx0_13",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[26]",
+            "B": "INIT[27]",
+            "S": "I0",
+            "O": "n0_13"
+          }
+        },
+        {
+          "ref": "mx0_14",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[28]",
+            "B": "INIT[29]",
+            "S": "I0",
+            "O": "n0_14"
+          }
+        },
+        {
+          "ref": "mx0_15",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[30]",
+            "B": "INIT[31]",
+            "S": "I0",
+            "O": "n0_15"
+          }
+        },
+        {
+          "ref": "mx0_16",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[32]",
+            "B": "INIT[33]",
+            "S": "I0",
+            "O": "n0_16"
+          }
+        },
+        {
+          "ref": "mx0_17",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[34]",
+            "B": "INIT[35]",
+            "S": "I0",
+            "O": "n0_17"
+          }
+        },
+        {
+          "ref": "mx0_18",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[36]",
+            "B": "INIT[37]",
+            "S": "I0",
+            "O": "n0_18"
+          }
+        },
+        {
+          "ref": "mx0_19",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[38]",
+            "B": "INIT[39]",
+            "S": "I0",
+            "O": "n0_19"
+          }
+        },
+        {
+          "ref": "mx0_20",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[40]",
+            "B": "INIT[41]",
+            "S": "I0",
+            "O": "n0_20"
+          }
+        },
+        {
+          "ref": "mx0_21",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[42]",
+            "B": "INIT[43]",
+            "S": "I0",
+            "O": "n0_21"
+          }
+        },
+        {
+          "ref": "mx0_22",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[44]",
+            "B": "INIT[45]",
+            "S": "I0",
+            "O": "n0_22"
+          }
+        },
+        {
+          "ref": "mx0_23",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[46]",
+            "B": "INIT[47]",
+            "S": "I0",
+            "O": "n0_23"
+          }
+        },
+        {
+          "ref": "mx0_24",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[48]",
+            "B": "INIT[49]",
+            "S": "I0",
+            "O": "n0_24"
+          }
+        },
+        {
+          "ref": "mx0_25",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[50]",
+            "B": "INIT[51]",
+            "S": "I0",
+            "O": "n0_25"
+          }
+        },
+        {
+          "ref": "mx0_26",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[52]",
+            "B": "INIT[53]",
+            "S": "I0",
+            "O": "n0_26"
+          }
+        },
+        {
+          "ref": "mx0_27",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[54]",
+            "B": "INIT[55]",
+            "S": "I0",
+            "O": "n0_27"
+          }
+        },
+        {
+          "ref": "mx0_28",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[56]",
+            "B": "INIT[57]",
+            "S": "I0",
+            "O": "n0_28"
+          }
+        },
+        {
+          "ref": "mx0_29",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[58]",
+            "B": "INIT[59]",
+            "S": "I0",
+            "O": "n0_29"
+          }
+        },
+        {
+          "ref": "mx0_30",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[60]",
+            "B": "INIT[61]",
+            "S": "I0",
+            "O": "n0_30"
+          }
+        },
+        {
+          "ref": "mx0_31",
+          "type": "mux2",
+          "conn": {
+            "A": "INIT[62]",
+            "B": "INIT[63]",
+            "S": "I0",
+            "O": "n0_31"
+          }
+        },
+        {
+          "ref": "mx1_0",
+          "type": "mux2",
+          "conn": {
+            "A": "n0_0",
+            "B": "n0_1",
+            "S": "I1",
+            "O": "n1_0"
+          }
+        },
+        {
+          "ref": "mx1_1",
+          "type": "mux2",
+          "conn": {
+            "A": "n0_2",
+            "B": "n0_3",
+            "S": "I1",
+            "O": "n1_1"
+          }
+        },
+        {
+          "ref": "mx1_2",
+          "type": "mux2",
+          "conn": {
+            "A": "n0_4",
+            "B": "n0_5",
+            "S": "I1",
+            "O": "n1_2"
+          }
+        },
+        {
+          "ref": "mx1_3",
+          "type": "mux2",
+          "conn": {
+            "A": "n0_6",
+            "B": "n0_7",
+            "S": "I1",
+            "O": "n1_3"
+          }
+        },
+        {
+          "ref": "mx1_4",
+          "type": "mux2",
+          "conn": {
+            "A": "n0_8",
+            "B": "n0_9",
+            "S": "I1",
+            "O": "n1_4"
+          }
+        },
+        {
+          "ref": "mx1_5",
+          "type": "mux2",
+          "conn": {
+            "A": "n0_10",
+            "B": "n0_11",
+            "S": "I1",
+            "O": "n1_5"
+          }
+        },
+        {
+          "ref": "mx1_6",
+          "type": "mux2",
+          "conn": {
+            "A": "n0_12",
+            "B": "n0_13",
+            "S": "I1",
+            "O": "n1_6"
+          }
+        },
+        {
+          "ref": "mx1_7",
+          "type": "mux2",
+          "conn": {
+            "A": "n0_14",
+            "B": "n0_15",
+            "S": "I1",
+            "O": "n1_7"
+          }
+        },
+        {
+          "ref": "mx1_8",
+          "type": "mux2",
+          "conn": {
+            "A": "n0_16",
+            "B": "n0_17",
+            "S": "I1",
+            "O": "n1_8"
+          }
+        },
+        {
+          "ref": "mx1_9",
+          "type": "mux2",
+          "conn": {
+            "A": "n0_18",
+            "B": "n0_19",
+            "S": "I1",
+            "O": "n1_9"
+          }
+        },
+        {
+          "ref": "mx1_10",
+          "type": "mux2",
+          "conn": {
+            "A": "n0_20",
+            "B": "n0_21",
+            "S": "I1",
+            "O": "n1_10"
+          }
+        },
+        {
+          "ref": "mx1_11",
+          "type": "mux2",
+          "conn": {
+            "A": "n0_22",
+            "B": "n0_23",
+            "S": "I1",
+            "O": "n1_11"
+          }
+        },
+        {
+          "ref": "mx1_12",
+          "type": "mux2",
+          "conn": {
+            "A": "n0_24",
+            "B": "n0_25",
+            "S": "I1",
+            "O": "n1_12"
+          }
+        },
+        {
+          "ref": "mx1_13",
+          "type": "mux2",
+          "conn": {
+            "A": "n0_26",
+            "B": "n0_27",
+            "S": "I1",
+            "O": "n1_13"
+          }
+        },
+        {
+          "ref": "mx1_14",
+          "type": "mux2",
+          "conn": {
+            "A": "n0_28",
+            "B": "n0_29",
+            "S": "I1",
+            "O": "n1_14"
+          }
+        },
+        {
+          "ref": "mx1_15",
+          "type": "mux2",
+          "conn": {
+            "A": "n0_30",
+            "B": "n0_31",
+            "S": "I1",
+            "O": "n1_15"
+          }
+        },
+        {
+          "ref": "mx2_0",
+          "type": "mux2",
+          "conn": {
+            "A": "n1_0",
+            "B": "n1_1",
+            "S": "I2",
+            "O": "n2_0"
+          }
+        },
+        {
+          "ref": "mx2_1",
+          "type": "mux2",
+          "conn": {
+            "A": "n1_2",
+            "B": "n1_3",
+            "S": "I2",
+            "O": "n2_1"
+          }
+        },
+        {
+          "ref": "mx2_2",
+          "type": "mux2",
+          "conn": {
+            "A": "n1_4",
+            "B": "n1_5",
+            "S": "I2",
+            "O": "n2_2"
+          }
+        },
+        {
+          "ref": "mx2_3",
+          "type": "mux2",
+          "conn": {
+            "A": "n1_6",
+            "B": "n1_7",
+            "S": "I2",
+            "O": "n2_3"
+          }
+        },
+        {
+          "ref": "mx2_4",
+          "type": "mux2",
+          "conn": {
+            "A": "n1_8",
+            "B": "n1_9",
+            "S": "I2",
+            "O": "n2_4"
+          }
+        },
+        {
+          "ref": "mx2_5",
+          "type": "mux2",
+          "conn": {
+            "A": "n1_10",
+            "B": "n1_11",
+            "S": "I2",
+            "O": "n2_5"
+          }
+        },
+        {
+          "ref": "mx2_6",
+          "type": "mux2",
+          "conn": {
+            "A": "n1_12",
+            "B": "n1_13",
+            "S": "I2",
+            "O": "n2_6"
+          }
+        },
+        {
+          "ref": "mx2_7",
+          "type": "mux2",
+          "conn": {
+            "A": "n1_14",
+            "B": "n1_15",
+            "S": "I2",
+            "O": "n2_7"
+          }
+        },
+        {
+          "ref": "mx3_0",
+          "type": "mux2",
+          "conn": {
+            "A": "n2_0",
+            "B": "n2_1",
+            "S": "I3",
+            "O": "n3_0"
+          }
+        },
+        {
+          "ref": "mx3_1",
+          "type": "mux2",
+          "conn": {
+            "A": "n2_2",
+            "B": "n2_3",
+            "S": "I3",
+            "O": "n3_1"
+          }
+        },
+        {
+          "ref": "mx3_2",
+          "type": "mux2",
+          "conn": {
+            "A": "n2_4",
+            "B": "n2_5",
+            "S": "I3",
+            "O": "n3_2"
+          }
+        },
+        {
+          "ref": "mx3_3",
+          "type": "mux2",
+          "conn": {
+            "A": "n2_6",
+            "B": "n2_7",
+            "S": "I3",
+            "O": "n3_3"
+          }
+        },
+        {
+          "ref": "mx4_0",
+          "type": "mux2",
+          "conn": {
+            "A": "n3_0",
+            "B": "n3_1",
+            "S": "I4",
+            "O": "n4_0"
+          }
+        },
+        {
+          "ref": "mx4_1",
+          "type": "mux2",
+          "conn": {
+            "A": "n3_2",
+            "B": "n3_3",
+            "S": "I4",
+            "O": "n4_1"
+          }
+        },
+        {
+          "ref": "mx5_0",
+          "type": "mux2",
+          "conn": {
+            "A": "n4_0",
+            "B": "n4_1",
+            "S": "I5",
+            "O": "n5_0"
+          }
+        },
+        {
+          "ref": "outb",
+          "type": "buf",
+          "conn": {
+            "A": "n5_0",
+            "O": "O"
+          }
+        }
+      ],
+      "nets": [
+        "INIT",
+        "n0_0",
+        "n0_1",
+        "n0_2",
+        "n0_3",
+        "n0_4",
+        "n0_5",
+        "n0_6",
+        "n0_7",
+        "n0_8",
+        "n0_9",
+        "n0_10",
+        "n0_11",
+        "n0_12",
+        "n0_13",
+        "n0_14",
+        "n0_15",
+        "n0_16",
+        "n0_17",
+        "n0_18",
+        "n0_19",
+        "n0_20",
+        "n0_21",
+        "n0_22",
+        "n0_23",
+        "n0_24",
+        "n0_25",
+        "n0_26",
+        "n0_27",
+        "n0_28",
+        "n0_29",
+        "n0_30",
+        "n0_31",
+        "n1_0",
+        "n1_1",
+        "n1_2",
+        "n1_3",
+        "n1_4",
+        "n1_5",
+        "n1_6",
+        "n1_7",
+        "n1_8",
+        "n1_9",
+        "n1_10",
+        "n1_11",
+        "n1_12",
+        "n1_13",
+        "n1_14",
+        "n1_15",
+        "n2_0",
+        "n2_1",
+        "n2_2",
+        "n2_3",
+        "n2_4",
+        "n2_5",
+        "n2_6",
+        "n2_7",
+        "n3_0",
+        "n3_1",
+        "n3_2",
+        "n3_3",
+        "n4_0",
+        "n4_1",
+        "n5_0"
+      ]
+    }
+  }
+}
