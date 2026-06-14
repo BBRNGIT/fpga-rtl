@@ -172,7 +172,8 @@ summary:before{{content:'▶ ';color:var(--d)}}details[open]>summary:before{{con
 <div class=card><b>{ek['routing']}</b><span>PS-PL routing</span></div>
 </div>
 <ul>{render('XCZU19EG')}</ul>"""
-open(os.path.join(ROOT, "hierarchy.html"), "w").write(doc)
+os.makedirs(os.path.join(ROOT, "views"), exist_ok=True)
+open(os.path.join(ROOT, "views", "hierarchy.html"), "w").write(doc)
 
 # ---- materialize folder hierarchy ------------------------------------------------------
 mat = "--materialize" in sys.argv

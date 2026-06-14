@@ -93,7 +93,8 @@ def main():
         .replace("__PS__", ps).replace("__PARTS__", parts).replace("__NCONN__", str(len(net)))\
         .replace("__NBLK__", f"{ndec} derived / {nblk}").replace("__NPRIM__", str(len(prims)))\
         .replace("__NPER__", str(len(order)))
-    open(os.path.join(ROOT, "blockmap.html"), "w").write(doc)
+    os.makedirs(os.path.join(ROOT, "views"), exist_ok=True)
+    open(os.path.join(ROOT, "views", "blockmap.html"), "w").write(doc)
     print(f"blockmap: wrote blockmap.html — {len(prims)} primitives (parts), {len(net)} connections (netlist), "
           f"{len(order)} peripherals, {ndec}/{nblk} blocks derived")
     return 0

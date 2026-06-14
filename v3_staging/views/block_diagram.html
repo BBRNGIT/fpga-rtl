@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XCZU19EG — v3 Block Diagram (pin & lane level)</title>
+<style>
+  :root{
+    --bg:#0e1116; --txt:#e6edf3; --dim:#9aa7b4; --line:#2a323d; --panel:#161b22;
+    --apu:#a371f7; --rpu:#4493f8; --periph:#6e7681; --gtr:#ffa657; --dp:#f778ba;
+    --gt:#ff7b72; --clk:#a5d6ff; --mem:#39c5cf; --seam:#e3b341;
+  }
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--txt);
+    font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;padding:22px}
+  h1{font-size:19px;margin:0 0 2px} .sub{color:var(--dim);font-size:12px;margin:0 0 12px}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin:0 0 12px;font-size:11px;color:var(--dim)}
+  .legend b{color:var(--txt)}
+  .wrap{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px;overflow:auto}
+  svg{display:block;width:100%;height:auto;min-width:1240px}
+  text{fill:var(--txt)}
+  .hd{font:700 13px ui-monospace,monospace;fill:#0b0e13}
+  .blk{rx:8;stroke:#0b0e13;stroke-opacity:.3;stroke-width:1}
+  .sub2{font:600 10px ui-monospace,monospace;fill:#0b0e13;opacity:.8}
+  .pinL{font:600 8.5px ui-monospace,monospace;fill:var(--dim)}   /* pin label */
+  .pinS{stroke:#7d8590;stroke-width:1.4}                          /* pin stub */
+  .pad{fill:#484f58}                                              /* device pad */
+  .grp{fill:none;stroke:var(--line);stroke-width:1.4;stroke-dasharray:5 4;rx:11}
+  .gtt{fill:var(--dim);font:700 11px ui-monospace,monospace;letter-spacing:.07em}
+  .wl{font:600 9px ui-monospace,monospace;fill:#cbd5e1}           /* width label on lane */
+  .note{color:var(--dim);font-size:12px;margin-top:12px} a{color:#4493f8;text-decoration:none}
+</style>
+</head>
+<body>
+  <h1>XCZU19EG — v3 Block Diagram · pin &amp; lane level</h1>
+  <p class="sub">All pins shown per block · buses drawn as multi-conductor lanes (ribbon = bundle, <b>/N</b> = width) · device pads ▮ at the package boundary · ⚠ = confirm-gap</p>
+  <div class="legend">
+    <span><b>lane ribbon</b> = a bus (many conductors)</span>
+    <span><b>═</b> diff pair (P/N)</span>
+    <span><b>▮</b> device pin/pad</span>
+    <span><b>/128</b> bus width</span>
+    <span><b>⚠</b> exact pad count = package</span>
+  </div>
+
+  <div class="wrap">
+  <svg viewBox="0 0 1240 1640" xmlns="http://www.w3.org/2000/svg" role="img">
+    <title>XCZU19EG pin and lane block diagram</title>
+    <defs>
+      <marker id="ar" markerWidth="8" markerHeight="8" refX="6.5" refY="3" orient="auto"><path d="M0,0 L6.5,3 L0,6 Z" fill="#7d8590"/></marker>
+      <!-- a 5-wire lane ribbon as a reusable pattern is drawn explicitly below -->
+    </defs>
+
+    <!-- =================== APU =================== -->
+    <text class="gtt" x="24" y="40">APU — 4× Cortex-A53 · all core pins</text>
+    <rect class="grp" x="20" y="48" width="600" height="300" style="stroke:#3a3050"/>
+    <!-- one detailed A53 symbol -->
+    <rect class="blk" x="40" y="66" width="250" height="180" fill="var(--apu)"/>
+    <text class="hd" x="54" y="90">Cortex-A53 #0</text>
+    <text class="sub2" x="54" y="106">(×4 identical cores)</text>
+    <!-- left pins: ACE master + ACP -->
+    <g class="pinL" text-anchor="end">
+      <line class="pinS" x1="20" y1="120" x2="40" y2="120"/><text x="18" y="123">ACE.AR /44</text>
+      <line class="pinS" x1="20" y1="134" x2="40" y2="134"/><text x="18" y="137">ACE.AW /44</text>
+      <line class="pinS" x1="20" y1="148" x2="40" y2="148"/><text x="18" y="151">ACE.W /128</text>
+      <line class="pinS" x1="20" y1="162" x2="40" y2="162"/><text x="18" y="165">ACE.R /128</text>
+      <line class="pinS" x1="20" y1="176" x2="40" y2="176"/><text x="18" y="179">ACE.B /12</text>
+      <line class="pinS" x1="20" y1="196" x2="40" y2="196"/><text x="18" y="199">ACP /128</text>
+    </g>
+    <!-- top pins: clk/reset -->
+    <g class="pinL" text-anchor="middle">
+      <line class="pinS" x1="90"  y1="46" x2="90"  y2="66"/><text x="90"  y="42">CLK</text>
+      <line class="pinS" x1="140" y1="46" x2="140" y2="66"/><text x="140" y="42">nRESET</text>
+      <line class="pinS" x1="200" y1="46" x2="200" y2="66"/><text x="200" y="42">CNTVALUE</text>
+    </g>
+    <!-- right pins: interrupts + trace -->
+    <g class="pinL">
+      <line class="pinS" x1="290" y1="120" x2="310" y2="120"/><text x="312" y="123">nIRQ</text>
+      <line class="pinS" x1="290" y1="134" x2="310" y2="134"/><text x="312" y="137">nFIQ</text>
+      <line class="pinS" x1="290" y1="148" x2="310" y2="148"/><text x="312" y="151">nVIRQ/nVFIQ</text>
+      <line class="pinS" x1="290" y1="168" x2="310" y2="168"/><text x="312" y="171">ATB trace /32</text>
+      <line class="pinS" x1="290" y1="182" x2="310" y2="182"/><text x="312" y="185">APB debug /32</text>
+      <line class="pinS" x1="290" y1="196" x2="310" y2="196"/><text x="312" y="199">CTI</text>
+    </g>
+    <!-- shared APU blocks with pins -->
+    <rect class="blk" x="430" y="66" width="170" height="48" fill="#8a5cf6"/><text class="hd" x="442" y="86">L2 ≤1MB</text><text class="sub2" x="442" y="102">ACE→CCI /128</text>
+    <rect class="blk" x="430" y="124" width="80" height="48" fill="#8a5cf6"/><text class="hd" x="440" y="150">SCU</text>
+    <rect class="blk" x="520" y="124" width="80" height="48" fill="#8a5cf6"/><text class="hd" x="528" y="150">GIC-400</text>
+    <text class="pinL" x="442" y="200">GIC SPI/PPI interrupt inputs (PL→PS IRQ, peripherals) → nIRQ/nFIQ to all 4 cores</text>
+    <!-- A53 ACE lane ribbon -> L2 -->
+    <g stroke="var(--apu)" stroke-width="1.3" fill="none">
+      <path d="M290,150 H430"/><path d="M290,154 H430"/><path d="M290,158 H430"/><path d="M290,162 H430"/>
+    </g>
+    <text class="wl" x="350" y="146">ACE /128</text>
+
+    <!-- =================== RPU =================== -->
+    <text class="gtt" x="650" y="40">RPU — 2× Cortex-R5F · all pins</text>
+    <rect class="grp" x="646" y="48" width="574" height="300" style="stroke:#22354d"/>
+    <rect class="blk" x="666" y="66" width="230" height="150" fill="var(--rpu)"/>
+    <text class="hd" x="680" y="90">Cortex-R5F #0</text><text class="sub2" x="680" y="106">(×2; lockstep/split)</text>
+    <g class="pinL" text-anchor="end">
+      <line class="pinS" x1="646" y1="120" x2="666" y2="120"/><text x="644" y="123">AXI master /64</text>
+      <line class="pinS" x1="646" y1="134" x2="666" y2="134"/><text x="644" y="137">AXI slave /64</text>
+      <line class="pinS" x1="646" y1="150" x2="666" y2="150"/><text x="644" y="153">ATCM /64</text>
+      <line class="pinS" x1="646" y1="164" x2="666" y2="164"/><text x="644" y="167">BTCM /64</text>
+      <line class="pinS" x1="646" y1="184" x2="666" y2="184"/><text x="644" y="187">ACP slave</text>
+    </g>
+    <g class="pinL" text-anchor="middle">
+      <line class="pinS" x1="720" y1="46" x2="720" y2="66"/><text x="720" y="42">CLK</text>
+      <line class="pinS" x1="790" y1="46" x2="790" y2="66"/><text x="790" y="42">nRESET</text>
+    </g>
+    <g class="pinL">
+      <line class="pinS" x1="896" y1="120" x2="916" y2="120"/><text x="918" y="123">nIRQ/nFIQ</text>
+      <line class="pinS" x1="896" y1="138" x2="916" y2="138"/><text x="918" y="141">lockstep compare</text>
+      <line class="pinS" x1="896" y1="156" x2="916" y2="156"/><text x="918" y="159">debug APB</text>
+      <line class="pinS" x1="896" y1="174" x2="916" y2="174"/><text x="918" y="177">ECC error</text>
+    </g>
+    <rect class="blk" x="966" y="66" width="120" height="150" fill="#2d5a8a"/><text class="hd" x="978" y="90">OCM 256KB</text>
+    <g class="pinL"><line class="pinS" x1="1086" y1="130" x2="1106" y2="130"/><text x="1108" y="133">AXI /128</text></g>
+
+    <!-- =================== Peripherals — all pins =================== -->
+    <text class="gtt" x="24" y="382">PERIPHERALS (LPD) — every protocol's pins → MIO / EMIO pads ▮</text>
+    <rect class="grp" x="20" y="390" width="1200" height="236"/>
+    <!-- each periph chip with its real pins -->
+    <g>
+      <rect class="blk" x="36" y="410" width="150" height="70" fill="var(--periph)"/><text class="hd" x="46" y="430">UART ×2</text>
+      <g class="pinL"><line class="pinS" x1="186" y1="426" x2="206" y2="426"/><text x="208" y="429">TXD</text>
+        <line class="pinS" x1="186" y1="440" x2="206" y2="440"/><text x="208" y="443">RXD</text>
+        <line class="pinS" x1="186" y1="454" x2="206" y2="454"/><text x="208" y="457">RTS</text>
+        <line class="pinS" x1="186" y1="468" x2="206" y2="468"/><text x="208" y="471">CTS</text></g>
+
+      <rect class="blk" x="262" y="410" width="150" height="70" fill="var(--periph)"/><text class="hd" x="272" y="430">SPI ×2</text>
+      <g class="pinL"><line class="pinS" x1="412" y1="426" x2="432" y2="426"/><text x="434" y="429">SCLK</text>
+        <line class="pinS" x1="412" y1="440" x2="432" y2="440"/><text x="434" y="443">MOSI</text>
+        <line class="pinS" x1="412" y1="454" x2="432" y2="454"/><text x="434" y="457">MISO</text>
+        <line class="pinS" x1="412" y1="468" x2="432" y2="468"/><text x="434" y="471">SS_n</text></g>
+
+      <rect class="blk" x="488" y="410" width="150" height="70" fill="var(--periph)"/><text class="hd" x="498" y="430">I2C ×2</text>
+      <g class="pinL"><line class="pinS" x1="638" y1="430" x2="658" y2="430"/><text x="660" y="433">SCL</text>
+        <line class="pinS" x1="638" y1="448" x2="658" y2="448"/><text x="660" y="451">SDA</text></g>
+
+      <rect class="blk" x="714" y="410" width="150" height="70" fill="var(--periph)"/><text class="hd" x="724" y="430">CAN ×2</text>
+      <g class="pinL"><line class="pinS" x1="864" y1="430" x2="884" y2="430"/><text x="886" y="433">TX</text>
+        <line class="pinS" x1="864" y1="448" x2="884" y2="448"/><text x="886" y="451">RX</text></g>
+
+      <rect class="blk" x="940" y="410" width="150" height="70" fill="var(--periph)"/><text class="hd" x="950" y="430">GPIO</text>
+      <g class="pinL"><line class="pinS" x1="1090" y1="430" x2="1110" y2="430"/><text x="1112" y="433">bank[..] /N</text>
+        <line class="pinS" x1="1090" y1="448" x2="1110" y2="448"/><text x="1112" y="451">⚠ count=pkg</text></g>
+
+      <rect class="blk" x="36" y="500" width="150" height="76" fill="var(--periph)"/><text class="hd" x="46" y="520">SD / eMMC</text>
+      <g class="pinL"><line class="pinS" x1="186" y1="516" x2="206" y2="516"/><text x="208" y="519">CLK</text>
+        <line class="pinS" x1="186" y1="530" x2="206" y2="530"/><text x="208" y="533">CMD</text>
+        <line class="pinS" x1="186" y1="544" x2="206" y2="544"/><text x="208" y="547">DAT[7:0] /8</text></g>
+
+      <rect class="blk" x="262" y="500" width="150" height="76" fill="var(--periph)"/><text class="hd" x="272" y="520">QSPI</text>
+      <g class="pinL"><line class="pinS" x1="412" y1="516" x2="432" y2="516"/><text x="434" y="519">SCLK</text>
+        <line class="pinS" x1="412" y1="530" x2="432" y2="530"/><text x="434" y="533">CS_n</text>
+        <line class="pinS" x1="412" y1="544" x2="432" y2="544"/><text x="434" y="547">IO[3:0] /4</text></g>
+
+      <rect class="blk" x="488" y="500" width="150" height="76" fill="var(--periph)"/><text class="hd" x="498" y="520">NAND</text>
+      <g class="pinL"><line class="pinS" x1="638" y1="516" x2="658" y2="516"/><text x="660" y="519">CLE/ALE/CE</text>
+        <line class="pinS" x1="638" y1="530" x2="658" y2="530"/><text x="660" y="533">RE/WE</text>
+        <line class="pinS" x1="638" y1="544" x2="658" y2="544"/><text x="660" y="547">DQ[7:0] /8</text></g>
+
+      <rect class="blk" x="714" y="500" width="150" height="76" fill="var(--periph)"/><text class="hd" x="724" y="520">USB3.0 ×2</text>
+      <g class="pinL"><line class="pinS" x1="864" y1="516" x2="884" y2="516"/><text x="886" y="519">ULPI (USB2)</text>
+        <line class="pinS" x1="864" y1="534" x2="884" y2="534"/><text x="886" y="537">SS → PS-GTR ═</text></g>
+
+      <rect class="blk" x="940" y="500" width="150" height="76" fill="var(--periph)"/><text class="hd" x="950" y="520">GbE ×2</text>
+      <g class="pinL"><line class="pinS" x1="1090" y1="516" x2="1110" y2="516"/><text x="1112" y="519">RGMII /12</text>
+        <line class="pinS" x1="1090" y1="534" x2="1110" y2="534"/><text x="1112" y="537">SGMII → PS-GTR ═</text></g>
+    </g>
+
+    <!-- =================== PS-GTR — 4 lanes, all pins =================== -->
+    <text class="gtt" x="24" y="660">PS-GTR — 4 lanes · each lane TX/RX diff pair + shared refclk · → PS-GTR pads ▮</text>
+    <rect class="grp" x="20" y="668" width="600" height="220" style="stroke:#5a4326"/>
+    <g>
+      <!-- 4 lane symbols -->
+      <g>
+        <rect class="blk" x="40"  y="690" width="120" height="120" fill="var(--gtr)"/><text class="hd" x="50" y="712">Lane 0</text>
+        <rect class="blk" x="170" y="690" width="120" height="120" fill="var(--gtr)"/><text class="hd" x="180" y="712">Lane 1</text>
+        <rect class="blk" x="300" y="690" width="120" height="120" fill="var(--gtr)"/><text class="hd" x="310" y="712">Lane 2</text>
+        <rect class="blk" x="430" y="690" width="120" height="120" fill="var(--gtr)"/><text class="hd" x="440" y="712">Lane 3</text>
+      </g>
+      <!-- per-lane diff-pair pins to pads -->
+      <g class="pinL" text-anchor="middle">
+        <!-- lane0 -->
+        <line class="pinS" x1="64"  y1="810" x2="64"  y2="840"/><line class="pinS" x1="72" y1="810" x2="72" y2="840"/>
+        <text x="68" y="854">TXP/TXN ═</text>
+        <line class="pinS" x1="120" y1="810" x2="120" y2="840"/><line class="pinS" x1="128" y1="810" x2="128" y2="840"/>
+        <text x="124" y="854">RXP/RXN ═</text>
+        <!-- lane1 -->
+        <line class="pinS" x1="194" y1="810" x2="194" y2="840"/><line class="pinS" x1="202" y1="810" x2="202" y2="840"/><text x="198" y="854">TX ═</text>
+        <line class="pinS" x1="250" y1="810" x2="250" y2="840"/><line class="pinS" x1="258" y1="810" x2="258" y2="840"/><text x="254" y="854">RX ═</text>
+        <!-- lane2 -->
+        <line class="pinS" x1="324" y1="810" x2="324" y2="840"/><line class="pinS" x1="332" y1="810" x2="332" y2="840"/><text x="328" y="854">TX ═</text>
+        <line class="pinS" x1="380" y1="810" x2="380" y2="840"/><line class="pinS" x1="388" y1="810" x2="388" y2="840"/><text x="384" y="854">RX ═</text>
+        <!-- lane3 -->
+        <line class="pinS" x1="454" y1="810" x2="454" y2="840"/><line class="pinS" x1="462" y1="810" x2="462" y2="840"/><text x="458" y="854">TX ═</text>
+        <line class="pinS" x1="510" y1="810" x2="510" y2="840"/><line class="pinS" x1="518" y1="810" x2="518" y2="840"/><text x="514" y="854">RX ═</text>
+      </g>
+      <!-- refclk + protocol pins (top) -->
+      <g class="pinL" text-anchor="middle">
+        <line class="pinS" x1="100" y1="668" x2="100" y2="690"/><line class="pinS" x1="108" y1="668" x2="108" y2="690"/><text x="104" y="664">MGTREFCLK0 ═</text>
+        <line class="pinS" x1="360" y1="668" x2="368" y2="690"/><text x="364" y="664">protocol sel (DP/PCIe/USB/SATA/SGMII)</text>
+      </g>
+      <!-- pads -->
+      <rect class="pad" x="56"  y="844" width="80" height="10" rx="2"/>
+      <rect class="pad" x="186" y="844" width="80" height="10" rx="2"/>
+      <rect class="pad" x="316" y="844" width="80" height="10" rx="2"/>
+      <rect class="pad" x="446" y="844" width="80" height="10" rx="2"/>
+    </g>
+
+    <!-- =================== DisplayPort tie =================== -->
+    <rect class="blk" x="640" y="690" width="180" height="80" fill="var(--dp)"/><text class="hd" x="650" y="712">★ DisplayPort 1.2a</text>
+    <text class="sub2" x="650" y="728">routes onto PS-GTR lane 0–3</text>
+    <g class="pinL"><line class="pinS" x1="620" y1="730" x2="640" y2="730"/><text x="558" y="733">from PS-GTR ═</text>
+      <line class="pinS" x1="820" y1="720" x2="840" y2="720"/><text x="842" y="723">AUX ch</text>
+      <line class="pinS" x1="820" y1="736" x2="840" y2="736"/><text x="842" y="739">HPD</text></g>
+    <!-- PS-GTR -> DP lane ribbon -->
+    <g stroke="var(--dp)" stroke-width="1.3" fill="none">
+      <path d="M550,730 H640"/><path d="M550,734 H640"/><path d="M550,738 H640"/></g>
+    <text class="wl" x="585" y="726">≤2 lanes</text>
+
+    <!-- =================== GTH/GTY transceivers — per-channel pins =================== -->
+    <text class="gtt" x="24" y="912">PL TRANSCEIVERS — GTHE4 + GTYE4 · per-quad 4 channels, each TX/RX diff pair + per-quad refclk → MGT pads ▮</text>
+    <rect class="grp" x="20" y="920" width="1200" height="260" style="stroke:#5a2622"/>
+    <!-- one detailed GTY quad -->
+    <text class="gtt" x="40" y="942" style="fill:var(--gt)">GTYE4 Quad (×8) — detailed</text>
+    <rect class="blk" x="40" y="950" width="360" height="150" fill="var(--gt)"/>
+    <text class="hd" x="52" y="972">GTYE4_COMMON — QPLL0 / QPLL1</text>
+    <g>
+      <rect class="blk" x="52" y="982" width="80" height="100" fill="#c25048"/><text class="hd" x="60" y="1000" font-size="10">CH0</text>
+      <rect class="blk" x="138" y="982" width="80" height="100" fill="#c25048"/><text class="hd" x="146" y="1000" font-size="10">CH1</text>
+      <rect class="blk" x="224" y="982" width="80" height="100" fill="#c25048"/><text class="hd" x="232" y="1000" font-size="10">CH2</text>
+      <rect class="blk" x="310" y="982" width="80" height="100" fill="#c25048"/><text class="hd" x="318" y="1000" font-size="10">CH3</text>
+    </g>
+    <text class="sub2" x="52" y="1016">each ch: serializer/deser · CDR · gearbox · PCS/PMA</text>
+    <!-- per-channel diff pins down to pads -->
+    <g class="pinL" text-anchor="middle">
+      <line class="pinS" x1="80" y1="1082" x2="80" y2="1112"/><line class="pinS" x1="88" y1="1082" x2="88" y2="1112"/><text x="84" y="1126">TXP/N ═</text>
+      <line class="pinS" x1="104" y1="1082" x2="104" y2="1112"/><line class="pinS" x1="112" y1="1082" x2="112" y2="1112"/><text x="108" y="1126">RXP/N ═</text>
+      <line class="pinS" x1="166" y1="1082" x2="166" y2="1112"/><line class="pinS" x1="174" y1="1082" x2="174" y2="1112"/><text x="170" y="1126">TX ═</text>
+      <line class="pinS" x1="190" y1="1082" x2="190" y2="1112"/><line class="pinS" x1="198" y1="1082" x2="198" y2="1112"/><text x="194" y="1126">RX ═</text>
+      <line class="pinS" x1="252" y1="1082" x2="252" y2="1112"/><line class="pinS" x1="260" y1="1082" x2="260" y2="1112"/><text x="256" y="1126">TX ═</text>
+      <line class="pinS" x1="276" y1="1082" x2="276" y2="1112"/><line class="pinS" x1="284" y1="1082" x2="284" y2="1112"/><text x="280" y="1126">RX ═</text>
+      <line class="pinS" x1="338" y1="1082" x2="338" y2="1112"/><line class="pinS" x1="346" y1="1082" x2="346" y2="1112"/><text x="342" y="1126">TX ═</text>
+      <line class="pinS" x1="362" y1="1082" x2="362" y2="1112"/><line class="pinS" x1="370" y1="1082" x2="370" y2="1112"/><text x="366" y="1126">RX ═</text>
+    </g>
+    <g class="pinL" text-anchor="middle">
+      <line class="pinS" x1="210" y1="950" x2="210" y2="930"/><line class="pinS" x1="218" y1="950" x2="218" y2="930"/><text x="214" y="926">MGTREFCLK0/1 ═ (IBUFDS_GTE4)</text>
+    </g>
+    <rect class="pad" x="60" y="1116" width="320" height="10" rx="2"/>
+
+    <!-- the other quads compact -->
+    <text class="gtt" x="430" y="942" style="fill:var(--gt)">remaining quads (same pin pattern)</text>
+    <g>
+      <rect class="blk" x="430" y="950" width="120" height="60" fill="#c25048"/><text class="hd" x="438" y="972" font-size="10">GTYE4 Q1</text><text class="sub2" x="438" y="990">4ch ═×4 +refclk</text>
+      <rect class="blk" x="560" y="950" width="120" height="60" fill="#c25048"/><text class="hd" x="568" y="972" font-size="10">GTYE4 Q…</text>
+      <rect class="blk" x="690" y="950" width="120" height="60" fill="#c25048"/><text class="hd" x="698" y="972" font-size="10">GTYE4 Q7</text>
+      <rect class="blk" x="430" y="1020" width="120" height="60" fill="#b5413a"/><text class="hd" x="438" y="1042" font-size="10">GTHE4 Q0</text><text class="sub2" x="438" y="1060">4ch ═×4 +refclk</text>
+      <rect class="blk" x="560" y="1020" width="120" height="60" fill="#b5413a"/><text class="hd" x="568" y="1042" font-size="10">GTHE4 Q…</text>
+      <rect class="blk" x="690" y="1020" width="120" height="60" fill="#b5413a"/><text class="hd" x="698" y="1042" font-size="10">GTHE4 Q7</text>
+    </g>
+    <text class="pinL" x="430" y="1100">GTYE4: 8 quads × 4 ch = 32 channels · GTHE4: 8 quads × 4 ch = 32 channels → 64 diff TX + 64 diff RX MGT pads ▮  ⚠ exact bonded = package</text>
+    <text class="pinL" x="840" y="958">these are the market-data ingress/egress lanes</text>
+    <text class="pinL" x="840" y="974">the trading system rides on (per-channel line rate</text>
+    <text class="pinL" x="840" y="990">GTH 16.3 Gb/s · GTY 28–32.75 Gb/s)</text>
+
+    <!-- =================== note line =================== -->
+    <text class="gtt" x="24" y="1230">FABRIC / SEAM / CLOCKING / MEMORY / DSP / I/O — see previous granular view; pins added here for the requested blocks</text>
+    <rect class="grp" x="20" y="1240" width="1200" height="380" style="stroke:#1f4d27"/>
+    <text class="pinL" x="40" y="1268">SEAM ports (PS↔PL), each a lane bundle: AXI HP0–3 /128 · HPC0–1 /128 · LPD /128 · ACP /128 · ACE-Lite · EMIO (to MIO pads) · PL clocks · resets · IRQ</text>
+    <text class="pinL" x="40" y="1292">CLB slice pins: 8× LUT6 (A1–A6,O5,O6) · 16× FF (D,Q,CE,CLK,SR) · CARRY8 (CI,DI,S,O,CO) · MUXF7/8/9 (I0,I1,S,O)</text>
+    <text class="pinL" x="40" y="1316">RAMB36E2 pins: DIN_A/B /36 · DOUT_A/B /36 · ADDR_A/B /15 · WE /8 · EN · CLK · RST  ||  URAM288: DIN/DOUT /72 · ADDR /23 · per-port EN/RDB_WR</text>
+    <text class="pinL" x="40" y="1340">DSP48E2 pins: A /30 · B /18 · C /48 · D /27 · P /48 · CARRYIN · OPMODE/ALUMODE/INMODE · ACIN/BCIN/PCIN cascade</text>
+    <text class="pinL" x="40" y="1364">CMT pins: CLKIN1/2 · CLKFBIN/OUT · CLKOUT0–6 · LOCKED · PWRDWN · RST  ||  BUFGCE: I,CE,O  ||  BUFGCTRL: I0,I1,S0,S1,O  ||  BUFGCE_DIV: I,CE,CLR,O</text>
+    <text class="pinL" x="40" y="1388">I/O pins (per pad): IBUF(I→O) · OBUF(I→O) · IOBUF(I,O,T,IO) · ISERDESE3/OSERDESE3 (D,Q,CLK,CLKDIV) · IDELAYE3/ODELAYE3 · IDDRE1/ODDRE1</text>
+    <text class="pinL" x="40" y="1418" style="fill:#e3b341">⚠ exact device pad counts (I/O, MGT, DDR, PS-MIO) are set by the package — to be locked from UG1075 before the pinout is final.</text>
+  </svg>
+  </div>
+
+  <p class="note">
+    Pin/lane level: APU (ACE/ACP/IRQ/CLK/debug per core), RPU (AXI/TCM/ACP/lockstep), every peripheral's protocol pins → MIO/EMIO pads, PS-GTR 4 lanes as TX/RX diff pairs + refclk, GTH/GTY per-channel diff pairs + per-quad refclk → MGT pads. Buses drawn as multi-conductor ribbons with <b>/N</b> widths.
+    Sources: <a href="https://developer.arm.com/documentation/ddi0500/latest">Cortex-A53 TRM</a> ·
+    <a href="https://docs.amd.com/v/u/en-US/ug1085-zynq-ultrascale-trm">UG1085</a> ·
+    <a href="https://docs.amd.com/r/en-US/ug974-vivado-ultrascale-libraries/">UG974</a> ·
+    <a href="https://www.mouser.com/datasheet/2/903/ug1075-zynq-ultrascale-pkg-pinout-1815184.pdf">UG1075 pinout</a>.
+    <br><b>Say which block to push deeper (or fix a pin/width) — once aligned, this pinout is the v3 target.</b>
+  </p>
+</body>
+</html>

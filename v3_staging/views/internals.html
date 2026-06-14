@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XCZU19EG — Hardware Internals Explorer (net-level)</title>
+<style>
+  :root{--bg:#0e1116;--panel:#161b22;--panel2:#1c232c;--line:#2a323d;--txt:#e6edf3;
+    --dim:#9aa7b4;--accent:#4493f8;--net:#7ee787;--prim:#a5d6ff;--cfg:#ffa657;--done:#3fb950;--todo:#6e7681}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--txt);
+    font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  header{padding:16px 22px;border-bottom:1px solid var(--line)}
+  h1{font-size:17px;margin:0} .sub{color:var(--dim);font-size:12px;margin:4px 0 0}
+  .app{display:grid;grid-template-columns:240px 1fr;min-height:90vh}
+  nav{border-right:1px solid var(--line);padding:14px;overflow:auto}
+  nav h3{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:16px 0 6px}
+  .item{padding:5px 9px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:7px;font-size:12.5px}
+  .item:hover{background:var(--panel2)} .item.on{background:#1f6feb33;border:1px solid var(--accent)}
+  .dot{width:7px;height:7px;border-radius:50%;flex:none}
+  .d-done{background:var(--done)} .d-todo{background:var(--todo)}
+  main{padding:20px 24px;overflow:auto}
+  .view{display:none} .view.on{display:block}
+  .view h2{font-size:16px;margin:0 0 2px} .view .desc{color:var(--dim);font-size:12.5px;margin:0 0 14px;max-width:880px}
+  .canvas{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px;overflow:auto}
+  svg{display:block;background:#0b0e13;border-radius:6px}
+  .nl{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:14px}
+  .nl h4{margin:0 0 8px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
+  .nl pre{margin:0;white-space:pre-wrap;color:#cbd5e1;font-size:12px;line-height:1.55}
+  .k-prim{color:var(--prim)} .k-net{color:var(--net)} .k-cfg{color:var(--cfg)} .k-cm{color:var(--dim)}
+  /* svg classes */
+  .b{rx:6;stroke:#0b0e13;stroke-opacity:.3;stroke-width:1}
+  .pt{font:700 11px ui-monospace,monospace;fill:#0b0e13}
+  .ps{font:600 8.5px ui-monospace,monospace;fill:#0b0e13;opacity:.8}
+  .wire{stroke:var(--net);stroke-width:1.4;fill:none}
+  .wlbl{font:600 9px ui-monospace,monospace;fill:var(--net)}
+  .port{font:700 9.5px ui-monospace,monospace;fill:#e6edf3}
+  .pin{stroke:#9aa7b4;stroke-width:1.4}
+  .lg{font:600 10px ui-monospace,monospace;fill:var(--dim)}
+</style>
+</head>
+<body>
+<header>
+  <h1>XCZU19EG — Hardware Internals Explorer · net-level</h1>
+  <p class="sub">Each block type drawn to Tier-0 primitives with <span style="color:var(--net)">every net named</span> · this view = the netlist · green = drawn, grey = queued (approve granularity, then I add the rest)</p>
+</header>
+<div class="app">
+  <nav id="nav"></nav>
+  <main id="main"></main>
+</div>
+
+<script>
+const NET='var(--net)';
+// helper builders
+const blocks = [
+ {id:'gates', grp:'Tier-0 atoms', name:'Logic gates', done:1,
+  desc:'The irreducible boolean atoms. Branchless. Everything above composes from these + dff_d + cfgcell + conductors.',
+  svg:`
+   ${gate(40,40,'NOT','O = ~A',['A'],['O'])}
+   ${gate(40,120,'AND','O = A&B',['A','B'],['O'])}
+   ${gate(40,210,'OR','O = A|B',['A','B'],['O'])}
+   ${gate(260,40,'XOR','O = A^B',['A','B'],['O'])}
+   ${gate(260,120,'NAND','O = ~(A&B)',['A','B'],['O'])}
+   ${gate(260,210,'NOR','O = ~(A|B)',['A','B'],['O'])}
+   ${gate(480,40,'XNOR','O = ~(A^B)',['A','B'],['O'])}
+   ${gate(480,120,'BUF','O = A',['A'],['O'])}
+   <text class="lg" x="480" y="225">conductor: wire/lane/bus — a passive net, not a gate</text>
+  `, W:660,H:280,
+  nl:`<span class="k-cm"># atomic — no sub-instances; these ARE the leaves</span>
+PRIM not(A)->O   and(A,B)->O   or(A,B)->O   xor(A,B)->O
+PRIM nand(A,B)->O  nor(A,B)->O  xnor(A,B)->O  buf(A)->O
+<span class="k-cfg">CFG  cfgcell()->Q</span>   <span class="k-cm"># SRAM config bit (holds 1 bitstream bit)</span>
+<span class="k-cm"># wire/lane/bus = conductor primitive (net), zero logic</span>`},
+
+ {id:'dffd', grp:'Tier-0 atoms', name:'dff_d (D flip-flop)', done:1,
+  desc:'The master register atom — master/slave latch pair on opposite clock phases. All other FF types derive from this.',
+  svg:`
+   ${box(60,70,150,80,'#a5d6ff','MASTER latch','transparent when CLK=0')}
+   ${box(330,70,150,80,'#a5d6ff','SLAVE latch','transparent when CLK=1')}
+   ${pinL(60,100,'D')}
+   ${wire('M210,110 H330',null)} <text class="wlbl" x="250" y="104">m</text>
+   ${pinR(480,110,'Q')}
+   ${pinB(135,150,255,'CLK')} ${pinB(405,150,255,'CLK')}
+   <text class="wlbl" x="250" y="124">(net m = master Q)</text>
+   <text class="lg" x="60" y="190">Q updates on CLK rising edge. Atomic in our library (built from cross-coupled gates if ever needed).</text>
+  `, W:560,H:210,
+  nl:`<span class="k-cm"># master/slave from gated latches (atomic leaf)</span>
+PRIM dff_d(D, CLK) -> Q
+NET  m            <span class="k-cm"># master latch output -> slave input</span>`},
+
+ {id:'mux2', grp:'Tier-0 atoms', name:'mux2 (2:1 select)', done:1,
+  desc:'2:1 multiplexer built from gates: O = (A & ~S) | (B & S). Every selection in the device is a tree of these.',
+  svg:`
+   ${box(70,60,120,46,'#a5d6ff','NOT','~S')}
+   ${box(260,40,120,46,'#a5d6ff','AND a','A & Sn')}
+   ${box(260,120,120,46,'#a5d6ff','AND b','B & S')}
+   ${box(450,80,120,46,'#a5d6ff','OR','na | nb')}
+   ${pinL(70,83,'S')} ${pinL(260,55,'A')} ${pinL(260,135,'B')}
+   ${wire('M190,83 H230 V63 H260',null)}<text class="wlbl" x="200" y="78">Sn</text>
+   ${wire('M190,83 V155 H260',null)}
+   ${wire('M380,63 H420 V95 H450',null)}<text class="wlbl" x="395" y="58">na</text>
+   ${wire('M380,143 H435 V108 H450',null)}<text class="wlbl" x="395" y="138">nb</text>
+   ${pinR(570,103,'O')}
+  `, W:640,H:200,
+  nl:`<span class="k-prim">INST not_s  : not(S) -> Sn</span>
+<span class="k-prim">INST and_a  : and(A, Sn) -> na</span>
+<span class="k-prim">INST and_b  : and(B, S)  -> nb</span>
+<span class="k-prim">INST or_o   : or(na, nb) -> O</span>
+<span class="k-net">NET  Sn na nb</span>   <span class="k-cm"># 3 internal nets</span>`},
+
+ {id:'fdre', grp:'Tier-1 meta-primitives', name:'FDRE (D-FF + CE + sync reset)', done:1,
+  desc:'The workhorse register UNISIM. Derived: sync reset gates D, clock-enable muxes against the feedback, dff_d latches it.',
+  svg:`
+   ${box(70,40,120,44,'#a5d6ff','NOT','~R')}
+   ${box(250,40,120,44,'#a5d6ff','AND','D & Rn')}
+   ${box(430,80,130,60,'#7fb6e6','mux2','CE ? Dr : Qfb')}
+   ${box(620,80,120,60,'#a5d6ff','dff_d','Q@CLK↑')}
+   ${pinL(70,62,'R')} ${pinL(250,55,'D')} ${pinL(430,128,'CE')}
+   ${pinB(685,140,255,'C')}
+   ${wire('M190,62 H220 V52 H250',null)}<text class="wlbl" x="200" y="48">Rn</text>
+   ${wire('M370,62 H400 V100 H430',null)}<text class="wlbl" x="382" y="58">Dr</text>
+   ${wire('M560,110 H620',null)}<text class="wlbl" x="582" y="104">dmux</text>
+   ${pinR(740,110,'Q')}
+   ${wire('M740,125 V165 H420 V120 H430',NET)}<text class="wlbl" x="500" y="162">Qfb (feedback)</text>
+  `, W:790,H:200,
+  nl:`<span class="k-prim">INST n_r  : not(R)        -> Rn</span>
+<span class="k-prim">INST a_d  : and(D, Rn)    -> Dr</span>
+<span class="k-prim">INST m_ce : mux2(Qfb, Dr, CE) -> dmux</span>   <span class="k-cm"># sel=CE</span>
+<span class="k-prim">INST ff   : dff_d(dmux, C) -> Q</span>
+<span class="k-net">NET  Rn Dr dmux ; Qfb = Q (feedback)</span>
+<span class="k-cm"># FDSE = set variant (or with S); FDCE/FDPE = async via latch clear/preset</span>`},
+
+ {id:'carry8', grp:'Tier-1 meta-primitives', name:'CARRY8 (carry chain)', done:1,
+  desc:'UG974: ports DI[7:0], S[7:0], CI, CI_TOP → CO[7:0], O[7:0]; attr CARRY_TYPE (SINGLE_CY8/DUAL_CY4). It is a carry-MUX chain (the LUT supplies S=A^B as propagate, DI=A): O[i]=S[i]^ci, CO[i]=S[i]?ci:DI[i].',
+  svg:`
+   <text class="lg" x="40" y="30">bit i (×8):  ci = (i==0)?CI : CO[i-1]   ·   O[i]=S[i]^ci   ·   CO[i]=S[i]?ci:DI[i]</text>
+   ${pinL(50,76,'S[i]')}${pinL(50,102,'ci')}${box(70,60,110,40,'#a5d6ff','XOR','O[i]=S^ci')}${pinR(180,80,'O[i]')}
+   ${pinL(50,156,'DI[i]')}${box(70,124,120,48,'#86b8e0','mux2','sel=S[i]')}${pinR(190,148,'CO[i] → ci+1')}
+   ${wire('M50,102 H60 V90 H70',null)}
+   ${wire('M50,102 V148 H70',null)}<text class="wlbl" x="40" y="120">ci</text>
+   <text class="lg" x="40" y="208">chain CI→CO[0]→CO[1]→…→CO[7] · CI_TOP feeds bit4 when CARRY_TYPE=DUAL_CY4 (two 4-bit chains), else SINGLE_CY8</text>
+  `, W:560,H:222,
+  nl:`<span class="k-cm"># CARRY8 (UG974): in DI[7:0] S[7:0] CI CI_TOP ; out CO[7:0] O[7:0]</span>
+<span class="k-cm"># attr CARRY_TYPE = SINGLE_CY8 | DUAL_CY4 ; per bit i, ci=(i==0)?CI:CO[i-1]</span>
+<span class="k-prim">INST xor_i : xor(S[i], ci) -> O[i]</span>
+<span class="k-prim">INST mux_i : mux2(DI[i], ci, S[i]) -> CO[i]   # carry-mux</span>
+<span class="k-net">NET  ci chain: CI, CO[0:6] ; CI_TOP→bit4 (DUAL_CY4)</span>
+<span class="k-net">     O[0:7] CO[0:7]   # S,DI come from the driving LUTs (S=A^B, DI=A)</span>`},
+
+ {id:'lut6', grp:'Tier-1 meta-primitives', name:'LUT6 (6-input LUT)', done:1,
+  desc:'UG974: inputs I0..I5 (1b each), output O (1b), attribute INIT = 64-bit hex. 64 config cells selected by a 6-stage mux2 tree (sel I0..I5). Reduced view: last 3 stages (I3..I5).',
+  svg:`
+   <text class="lg" x="36" y="34">INIT[63:0] in 64× cfgcell → 6-stage mux2 tree (sel I0..I5). Reduced view: last 3 stages.</text>
+   ${cfg(40,60,'c0')}${cfg(40,96,'c1')}${cfg(40,132,'c2')}${cfg(40,168,'c3')}
+   ${cfg(40,210,'c4')}${cfg(40,246,'c5')}${cfg(40,282,'c6')}${cfg(40,318,'c7')}
+   ${box(150,70,70,52,'#7fb6e6','mux2','I3')}
+   ${box(150,150,70,52,'#7fb6e6','mux2','I3')}
+   ${box(150,228,70,52,'#7fb6e6','mux2','I3')}
+   ${box(150,306,70,52,'#7fb6e6','mux2','I3')}
+   ${box(300,108,70,52,'#7fb6e6','mux2','I4')}
+   ${box(300,266,70,52,'#7fb6e6','mux2','I4')}
+   ${box(450,188,80,56,'#86b8e0','mux2','I5')}
+   ${wire('M86,78 H150',null)}${wire('M86,114 H150',null)}
+   ${wire('M86,150 H150',null)}${wire('M86,186 H150',null)}
+   ${wire('M86,228 H150',null)}${wire('M86,264 H150',null)}
+   ${wire('M86,300 H150',null)}${wire('M86,336 H150',null)}
+   ${wire('M220,96 H300',null)}${wire('M220,176 H300 V134',null)}
+   ${wire('M220,254 H300',null)}${wire('M220,332 H300 V292',null)}
+   ${wire('M370,134 H450 V206',null)}${wire('M370,292 H450 V226',null)}
+   ${pinR(530,216,'O')}
+   <text class="lg" x="300" y="350">I0,I1,I2 select earlier (64→8) stages — same mux2 pattern ×56 more</text>
+  `, W:620,H:370,
+  nl:`<span class="k-cm"># LUT6 (UG974): in I0..I5 (1b) ; out O (1b) ; attr INIT[63:0] hex</span>
+<span class="k-cfg">CFG  init[0..63] : cfgcell -> c[0..63]   # = INIT</span>
+<span class="k-prim"># stage0: 32× mux2(c[2k],c[2k+1], I0) -> s0[k]</span>
+<span class="k-prim"># stage1: 16× mux2(s0.., I1)  stage2: 8× (I2)  stage3: 4× (I3)</span>
+<span class="k-prim"># stage4:  2× mux2(.., I4)  stage5: 1× mux2(.., I5) -> O</span>
+<span class="k-net">NET  s0[0:31] s1[0:15] s2[0:7] s3[0:3] s4[0:1] O</span>
+<span class="k-cm"># LUT6_2: adds O5 (5-input, I0..I4) ; CFGLUT5: runtime-reconfig</span>`},
+
+ {id:'slice', grp:'Blocks (compose meta-primitives)', name:'CLB slice (CLBLM)', done:1,
+  desc:'One slice wires 8 LUT6 + 16 FF (FDRE) + 2 CARRY8 + MUXF7/8/9. Every inter-primitive net shown — this is the netlist fragment the fabric tiles ×147,750.',
+  svg:`
+   ${box(40,50,120,60,'#3fb950','LUT6 A','O6,O5')}
+   ${box(40,130,120,60,'#3fb950','LUT6 B','O6,O5')}
+   ${box(210,90,90,54,'#7fb6e6','MUXF7','A.O6/B.O6')}
+   ${box(360,50,110,46,'#3fb950','CARRY8','bit lane')}
+   ${box(520,50,110,52,'#a5d6ff','FDRE','D→Q')}
+   ${box(520,130,110,52,'#a5d6ff','FDRE','D→Q')}
+   ${pinL(40,80,'A1-6')} ${pinL(40,160,'A1-6')}
+   ${wire('M160,80 H210 V108',null)}<text class="wlbl" x="168" y="74">A.O6</text>
+   ${wire('M160,160 H190 V124 H210',null)}<text class="wlbl" x="166" y="156">B.O6</text>
+   ${wire('M160,90 H340 V70 H360',null)}<text class="wlbl" x="250" y="86">→DI/S</text>
+   ${wire('M470,73 H520',null)}<text class="wlbl" x="482" y="67">CO/sum</text>
+   ${wire('M300,117 H500 V156 H520',null)}<text class="wlbl" x="360" y="113">muxf→FF.D</text>
+   ${pinR(630,76,'AQ')} ${pinR(630,156,'BQ')}
+   ${pinB(575,182,255,'CLK')} ${pinB(575,182,255,'')}
+   <text class="lg" x="40" y="230">shared nets: CLK, CE, SR fan to all 16 FF · carry CI→CO threads the slice · O6→{FF.D, CARRY.S, MUXF.I} · ×147,750 slices</text>
+  `, W:700,H:250,
+  nl:`<span class="k-prim">INST lutA,lutB,..lutH : LUT6  (8×)</span>
+<span class="k-prim">INST ff0..ff15        : FDRE  (16×, 2 per LUT)</span>
+<span class="k-prim">INST cy0,cy1          : CARRY8 (2×)</span>
+<span class="k-prim">INST mf7_0,mf7_1,mf8,mf9 : MUXF7/8/9</span>
+<span class="k-net">NET  per-LUT: O6,O5 -> {FF.D, CARRY.S/DI, MUXF.I}</span>
+<span class="k-net">     carry: CI -> cy0.CO[7] -> cy1.CI -> cy1.CO[7]</span>
+<span class="k-net">     shared: CLK,CE,SR -> all 16 FF</span>
+<span class="k-cm"># tiled ×147,750 across the PL columns = the CLB fabric</span>`},
+
+ // ===== PL fabric meta-primitives (net-level) =====
+ {id:'ramb36', grp:'Memory blocks', name:'RAMB36E2 (block RAM)', done:1,
+  desc:'36Kb true-dual-port RAM. Address decoder → memory-cell array (dff_d) → read mux; writes AND-gated by WE&EN. Port B identical, shares the array. ×984 in the device.',
+  svg:`
+   ${pinL(60,76,'ADDR_A/15')}${box(70,58,116,42,'#86b8e0','addr decode','15→32K wl')}
+   ${pinL(60,132,'DIN_A/36')}${box(70,120,116,40,'#3fb950','write drv','and(DIN,WE&EN)')}
+   ${box(230,58,170,130,'#39c5cf','cell array','32,768×36b dff_d')}
+   ${box(440,92,110,48,'#86b8e0','read mux','wl→DOUT')}
+   ${pinR(550,116,'DOUT_A/36')}
+   ${pinB(120,100,255,'CLK_A')}${pinL(60,176,'WE_A/8')}
+   ${wire('M186,79 H230',null)}<text class="wlbl" x="192" y="74">wl[0:32767]</text>
+   ${wire('M186,140 H230',null)}<text class="wlbl" x="192" y="135">din'</text>
+   ${wire('M400,120 H440',null)}<text class="wlbl" x="406" y="115">bl</text>
+   <text class="lg" x="60" y="206">Port B (ADDR_B/DIN_B/DOUT_B/WE_B/CLK_B) identical, same array → true dual-port</text>
+  `, W:620,H:220,
+  nl:`<span class="k-prim">INST decA : addr_decode(ADDR_A[14:0]) -> wl[0:32767]   # mux2 tree</span>
+<span class="k-prim">INST wgA  : and(DIN_A[i], WE_A[i/4]&EN_A) -> din'[i]   # write gate</span>
+<span class="k-prim">INST cell[w][b] : dff_d(din'[b], CLK_A) en=wl[w]  # 32768×36 cells</span>
+<span class="k-prim">INST rmuxA: read_mux(cells, wl) -> DOUT_A[35:0]</span>
+<span class="k-net">NET  wl[0:32767] din'[0:35] bl[0:35]</span>
+<span class="k-cm"># port B: identical instances on same cell[] (dual-port); RAMB18E2 = half</span>`},
+
+ {id:'uram288', grp:'Memory blocks', name:'URAM288', done:1,
+  desc:'288Kb single-clock dual-port RAM, 4096×72. Same decode→cell→mux structure, larger; cascades vertically via CAS in/out. ×128.',
+  svg:`
+   ${pinL(60,74,'ADDR_A/12')}${box(70,58,116,40,'#86b8e0','addr decode','12→4096 wl')}
+   ${pinL(60,128,'DIN_A/72')}${box(70,116,116,40,'#3fb950','write drv','RDB_WR_A&EN')}
+   ${box(230,58,170,118,'#39c5cf','cell array','4096×72b dff_d')}
+   ${box(440,90,110,46,'#86b8e0','read mux','+ out reg')}
+   ${pinR(550,113,'DOUT_A/72')}${pinB(120,98,255,'CLK')}
+   ${wire('M186,78 H230',null)}${wire('M186,136 H230',null)}${wire('M400,113 H440',null)}
+   ${pinL(60,176,'CAS_IN/73')}${pinR(550,176,'CAS_OUT/73')}
+   <text class="lg" x="230" y="196">CAS chains stack URAMs into one tall memory (no extra logic)</text>
+  `, W:620,H:210,
+  nl:`<span class="k-prim">INST dec : addr_decode(ADDR[11:0]) -> wl[0:4095]</span>
+<span class="k-prim">INST cell[w][b] : dff_d  (4096×72)   # single CLK</span>
+<span class="k-prim">INST rmux+oreg : read_mux -> FDRE×72 -> DOUT</span>
+<span class="k-net">NET  wl[0:4095] ; CAS_IN/OUT[72:0] (cascade)</span>`},
+
+ {id:'dsp48', grp:'Tier-1 meta-primitives', name:'DSP48E2', done:1,
+  desc:'Each sub-block is a primitive cluster you already saw: pre-adder & ALU = CARRY8+gates, multiplier = AND-array + CARRY8 tree, regs = FDRE. ×1968.',
+  svg:`
+   ${pinL(40,70,'A/27')}${pinL(40,96,'D/27')}${box(70,60,110,52,'#3fb950','pre-adder','D±A (CARRY8)')}
+   ${pinL(40,150,'B/18')}${box(70,140,110,40,'#a5d6ff','A/B/D regs','FDRE×')}
+   ${box(210,70,130,90,'#86b8e0','27×18 mult','AND-array + CARRY8 tree')}
+   ${pinL(40,210,'C/48')}${box(370,90,120,70,'#3fb950','48-bit ALU','X/Y/Z mux + CARRY8')}
+   ${box(520,100,90,50,'#a5d6ff','P reg','FDRE×48')}
+   ${box(370,190,150,40,'#a5d6ff','pattern det','XNOR+AND reduce')}
+   ${pinR(610,125,'P/48')}
+   ${wire('M180,86 H210',null)}<text class="wlbl" x="186" y="81">ad</text>
+   ${wire('M340,115 H370',null)}<text class="wlbl" x="346" y="110">mult</text>
+   ${wire('M490,125 H520',null)}<text class="wlbl" x="496" y="120">alu</text>
+   ${wire('M610,140 V210 H520',null)}<text class="wlbl" x="540" y="206">P→pattern</text>
+   <text class="lg" x="40" y="252">cascade: ACIN/BCIN/PCIN in, ACOUT/BCOUT/PCOUT out · OPMODE/ALUMODE/INMODE select</text>
+  `, W:660,H:262,
+  nl:`<span class="k-prim">INST preadd : CARRY8(D,±A) -> ad             # gate-level adder</span>
+<span class="k-prim">INST mult   : pp=and(ad[i],B[j]); CARRY8-tree -> m  # 27×18</span>
+<span class="k-prim">INST xyzmux : mux2-tree(m,C,P,ad) -> x,y,z</span>
+<span class="k-prim">INST alu    : CARRY8(x,y,z)+logic gates -> p</span>
+<span class="k-prim">INST preg   : FDRE×48(p) -> P ; patt: xnor+and -> PATTERNDETECT</span>
+<span class="k-net">NET  ad m[0:44] x y z p ; cascade ACIN/BCIN/PCIN</span>`},
+
+ {id:'mmcme4', grp:'Clock management', name:'MMCME4 (clock generator)', done:1,
+  desc:'PFD compares CLKIN vs feedback → charge/pump drives the VCO → divider counters tap CLKOUT0..6. Every block is gates + FDRE counters (the v2 divider-bank model, generalized).',
+  svg:`
+   ${pinL(40,80,'CLKIN1')}${box(70,64,110,46,'#7fb6e6','PFD','up/dn: 2×dff_d')}
+   ${box(210,64,110,46,'#7fb6e6','charge pump','up/down counter')}
+   ${box(350,64,110,60,'#7fb6e6','VCO','controlled osc')}
+   ${box(350,150,110,44,'#a5d6ff','FB divider','÷M counter (FDRE)')}
+   ${box(520,40,110,34,'#a5d6ff','÷O0 → CLKOUT0','')}
+   ${box(520,82,110,34,'#a5d6ff','÷O1 → CLKOUT1','')}
+   ${box(520,124,110,34,'#a5d6ff','÷O2..6 → CLKOUT2-6','')}
+   ${pinR(630,57,'CLKOUT0')}${pinR(630,99,'CLKOUT1')}
+   ${wire('M180,87 H210',null)}<text class="wlbl" x="186" y="82">err</text>
+   ${wire('M320,87 H350',null)}<text class="wlbl" x="326" y="82">vctrl</text>
+   ${wire('M460,94 H520',null)}<text class="wlbl" x="466" y="89">vco</text>
+   ${wire('M460,94 V172 H460',null)}
+   ${wire('M350,172 H200 V110',null)}<text class="wlbl" x="240" y="168">fb→PFD</text>
+   ${box(350,150,0,0,'#0000','','')}
+   <text class="lg" x="40" y="216">LOCKED = phase-error within window (compare); RST/PWRDWN gate the counters</text>
+  `, W:670,H:226,
+  nl:`<span class="k-prim">INST pfd : dff_d up, dff_d dn, and-reset -> err</span>
+<span class="k-prim">INST cp  : up/down counter (FDRE+CARRY8) -> vctrl</span>
+<span class="k-prim">INST vco : controlled osc -> vco_clk</span>
+<span class="k-prim">INST fbdiv : FDRE÷M counter -> fb  (-> PFD other input)</span>
+<span class="k-prim">INST odiv0..6 : FDRE÷O counter + eqmask wrap -> CLKOUT0..6</span>
+<span class="k-net">NET  err vctrl vco_clk fb ; LOCKED=cmp(err)</span>`},
+
+ {id:'plle4', grp:'Clock management', name:'PLLE4', done:1,
+  desc:'Subset of MMCM: PFD → charge pump → VCO → feedback ÷M + output ÷O dividers (CLKOUT0..1). No fine phase-shift. 2 per CMT.',
+  svg:`
+   ${pinL(40,76,'CLKIN')}${box(70,60,100,46,'#7fb6e6','PFD','2×dff_d')}
+   ${box(200,60,100,46,'#7fb6e6','CP+VCO','ctr→osc')}
+   ${box(330,40,120,34,'#a5d6ff','÷O0→CLKOUT0','')}
+   ${box(330,82,120,34,'#a5d6ff','÷O1→CLKOUT1','')}
+   ${box(200,140,100,40,'#a5d6ff','FB ÷M','FDRE counter')}
+   ${pinR(450,57,'CLKOUT0')}${pinR(450,99,'CLKOUT1')}
+   ${wire('M170,83 H200',null)}${wire('M300,72 H330',null)}${wire('M300,72 V160 H300',null)}
+   ${wire('M200,160 H140 V106',null)}<text class="wlbl" x="150" y="156">fb</text>
+  `, W:500,H:200,
+  nl:`<span class="k-prim">INST pfd:2×dff_d  cp_vco:counter+osc  fbdiv:FDRE÷M</span>
+<span class="k-prim">INST odiv0,odiv1: FDRE÷O + wrap -> CLKOUT0/1</span>
+<span class="k-net">NET err vctrl vco fb ; LOCKED</span>`},
+
+ {id:'bufg', grp:'Clock management', name:'BUFGCTRL (fundamental) + derived buffers', done:1,
+  desc:'UG572 Table 2-1 / Fig 2-5: BUFGCTRL is THE fundamental global clock buffer — a glitchless 2:1 clock select. Inputs I0,I1; output O; six controls S0,S1,CE0,CE1,IGNORE0,IGNORE1. BUFGCE_1/BUFGMUX/BUFGMUX_1/BUFGMUX_CTRL are configurations of it. Built exactly to spec.',
+  svg:`
+   <text class="lg" x="40" y="30">BUFGCTRL — exact: per-input request = S&CE, glitchless capture (latch on clk-low) unless IGNORE, then AND-OR select</text>
+   <text class="lg" x="40" y="52" style="fill:#a5d6ff">input-0 path</text>
+   ${box(150,58,78,32,'#a5d6ff','AND','S0&amp;CE0')}
+   ${box(244,58,78,32,'#a5d6ff','latch_d','hold @~I0')}
+   ${box(338,58,86,32,'#86b8e0','mux2','IGNORE0?')}
+   ${box(440,72,86,32,'#a5d6ff','AND','I0&amp;sel0')}
+   ${pinL(120,88,'I0')}
+   ${wire('M228,74 H244',null)}<text class="wlbl" x="231" y="69">g0</text>
+   ${wire('M322,74 H338',null)}<text class="wlbl" x="325" y="69">l0</text>
+   ${wire('M424,74 H440 V88',null)}<text class="wlbl" x="427" y="69">sel0</text>
+   <text class="lg" x="40" y="120" style="fill:#a5d6ff">input-1 path (mirror)</text>
+   ${box(150,126,78,32,'#a5d6ff','AND','S1&amp;CE1')}
+   ${box(244,126,78,32,'#a5d6ff','latch_d','hold @~I1')}
+   ${box(338,126,86,32,'#86b8e0','mux2','IGNORE1?')}
+   ${box(440,118,86,32,'#a5d6ff','AND','I1&amp;sel1')}
+   ${pinL(120,142,'I1')}
+   ${wire('M228,142 H244',null)}<text class="wlbl" x="231" y="137">g1</text>
+   ${wire('M322,142 H338',null)}${wire('M424,142 H440 V134',null)}<text class="wlbl" x="427" y="137">sel1</text>
+   ${box(548,90,70,40,'#86b8e0','OR','a0|a1')}${pinR(618,110,'O')}
+   ${wire('M526,89 H540 V100 H548',null)}<text class="wlbl" x="528" y="84">a0</text>
+   ${wire('M526,134 H540 V120 H548',null)}<text class="wlbl" x="528" y="130">a1</text>
+   ${pinB(189,90,158,'S0/CE0')}${pinB(381,90,158,'IGN0')}
+   ${pinB(189,158,158,'S1/CE1')}${pinB(381,158,158,'IGN1')}
+   <text class="lg" x="40" y="220">derived (UG572 Table 2-1): BUFGCE_1 = BUFGCTRL{I1 off, ctrl=CE} · BUFGMUX / BUFGMUX_1 / BUFGMUX_CTRL = BUFGCTRL{ctrl=S}</text>
+   <text class="lg" x="40" y="238">separate UltraScale primitives: BUFGCE (CE gate) · BUFGCE_DIV (BUFGCE + FDRE÷D counter + eqmask wrap)</text>
+  `, W:660,H:250,
+  nl:`<span class="k-cm"># BUFGCTRL — gate-exact (UG572 Fig 2-5): glitchless 2:1 clock select</span>
+<span class="k-prim">INST and0 : and(S0,CE0) -> g0</span>
+<span class="k-prim">INST lat0 : latch_d(g0, ~I0) -> l0        # capture while I0 low</span>
+<span class="k-prim">INST ig0  : mux2(l0, g0, IGNORE0) -> sel0  # IGNORE bypasses wait</span>
+<span class="k-prim">INST a0   : and(I0, sel0) -> a0n</span>
+<span class="k-prim">INST and1 : and(S1,CE1) -> g1 ; lat1: latch_d(g1,~I1) -> l1</span>
+<span class="k-prim">INST ig1  : mux2(l1, g1, IGNORE1) -> sel1 ; a1: and(I1,sel1) -> a1n</span>
+<span class="k-prim">INST oro  : or(a0n, a1n) -> O</span>
+<span class="k-net">NET g0 l0 sel0 a0n  g1 l1 sel1 a1n</span>
+<span class="k-cm"># derived: BUFGCE_1{tie I1,ctrl=CE} BUFGMUX/_1/_CTRL{ctrl=S}</span>
+<span class="k-cm"># BUFGCE, BUFGCE_DIV = separate primitives (gate / gate+counter)</span>`},
+
+ {id:'iob', grp:'Tier-1 meta-primitives', name:'IOB — IBUF/OBUF/IOBUF + SERDES', done:1,
+  desc:'Pad buffers + (de)serializers. Buffers = iobuf primitives; SERDES = dff_d shift chains across the fast/slow clock pair.',
+  svg:`
+   <text class="lg" x="40" y="34">buffers</text>
+   ${box(60,44,90,38,'#d29922','IBUF','pad→I')}${pinL(40,63,'pad')}${pinR(150,63,'I')}
+   ${box(190,44,90,38,'#d29922','OBUF','O→pad')}${pinL(170,63,'O')}${pinR(280,63,'pad')}
+   ${box(320,44,110,38,'#d29922','IOBUF','T tristates')}${pinR(430,63,'pad↔')}
+   <text class="lg" x="40" y="110">ISERDESE3 — deserialize (capture on CLK, parallel on CLKDIV)</text>
+   ${pinL(50,142,'D(pad)')}${box(70,128,260,40,'#ff7b72','dff_d shift chain ×8','CLK in → Q[7:0] on CLKDIV')}${pinR(330,148,'Q/8')}
+   <text class="lg" x="40" y="196">OSERDESE3 — serialize (parallel load → shift out on CLK)</text>
+   ${pinL(50,228,'D/8')}${box(70,214,260,40,'#ff7b72','load mux + dff_d shift','D[7:0] → serial OQ')}${pinR(330,234,'OQ')}
+  `, W:520,H:264,
+  nl:`<span class="k-prim">IBUF: iobuf_in(pad)->I   OBUF: buf(O)->iobuf_out(pad)</span>
+<span class="k-prim">IOBUF: T? hiZ : drive ; iobuf_io(pad)</span>
+<span class="k-prim">ISERDESE3: dff_d[0..7] chain @CLK -> FDRE latch @CLKDIV -> Q[7:0]</span>
+<span class="k-prim">OSERDESE3: mux2 load + dff_d[0..7] shift @CLK -> OQ</span>
+<span class="k-net">NET sh[0:7] (shift chain) ; +IDELAYE3/ODELAYE3 tap chains</span>`},
+
+ {id:'gtych', grp:'Tier-1 meta-primitives', name:'GTYE4 channel (SerDes)', done:1,
+  desc:'TX: gearbox→serializer (dff shift @ serial clk)→OBUFDS_GTE4→pads. RX: pads→IBUFDS→CDR (phase det+counter)→deserializer→align→gearbox. PCS = encode gates. ×4 per quad.',
+  svg:`
+   <text class="lg" x="40" y="32" style="fill:#ff7b72">TX path</text>
+   ${pinL(40,60,'TXDATA/64')}${box(60,46,90,38,'#a5d6ff','PCS enc','64b/66b gates')}
+   ${box(170,46,90,38,'#ff7b72','gearbox','width adapt FIFO')}
+   ${box(280,46,110,38,'#ff7b72','serializer','par→ser dff chain')}
+   ${box(410,46,90,38,'#d29922','OBUFDS_GTE4','diff drv')}${pinR(500,65,'TXP/N')}
+   ${wire('M150,65 H170',null)}${wire('M260,65 H280',null)}${wire('M390,65 H410',null)}
+   <text class="lg" x="40" y="118" style="fill:#ff7b72">RX path</text>
+   ${pinL(40,146,'RXP/N')}${box(60,132,90,38,'#d29922','IBUFDS_GTE4','diff rcv')}
+   ${box(170,132,100,38,'#ff7b72','CDR','phase det+ctr')}
+   ${box(290,132,110,38,'#ff7b72','deserializer','ser→par dff chain')}
+   ${box(420,132,90,38,'#ff7b72','align+PCS','comma/dec')}${pinR(510,151,'RXDATA/64')}
+   ${wire('M150,151 H170',null)}${wire('M270,151 H290',null)}${wire('M400,151 H420',null)}
+   ${pinB(335,84,255,'serial clk (from QPLL)')}
+   <text class="lg" x="40" y="196">serializer/deser = dff_d shift chains clocked by the QPLL serial clock; CDR recovers RX clock</text>
+  `, W:560,H:206,
+  nl:`<span class="k-prim">TX: enc(gates)->gear(FIFO)->ser=dff_d[0..N]@sclk->OBUFDS_GTE4->TXP/N</span>
+<span class="k-prim">RX: IBUFDS_GTE4->CDR(dff_d phase-det+counter)->deser=dff_d[0..N]->align(xnor cmp)->dec</span>
+<span class="k-net">NET sclk (QPLL) rclk(CDR) sh_tx[] sh_rx[]</span>`},
+
+ {id:'gtycommon', grp:'Tier-1 meta-primitives', name:'GTYE4_COMMON (QPLL)', done:1,
+  desc:'Per-quad PLL(s) making the high-speed serial clock from the refclk; shared by the 4 channels. Same PLL primitives as PLLE4.',
+  svg:`
+   ${pinL(40,76,'MGTREFCLK')}${box(70,60,100,44,'#7fb6e6','PFD','2×dff_d')}
+   ${box(200,60,100,44,'#7fb6e6','CP+VCO','ctr→osc')}
+   ${box(330,40,110,34,'#a5d6ff','÷ QPLL0','serial clk0')}
+   ${box(330,82,110,34,'#a5d6ff','÷ QPLL1','serial clk1')}
+   ${box(200,140,100,38,'#a5d6ff','FB ÷','FDRE')}
+   ${pinR(440,57,'→ ch0-3')}${pinR(440,99,'→ ch0-3')}
+   ${wire('M170,82 H200',null)}${wire('M300,72 H330',null)}${wire('M250,104 V140',null)}${wire('M200,159 H150 V104',null)}
+  `, W:500,H:196,
+  nl:`<span class="k-prim">QPLL0/1: PFD(2×dff_d)->CP/VCO(ctr)->FB÷(FDRE)->serial clk</span>
+<span class="k-prim">distributes serial clk to GTYE4_CHANNEL ×4 in the quad</span>
+<span class="k-net">NET err vctrl vco fb qpll0_clk qpll1_clk</span>`},
+
+ // ===== PS8 blocks (hierarchical: each sub-block expands to the primitives above) =====
+ {id:'psgtr', grp:'PS8 blocks', name:'PS-GTR lane (protocol-muxed SerDes)', done:1,
+  desc:'Like a GTYE4 channel + a protocol-select mux choosing the PCS (DisplayPort/PCIe/USB3/SATA/SGMII). refclk→PLL→ser/deser→pads. ×4 lanes.',
+  svg:`
+   ${pinL(40,70,'refclk')}${box(60,56,90,40,'#7fb6e6','lane PLL','serial clk')}
+   ${box(170,40,120,38,'#86b8e0','protocol mux','DP/PCIe/USB/SATA/SGMII')}
+   ${box(170,92,120,38,'#a5d6ff','PCS','enc/dec gates')}
+   ${box(310,56,110,40,'#ff7b72','ser / deser','dff shift @sclk')}
+   ${box(440,56,90,40,'#d29922','diff buf','TXP/N RXP/N')}${pinR(530,76,'pads')}
+   ${wire('M150,76 H170',null)}${wire('M290,59 H310',null)}${wire('M290,111 H310 V96',null)}${wire('M420,76 H440',null)}
+   ${pinB(355,96,255,'sclk')}
+   <text class="lg" x="40" y="166">protocol mux picks which PCS drives the shared serializer → one physical lane, many roles</text>
+  `, W:560,H:176,
+  nl:`<span class="k-prim">INST pll : PFD/CP/VCO/FB (as PLLE4) -> sclk</span>
+<span class="k-prim">INST pmux: mux2-tree(sel proto) -> pcs_in</span>
+<span class="k-prim">INST pcs : enc/dec gates (8b10b / scramble)</span>
+<span class="k-prim">INST ser/deser: dff_d shift chains @sclk ; diff buf -> pads</span>
+<span class="k-net">NET sclk pcs_in sh[] ; sel[2:0] (protocol)</span>`},
+
+ {id:'dpctl', grp:'PS8 blocks', name:'DisplayPort 1.2a controller', done:1,
+  desc:'Main video link + AUX channel. Pixel FIFO → attribute/steering → scrambler (LFSR) → 8b/10b encode → onto PS-GTR lanes. AUX = bidirectional Manchester link; HPD detect.',
+  svg:`
+   ${pinL(40,66,'pixel/48')}${box(60,52,96,38,'#39c5cf','pixel FIFO','dff_d ring')}
+   ${box(176,52,100,38,'#86b8e0','steering','lane map mux')}
+   ${box(296,52,100,38,'#a5d6ff','scrambler','LFSR xor+dff')}
+   ${box(416,52,96,38,'#a5d6ff','8b/10b enc','LUT/gates')}
+   ${pinR(512,71,'→PS-GTR')}
+   ${wire('M156,71 H176',null)}${wire('M276,71 H296',null)}${wire('M396,71 H416',null)}
+   ${box(60,120,140,40,'#ff7b72','AUX channel','Manchester xcvr (FSM)')}${pinR(200,140,'AUX±')}
+   ${box(240,120,120,40,'#d29922','HPD detect','iobuf_in')}${pinR(360,140,'HPD')}
+   <text class="lg" x="40" y="186">scrambler LFSR = xor feedback + dff_d ; encoder = combinational LUT map</text>
+  `, W:560,H:196,
+  nl:`<span class="k-prim">INST pfifo: dff_d ring (pixel buffer)</span>
+<span class="k-prim">INST steer: mux2-tree -> lane[0..1]</span>
+<span class="k-prim">INST scr  : LFSR = xor(taps)->dff_d  (per lane)</span>
+<span class="k-prim">INST enc  : 8b/10b LUT(gates) -> symbols -> PS-GTR</span>
+<span class="k-prim">INST aux  : FSM (FDRE state)+Manchester ; hpd: iobuf_in</span>
+<span class="k-net">NET sym[] lfsr_state aux_state</span>`},
+
+ {id:'a53', grp:'PS8 blocks', name:'Cortex-A53 (pipeline → primitives)', done:1,
+  desc:'Hierarchical: each pipeline stage is a cluster of the primitives already shown (ALU=CARRY8+gates, mult=DSP-style, caches=RAMB-like, regfile/TLB=dff+xnor compare). 8-stage, 2-wide, in-order. ×4.',
+  svg:`
+   ${box(30,50,120,54,'#a5d6ff','FETCH','PC(FDRE)·I$(RAMB)·BP')}
+   ${box(170,50,110,54,'#a5d6ff','DECODE','instr decode LUT/gates')}
+   ${box(300,50,110,54,'#a5d6ff','ISSUE','in-order 2-wide')}
+   ${box(430,40,150,74,'#3fb950','EXECUTE','ALU=CARRY8 · MAC=mult · shift=mux · div=FSM')}
+   ${box(430,130,150,40,'#86b8e0','NEON/FP','SIMD ALU + FP')}
+   ${box(300,130,110,54,'#39c5cf','LSU','ld/st Q · D$(RAMB) · MMU TLB=xnor CAM')}
+   ${box(170,130,110,54,'#a5d6ff','REGFILE','31×64b dff_d + decode')}
+   ${box(30,130,120,54,'#86b8e0','L2 / ACE','arb + cache (shared ×4)')}
+   ${wire('M150,77 H170',null)}${wire('M280,77 H300',null)}${wire('M410,77 H430',null)}
+   ${wire('M505,114 V130',null)}<text class="wlbl" x="510" y="126">result</text>
+   ${wire('M430,150 H410',null)}<text class="wlbl" x="412" y="146">ld/st</text>
+   ${wire('M300,157 H280 V104',null)}<text class="wlbl" x="240" y="172">WB→regfile</text>
+   <text class="lg" x="30" y="206">every stage decomposes to Tier-0: registers=FDRE/dff_d, ALU/MAC=CARRY8+gate trees, caches/TLB=memory cells + xnor compare</text>
+  `, W:610,H:218,
+  nl:`<span class="k-prim">FETCH : PC=FDRE×64 ; I-cache=RAMB-array+tag xnor ; BP=RAM+gates</span>
+<span class="k-prim">DECODE: instruction decoder = LUT6/gate cloud -> uops</span>
+<span class="k-prim">ISSUE : scoreboard (FDRE) + hazard gates (in-order, 2 lanes)</span>
+<span class="k-prim">EXEC  : ALU=CARRY8+gates ; MAC=AND-array+CARRY8 ; shift=mux2-tree ; div=FSM(FDRE)</span>
+<span class="k-prim">NEON/FP: SIMD lanes (CARRY8) + FP add/mul (mantissa CARRY8, exp adders)</span>
+<span class="k-prim">LSU   : ld/st queue(FDRE) ; D-cache=RAMB ; MMU TLB=xnor-CAM + table-walk FSM</span>
+<span class="k-prim">REGFILE: 31×64b dff_d + read/write address decode (mux2)</span>
+<span class="k-prim">L2/ACE : arbiter mux + cache array (shared by 4 cores) -> CCI</span>
+<span class="k-net">NET pc instr[] uops[] result wb ld_data st_data tlb_hit ...</span>
+<span class="k-cm"># ×4 cores ; exact micro-arch leaf widths from Arm DDI0500</span>`},
+
+ {id:'r5f', grp:'PS8 blocks', name:'Cortex-R5F', done:1,
+  desc:'Simpler ARMv7-R: fetch→decode→exec(ALU/MAC)→LSU(TCM)→WB, dual-issue, MPU (compare regs) instead of MMU. ×2, lockstep-capable.',
+  svg:`
+   ${box(30,54,100,48,'#a5d6ff','FETCH','PC FDRE')}
+   ${box(150,54,100,48,'#a5d6ff','DECODE','LUT/gates')}
+   ${box(270,54,120,48,'#3fb950','EXEC','ALU CARRY8 · MAC')}
+   ${box(410,54,110,48,'#39c5cf','LSU + TCM','ATCM/BTCM RAM')}
+   ${box(150,130,110,46,'#a5d6ff','REGFILE','dff_d + decode')}
+   ${box(290,130,120,46,'#86b8e0','MPU','region compare')}
+   ${wire('M130,78 H150',null)}${wire('M250,78 H270',null)}${wire('M390,78 H410',null)}
+   ${wire('M465,102 V150 H410',null)}<text class="wlbl" x="470" y="120">WB</text>
+   <text class="lg" x="30" y="200">lockstep: two cores compare every cycle (xnor) → fault flag</text>
+  `, W:550,H:210,
+  nl:`<span class="k-prim">FETCH/DECODE/EXEC(CARRY8)/LSU(TCM RAM)/REGFILE(dff_d)</span>
+<span class="k-prim">MPU: per-region base/limit compare (CARRY8 cmp) -> permit</span>
+<span class="k-prim">lockstep: xnor(coreA_state, coreB_state) -> fault</span>
+<span class="k-net">NET pc uops result wb permit fault</span>`},
+
+ {id:'cci', grp:'PS8 blocks', name:'CCI-400 / SMMU interconnect', done:1,
+  desc:'Coherent AXI crossbar: master ports → arbiter (priority mux) → crossbar matrix → slave ports; snoop filter (CAM) keeps coherency; SMMU = TLB CAM + page-table-walk FSM.',
+  svg:`
+   ${box(30,54,90,40,'#86b8e0','M ports','APU/RPU/GPU')}
+   ${box(150,54,110,40,'#a5d6ff','arbiter','priority mux tree')}
+   ${box(290,40,120,70,'#86b8e0','crossbar','mux matrix M×S')}
+   ${box(440,54,90,40,'#86b8e0','S ports','DDR/OCM/PL')}
+   ${box(150,130,120,44,'#39c5cf','snoop filter','xnor-CAM dir')}
+   ${box(300,130,130,44,'#39c5cf','SMMU','TLB CAM + walk FSM')}
+   ${wire('M120,74 H150',null)}${wire('M260,74 H290',null)}${wire('M410,74 H440',null)}
+   ${wire('M210,94 V130',null)}${wire('M350,110 V130',null)}
+  `, W:560,H:188,
+  nl:`<span class="k-prim">INST arb : priority compare(CARRY8)+mux2-tree -> grant</span>
+<span class="k-prim">INST xbar: mux2 matrix (M masters × S slaves)</span>
+<span class="k-prim">INST snoop: xnor-CAM (addr tags) -> coherency hit</span>
+<span class="k-prim">INST smmu: TLB xnor-CAM + table-walk FSM(FDRE)</span>
+<span class="k-net">NET grant[] route[] snoop_hit tlb_hit</span>`},
+
+ {id:'ddr4', grp:'PS8 blocks', name:'DDR4 controller', done:1,
+  desc:'Command queue → scheduler/reorder → addr/cmd gen → ECC → PHY (serializers + DQS gating + delay lines). Everything is FIFO(dff)+compare+gates+SERDES.',
+  svg:`
+   ${pinL(40,70,'AXI')}${box(60,56,96,40,'#39c5cf','cmd queue','FIFO dff')}
+   ${box(176,56,110,40,'#86b8e0','scheduler','reorder compare')}
+   ${box(306,56,100,40,'#a5d6ff','addr/cmd','RAS/CAS gen')}
+   ${box(426,56,90,40,'#a5d6ff','ECC','Hamming xor')}
+   ${box(60,120,140,40,'#ff7b72','PHY','OSERDES/ISERDES + DQS')}
+   ${box(220,120,120,40,'#ff7b72','delay lines','IDELAY/ODELAY')}${pinR(516,76,'→ DDR pins')}
+   ${wire('M156,76 H176',null)}${wire('M286,76 H306',null)}${wire('M406,76 H426',null)}${wire('M470,96 V120 H200',null)}
+  `, W:560,H:180,
+  nl:`<span class="k-prim">INST cq : FIFO=dff_d ring</span>
+<span class="k-prim">INST sched: bank-state compare(CARRY8)+arbiter mux -> order</span>
+<span class="k-prim">INST ecc : xor-tree Hamming -> check/correct</span>
+<span class="k-prim">INST phy : OSERDESE3/ISERDESE3 + DQS gate + IDELAY/ODELAY</span>
+<span class="k-net">NET order[] dq[] dqs ecc_syndrome</span>`},
+
+ {id:'gic', grp:'PS8 blocks', name:'GIC-400 (interrupt controller)', done:1,
+  desc:'Distributor (pending/active regs + priority sort + target routing) feeding per-core CPU interfaces. All dff arrays + compare trees + muxes.',
+  svg:`
+   ${pinL(40,66,'IRQ in/N')}${box(60,52,110,40,'#a5d6ff','pending regs','dff_d array')}
+   ${box(190,52,120,40,'#3fb950','priority sort','compare tree')}
+   ${box(330,52,110,40,'#86b8e0','target route','mux → core')}
+   ${box(190,120,120,40,'#a5d6ff','CPU iface ×4','mask·runpri·EOI')}
+   ${pinR(440,72,'nIRQ→cores')}
+   ${wire('M170,72 H190',null)}${wire('M310,72 H330',null)}${wire('M250,92 V120',null)}
+  `, W:500,H:178,
+  nl:`<span class="k-prim">INST pend : dff_d per interrupt (set/clear)</span>
+<span class="k-prim">INST psort: priority compare(CARRY8 cmp) -> highest</span>
+<span class="k-prim">INST route: mux2 -> target core ; iface: mask+runpri FDRE</span>
+<span class="k-net">NET pending[] highest_pri target nIRQ[0:3]</span>`}
+];
+
+// ---- svg primitive helpers ----
+function box(x,y,w,h,fill,t,s){return `<rect class="b" x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}"/>`+
+  `<text class="pt" x="${x+8}" y="${y+18}">${t}</text>`+(s?`<text class="ps" x="${x+8}" y="${y+33}">${s}</text>`:'');}
+function gate(x,y,t,s,ins,outs){let g=box(x,y,140,56,'#a5d6ff',t,s);
+  ins.forEach((p,i)=>{g+=`<line class="pin" x1="${x-16}" y1="${y+16+i*20}" x2="${x}" y2="${y+16+i*20}"/><text class="port" x="${x-40}" y="${y+19+i*20}">${p}</text>`;});
+  outs.forEach((p,i)=>{g+=`<line class="pin" x1="${x+140}" y1="${y+28}" x2="${x+156}" y2="${y+28}"/><text class="port" x="${x+160}" y="${y+31}">${p}</text>`;});
+  return g;}
+function cfg(x,y,t){return `<rect class="b" x="${x}" y="${y}" width="46" height="26" fill="var(--cfg)"/><text class="ps" x="${x+6}" y="${y+17}">${t}</text>`;}
+function wire(d,c){return `<path class="wire" d="${d}" ${c?`stroke="${c}"`:''}/>`;}
+function pinL(x,y,p){return `<line class="pin" x1="${x-18}" y1="${y}" x2="${x}" y2="${y}"/><text class="port" x="${x-58}" y="${y+3}">${p}</text>`;}
+function pinR(x,y,p){return `<line class="pin" x1="${x}" y1="${y}" x2="${x+18}" y2="${y}"/><text class="port" x="${x+22}" y="${y+3}">${p}</text>`;}
+function pinB(x,y,c,p){return `<line class="pin" x1="${x}" y1="${y}" x2="${x}" y2="${y+18}"/>`+(p?`<text class="port" x="${x-10}" y="${y+30}">${p}</text>`:'');}
+
+// ---- render nav + views ----
+const nav=document.getElementById('nav'), main=document.getElementById('main');
+let groups=[...new Set(blocks.map(b=>b.grp))];
+groups.forEach(g=>{const h=document.createElement('h3');h.textContent=g;nav.appendChild(h);
+  blocks.filter(b=>b.grp===g).forEach(b=>{const d=document.createElement('div');d.className='item';d.dataset.id=b.id;
+    d.innerHTML=`<span class="dot ${b.done?'d-done':'d-todo'}"></span>${b.name}`;d.onclick=()=>select(b.id);nav.appendChild(d);});});
+blocks.forEach(b=>{const v=document.createElement('div');v.className='view';v.id='v_'+b.id;
+  v.innerHTML=`<h2>${b.name}</h2><p class="desc">${b.desc}</p>
+   <div class="canvas"><svg viewBox="0 0 ${b.W} ${b.H}" width="${b.W}" height="${b.H}">${b.svg}</svg></div>
+   <div class="nl"><h4>netlist fragment</h4><pre>${b.nl}</pre></div>`;main.appendChild(v);});
+function select(id){document.querySelectorAll('.item').forEach(i=>i.classList.toggle('on',i.dataset.id===id));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v_'+id));}
+select('gates');
+// static export mode: ?all -> stack every drawn view for a full-page screenshot
+if(location.search.includes('all')){
+  document.querySelector('.app').style.gridTemplateColumns='1fr';
+  nav.style.display='none';
+  document.querySelectorAll('.view').forEach(v=>{v.style.display='block';v.style.borderBottom='1px solid var(--line)';v.style.paddingBottom='18px';v.style.marginBottom='18px';});
+}
+</script>
+</body>
+</html>

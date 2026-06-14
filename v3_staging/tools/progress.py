@@ -87,7 +87,8 @@ def main():
                        f'<div class="cl">{esc(l)}</div></div>' for l, v in cards)
     tbl = "".join(row_html(r) for r in rows)
     doc = TMPL.replace("__CARDS__", cardhtml).replace("__ROADMAP__", rm).replace("__ROWS__", tbl)
-    open(os.path.join(ROOT, "progress.html"), "w").write(doc)
+    os.makedirs(os.path.join(ROOT, "views"), exist_ok=True)
+    open(os.path.join(ROOT, "views", "progress.html"), "w").write(doc)
     print(f"progress: wrote progress.html — {n_dec} decomposed + {n_stub} stub blocks, "
           f"{cells:,} cells, ports {len(verified & set(blocks))}/{nb}, "
           f"connections {fdiff['total_ok']}/{fdiff['total']}")

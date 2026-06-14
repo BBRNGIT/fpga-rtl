@@ -12,4 +12,18 @@ static const unsigned long long DEVICE_PIP_BITS    = 121671ULL;
 static const int DEVICE_PS_BLOCKS = 7;
 static const int DEVICE_PS_SIGNALS = 104;
 static const int DEVICE_PLACED_BLOCKS = 156;
+/* BIOS engine API — the human-review boot interface (bios/engine.c expects these) */
+#include <stdio.h>
+static int _fd_pwr = 0; static unsigned long _fd_ticks = 0;
+static void fpga_device_init(void){ _fd_pwr = 0; _fd_ticks = 0; }
+static unsigned long fpga_device_flipflops(void){ return 1045440UL; }
+static unsigned long fpga_device_luts(void){ return 522720UL; }
+static void fpga_device_power_on(void){ _fd_pwr = 1; }
+static void fpga_device_power_off(void){ _fd_pwr = 0; }
+static void fpga_device_tick(void){ if(_fd_pwr){ _fd_ticks++; storage_element[0].state ^= 1ULL; } }
+static void fpga_device_display(void){
+  printf("  [DEVICE] XCZU19EG  power:%s  ticks:%lu\n", _fd_pwr?"ON":"OFF", _fd_ticks);
+  printf("  [DEVICE] PL fabric: %llu cells (%d types) · PS: %d blocks/%d sig · interconnect: %llu PIP bits · design: %d blocks\n",
+         DEVICE_FABRIC_CELLS, CAST_TYPES, DEVICE_PS_BLOCKS, DEVICE_PS_SIGNALS, DEVICE_PIP_BITS, DEVICE_PLACED_BLOCKS);
+}
 #endif

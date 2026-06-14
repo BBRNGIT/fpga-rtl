@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XCZU19EG — v3 Parts Hierarchy</title>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --panel2:#1c232c; --line:#2a323d;
+    --txt:#e6edf3; --dim:#9aa7b4; --accent:#4493f8; --ps:#d2a8ff; --pl:#7ee787;
+    --seam:#ffa657; --base:#79c0ff; --meta:#f0883e; --badge:#21262d;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;padding:28px}
+  h1{font-size:20px;margin:0 0 2px} .sub{color:var(--dim);margin:0 0 18px;font-size:12.5px}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+  button{background:var(--panel2);color:var(--txt);border:1px solid var(--line);
+    border-radius:6px;padding:6px 12px;cursor:pointer;font:inherit;font-size:12px}
+  button:hover{border-color:var(--accent)}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  @media(max-width:960px){.cols{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+  .panel>h2{font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--dim);
+    margin:0 0 12px;border-bottom:1px solid var(--line);padding-bottom:8px}
+  details{margin:1px 0}
+  summary{list-style:none;cursor:pointer;padding:3px 6px;border-radius:5px;display:flex;
+    align-items:center;gap:8px;user-select:none}
+  summary::-webkit-details-marker{display:none}
+  summary:hover{background:var(--panel2)}
+  summary::before{content:"▸";color:var(--dim);font-size:11px;width:10px;transition:.12s;flex:none}
+  details[open]>summary::before{transform:rotate(90deg)}
+  .leaf>summary::before{content:"·";color:var(--line)}
+  .nm{font-weight:600}
+  .meta-txt{color:var(--dim);font-weight:400;font-size:12.5px}
+  .kids{margin-left:16px;border-left:1px dashed var(--line);padding-left:12px}
+  .badge{margin-left:auto;background:var(--badge);border:1px solid var(--line);border-radius:20px;
+    padding:1px 9px;font-size:11px;color:var(--dim);flex:none}
+  .tag{font-size:10px;padding:1px 6px;border-radius:4px;border:1px solid var(--line);flex:none}
+  .t-ps{color:var(--ps);border-color:#5a3d7a} .t-pl{color:var(--pl);border-color:#2c5c33}
+  .t-seam{color:var(--seam);border-color:#7a4d22}
+  .t-base{color:var(--base);border-color:#244} .t-meta{color:var(--meta);border-color:#7a4d22}
+  .note{color:var(--dim);font-size:12px;margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+  .warn{color:var(--seam)} a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  code{background:var(--panel2);padding:0 4px;border-radius:4px;font-size:12.5px}
+</style>
+</head>
+<body>
+  <h1>XCZU19EG — v3 Parts Hierarchy</h1>
+  <p class="sub">Zynq UltraScale+ MPSoC · family-max · 16nm FinFET+ · the exact device we build to (no invention; ⚠ = confirm-gap)</p>
+  <div class="bar">
+    <button onclick="setAll(true)">Expand all</button>
+    <button onclick="setAll(false)">Collapse all</button>
+    <span class="badge" style="margin:0">1,143K cells · 522,720 LUT6 · 1,045,440 FF · 1,968 DSP · 64 GT</span>
+  </div>
+
+  <div class="cols">
+    <!-- ===================== DEVICE HIERARCHY ===================== -->
+    <div class="panel" id="device">
+      <h2>① Device hierarchy — the physical parts</h2>
+
+      <details open>
+        <summary><span class="tag t-ps">PS</span><span class="nm">Processing System (PS8)</span>
+          <span class="meta-txt">hardened SoC — build to full spec</span></summary>
+        <div class="kids">
+          <details><summary><span class="nm">APU</span><span class="meta-txt">application processing unit</span><span class="badge">4 cores</span></summary>
+            <div class="kids">
+              <details><summary><span class="nm">4× Cortex-A53</span><span class="meta-txt">ARMv8-A 64-bit · 8-stage 2-way in-order</span></summary>
+                <div class="kids">
+                  <div class="leaf"><details class="leaf"><summary><span class="meta-txt">L1 I-cache 32KB + L1 D-cache 32KB</span></summary></details></div>
+                  <div class="leaf"><details class="leaf"><summary><span class="meta-txt">integer pipe (ALU/MAC/divide)</span></summary></details></div>
+                  <div class="leaf"><details class="leaf"><summary><span class="meta-txt">NEON SIMD + IEEE-754 FPU</span></summary></details></div>
+                  <div class="leaf"><details class="leaf"><summary><span class="meta-txt">MMU (TLBs)</span></summary></details></div>
+                  <div class="leaf"><details class="leaf"><summary><span class="meta-txt">regfile 31×64b X + 32×128b V</span></summary></details></div>
+                </div></details>
+              <div class="leaf"><details class="leaf"><summary><span class="meta-txt">shared L2 ≤1MB · SCU</span></summary></details></div>
+              <div class="leaf"><details class="leaf"><summary><span class="meta-txt">GIC-400 interrupt controller</span></summary></details></div>
+            </div></details>
+          <details><summary><span class="nm">RPU</span><span class="meta-txt">2× Cortex-R5F · ARMv7-R · lockstep/split · TCM · FPU</span></summary>
+            <div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">sub-µs interrupt response</span></summary></details></div></div></details>
+          <details><summary><span class="nm">GPU</span><span class="meta-txt">Mali-400 MP2</span></summary>
+            <div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">1 geometry + 2 pixel · OpenGL ES 1.1/2.0 · OpenVG 1.1</span></summary></details></div></div></details>
+          <details><summary><span class="nm">Memory</span></summary>
+            <div class="kids">
+              <div class="leaf"><details class="leaf"><summary><span class="meta-txt">DDR4/LPDDR4 controller · 64-bit + ECC</span></summary></details></div>
+              <div class="leaf"><details class="leaf"><summary><span class="meta-txt">256KB on-chip RAM (OCM)</span></summary></details></div>
+            </div></details>
+          <details><summary><span class="nm">Interconnect</span><span class="meta-txt">AXI/ACE · CCI-400 coherent · SMMU</span></summary><div class="kids"></div></details>
+          <details><summary><span class="nm">HS I/O</span><span class="meta-txt">4× PS-GTR (HS-MIO mux)</span><span class="badge">4 lanes</span></summary>
+            <div class="kids">
+              <div class="leaf"><details class="leaf"><summary><span class="meta-txt">DisplayPort 1.2a / PCIe Gen2×4 / USB3.0 / SATA 3.1 / SGMII</span></summary></details></div>
+            </div></details>
+          <details><summary><span class="nm">DisplayPort 1.2a</span><span class="meta-txt">★ configurable display lanes — drove the part choice</span></summary>
+            <div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">TX/RX · up to 2 lanes @ 1.62/2.7/5.4 Gb/s · routable to lane 0–3</span></summary></details></div></div></details>
+          <details><summary><span class="nm">Peripherals</span></summary>
+            <div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">USB3×2 · GbE×2 · CAN/SPI/I2C/UART×2 · SD/eMMC · QSPI · NAND · GPIO · timers</span></summary></details></div></div></details>
+          <details><summary><span class="nm">Mgmt &amp; Security</span><span class="meta-txt">PMU · CSU</span></summary><div class="kids"></div></details>
+        </div>
+      </details>
+
+      <details open>
+        <summary><span class="tag t-pl">PL</span><span class="nm">Programmable Logic</span>
+          <span class="meta-txt">the fabric the trading modules live on</span></summary>
+        <div class="kids">
+          <details><summary><span class="nm">CLB</span><span class="meta-txt">configurable logic</span><span class="badge">522,720 LUT6 · 1,045,440 FF</span></summary>
+            <div class="kids">
+              <div class="leaf"><details class="leaf"><summary><span class="meta-txt">LUT6 / LUT6_2 · FDRE/FDSE/FDCE/FDPE</span></summary></details></div>
+              <div class="leaf"><details class="leaf"><summary><span class="meta-txt">CARRY8 · MUXF7/8/9</span></summary></details></div>
+              <div class="leaf"><details class="leaf"><summary><span class="meta-txt">distributed RAM (RAM*X1S, RAM32/64M) · SRL16E/SRLC32E</span></summary></details></div>
+            </div></details>
+          <details><summary><span class="nm">Block RAM</span><span class="badge">984× RAMB36E2 · 34.6Mb</span></summary>
+            <div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">RAMB18E2 · FIFO18E2/FIFO36E2</span></summary></details></div></div></details>
+          <details><summary><span class="nm">UltraRAM</span><span class="badge">128× URAM288 · 36Mb</span></summary><div class="kids"></div></details>
+          <details><summary><span class="nm">DSP</span><span class="badge">1,968× DSP48E2</span></summary><div class="kids"></div></details>
+          <details><summary><span class="nm">Clocking</span><span class="meta-txt">CMT</span></summary>
+            <div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">MMCME4 · PLLE4 · BUFG/BUFGCE/BUFGCTRL/BUFGCE_DIV · BUFG_GT</span> <span class="warn">⚠ exact CMT/region grid</span></summary></details></div></div></details>
+          <details><summary><span class="nm">I/O</span><span class="meta-txt">HP / HD banks</span> <span class="warn">⚠ package</span></summary>
+            <div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">IBUF/OBUF/IOBUF (+DS) · ISERDESE3/OSERDESE3 · IDELAYE3/ODELAYE3 · IDDRE1/ODDRE1</span></summary></details></div></div></details>
+          <details><summary><span class="nm">Transceivers</span><span class="badge">32 GTHE4 + 32 GTYE4</span></summary>
+            <div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">16 quads · GTH 16.3G / GTY 28–32.75G · IBUFDS_GTE4/OBUFDS_GTE4</span> <span class="warn">⚠ confirm bonded</span></summary></details></div></div></details>
+          <details><summary><span class="nm">Hard IP</span></summary>
+            <div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">PCIe Gen3×16 ×5 · 100G Ethernet (CMAC+RS-FEC) ×4</span></summary></details></div></div></details>
+        </div>
+      </details>
+
+      <details open>
+        <summary><span class="tag t-seam">SEAM</span><span class="nm">PS ↔ PL interfaces</span>
+          <span class="meta-txt">where our fabric meets the PS</span></summary>
+        <div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">AXI HP/HPC/LPD · ACP · ACE-Lite · EMIO · clocks · resets · interrupts</span></summary></details></div></div>
+      </details>
+    </div>
+
+    <!-- ===================== PRIMITIVE HIERARCHY ===================== -->
+    <div class="panel" id="prims">
+      <h2>② Primitive hierarchy — the build foundation</h2>
+
+      <details open>
+        <summary><span class="tag t-base">TIER 0</span><span class="nm">Base primitives</span>
+          <span class="meta-txt">irreducible atoms — everything bottoms out here</span></summary>
+        <div class="kids">
+          <details><summary><span class="nm">Logic gates</span></summary><div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">not · and · or · xor · nand · nor · xnor · buf</span></summary></details></div></div></details>
+          <details><summary><span class="nm">Select</span></summary><div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">mux2</span></summary></details></div></div></details>
+          <details><summary><span class="nm">Storage atoms</span></summary><div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">dff_d · latch_d · cfgcell (SRAM config bit)</span></summary></details></div></div></details>
+          <details><summary><span class="nm">Conductors</span></summary><div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">wire · lane · bus (passive nets — NOT flip-flops)</span></summary></details></div></div></details>
+          <details><summary><span class="nm">I/O buffers</span></summary><div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">iobuf_in · iobuf_out · iobuf_io</span></summary></details></div></div></details>
+        </div>
+      </details>
+
+      <details open>
+        <summary><span class="tag t-meta">TIER 1</span><span class="nm">Meta-primitives (UG974 UNISIM)</span>
+          <span class="meta-txt">real device blocks — each decomposes to Tier-0</span></summary>
+        <div class="kids">
+          <details><summary><span class="nm">Registers/Latches</span><span class="meta-txt">FDRE FDSE FDCE FDPE LDCE</span></summary><div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">= dff_d + enable/set/reset/preset gating</span></summary></details></div></div></details>
+          <details><summary><span class="nm">Derived FF types</span><span class="meta-txt">JK · T · SR · latch</span></summary><div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">first meta-primitives — derived from dff_d + gates</span></summary></details></div></div></details>
+          <details><summary><span class="nm">LUTs</span><span class="meta-txt">LUT1–6 · LUT6_2 · CFGLUT5</span></summary><div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">= cfgcell truth-table + mux2 tree</span></summary></details></div></div></details>
+          <details><summary><span class="nm">Carry</span><span class="meta-txt">CARRY8</span></summary><div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">= full-adder chain (xor/and/or)</span></summary></details></div></div></details>
+          <details><summary><span class="nm">Wide muxes</span><span class="meta-txt">MUXF7/8/9</span></summary><div class="kids"></div></details>
+          <details><summary><span class="nm">Distributed RAM/SRL</span><span class="meta-txt">RAM*X1S · RAM32/64M · SRL16E · SRLC32E</span></summary><div class="kids"></div></details>
+          <details><summary><span class="nm">Block memory</span><span class="meta-txt">RAMB18E2 · RAMB36E2 · FIFO18/36E2</span></summary><div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">= memory-cell array + decoders + port logic</span></summary></details></div></div></details>
+          <details><summary><span class="nm">UltraRAM</span><span class="meta-txt">URAM288 · URAM288_BASE</span></summary><div class="kids"></div></details>
+          <details><summary><span class="nm">DSP</span><span class="meta-txt">DSP48E2</span></summary><div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">= multiplier + add/sub + accumulator + pipeline regs</span></summary></details></div></div></details>
+          <details><summary><span class="nm">Clocking</span><span class="meta-txt">MMCME4 · PLLE4 · BUFG*</span></summary><div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">= counters/dividers + mux2 + buf</span></summary></details></div></div></details>
+          <details><summary><span class="nm">I/O</span><span class="meta-txt">IBUF/OBUF/IOBUF · ISERDES/OSERDES · IDELAY/ODELAY · IDDR/ODDR</span></summary><div class="kids"></div></details>
+          <details><summary><span class="nm">Transceivers</span><span class="meta-txt">GTHE4/GTYE4 _CHANNEL/_COMMON · *_GTE4 buffers</span></summary><div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">= serializer/deserializer (dff shift) + CDR + gearbox</span></summary></details></div></div></details>
+          <details><summary><span class="nm">Processing System</span><span class="meta-txt">PS8</span></summary><div class="kids"><div class="leaf"><details class="leaf"><summary><span class="meta-txt">A53/R5F/Mali/DDR/DP/PS-GTR → all to Tier-0 (build to full spec)</span></summary></details></div></div></details>
+        </div>
+      </details>
+
+      <p class="note">Build order: Tier-0 atoms → derive FF types → Tier-1 bottom-up (FDRE→LUT6→CARRY8/MUXF→RAM*→DSP48E2→clocking→I/O→GT→PS8) → device assembly by exact counts → load the 12 C-HDL modules. Each meta-primitive's validator asserts it decomposes to Tier-0 only.</p>
+    </div>
+  </div>
+
+  <p class="note">
+    Sources — PL/counts: <a href="https://www.mouser.com/pdfDocs/zynq-ultrascale-plus-product-selection-guide.pdf">Zynq US+ selection guide</a>,
+    <a href="https://www.ic-components.com/blog/a-comprehensive-guide-to-xczu19eg.jsp">ic-components ZU19EG</a> ·
+    primitives: <a href="https://docs.amd.com/r/en-US/ug974-vivado-ultrascale-libraries/">UG974</a> ·
+    PS8: <a href="https://docs.amd.com/v/u/en-US/ug1085-zynq-ultrascale-trm">UG1085 TRM</a>,
+    <a href="https://developer.arm.com/documentation/ddi0500/latest">Arm Cortex-A53 TRM</a>.
+    <span class="warn">⚠ confirm-gaps</span>: package (→ exact I/O + bonded GT + CMT grid), A53 leaf microarch (from DDI0500 per-block). Nothing invented.
+  </p>
+
+<script>
+  function setAll(open){document.querySelectorAll('details').forEach(d=>{if(!d.classList.contains('leaf'))d.open=open})}
+</script>
+</body>
+</html>
