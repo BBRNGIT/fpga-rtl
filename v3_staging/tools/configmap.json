@@ -1,0 +1,742 @@
+{
+  "CARRY8": {
+    "element": "CARRY8",
+    "ports": [
+      {
+        "name": "CI",
+        "dir": "in"
+      },
+      {
+        "name": "CI_TOP",
+        "dir": "in"
+      },
+      {
+        "name": "CO",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "DI",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "O",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "S",
+        "dir": "in",
+        "width": 8
+      }
+    ],
+    "members": [
+      "CARRY8"
+    ],
+    "configs": {
+      "CARRY8": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "LUT6": {
+    "element": "LUT6",
+    "ports": [
+      {
+        "name": "A",
+        "dir": "in",
+        "width": 7
+      },
+      {
+        "name": "A0",
+        "dir": "in"
+      },
+      {
+        "name": "A1",
+        "dir": "in"
+      },
+      {
+        "name": "A2",
+        "dir": "in"
+      },
+      {
+        "name": "A3",
+        "dir": "in"
+      },
+      {
+        "name": "A4",
+        "dir": "in"
+      },
+      {
+        "name": "A5",
+        "dir": "in"
+      },
+      {
+        "name": "ADDRA",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "ADDRB",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "ADDRC",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "ADDRD",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "ADDRE",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "ADDRF",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "ADDRG",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "ADDRH",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "CDI",
+        "dir": "in"
+      },
+      {
+        "name": "CDO",
+        "dir": "out"
+      },
+      {
+        "name": "CE",
+        "dir": "in"
+      },
+      {
+        "name": "CLK",
+        "dir": "in"
+      },
+      {
+        "name": "D",
+        "dir": "in"
+      },
+      {
+        "name": "DIA",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "DIB",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "DIC",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "DID",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "DIE",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "DIF",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "DIG",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "DIH",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "DOA",
+        "dir": "out",
+        "width": 2
+      },
+      {
+        "name": "DOB",
+        "dir": "out",
+        "width": 2
+      },
+      {
+        "name": "DOC",
+        "dir": "out",
+        "width": 2
+      },
+      {
+        "name": "DOD",
+        "dir": "out",
+        "width": 2
+      },
+      {
+        "name": "DOE",
+        "dir": "out",
+        "width": 2
+      },
+      {
+        "name": "DOF",
+        "dir": "out",
+        "width": 2
+      },
+      {
+        "name": "DOG",
+        "dir": "out",
+        "width": 2
+      },
+      {
+        "name": "DOH",
+        "dir": "out",
+        "width": 2
+      },
+      {
+        "name": "DPO",
+        "dir": "out"
+      },
+      {
+        "name": "DPRA",
+        "dir": "in",
+        "width": 7
+      },
+      {
+        "name": "DPRA0",
+        "dir": "in"
+      },
+      {
+        "name": "DPRA1",
+        "dir": "in"
+      },
+      {
+        "name": "DPRA2",
+        "dir": "in"
+      },
+      {
+        "name": "DPRA3",
+        "dir": "in"
+      },
+      {
+        "name": "DPRA4",
+        "dir": "in"
+      },
+      {
+        "name": "DPRA5",
+        "dir": "in"
+      },
+      {
+        "name": "Depth_Selection:_The_value_placed_on_the_A0_-_A3_inputs_specifies_the_shift_register_depth._Depth_=_(8_*_A3)_+_(4_*_A2)_+_(2_*_A1)_+_A0_+_1",
+        "dir": "in"
+      },
+      {
+        "name": "I0",
+        "dir": "in"
+      },
+      {
+        "name": "I1",
+        "dir": "in"
+      },
+      {
+        "name": "I2",
+        "dir": "in"
+      },
+      {
+        "name": "I3",
+        "dir": "in"
+      },
+      {
+        "name": "I4",
+        "dir": "in"
+      },
+      {
+        "name": "I5",
+        "dir": "in"
+      },
+      {
+        "name": "LUT_Inputs:_Logic_inputs_to_the_programmable_look-up_table.",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "O5",
+        "dir": "out"
+      },
+      {
+        "name": "O6",
+        "dir": "out"
+      },
+      {
+        "name": "Q",
+        "dir": "out"
+      },
+      {
+        "name": "Q31",
+        "dir": "out"
+      },
+      {
+        "name": "SPO",
+        "dir": "out"
+      },
+      {
+        "name": "WCLK",
+        "dir": "in"
+      },
+      {
+        "name": "WE",
+        "dir": "in"
+      },
+      {
+        "name": "WSEL",
+        "dir": "in",
+        "width": 3
+      }
+    ],
+    "members": [
+      "CFGLUT5",
+      "LUT1",
+      "LUT2",
+      "LUT3",
+      "LUT4",
+      "LUT5",
+      "LUT6",
+      "LUT6_2",
+      "RAM128X1D",
+      "RAM128X1S",
+      "RAM256X1D",
+      "RAM256X1S",
+      "RAM32M",
+      "RAM32M16",
+      "RAM32X16DR8",
+      "RAM32X1D",
+      "RAM32X1S",
+      "RAM512X1S",
+      "RAM64M",
+      "RAM64M8",
+      "RAM64X1D",
+      "RAM64X1S",
+      "RAM64X8SW",
+      "SRL16E",
+      "SRLC32E"
+    ],
+    "configs": {
+      "CFGLUT5": {
+        "init": "32'h00000000",
+        "inverts": [
+          "IS_CLK_INVERTED"
+        ],
+        "mode": "reconfig"
+      },
+      "LUT1": {
+        "init": "2'h0",
+        "inverts": [],
+        "mode": "logic",
+        "inputs": 1
+      },
+      "LUT2": {
+        "init": "4'h0",
+        "inverts": [],
+        "mode": "logic",
+        "inputs": 2
+      },
+      "LUT3": {
+        "init": "8'h00",
+        "inverts": [],
+        "mode": "logic",
+        "inputs": 3
+      },
+      "LUT4": {
+        "init": "16'h0000",
+        "inverts": [],
+        "mode": "logic",
+        "inputs": 4
+      },
+      "LUT5": {
+        "init": "32'h00000000",
+        "inverts": [],
+        "mode": "logic",
+        "inputs": 5
+      },
+      "LUT6": {
+        "init": "64'h0000000000000000",
+        "inverts": [],
+        "mode": "logic",
+        "inputs": 6
+      },
+      "LUT6_2": {
+        "init": "64'h0000000000000000",
+        "inverts": [],
+        "mode": "logic",
+        "inputs": 6
+      },
+      "RAM128X1D": {
+        "init": "128'h00000000000000000000000000000000",
+        "inverts": [
+          "IS_WCLK_INVERTED"
+        ],
+        "mode": "dist_ram"
+      },
+      "RAM128X1S": {
+        "init": "128'h00000000000000000000000000000000",
+        "inverts": [
+          "IS_WCLK_INVERTED"
+        ],
+        "mode": "dist_ram",
+        "resource": "Single-port"
+      },
+      "RAM256X1D": {
+        "init": "256'h0000000000000000000000000000000000000000000000000000000000000000",
+        "inverts": [
+          "IS_WCLK_INVERTED"
+        ],
+        "mode": "dist_ram",
+        "resource": "Dual-port"
+      },
+      "RAM256X1S": {
+        "init": "256'h0000000000000000000000000000000000000000000000000000000000000000",
+        "inverts": [
+          "IS_WCLK_INVERTED"
+        ],
+        "mode": "dist_ram"
+      },
+      "RAM32M": {
+        "init": null,
+        "inverts": [
+          "IS_WCLK_INVERTED"
+        ],
+        "mode": "dist_ram"
+      },
+      "RAM32M16": {
+        "init": null,
+        "inverts": [
+          "IS_WCLK_INVERTED"
+        ],
+        "mode": "dist_ram",
+        "resource": "Octal 2-bit port"
+      },
+      "RAM32X16DR8": {
+        "init": null,
+        "inverts": [
+          "IS_WCLK_INVERTED"
+        ],
+        "mode": "dist_ram"
+      },
+      "RAM32X1D": {
+        "init": "32'h00000000",
+        "inverts": [
+          "IS_WCLK_INVERTED"
+        ],
+        "mode": "dist_ram"
+      },
+      "RAM32X1S": {
+        "init": "32'h00000000",
+        "inverts": [
+          "IS_WCLK_INVERTED"
+        ],
+        "mode": "dist_ram",
+        "resource": "Single-port"
+      },
+      "RAM512X1S": {
+        "init": "512'h00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "inverts": [
+          "IS_WCLK_INVERTED"
+        ],
+        "mode": "dist_ram",
+        "resource": "Single-port"
+      },
+      "RAM64M": {
+        "init": null,
+        "inverts": [
+          "IS_WCLK_INVERTED"
+        ],
+        "mode": "dist_ram"
+      },
+      "RAM64M8": {
+        "init": null,
+        "inverts": [
+          "IS_WCLK_INVERTED"
+        ],
+        "mode": "dist_ram",
+        "resource": "Octal-port"
+      },
+      "RAM64X1D": {
+        "init": "64'h0000000000000000",
+        "inverts": [
+          "IS_WCLK_INVERTED"
+        ],
+        "mode": "dist_ram",
+        "resource": "Dual-port"
+      },
+      "RAM64X1S": {
+        "init": "64'h0000000000000000",
+        "inverts": [
+          "IS_WCLK_INVERTED"
+        ],
+        "mode": "dist_ram",
+        "resource": "Single-port"
+      },
+      "RAM64X8SW": {
+        "init": null,
+        "inverts": [
+          "IS_WCLK_INVERTED"
+        ],
+        "mode": "dist_ram"
+      },
+      "SRL16E": {
+        "init": "16'h0000",
+        "inverts": [
+          "IS_CLK_INVERTED"
+        ],
+        "mode": "srl"
+      },
+      "SRLC32E": {
+        "init": "32'h00000000",
+        "inverts": [
+          "IS_CLK_INVERTED"
+        ],
+        "mode": "srl"
+      }
+    }
+  },
+  "storage_element": {
+    "element": "storage_element",
+    "ports": [
+      {
+        "name": "C",
+        "dir": "in"
+      },
+      {
+        "name": "CE",
+        "dir": "in"
+      },
+      {
+        "name": "CLR",
+        "dir": "in"
+      },
+      {
+        "name": "D",
+        "dir": "in"
+      },
+      {
+        "name": "G",
+        "dir": "in"
+      },
+      {
+        "name": "GE",
+        "dir": "in"
+      },
+      {
+        "name": "PRE",
+        "dir": "in"
+      },
+      {
+        "name": "Q",
+        "dir": "out"
+      },
+      {
+        "name": "R",
+        "dir": "in"
+      },
+      {
+        "name": "S",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "FDCE",
+      "FDPE",
+      "FDRE",
+      "FDSE",
+      "LDCE",
+      "LDPE"
+    ],
+    "configs": {
+      "FDCE": {
+        "init": "1'b0",
+        "inverts": [
+          "IS_CLR_INVERTED",
+          "IS_C_INVERTED",
+          "IS_D_INVERTED"
+        ],
+        "mode": "flip_flop",
+        "control": [
+          "async_clear"
+        ]
+      },
+      "FDPE": {
+        "init": "1'b1",
+        "inverts": [
+          "IS_C_INVERTED",
+          "IS_D_INVERTED",
+          "IS_PRE_INVERTED"
+        ],
+        "mode": "flip_flop",
+        "control": [
+          "async_preset"
+        ]
+      },
+      "FDRE": {
+        "init": "1'b0",
+        "inverts": [
+          "IS_C_INVERTED",
+          "IS_D_INVERTED",
+          "IS_R_INVERTED"
+        ],
+        "mode": "flip_flop",
+        "control": [
+          "sync_reset"
+        ]
+      },
+      "FDSE": {
+        "init": "1'b1",
+        "inverts": [
+          "IS_C_INVERTED",
+          "IS_D_INVERTED",
+          "IS_S_INVERTED"
+        ],
+        "mode": "flip_flop",
+        "control": [
+          "sync_set"
+        ]
+      },
+      "LDCE": {
+        "init": "1'b0",
+        "inverts": [
+          "IS_CLR_INVERTED",
+          "IS_G_INVERTED"
+        ],
+        "mode": "latch",
+        "control": [
+          "async_clear",
+          "latch_gate"
+        ]
+      },
+      "LDPE": {
+        "init": "1'b1",
+        "inverts": [
+          "IS_G_INVERTED",
+          "IS_PRE_INVERTED"
+        ],
+        "mode": "latch",
+        "control": [
+          "async_preset",
+          "latch_gate"
+        ]
+      }
+    }
+  },
+  "MUXF7": {
+    "element": "MUXF7",
+    "ports": [
+      {
+        "name": "I0",
+        "dir": "in"
+      },
+      {
+        "name": "I1",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "S",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "MUXF7"
+    ],
+    "configs": {
+      "MUXF7": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "MUXF8": {
+    "element": "MUXF8",
+    "ports": [
+      {
+        "name": "I0",
+        "dir": "in"
+      },
+      {
+        "name": "I1",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "S",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "MUXF8"
+    ],
+    "configs": {
+      "MUXF8": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "MUXF9": {
+    "element": "MUXF9",
+    "ports": [
+      {
+        "name": "I0",
+        "dir": "in"
+      },
+      {
+        "name": "I1",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "S",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "MUXF9"
+    ],
+    "configs": {
+      "MUXF9": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  }
+}

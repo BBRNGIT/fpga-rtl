@@ -1,0 +1,153 @@
+{
+  "elements": [
+    {
+      "name": "CARRY8",
+      "subsystem": "CLB",
+      "role": "carry chain",
+      "per_slice": null,
+      "doc": "ug574"
+    },
+    {
+      "name": "LUT6",
+      "subsystem": "CLB",
+      "role": "6-input LUT / distributed-RAM / SRL (SLICEM)",
+      "per_slice": 8,
+      "doc": "ug574"
+    },
+    {
+      "name": "MUXF7",
+      "subsystem": "CLB",
+      "role": "wide function mux",
+      "per_slice": null,
+      "doc": "ug574"
+    },
+    {
+      "name": "MUXF8",
+      "subsystem": "CLB",
+      "role": "wide function mux",
+      "per_slice": null,
+      "doc": "ug574"
+    },
+    {
+      "name": "MUXF9",
+      "subsystem": "CLB",
+      "role": "wide function mux",
+      "per_slice": null,
+      "doc": "ug574"
+    },
+    {
+      "name": "storage_element",
+      "subsystem": "CLB",
+      "role": "configurable FF/latch (CE, sync/async set/reset)",
+      "per_slice": 16,
+      "doc": "ug574"
+    }
+  ],
+  "prim_resource_map": [
+    {
+      "primitive": "MUXF7",
+      "resource": "F7MUX AB, F7MUX CD, _ _ F7MUX EF, F7MUX GH _ _",
+      "detail": "MUXF7 | LUT outputs (4:1 mux) | F7MUX AB, F7MUX CD, _ _ F7MUX EF, F7MUX GH _ _ | 8:1 Mux",
+      "doc": "ug574",
+      "page": 37
+    },
+    {
+      "primitive": "MUXF8",
+      "resource": "F8MUX BOT, F8MUX TOP _ _",
+      "detail": "MUXF8 | F7MUX AB and F7MUX CD, or _ _ F7MUX EF and F7MUX GH _ _ outputs (8:1 mux) | F8MUX BOT, F8MUX TOP _ _ | 16:1 Mux",
+      "doc": "ug574",
+      "page": 37
+    },
+    {
+      "primitive": "MUXF9",
+      "resource": "F9MUX",
+      "detail": "MUXF9 | F8MUX BOT and F8MUX TOP _ _ (16:1 mux) | F9MUX | 32:1 Mux",
+      "doc": "ug574",
+      "page": 37
+    },
+    {
+      "primitive": "RAM32X1S",
+      "resource": "Single-port",
+      "detail": "RAM32X1S | 32-bit | Single-port | A[4:0] (read/write)",
+      "doc": "ug574",
+      "page": 39
+    },
+    {
+      "primitive": "RAM32M16",
+      "resource": "Octal 2-bit port",
+      "detail": "RAM32M16 | 32-bit | Octal 2-bit port | ADDRA[4:0] (read) ADDRB[4:0] (read) ADDRC[4:0] (read) ADDRD[4:0] (read) ADDRE[4:0",
+      "doc": "ug574",
+      "page": 39
+    },
+    {
+      "primitive": "RAM64X1S",
+      "resource": "Single-port",
+      "detail": "RAM64X1S | 64-bit | Single-port | A[5:0] (read/write)",
+      "doc": "ug574",
+      "page": 39
+    },
+    {
+      "primitive": "RAM64X1D",
+      "resource": "Dual-port",
+      "detail": "RAM64X1D | 64-bit | Dual-port | A[5:0] (read/write) DPRA[5:0] (read)",
+      "doc": "ug574",
+      "page": 39
+    },
+    {
+      "primitive": "RAM64M8",
+      "resource": "Octal-port",
+      "detail": "RAM64M8 | 64-bit | Octal-port | ADDRA[5:0] (read) ADDRB[5:0] (read) ADDRC[5:0] (read) ADDRD[5:0] (read) ADDRE[5:0] (read",
+      "doc": "ug574",
+      "page": 39
+    },
+    {
+      "primitive": "RAM128X1S",
+      "resource": "Single-port",
+      "detail": "RAM128X1S | 128-bit | Single-port | A[6:0] (read/write)",
+      "doc": "ug574",
+      "page": 39
+    },
+    {
+      "primitive": "RAM256X1D",
+      "resource": "Dual-port",
+      "detail": "RAM256X1D | 256-bit | Dual-port | A[7:0], (read/write) DPRA[7:0] (read)",
+      "doc": "ug574",
+      "page": 39
+    },
+    {
+      "primitive": "RAM512X1S",
+      "resource": "Single-port",
+      "detail": "RAM512X1S | 512-bit | Single-port | A[8:0] (read/write)",
+      "doc": "ug574",
+      "page": 39
+    }
+  ],
+  "composition": [
+    {
+      "row": [
+        "SLICEL",
+        "8",
+        "16",
+        "1",
+        "F7, F8, F9",
+        "N/A",
+        "N/A"
+      ],
+      "doc": "ug574",
+      "page": 14
+    },
+    {
+      "row": [
+        "SLICEM",
+        "8",
+        "16",
+        "1",
+        "F7, F8, F9",
+        "512 bits",
+        "256 bits"
+      ],
+      "doc": "ug574",
+      "page": 14
+    }
+  ]
+}
