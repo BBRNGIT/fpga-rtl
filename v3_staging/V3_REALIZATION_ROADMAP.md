@@ -40,12 +40,20 @@ every step is a tool run, gated, parallelized, and observed.
 
 Each phase: **goal · inputs · tool · parallelization (N instances) · gate · open decisions.**
 
-### P1 — Primitive Library Realization (parts → C cells)
-- **Goal:** every catalogued primitive → a synthesizable C model from Tier-0 atoms
-  (gate/dff/latch/cfgcell/iobuf + behavioral leaves for analog/hard-IP).
-- **Layers:** INTERFACE = extracted ports/params (as-is). INTERNALS = decomposition DERIVED
-  from documented behavior (flip-flops are axioms; analog/PS/transceiver hard blocks = behavioral
-  leaves with their documented interface). Deriving ≠ inventing.
+### P1 — Primitive Library Realization (LAYERED — physical elements, not gate-decomposed variants)
+- **Goal:** realize the FPGA's **physical fabric primitive set** + a config model that maps the
+  148 catalogue entries onto **configurations** of those elements. NOT 148 gate netlists.
+- **The 3-layer model (binding — UG574-confirmed; see `physical-primitive-layered-model` memory):**
+  1. **Physical elements** — CLB storage element (configurable FF/latch, sync/async set/reset, CE),
+     LUT6/SRAM (also distributed RAM + SRL in SLICEM), CARRY8, MUXF7/8/9, BRAM, DSP48E2, IO buffer,
+     routing PIP. These are what DS891 COUNTS and what P2 arrays. (`FDSE` = storage element in
+     sync-set config — the doc says so verbatim.)
+  2. **Config space** — INIT / IS_*_INVERTED / mode bits (cfgcell).
+  3. **UNISIM catalogue** — configured USES of layer 1 (FDRE, RAM64X1S, SRL16…), not new hardware.
+- **Class-dependent:** clocking/logic-glue (BUFGCTRL — 24 blocks already built) = genuine gate logic.
+  CLB = physical configurable elements (UG574). Hard blocks (DSP/BRAM/transceiver/PS) = behavioral
+  leaves with documented register/DRP interface (UG573/579 + richtext). Deriving ≠ inventing.
+- **Authority docs (cached):** UG574 (CLB), UG573 (memory), UG579 (DSP), UG570 (config).
 - **Tool:** per-primitive `<prim>_logic.yaml` → `gen_module_net.py` → `<prim>.net.json` →
   `gennet.py` → `<prim>_gen.h`.
 - **Parallelization:** 1 job per primitive ≈ **148 jobs**, run 30–100 concurrent; harness

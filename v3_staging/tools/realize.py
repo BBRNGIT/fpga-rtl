@@ -25,13 +25,15 @@ def load(p, d=None):
 
 # ---- the canonical phases (the roadmap, as data) --------------------------------------
 PHASES = [
- {"id": "P1", "name": "Primitive Library Realization", "depends": [],
-  "goal": "every catalogued primitive -> a C model from Tier-0 atoms; interface extracted, "
-          "internals DERIVED from documented behavior (analog/opaque = behavioral leaves).",
-  "inputs": ["catalog.json", "primitives.json", "templates.py", "*_richtext.json (DRP/regs)"],
-  "tool": "templates.py builder per primitive -> assemble.py -> library.json -> netc.py",
-  "steps": ["lean cell-struct / Tier-0 atom set (cells)", "decomposition builder per tile-type",
-            "assemble -> library.json", "netc validate + render", "cross-check ports vs catalog"],
+ {"id": "P1", "name": "Primitive Library Realization (layered)", "depends": [],
+  "goal": "realize the PHYSICAL fabric primitive set (UG574/573/579/570) + a config model mapping "
+          "the 148 catalogue entries onto CONFIGURATIONS of them. NOT 148 gate netlists. "
+          "FDRE/FDSE/FDCE/FDPE = one configurable storage element (UG574-confirmed).",
+  "inputs": ["UG574/573/579/570 cache (physical elements)", "catalog.json (config space)", "templates.py"],
+  "tool": "physical-element builder + config-map -> assemble.py -> library.json -> netc.py",
+  "steps": ["extract physical element set from UG574/573/579/570", "realize each physical element",
+            "config-map: catalogue entry -> (element, config)", "assemble -> library.json",
+            "netc validate; cross-check element counts vs DS891"],
   "gate": ["netc validation (single-writer/no-overlap/no-floating)", "port cross-check vs catalog",
            "logic-content (>=1 structural cell)"],
   "parallel": 100},
