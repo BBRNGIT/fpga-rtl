@@ -90,6 +90,17 @@ def run():
                        "kind": "axi4_interface"}
     if axi: blocks["PS_PL_AXI_INTERFACES"] = axi
 
+    # Power/supply rails: documented as direction-less pins ([Pin Name|Description]) and in
+    # the power-domain figures. No I/O direction (they are supplies) so the table harvest
+    # above skips them — capture them here as a dedicated supply group, faithfully by name.
+    RAIL = re.compile(r'\b(VCC[O]?_?[A-Z0-9]{2,}|VCCINT|VCCAUX|VCCBRAM|VCCADC|PS_MGTRAV[CT][CT]|GND[_A-Z]*)\b')
+    power = {}
+    for r in recs:
+        t = r["text"].replace(" _", "_").replace("_ ", "_")   # repair space-rendered underscores
+        for nm in RAIL.findall(t):
+            power[nm] = {"name": nm, "dir": "supply", "kind": "power"}
+    if power: blocks["PS_POWER_SUPPLY"] = power
+
     out = {k: sorted(v.values(), key=lambda p: p["name"]) for k, v in blocks.items() if len(v) >= 2}
     json.dump(out, open(os.path.join(HERE, "ps_ports.json"), "w"), indent=2)
     tot = sum(len(v) for v in out.values())
