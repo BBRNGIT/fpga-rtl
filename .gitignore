@@ -45,3 +45,8 @@ tools/*.pyc
 .claude/worktrees/
 
 .hft_staging/.gate_overrides.log
+
+# runner per-tick ephemera (regenerated every minute — not committable)
+v3_staging/device/bulletproof.json
+v3_staging/device/next_action.txt
+v3_staging/views/dashboard.html
