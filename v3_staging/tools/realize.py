@@ -98,6 +98,12 @@ def measure(pid):
         cast = os.path.exists(os.path.join(HERE, "container_gen.h")) and bool(cont.get("elements"))
         n = cont.get("totals", {}).get("total_placed_instances", 0)
         return (1 if cast else 0), 1, (f"blank cast: {len(cont.get('elements',[]))} types, {n:,} instances, compiles+POSTs" if cast else "container not cast")
+    if pid == "P3":
+        lib = load("library.json", {"blocks": {}})
+        have = [x for x in ("INT_TILE",) if x in lib.get("blocks", {})]
+        router = os.path.exists(os.path.join(HERE, "route.py"))
+        done = len(have) + (1 if router else 0)
+        return done, 2, f"interconnect: {have or 'none'} synthesized; router={'yes' if router else 'pending'}"
     return 0, 1, "not started"
 
 def status():

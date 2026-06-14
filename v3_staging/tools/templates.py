@@ -194,3 +194,10 @@ try:
     BLOCKS.update(PHYS_BLOCKS)
 except Exception as _e:
     pass
+
+# P3 interconnect: synthesized PIP switch box (no doc — built from primitives) — see pip_lib.py
+try:
+    from pip_lib import PIP_BLOCKS
+    BLOCKS.update(PIP_BLOCKS)
+except Exception:
+    pass
