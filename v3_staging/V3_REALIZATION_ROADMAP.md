@@ -118,8 +118,33 @@ Each phase: **goal · inputs · tool · parallelization (N instances) · gate ·
 P1 → P2 → P3 → P4 → P5 → P6. Each is a hard gate on the next. P4 (PS) can run parallel to P3
 once P2 is cast, since PS and PL fabrics are independent until the P5 seam.
 
-## Open founder decisions (flagged, not chosen — Law #13)
-1. **Realization scope:** full PL+PS, or PL-first then PS?
-2. **Container sizing:** authentic 8.1M-cell counts vs right-sized for iteration.
-3. **Design payload (P5):** which HFT modules load onto the container.
-4. **Hard-IP/analog depth (P1/P4):** interface-only behavioral leaves vs deeper internals.
+## Founder decisions (RESOLVED 2026-06-14)
+1. **Scope: PL first, then PS.** P3 (PL interconnect) completes and boots before P4 (PS) folds in.
+2. **Sizing: full authentic counts** (real ZU19EG, ~8.1M cells). The AI-effort/hallucination
+   concern is void — the generator emits deterministically and v2 proved the machine compiles at
+   scale. The real risk is MONOLITHIC FILES → handled by the Scale Architecture below.
+3. **Hard-IP/analog depth: deeper where documented.** Decompose to gates wherever the docs give
+   enough behavior (e.g. DRP-attribute logic); behavioral leaves ONLY where they genuinely can't
+   be gates (analog PLL/VCO/charge-pump, opaque ARM cores).
+4. **Design payload (P5):** still open — which HFT modules load onto the container.
+
+## Scale Architecture — full counts without monolithic files (binding for P1/P2)
+
+Full authentic counts do NOT mean giant files. Three rules make 8.1M cells tractable:
+
+1. **Code is O(tile TYPES), not O(count).** A tile type (e.g. one CLB slice) is generated ONCE.
+   The 8.1M is an ARRAY DIMENSION (static arrays sized from `ds_resources.json`), not 8.1M lines.
+   Generated C stays small and modular BY CONSTRUCTION — bounded by the ~tens of tile types.
+2. **Hard per-file ceiling + auto-shard.** The emitter splits any generated unit exceeding a
+   line/byte cap into numbered region shards, each its own translation unit. NEW gate check:
+   fail if any generated file exceeds the ceiling (protects against monolithic drift).
+3. **Separate compilation + parallel `cc`.** Many small TUs → linked; compiled in parallel across
+   the 30–100 cores. This is also why full counts compile fine (v2-proven).
+
+**Fabric iteration vs the branchless law:** the device DATAPATH stays branchless (no data-dependent
+control flow). Iterating a uniform array of *identical* fabric tiles is structural replication
+(hardware arraying), not a data branch — it needs an explicit fabric-container exemption declared
+in `enforcement_registry.yaml` (never inline). Flagged for P2 setup.
+
+**Memory:** ~8.1M static cell structs live in BSS (no heap — compliant). Keep the cell struct lean;
+size the footprint before P2 mass-casting and confirm RAM headroom.
