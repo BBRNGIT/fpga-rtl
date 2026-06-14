@@ -37,6 +37,12 @@ def col(hdr, *names):
 
 def classify(hdr):
     has = lambda *n: col(hdr, *n) is not None
+    if has("drp address") and has("attribute name"):
+        return "drp"                                         # transceiver DRP attribute map
+    if has("attribute") and has("type") and has("description"):
+        return "attributes"                                  # transceiver config attributes
+    if has("task") and (has("register") or has("register name")) and has("bits"):
+        return "sequences"                                   # register programming flows
     if has("register name") and has("address", "register offset") and has("description"):
         return "registers"
     if has("base address") and has("description"):
@@ -56,7 +62,7 @@ def extract(cache, pages):
     recs = [json.loads(l) for l in open(cache)]
     if pages:
         a, b = (int(x) for x in pages.split("-")); recs = [r for r in recs if a <= r["page"] <= b]
-    out = {k: [] for k in ("registers", "register_list", "fields", "address_map", "routing")}
+    out = {k: [] for k in ("registers", "register_list", "fields", "address_map", "routing", "sequences", "drp", "attributes")}
     chapter = "?"
     for r in recs:
         m = CHAP.search(r["text"])
@@ -68,9 +74,10 @@ def extract(cache, pages):
             fam = classify(hdr)
             if not fam: continue
             ci = {nm: col(hdr, nm) for nm in
-                  ("register name", "register type", "register", "address", "register offset",
-                   "width", "type", "reset value", "bits", "name", "description",
-                   "base address", "count", "source", "destination", "value")}
+                  ("register name", "register type", "register", "register field", "register offset",
+                   "address", "width", "type", "reset value", "bits", "name", "description",
+                   "base address", "count", "source", "destination", "value", "task",
+                   "drp address", "drp bits", "r/w", "attribute name", "attribute bits", "attribute", "drp encoding")}
             for row in rows[1:]:
                 if fam == "registers":
                     nm = repair(cell(row, ci["register name"]))
@@ -101,6 +108,25 @@ def extract(cache, pages):
                     out["routing"].append({"name": cell(row, ci["name"]), "count": cell(row, ci["count"]),
                         "source": src, "destination": dst, "description": cell(row, ci["description"]),
                         "block": chapter, "page": r["page"]})
+                elif fam == "drp":
+                    at = repair(cell(row, ci["attribute name"]))
+                    if not at: continue
+                    out["drp"].append({"attribute": at, "drp_address": cell(row, ci["drp address"]),
+                        "drp_bits": cell(row, ci["drp bits"]), "rw": cell(row, ci["r/w"]),
+                        "attribute_bits": cell(row, ci["attribute bits"]), "encoding": cell(row, ci["drp encoding"]),
+                        "block": chapter, "page": r["page"]})
+                elif fam == "attributes":
+                    at = repair(cell(row, ci["attribute"]))
+                    if not at or at.lower() == "attribute": continue
+                    out["attributes"].append({"name": at, "type": cell(row, ci["type"]),
+                        "description": cell(row, ci["description"]), "block": chapter, "page": r["page"]})
+                elif fam == "sequences":
+                    reg = repair(cell(row, ci["register"] if ci["register"] is not None else ci["register name"]))
+                    fld = cell(row, ci["register field"]); val = cell(row, ci["value"])
+                    if not reg and not fld: continue
+                    out["sequences"].append({"task": cell(row, ci["task"]), "register": reg,
+                        "field": fld, "offset": cell(row, ci["register offset"]), "bits": cell(row, ci["bits"]),
+                        "value": val, "block": chapter, "page": r["page"]})
     return out
 
 def report(out, dst):

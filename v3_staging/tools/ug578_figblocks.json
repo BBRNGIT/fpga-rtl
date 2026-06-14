@@ -1,0 +1,2187 @@
+{
+  "p15:Fig1-1": {
+    "page": 15,
+    "title": "GTY Transceiver Quad Configuration",
+    "blocks": [
+      "CPLL",
+      "IBUFDS_GTE3/4 OBUFDS_GTE3/4",
+      "QPLL0",
+      "QPLL1",
+      "REFCLK Distribution",
+      "RX",
+      "TX"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "QPLL0",
+          "QPLL1"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "QPLL0",
+          "QPLL1"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "IBUFDS_GTE3/4 OBUFDS_GTE3/4",
+          "REFCLK Distribution"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "IBUFDS_GTE3/4 OBUFDS_GTE3/4",
+          "REFCLK Distribution"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p17:Fig1-2": {
+    "page": 17,
+    "title": "GTYE3/4_CHANNEL Primitive Topology",
+    "blocks": [
+      "Block Detect Align",
+      "Comma Detect and Align",
+      "DFE",
+      "Decoder",
+      "Encoder",
+      "PCIe Beacon",
+      "PCIe RX Buffer",
+      "PISO",
+      "PRBS Checker",
+      "Pattern Generator",
+      "Phase Adjust FIFO",
+      "Polarity",
+      "RX Async Gearbox",
+      "RX Clock Dividers",
+      "RX EQ",
+      "RX Elastic Buffer",
+      "RX Interface",
+      "RX OOB",
+      "RX PIPE Control",
+      "RX Status Control",
+      "RX Sync Gearbox",
+      "SATA OOB",
+      "SIPO",
+      "TX Async Gearbox",
+      "TX Clock Dividers",
+      "TX Interface",
+      "TX OOB and PCIe",
+      "TX PIPE Control",
+      "TX Phase Interpolator",
+      "TX Phase Interpolator Controller",
+      "TX Pre/ Post Emp",
+      "TX Sync Gearbox"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Comma Detect and Align",
+          "Polarity"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "DFE",
+          "RX OOB"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Encoder",
+          "TX Sync Gearbox"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p22:Fig1-3": {
+    "page": 22,
+    "title": "Four Channel Configuration (Reference Clock from t",
+    "blocks": [
+      "CPLL",
+      "QPLL0",
+      "QPLL1",
+      "TX RX"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "QPLL0",
+          "QPLL1"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "QPLL0",
+          "QPLL1"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p25:Fig2-2": {
+    "page": 25,
+    "title": "Reference Clock Output Use Model with OBUFDS_GTE3/",
+    "blocks": [
+      "MGTAVCC GTREFCLKP0/1 OB GTREFCLKN0/1 CEB",
+      "OBUFDS_GTE3/4 From RXRECCLKOUT of GTYE3/4_CHANNEL"
+    ],
+    "connections": []
+  },
+  "p27:Fig2-3": {
+    "page": 27,
+    "title": "Reference Clock Output Use Model with OBUFDS_GTE3/",
+    "blocks": [
+      "GTYE3/4_CHANNEL RXRECCLKOUT",
+      "OBUFDS_GTE3/4_ADV CEB RXRECCLK_SEL",
+      "OBUFDS_GTE3/4_ADV RXRECCLK_SEL CEB",
+      "RXRECCLK0_SEL GTYE3/4_COMMON RXRECCLK1_SEL"
+    ],
+    "connections": []
+  },
+  "p31:Fig2-4": {
+    "page": 31,
+    "title": "QPLL Reference Clock Selection Multiplexer",
+    "blocks": [
+      "GTYE3/4_COMMON",
+      "QPLL0",
+      "QPLL1"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "GTYE3/4_COMMON",
+          "QPLL0"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "GTYE3/4_COMMON",
+          "QPLL0"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "GTYE3/4_COMMON",
+          "QPLL1"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "GTYE3/4_COMMON",
+          "QPLL1"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p32:Fig2-5": {
+    "page": 32,
+    "title": "CPLL Reference Clock Selection Multiplexer",
+    "blocks": [
+      "CPLL",
+      "GTYE3/4_CHANNEL CPLL Output CLK"
+    ],
+    "connections": []
+  },
+  "p33:Fig2-6": {
+    "page": 33,
+    "title": "Single External Reference Clock with Multiple Tran",
+    "blocks": [
+      "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+      "GTYE3/4_COMMON GTREFCLK00 GTREFCLK10 GTREFCLK01 GTREFCLK11",
+      "IBUFDS_GTE3/4 MGTREFCLKP IB MGTREFCLKN"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_COMMON GTREFCLK00 GTREFCLK10 GTREFCLK01 GTREFCLK11"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p34:Fig2-7": {
+    "page": 34,
+    "title": "Single External Reference Clock with Multiple Tran",
+    "blocks": [
+      "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+      "GTYE3/4_COMMON GTREFCLK00 GTREFCLK10 GTREFCLK01 GTREFCLK11",
+      "IBUFDS_GTE3/4 MGTREFCLKP IB MGTREFCLKN"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_COMMON GTREFCLK00 GTREFCLK10 GTREFCLK01 GTREFCLK11",
+          "GTYE3/4_COMMON GTREFCLK00 GTREFCLK10 GTREFCLK01 GTREFCLK11",
+          "GTYE3/4_COMMON GTREFCLK00 GTREFCLK10 GTREFCLK01 GTREFCLK11"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p36:Fig2-8": {
+    "page": 36,
+    "title": "Multiple GTY Transceivers with Multiple Reference ",
+    "blocks": [
+      "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+      "GTYE3/4_COMMON GTREFCLK00 GTREFCLK10 GTREFCLK01 GTREFCLK11"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_COMMON GTREFCLK00 GTREFCLK10 GTREFCLK01 GTREFCLK11"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_CHANNEL GTREFCLK0 GTREFCLK1",
+          "GTYE3/4_COMMON GTREFCLK00 GTREFCLK10 GTREFCLK01 GTREFCLK11"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p44:Fig2-11": {
+    "page": 44,
+    "title": "Internal Channel Clocking Architecture",
+    "blocks": [
+      "CPLL",
+      "Distribution REFCLK from QPLL0/1",
+      "RX Clock Dividers",
+      "RX PCS",
+      "RX PMA",
+      "TX Clock Dividers",
+      "TX PCS",
+      "TX PMA"
+    ],
+    "connections": []
+  },
+  "p44:Fig2-12": {
+    "page": 44,
+    "title": "CPLL Block Diagram",
+    "blocks": [
+      "Charge Pump",
+      "Lock Indicator",
+      "Loop Filter",
+      "PLL LOCKED PLL PLL CLKIN CLKOUT",
+      "Phase Frequency Detector",
+      "VCO"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Charge Pump",
+          "Loop Filter"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Charge Pump",
+          "Phase Frequency Detector"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p48:Fig2-13": {
+    "page": 48,
+    "title": "QPLL0/1 Detail",
+    "blocks": [
+      "/Fractional-N",
+      "Charge Pump",
+      "Lock Indicator",
+      "Loop Filter",
+      "PLL LOCKED PLL CLKIN PLL CLKOUT",
+      "Phase Frequency Detector",
+      "VCO"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Charge Pump",
+          "Loop Filter"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Charge Pump",
+          "Phase Frequency Detector"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p57:Fig2-14": {
+    "page": 57,
+    "title": "Dynamic Frac-N Example",
+    "blocks": [
+      "Channel",
+      "GTY Quad",
+      "LPF",
+      "PD",
+      "QPLL"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Channel",
+          "QPLL"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p60:Fig2-17": {
+    "page": 60,
+    "title": "GTY Transceiver Initialization Overview",
+    "blocks": [
+      "After Configuration",
+      "Associated PLL (QPLL/CPLL) Used by RX Initialization",
+      "Associated PLL (QPLL/CPLL) Used by TX Initialization",
+      "RX Initialization By GTRXRESET",
+      "RXRESETDONE",
+      "TX Initialization By GTTXRESET",
+      "TXRESETDONE"
+    ],
+    "connections": []
+  },
+  "p64:Fig2-20": {
+    "page": 64,
+    "title": "GTY Transceiver TX Reset State Machine Sequence",
+    "blocks": [
+      "TXPCSRESET Process",
+      "TXPMARESET Process",
+      "TXRESETDONE High",
+      "WAIT Until GTTXRESET From High to Low",
+      "WAIT Until TXPCSRESET From High to Low",
+      "WAIT Until TXPMARESET From High to Low"
+    ],
+    "connections": []
+  },
+  "p72:Fig2-25": {
+    "page": 72,
+    "title": "GTY Transceiver RX Reset State Machine Sequence",
+    "blocks": [
+      "EYESCANRESET Done when RXRESETDONE High",
+      "EYESCANRESET Process",
+      "RXBUFRESET Done When RXRESETDONE High",
+      "RXBUFRESET Process",
+      "RXDFELPMRESET Done when RXRESETDONE High",
+      "RXDFELPMRESET Process",
+      "RXPCSRESET Done When RXRESETDONE High",
+      "RXPCSRESET Process",
+      "RXPMARESET Done When RXRESETDONE High",
+      "RXPMARESET Process",
+      "RXRESETDONE High",
+      "WAIT until EYESCANRESET from High to Low",
+      "WAIT until GTRXRESET from High to Low",
+      "WAIT until RXBUFRESET from High to Low",
+      "WAIT until RXDFELPMRESET from High to Low",
+      "WAIT until RXPCSRESET from High to Low",
+      "WAIT until RXPMARESET from High to Low"
+    ],
+    "connections": []
+  },
+  "p86:Fig2-28": {
+    "page": 86,
+    "title": "Loopback Testing Overview",
+    "blocks": [
+      "Far-End GTY",
+      "Link Near-End Test Structures Link Far-End Test Structures",
+      "RX-PCS RX-PMA TX-PCS TX-PMA",
+      "TX-PMA TX-PCS RX-PMA RX-PCS",
+      "Test Logic Near-End GTY",
+      "Traffic Checker",
+      "Traffic Generator"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Far-End GTY",
+          "RX-PCS RX-PMA TX-PCS TX-PMA",
+          "TX-PMA TX-PCS RX-PMA RX-PCS",
+          "Test Logic Near-End GTY"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Far-End GTY",
+          "RX-PCS RX-PMA TX-PCS TX-PMA",
+          "TX-PMA TX-PCS RX-PMA RX-PCS",
+          "Test Logic Near-End GTY"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Far-End GTY",
+          "TX-PMA TX-PCS RX-PMA RX-PCS"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Far-End GTY",
+          "TX-PMA TX-PCS RX-PMA RX-PCS"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p101:Fig3-1": {
+    "page": 101,
+    "title": "GTY Transceiver TX Block Diagram",
+    "blocks": [
+      "Encoder",
+      "PCIe Beacon",
+      "PISO",
+      "Pattern Generator",
+      "Phase Adjust FIFO",
+      "Polarity",
+      "SATA OOB",
+      "TX Async Gearbox",
+      "TX Clock Dividers",
+      "TX Interface",
+      "TX OOB and PCIe",
+      "TX PIPE Control",
+      "TX Phase Interpolator",
+      "TX Phase Interpolator Controller",
+      "TX Pre/ Post Emp",
+      "TX Sync Gearbox"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "PISO",
+          "Polarity"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Interface",
+          "TX PIPE Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Encoder",
+          "TX PIPE Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Encoder",
+          "Encoder"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Clock Dividers",
+          "TX Phase Interpolator"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Interface",
+          "TX Sync Gearbox"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Async Gearbox",
+          "TX Interface"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "PISO",
+          "TX Pre/ Post Emp"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Phase Interpolator",
+          "TX Pre/ Post Emp"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Phase Interpolator",
+          "TX Phase Interpolator Controller"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Interface",
+          "TX Phase Interpolator Controller"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p109:Fig3-3": {
+    "page": 109,
+    "title": "Multiple Lanes\u2014TXOUTCLK Drives TXUSRCLK2 (2-Byte, ",
+    "blocks": [
+      "UltraScale Devices GTY Transceiver"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "UltraScale Devices GTY Transceiver",
+          "UltraScale Devices GTY Transceiver"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "UltraScale Devices GTY Transceiver",
+          "UltraScale Devices GTY Transceiver"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p111:Fig3-5": {
+    "page": 111,
+    "title": "Multiple Lanes\u2014TXOUTCLK Drives TXUSRCLK2 (4-Byte, ",
+    "blocks": [
+      "UltraScale Devices GTY Transceiver"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "UltraScale Devices GTY Transceiver",
+          "UltraScale Devices GTY Transceiver"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "UltraScale Devices GTY Transceiver",
+          "UltraScale Devices GTY Transceiver"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "UltraScale Devices GTY Transceiver",
+          "UltraScale Devices GTY Transceiver"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p120:Fig3-8": {
+    "page": 120,
+    "title": "TX Synchronous Gearbox in External Sequence Counte",
+    "blocks": [
+      "Data Source",
+      "Sequence Counter or",
+      "TX Gearbox (in GTY Transceiver)"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Data Source",
+          "Sequence Counter or"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p126:Fig3-11": {
+    "page": 126,
+    "title": "CAUI Interface (TX Datapath)",
+    "blocks": [
+      "2-Byte Gearbox",
+      "4-Byte Gearbox",
+      "8-Byte to 4-Byte Converter",
+      "Bit MUX",
+      "GTYE3/4_CHANNEL",
+      "TX Gearbox Block",
+      "TX Gearbox Synchronizer",
+      "TX Interface"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "2-Byte Gearbox",
+          "Bit MUX"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "2-Byte Gearbox",
+          "Bit MUX"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "2-Byte Gearbox",
+          "Bit MUX"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "2-Byte Gearbox",
+          "Bit MUX"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "2-Byte Gearbox",
+          "2-Byte Gearbox",
+          "2-Byte Gearbox",
+          "2-Byte Gearbox",
+          "4-Byte Gearbox"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "2-Byte Gearbox",
+          "2-Byte Gearbox",
+          "2-Byte Gearbox",
+          "4-Byte Gearbox",
+          "4-Byte Gearbox"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "4-Byte Gearbox",
+          "8-Byte to 4-Byte Converter",
+          "TX Gearbox Block"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "2-Byte Gearbox",
+          "TX Gearbox Block",
+          "TX Gearbox Synchronizer"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Gearbox Block",
+          "TX Gearbox Synchronizer"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Gearbox Block",
+          "TX Gearbox Synchronizer"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p129:Fig3-14": {
+    "page": 129,
+    "title": "TX Clock Domain Example (TX_INT_DATAWIDTH = 1 (4-b",
+    "blocks": [
+      "Encoder",
+      "PCIe Beacon",
+      "PISO",
+      "Pattern Generator",
+      "Phase Adjust FIFO",
+      "Polarity",
+      "SATA OOB",
+      "TX Async Gearbox",
+      "TX Interface",
+      "TX OOB and PCIe",
+      "TX PIPE Control",
+      "TX Phase Interpolator",
+      "TX Phase Interpolator Controller",
+      "TX Pre/ Post Emp",
+      "TX Sync Gearbox",
+      "TXClock Dividers"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "PISO",
+          "Polarity"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Phase Adjust FIFO",
+          "TX Async Gearbox"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Encoder",
+          "TX PIPE Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Interface",
+          "TX PIPE Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Encoder",
+          "Encoder"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Phase Interpolator",
+          "TXClock Dividers"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Interface",
+          "TX Sync Gearbox"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Async Gearbox",
+          "TX Interface"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "PISO",
+          "TX Pre/ Post Emp"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Phase Interpolator",
+          "TX Phase Interpolator Controller"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Interface",
+          "TX Phase Interpolator Controller"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p132:Fig3-15": {
+    "page": 132,
+    "title": "TX Asynchronous Gearbox in Normal Mode (GEARBOX_MO",
+    "blocks": [
+      "Data Source",
+      "TX Asynchronous Gearbox (in GTY Transceiver)"
+    ],
+    "connections": []
+  },
+  "p134:Fig3-16": {
+    "page": 134,
+    "title": "TX Asynchronous Gearbox in CAUI Mode (GEARBOX_MODE",
+    "blocks": [
+      "Data Source PCSL Datastream",
+      "TX Asynchronous Gearbox (in GTY Transceiver)",
+      "Toggle every TXUSRCLK2 cycle"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Data Source PCSL Datastream",
+          "Data Source PCSL Datastream",
+          "Toggle every TXUSRCLK2 cycle"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p135:Fig3-17": {
+    "page": 135,
+    "title": "TX Clock Domains",
+    "blocks": [
+      "Encoder",
+      "PCIe Beacon",
+      "PISO",
+      "Pattern Generator",
+      "Phase Adjust FIFO",
+      "Polarity",
+      "SATA OOB",
+      "TX Async Gearbox",
+      "TX Interface",
+      "TX OOB And PCIe",
+      "TX PIPE Control",
+      "TX Phase Interpolator",
+      "TX Phase Interpolator Controller",
+      "TX Pre/ Post Emp",
+      "TX Sync Gearbox",
+      "TXClock Dividers"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "PISO",
+          "Polarity"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Phase Adjust FIFO",
+          "TX Async Gearbox"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Encoder",
+          "TX PIPE Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Interface",
+          "TX PIPE Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Encoder",
+          "Encoder"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Phase Interpolator",
+          "TXClock Dividers"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Interface",
+          "TX Sync Gearbox"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Async Gearbox",
+          "TX Interface"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "PISO",
+          "TX Pre/ Post Emp"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Phase Interpolator",
+          "TX Phase Interpolator Controller"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Interface",
+          "TX Phase Interpolator Controller"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p138:Fig3-18": {
+    "page": 138,
+    "title": "TX Buffer Bypass",
+    "blocks": [
+      "Encoder",
+      "PCIe Beacon",
+      "PISO",
+      "Pattern Generator",
+      "Phase Adjust FIFO",
+      "Polarity",
+      "SATA OOB",
+      "TX Async Gearbox",
+      "TX Clock Dividers",
+      "TX Interface",
+      "TX OOB and PCIe",
+      "TX PIPE Control",
+      "TX Phase Interpolator",
+      "TX Phase Interpolator Controller",
+      "TX Pre/ Post Emp",
+      "TX Sync Gearbox"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "PISO",
+          "Polarity"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Encoder",
+          "TX PIPE Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Interface",
+          "TX PIPE Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Encoder",
+          "Encoder"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Clock Dividers",
+          "TX Phase Interpolator"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Interface",
+          "TX Sync Gearbox"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Async Gearbox",
+          "TX Interface"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "PISO",
+          "TX Pre/ Post Emp"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Phase Interpolator",
+          "TX Phase Interpolator Controller"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TX Interface",
+          "TX Phase Interpolator Controller"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p145:Fig3-21": {
+    "page": 145,
+    "title": "TX Phase Alignment to Minimize TX Lane-to-Lane Ske",
+    "blocks": [
+      "GTY TX Lane"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "GTY TX Lane",
+          "GTY TX Lane"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "GTY TX Lane",
+          "GTY TX Lane"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p146:Fig3-22": {
+    "page": 146,
+    "title": "Example of Buffer Bypass Master versus Slave Lanes",
+    "blocks": [
+      "Master GTY TX Lane TXUSRCLK TXUSRCLK2",
+      "Slave GTY TX Lane TXUSRCLK TXUSRCLK2",
+      "TXOUTCLK BUFG_GT"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Master GTY TX Lane TXUSRCLK TXUSRCLK2",
+          "Slave GTY TX Lane TXUSRCLK TXUSRCLK2",
+          "Slave GTY TX Lane TXUSRCLK TXUSRCLK2",
+          "Slave GTY TX Lane TXUSRCLK TXUSRCLK2"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p149:Fig3-24": {
+    "page": 149,
+    "title": "Example of Buffer Bypass Master versus Slave Lanes",
+    "blocks": [
+      "Master GTY TX Lane TXUSRCLK TXUSRCLK2",
+      "Slave GTY TX Lane TXUSRCLK TXUSRCLK2",
+      "TXOUTCLK BUFG_GT"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Master GTY TX Lane TXUSRCLK TXUSRCLK2",
+          "Slave GTY TX Lane TXUSRCLK TXUSRCLK2",
+          "Slave GTY TX Lane TXUSRCLK TXUSRCLK2",
+          "Slave GTY TX Lane TXUSRCLK TXUSRCLK2"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p152:Fig3-27": {
+    "page": 152,
+    "title": "Example of TXUSRCLK/RXUSRCLK Sharing",
+    "blocks": [
+      "Global Master GTY TX Lane TXUSRCLK TXUSRCLK2",
+      "Slave GTY RX Lane RXUSRCLK RXUSRCLK2",
+      "Slave GTY TX Lane TXUSRCLK TXUSRCLK2",
+      "TXOUTCLK BUFG_GT"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Slave GTY RX Lane RXUSRCLK RXUSRCLK2",
+          "Slave GTY RX Lane RXUSRCLK RXUSRCLK2",
+          "Slave GTY TX Lane TXUSRCLK TXUSRCLK2",
+          "Slave GTY TX Lane TXUSRCLK TXUSRCLK2"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Global Master GTY TX Lane TXUSRCLK TXUSRCLK2",
+          "Slave GTY RX Lane RXUSRCLK RXUSRCLK2"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Slave GTY RX Lane RXUSRCLK RXUSRCLK2",
+          "Slave GTY TX Lane TXUSRCLK TXUSRCLK2"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p154:Fig3-29": {
+    "page": 154,
+    "title": "TX Pattern Generator Block",
+    "blocks": [
+      "Error Insertions",
+      "Polarity Inversion"
+    ],
+    "connections": []
+  },
+  "p157:Fig3-30": {
+    "page": 157,
+    "title": "TX Serial and Parallel Clock Divider",
+    "blocks": [
+      "CPLL",
+      "Delay Aligner",
+      "IBUFDS_GTE3/4",
+      "PISO",
+      "Phase Interp",
+      "REFCLK Distribution",
+      "TX PMA TX DATA",
+      "TX PROG. DIV",
+      "TX Polarity Control"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "PISO",
+          "TX PMA TX DATA"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p179:Fig3-32": {
+    "page": 179,
+    "title": "Receiver Detection Circuit Model",
+    "blocks": [
+      "CAC CCH: nF Channel Components",
+      "RTERMR: VTERMR Far-End Receiver Components",
+      "VDD RTERMT: TXP TXDETECTRX GTY Transceiver Components"
+    ],
+    "connections": []
+  },
+  "p183:Fig4-1": {
+    "page": 183,
+    "title": "GTY Transceiver RX Block Diagram",
+    "blocks": [
+      "Block Detect Align",
+      "Comma Detect and Align",
+      "DFE",
+      "Decoder",
+      "PCIe RX Buffer",
+      "PRBS Checker",
+      "Polarity",
+      "RX Async Gearbox",
+      "RX Clock Dividers",
+      "RX EQ",
+      "RX Elastic Buffer",
+      "RX Interface",
+      "RX OOB",
+      "RX PIPE Control",
+      "RX Status Control",
+      "RX Sync Gearbox",
+      "SIPO"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Comma Detect and Align",
+          "Polarity"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Comma Detect and Align",
+          "Decoder",
+          "PRBS Checker",
+          "RX Interface"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX Clock Dividers",
+          "RX EQ"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX Async Gearbox",
+          "RX Elastic Buffer"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Block Detect Align",
+          "PCIe RX Buffer"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX Elastic Buffer",
+          "RX Status Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX Interface",
+          "RX Status Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX PIPE Control",
+          "RX Status Control"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p187:Fig4-3": {
+    "page": 187,
+    "title": "Use Mode 1",
+    "blocks": [
+      "GTY: RX_CM_SEL",
+      "GTY: RX_CM_TRIM[3:0] varies from mV"
+    ],
+    "connections": []
+  },
+  "p193:Fig4-7": {
+    "page": 193,
+    "title": "Flowchart for Protocols with Line Rate \u2264 2.5 Gb/s",
+    "blocks": [
+      "For Line Rate Gb/s No Is RXELECIDLE Asserted? Yes",
+      "Line Rate Runlength)",
+      "RX is Not in Electrical Idle",
+      "RX is in Electrical Idle"
+    ],
+    "connections": []
+  },
+  "p194:Fig4-8": {
+    "page": 194,
+    "title": "RX Electrical Idle Flowchart for PCIe Gen1/Gen2",
+    "blocks": [
+      "PCIe Gen1/Gen2 Yes No Is RXELECIDLE Asserted?",
+      "RX is Not in Electrical Idle",
+      "RX is in Electrical Idle"
+    ],
+    "connections": []
+  },
+  "p197:Fig4-12": {
+    "page": 197,
+    "title": "LPM Mode",
+    "blocks": [
+      "Fixed Gain AGC",
+      "LPM Adaptation Controller",
+      "RX Data Path: LPM Mode Linear EQ Data to PCS KL KH KL,KH",
+      "SIPO",
+      "Termination"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Fixed Gain AGC",
+          "LPM Adaptation Controller"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p198:Fig4-13": {
+    "page": 198,
+    "title": "GTY DFE Mode",
+    "blocks": [
+      "AGC",
+      "MMSE Adaption Controller",
+      "SIPO",
+      "Termination",
+      "UT HA HB HC HD HE HF",
+      "VP"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "AGC",
+          "UT HA HB HC HD HE HF"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "MMSE Adaption Controller",
+          "SIPO",
+          "VP"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p211:Fig4-14": {
+    "page": 211,
+    "title": "CDR Detail",
+    "blocks": [
+      "CDR FSM",
+      "DEMUX",
+      "DFE",
+      "Data Sampler",
+      "Edge Sampler",
+      "Linear EQ",
+      "PI(D)",
+      "PI(X)",
+      "PLL",
+      "RXP/N RX DATA Recovered Clock"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "CDR FSM",
+          "DEMUX"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "DEMUX",
+          "Edge Sampler"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "DEMUX",
+          "Data Sampler"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CDR FSM",
+          "DEMUX"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Edge Sampler",
+          "PI(X)"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CDR FSM",
+          "PI(X)"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CDR FSM",
+          "PI(D)"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "PI(D)",
+          "PLL"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Data Sampler",
+          "PI(D)"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "DFE",
+          "Data Sampler",
+          "Edge Sampler"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "DFE",
+          "Linear EQ"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p217:Fig4-16": {
+    "page": 217,
+    "title": "RX Serial and Parallel Clock Divider",
+    "blocks": [
+      "CDR",
+      "CPLL",
+      "Delay Aligner",
+      "IBUFDS_GTE3/4",
+      "Phase Interp.",
+      "REFCLK Distribution",
+      "RX PMA RX DATA",
+      "RX PROG. DIV",
+      "RX Polarity Control",
+      "SIPO"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "CDR",
+          "Phase Interp."
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CDR",
+          "Phase Interp.",
+          "RX PROG. DIV"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CDR",
+          "SIPO"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX Polarity Control",
+          "SIPO"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "CDR",
+          "RX PMA RX DATA"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p226:Fig4-18": {
+    "page": 226,
+    "title": "PMA Architecture to Support Eye Scan",
+    "blocks": [
+      "Capture FF",
+      "DAC",
+      "Equalization",
+      "Error-detection, Screening De-serialization",
+      "PI"
+    ],
+    "connections": []
+  },
+  "p227:Fig4-19": {
+    "page": 227,
+    "title": "PCS Architecture to Support Eye Scan",
+    "blocks": [
+      "Count Qualifier",
+      "Error Counter",
+      "FIFO",
+      "Filter",
+      "Prescaler",
+      "Sample Counter",
+      "State Machine"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Count Qualifier",
+          "Error Counter",
+          "Prescaler"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p230:Fig4-20": {
+    "page": 230,
+    "title": "Eye Scan State Machine",
+    "blocks": [
+      "ARMED",
+      "COUNT",
+      "END",
+      "READ",
+      "RESET",
+      "WAIT"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "RESET",
+          "WAIT"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "COUNT",
+          "RESET"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "ARMED",
+          "RESET"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "COUNT",
+          "END"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "ARMED",
+          "READ"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p239:Fig4-21": {
+    "page": 239,
+    "title": "RX Pattern Checker Block",
+    "blocks": [
+      "Error Counter bits)",
+      "Error RX_PRBS_ERR_CNT RXPRBSERR RXPRBSSEL RXDATA",
+      "PRBS-15 Pattern Checker",
+      "PRBS-23 Pattern Checker",
+      "PRBS-31 Pattern Checker",
+      "PRBS-7 Pattern Checker",
+      "PRBS-9 Pattern Checker",
+      "Polarity Inversion",
+      "SIPO"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Error RX_PRBS_ERR_CNT RXPRBSERR RXPRBSSEL RXDATA",
+          "Polarity Inversion"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Polarity Inversion",
+          "SIPO"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "PRBS-15 Pattern Checker",
+          "PRBS-23 Pattern Checker",
+          "PRBS-31 Pattern Checker",
+          "PRBS-7 Pattern Checker",
+          "PRBS-9 Pattern Checker",
+          "SIPO"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p243:Fig4-26": {
+    "page": 243,
+    "title": "Extended Comma Pattern Masking",
+    "blocks": [
+      "xx10100001",
+      "xx10100010"
+    ],
+    "connections": []
+  },
+  "p245:Fig4-27": {
+    "page": 245,
+    "title": "Comma Alignment Boundaries",
+    "blocks": [
+      "Byte0",
+      "Byte1",
+      "Byte2",
+      "Byte3",
+      "Byte4",
+      "Byte5",
+      "Byte6",
+      "Byte7"
+    ],
+    "connections": []
+  },
+  "p255:Fig4-31": {
+    "page": 255,
+    "title": "RX Data with 8B/10B Errors",
+    "blocks": [
+      "Disp Error",
+      "Good Data",
+      "Out of Table",
+      "RXUSRCLK2 RXDATA RXCTRL1 RXCTRL3"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Good Data",
+          "RXUSRCLK2 RXDATA RXCTRL1 RXCTRL3"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p259:Fig4-32": {
+    "page": 259,
+    "title": "Using RX Phase Alignment",
+    "blocks": [
+      "Comma Detect and Align",
+      "DFE",
+      "Decoder",
+      "PRBS Checker",
+      "Polarity",
+      "RX Clock Dividers",
+      "RX EQ",
+      "RX Elastic Buffer",
+      "RX Gear- box",
+      "RX Interface",
+      "RX OOB",
+      "RX PIPE Control",
+      "RX Status Control",
+      "SIPO"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Comma Detect and Align",
+          "Polarity"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Comma Detect and Align",
+          "PRBS Checker",
+          "RX Interface"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX Elastic Buffer",
+          "RX Status Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX Interface",
+          "RX Status Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX PIPE Control",
+          "RX Status Control"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p265:Fig4-35": {
+    "page": 265,
+    "title": "Example of RX Buffer Bypass Master versus Slave La",
+    "blocks": [
+      "Master GTY RX Lane RXUSRCLK RXUSRCLK2",
+      "RXOUTCLK BUFG_GT",
+      "Slave GTY RX Lane RXUSRCLK RXUSRCLK2"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Master GTY RX Lane RXUSRCLK RXUSRCLK2",
+          "Slave GTY RX Lane RXUSRCLK RXUSRCLK2",
+          "Slave GTY RX Lane RXUSRCLK RXUSRCLK2",
+          "Slave GTY RX Lane RXUSRCLK RXUSRCLK2"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p268:Fig4-37": {
+    "page": 268,
+    "title": "Example of Buffer Bypass Master versus Slave Lanes",
+    "blocks": [
+      "GTY RX Lane RXUSRCLK RXUSRCLK2",
+      "Slave BUFG_GT RXOUTCLK Master Slave Slave"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "GTY RX Lane RXUSRCLK RXUSRCLK2",
+          "GTY RX Lane RXUSRCLK RXUSRCLK2",
+          "GTY RX Lane RXUSRCLK RXUSRCLK2",
+          "GTY RX Lane RXUSRCLK RXUSRCLK2",
+          "Slave BUFG_GT RXOUTCLK Master Slave Slave"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p272:Fig4-40": {
+    "page": 272,
+    "title": "RX Clock Domains",
+    "blocks": [
+      "Block Detect Align",
+      "Comma Detect and Align",
+      "DFE",
+      "Decoder",
+      "PCIe RX Buffer",
+      "PRBS Checker",
+      "Polarity",
+      "RX Async Gearbox",
+      "RX Clock Dividers",
+      "RX EQ",
+      "RX Elastic Buffer",
+      "RX Interface",
+      "RX OOB",
+      "RX PIPE Control",
+      "RX Status Control",
+      "RX Sync Gearbox",
+      "SIPO"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Comma Detect and Align",
+          "Polarity"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Comma Detect and Align",
+          "Decoder",
+          "PRBS Checker",
+          "RX Interface",
+          "RX PIPE Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX Async Gearbox",
+          "RX Elastic Buffer",
+          "RX Interface",
+          "SIPO"
+        ],
+        "signals": [
+          "Figure",
+          "Target"
+        ]
+      },
+      {
+        "blocks": [
+          "Block Detect Align",
+          "PCIe RX Buffer"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX Elastic Buffer",
+          "RX Status Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX Interface",
+          "RX Status Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX PIPE Control",
+          "RX Status Control"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p284:Fig4-43": {
+    "page": 284,
+    "title": "Clock Correction Sequence Mapping",
+    "blocks": [
+      "CLK_COR_SEQ_x_1",
+      "CLK_COR_SEQ_x_2",
+      "CLK_COR_SEQ_x_3",
+      "CLK_COR_SEQ_x_4",
+      "CLK_COR_SEQ_x_ENABLE"
+    ],
+    "connections": []
+  },
+  "p286:Fig4-44": {
+    "page": 286,
+    "title": "Channel Bonding Conceptual View",
+    "blocks": [
+      "SEQ SEQ SEQ SEQ data data"
+    ],
+    "connections": []
+  },
+  "p292:Fig4-45": {
+    "page": 292,
+    "title": "Channel Bonding Daisy Chain Example 1",
+    "blocks": [
+      "RXCHBONDI RXCHBONDO"
+    ],
+    "connections": []
+  },
+  "p292:Fig4-46": {
+    "page": 292,
+    "title": "Channel Bonding Daisy Chain Example 2",
+    "blocks": [
+      "RXCHBONDI RXCHBONDO"
+    ],
+    "connections": []
+  },
+  "p295:Fig4-49": {
+    "page": 295,
+    "title": "Channel Bonding Example (Master RXCHANBONDLEVEL[2:",
+    "blocks": [
+      "SEQ1"
+    ],
+    "connections": []
+  },
+  "p299:Fig4-50": {
+    "page": 299,
+    "title": "Gearbox Usage in Normal Mode (GEARBOX_MODE[2] = 1'",
+    "blocks": [
+      "Design in Interconnect Logic",
+      "RX Synchronous Gearbox (in GTY Transceiver)"
+    ],
+    "connections": []
+  },
+  "p303:Fig4-54": {
+    "page": 303,
+    "title": "Block Synchronization State Machine",
+    "blocks": [
+      "64_GOOD block_lock true",
+      "INVALID_SH sh_cnt sh_cnt sh_invalid_cnt sh_invalid_cnt",
+      "LOCK_INIT block_lock false test_sh false",
+      "RESET_CNT sh_cnt sh_invalid_cnt slip_done false",
+      "SLIP block_lock false SLIP true",
+      "TEST_SH test_sh false",
+      "VALID_SH sh_cnt sh_cnt",
+      "sh_cnt AND sh_invalid_cnt",
+      "sh_invalid_cnt AND",
+      "sh_valid"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "64_GOOD block_lock true",
+          "INVALID_SH sh_cnt sh_cnt sh_invalid_cnt sh_invalid_cnt",
+          "RESET_CNT sh_cnt sh_invalid_cnt slip_done false",
+          "SLIP block_lock false SLIP true",
+          "VALID_SH sh_cnt sh_cnt",
+          "sh_cnt AND sh_invalid_cnt"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "LOCK_INIT block_lock false test_sh false",
+          "RESET_CNT sh_cnt sh_invalid_cnt slip_done false"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "64_GOOD block_lock true",
+          "VALID_SH sh_cnt sh_cnt"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TEST_SH test_sh false",
+          "VALID_SH sh_cnt sh_cnt"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "TEST_SH test_sh false",
+          "VALID_SH sh_cnt sh_cnt"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RESET_CNT sh_cnt sh_invalid_cnt slip_done false",
+          "TEST_SH test_sh false"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "INVALID_SH sh_cnt sh_cnt sh_invalid_cnt sh_invalid_cnt",
+          "TEST_SH test_sh false"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "INVALID_SH sh_cnt sh_cnt sh_invalid_cnt sh_invalid_cnt",
+          "TEST_SH test_sh false"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "INVALID_SH sh_cnt sh_cnt sh_invalid_cnt sh_invalid_cnt",
+          "SLIP block_lock false SLIP true"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p306:Fig4-56": {
+    "page": 306,
+    "title": "CAUI Interface (RX Datapath)",
+    "blocks": [
+      "4-Byte to 8-Byte Converter",
+      "Data Out Byte Data Valid Header Out Gearbox Header Valid",
+      "GTYE3/4_CHANNEL",
+      "IN Bit Demux",
+      "Interconnect Logic Interface Block",
+      "RX Gearbox Synchronizer",
+      "Sequence Detector"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Data Out Byte Data Valid Header Out Gearbox Header Valid",
+          "Data Out Byte Data Valid Header Out Gearbox Header Valid",
+          "GTYE3/4_CHANNEL",
+          "IN Bit Demux"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Data Out Byte Data Valid Header Out Gearbox Header Valid",
+          "Data Out Byte Data Valid Header Out Gearbox Header Valid"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Data Out Byte Data Valid Header Out Gearbox Header Valid",
+          "Data Out Byte Data Valid Header Out Gearbox Header Valid"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Interconnect Logic Interface Block",
+          "RX Gearbox Synchronizer"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Interconnect Logic Interface Block",
+          "RX Gearbox Synchronizer"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Interconnect Logic Interface Block",
+          "RX Gearbox Synchronizer"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "Interconnect Logic Interface Block",
+          "RX Gearbox Synchronizer"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "4-Byte to 8-Byte Converter",
+          "Interconnect Logic Interface Block"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p309:Fig4-59": {
+    "page": 309,
+    "title": "RX Clock Domain Example (RX_INT_DATAWIDTH = 1 (4-b",
+    "blocks": [
+      "Block Detect Align",
+      "Comma Detect and Align",
+      "DFE",
+      "Decoder",
+      "PCIe RX Buffer",
+      "PRBS Checker",
+      "Polarity",
+      "RX Async Gearbox",
+      "RX EQ",
+      "RX Elastic Buffer",
+      "RX Interface",
+      "RX OOB",
+      "RX PIPE Control",
+      "RX Status Control",
+      "RX Sync Gearbox",
+      "RXClock Dividers",
+      "SIPO"
+    ],
+    "connections": [
+      {
+        "blocks": [
+          "Comma Detect and Align",
+          "Decoder",
+          "PCIe RX Buffer",
+          "PRBS Checker",
+          "Polarity",
+          "RX Interface",
+          "RX PIPE Control",
+          "RX Status Control",
+          "SIPO"
+        ],
+        "signals": [
+          "Figure",
+          "Target"
+        ]
+      },
+      {
+        "blocks": [
+          "Block Detect Align",
+          "PCIe RX Buffer"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX PIPE Control",
+          "RX Status Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX Elastic Buffer",
+          "RX Status Control"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX Async Gearbox",
+          "RX Elastic Buffer"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "PCIe RX Buffer",
+          "RX Async Gearbox"
+        ],
+        "signals": []
+      },
+      {
+        "blocks": [
+          "RX Async Gearbox",
+          "RX Elastic Buffer"
+        ],
+        "signals": []
+      }
+    ]
+  },
+  "p314:Fig4-60": {
+    "page": 314,
+    "title": "RX Asynchronous Gearbox in Normal Mode (GEARBOX_MO",
+    "blocks": [
+      "Design in Interconnect Logic",
+      "RX Asynchronous Gearbox (in GTY Transceiver)"
+    ],
+    "connections": []
+  },
+  "p315:Fig4-61": {
+    "page": 315,
+    "title": "RX Asynchronous Gearbox in CAUI Mode (GEARBOX_MODE",
+    "blocks": [
+      "Design in Interconnect Logic",
+      "PCSL Datastream",
+      "RX Asynchronous Gearbox (in GTY Transceiver)"
+    ],
+    "connections": []
+  },
+  "p328:Fig5-5": {
+    "page": 328,
+    "title": "Rise and Fall Times",
+    "blocks": [
+      "TFCLK",
+      "TRCLK"
+    ],
+    "connections": []
+  }
+}
