@@ -23,6 +23,25 @@ res_of = {m["primitive"]: m["resource"] for m in phys["prim_resource_map"]}
 
 DECOMP = {"storage_element", "LUT6", "CARRY8", "MUXF7", "MUXF8", "MUXF9"}  # realized by phys_lib/atom
 
+# IO-buffer config-variants fold onto ONE physical IO-buffer element (mirrors CLB folding).
+# The UNISIM IBUF*/OBUF*/IOBUF* families + the pad-control trio (KEEPER/PULLUP/PULLDOWN) are
+# all configurations of the same physical I/O-buffer at an I/O site — differential vs single,
+# tri-state, DCI/INTERM-disable, etc. are CONFIGS, not separate physical elements (DS891 counts
+# I/O sites, not buffer variants). Genuinely-distinct IO-logic (ISERDES/OSERDES/IDELAY/ODELAY/
+# IDELAYCTRL/BITSLICE*/DCIRESET/HPIO_VREF/RIU_OR/IBUF_ANALOG) are NOT folded — they have their
+# own documented ports and remain distinct physical elements (Law #6/#7: do not over-fold).
+IO_BUFFER_EL = "IO_BUFFER"
+IO_BUF_RE = re.compile(r"^(IBUF|OBUF|IOBUF)")               # UNISIM buffer families
+IO_BUF_PAD = {"KEEPER", "PULLUP", "PULLDOWN"}              # passive pad-control, same I/O site
+IO_BUF_EXCLUDE = {"IBUF_ANALOG"}                           # SYSMON analog path — distinct element
+
+def is_io_buffer(n):
+    if n in IO_BUF_EXCLUDE: return False
+    if n in IO_BUF_PAD: return True
+    if re.search(r"GTE\d", n): return False                 # transceiver ref-clk buffer (ADVANCED),
+                                                            # e.g. IBUFDS_GTE3/4, OBUFDS_GTE3/4 — not a fabric I/O site
+    return bool(IO_BUF_RE.match(n))
+
 def element_of(name, v):
     n = name.upper(); g = v.get("group", "")
     if g == "PS" or v.get("note"): return None                # PS (P4) / doc-pointer hard-IP
@@ -36,6 +55,8 @@ def element_of(name, v):
     if re.match(r"(RAMB36|FIFO36)", n): return "RAMB36E2"
     if re.match(r"(RAMB18|FIFO18)", n): return "RAMB18E2"
     if re.match(r"URAM", n): return "URAM288"
+    # --- IO: buffer config-variants fold onto ONE physical I/O-buffer element ---
+    if is_io_buffer(n): return IO_BUFFER_EL
     # --- everything else: the hard block IS its own physical element (leaf) ---
     return name
 
@@ -56,6 +77,14 @@ def config_of(name, v, el):
         m = re.match(r"LUT(\d)", name.upper()); cfg["inputs"] = int(m.group(1)) if m else None
     elif el in ("RAMB36E2", "RAMB18E2"):
         cfg["mode"] = "fifo" if name.upper().startswith("FIFO") else "ram"
+    elif el == IO_BUFFER_EL:
+        n = name.upper()
+        cfg["direction"] = ("inout" if n.startswith("IOBUF") else
+                            "output" if n.startswith("OBUF") else
+                            "input" if n.startswith("IBUF") else "passive")
+        cfg["differential"] = ("IB" in ports or "OB" in ports or n.endswith("DS")
+                               or "DS" in n)
+        cfg["tristate"] = "T" in ports or "TM" in ports or "TS" in ports
     return cfg
 
 elements = {}
@@ -77,8 +106,17 @@ out = {el: {"element": el, "kind": d["kind"], "subsystem": d["subsystem"],
             "members": sorted(d["members"]), "configs": d["configs"]} for el, d in elements.items()}
 json.dump(out, open(os.path.join(HERE, "configmap.json"), "w"), indent=2)
 
-# inject LEAF elements into primitives.json as configurable base primitives (behavior is spec)
+# inject LEAF elements into primitives.json as configurable base primitives (behavior is spec).
+# REBUILD, don't append: a prior run's leaf set may differ (e.g. IO folding dropped 35 IBUF*/
+# OBUF*/IOBUF* variants onto IO_BUFFER). First evict every configmap-OWNED entry, then re-inject
+# exactly the current leaf set — so primitives.json mirrors configmap.json with no orphans.
+# Ownership is keyed on the injection marker below; Tier-0 atomic axioms (no marker) and PS leaves
+# owned by ps_realize.py ("see ps_ports.json") are left untouched.
+CM_MARK = "see configmap.json"
 prims = json.load(open(os.path.join(HERE, "primitives.json")))
+removed = [k for k, v in prims.items()
+           if isinstance(v, dict) and CM_MARK in str(v.get("_note", ""))]
+for k in removed: del prims[k]
 added = 0
 for el, d in out.items():
     if d["kind"] == "decomposed": continue                    # CLB handled by phys_lib / storage_element
@@ -86,14 +124,16 @@ for el, d in out.items():
     outs = [p["name"] for p in d["ports"] if p["dir"] == "out"]
     prims[el] = {"pins": pins, "out": outs, "state": True,
                  "config": f"configs: {', '.join(d['members'][:8])}",
-                 "_note": f"physical {d['subsystem']} element (leaf, behavior=spec); see configmap.json"}
+                 "_note": f"physical {d['subsystem']} element (leaf, behavior=spec); {CM_MARK}"}
     added += 1
 json.dump(prims, open(os.path.join(HERE, "primitives.json"), "w"), indent=2)
+orphaned = len(removed) - added
 
 mapped = sum(len(d["members"]) for d in out.values())
 dec = sum(1 for d in out.values() if d["kind"] == "decomposed")
 print(f"configmap: {mapped} catalogue entries -> {len(out)} physical elements "
-      f"({dec} decomposed CLB + {len(out)-dec} leaf), {added} leaf primitives injected -> primitives.json")
+      f"({dec} decomposed CLB + {len(out)-dec} leaf), {added} leaf primitives injected "
+      f"({len(removed)} evicted, net {orphaned:+d} orphans removed) -> primitives.json")
 print(f"  excluded (E3/PS/hard-IP-doc-pointer): {len(excluded)} -> {excluded[:8]}{'…' if len(excluded)>8 else ''}")
 import collections
 bysub = collections.Counter(d["subsystem"] for d in out.values())

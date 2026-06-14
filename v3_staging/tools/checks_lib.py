@@ -22,6 +22,23 @@ def configmap_subset_catalog():
     extra = members - cat
     red(f"{len(extra)} configmap members not in catalog: {sorted(extra)[:5]}") if extra else ok(f"all {len(members)} configmap members ⊆ catalog")
 
+def no_orphan_primitives():
+    # bidirectional: configmap.json leaf elements <-> configmap-owned primitives in library.json.
+    # configmap.py injects each leaf physical element into primitives.json (-> library.json),
+    # marked "see configmap.json". Tier-0 atomic axioms (no marker) and PS leaves owned by
+    # ps_realize.py ("see ps_ports.json") are out of scope. Orphans = either direction's gap.
+    cm = L("configmap.json")
+    leaf = {el for el, d in cm.items() if d.get("kind") == "leaf"}
+    prims = L("library.json").get("primitives", {})
+    owned = {k for k, v in prims.items()
+             if isinstance(v, dict) and "see configmap.json" in str(v.get("_note", ""))}
+    orphans = owned - leaf            # in library, no configmap leaf element (stale dead weight)
+    missing = leaf - owned            # configmap leaf element, no library primitive (not emitted)
+    if orphans or missing:
+        red(f"orphan primitives: {len(orphans)} stale in library {sorted(orphans)[:5]}, "
+            f"{len(missing)} configmap leaves missing from library {sorted(missing)[:5]}")
+    ok(f"0 orphans — all {len(leaf)} configmap leaf elements ⇄ library primitives (bidirectional)")
+
 def zero_unmapped():
     bad = [k for k in (list(L("configmap.json")) ) if "_unmapped" in k]
     h = L("hierarchy.json")

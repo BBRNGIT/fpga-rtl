@@ -1,12 +1,12 @@
 {
-  "ts": 1781447175,
+  "ts": 1781451905,
   "bulletproof": true,
   "integrity": {
-    "green": 65,
-    "total": 65
+    "green": 71,
+    "total": 71
   },
   "progress": {
-    "green": 3,
+    "green": 9,
     "total": 11
   },
   "jobs": [
@@ -155,6 +155,15 @@
       "msg": "ok"
     },
     {
+      "id": "tool:map",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
       "id": "tool:netc",
       "kind": "integrity",
       "group": "tools",
@@ -192,6 +201,15 @@
     },
     {
       "id": "tool:progress",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "tool:ps_realize",
       "kind": "integrity",
       "group": "tools",
       "gate": true,
@@ -272,6 +290,15 @@
       "msg": "ok"
     },
     {
+      "id": "tool:unify",
+      "kind": "integrity",
+      "group": "tools",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
       "id": "tool:vparse",
       "kind": "integrity",
       "group": "tools",
@@ -309,6 +336,24 @@
     },
     {
       "id": "artifact:library.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:loadmap.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "ok"
+    },
+    {
+      "id": "artifact:ps_realize.json",
       "kind": "integrity",
       "group": "artifacts",
       "gate": true,
@@ -569,6 +614,15 @@
       "msg": "no AI attribution in recent commits"
     },
     {
+      "id": "inv:no_orphan_primitives",
+      "kind": "integrity",
+      "group": "invariants",
+      "gate": true,
+      "nudge": "",
+      "green": true,
+      "msg": "0 orphans \u2014 all 62 configmap leaf elements \u21c4 library primitives (bidirectional)"
+    },
+    {
       "id": "inv:no_verilog",
       "kind": "integrity",
       "group": "invariants",
@@ -628,8 +682,8 @@
       "group": "phases",
       "gate": false,
       "nudge": "advance P4: run `realize.py worklist P4` and execute the next item",
-      "green": false,
-      "msg": "fail"
+      "green": true,
+      "msg": "ok"
     },
     {
       "id": "phase:P5",
@@ -637,8 +691,8 @@
       "group": "phases",
       "gate": false,
       "nudge": "advance P5: run `realize.py worklist P5` and execute the next item",
-      "green": false,
-      "msg": "fail"
+      "green": true,
+      "msg": "ok"
     },
     {
       "id": "phase:P6",
@@ -646,8 +700,8 @@
       "group": "phases",
       "gate": false,
       "nudge": "advance P6: run `realize.py worklist P6` and execute the next item",
-      "green": false,
-      "msg": "fail"
+      "green": true,
+      "msg": "ok"
     },
     {
       "id": "todo:route",
@@ -673,8 +727,8 @@
       "group": "remaining_tools",
       "gate": false,
       "nudge": "build ps_realize.py (next phase tool)",
-      "green": false,
-      "msg": "fail"
+      "green": true,
+      "msg": "ok"
     },
     {
       "id": "todo:map",
@@ -682,8 +736,8 @@
       "group": "remaining_tools",
       "gate": false,
       "nudge": "build map.py (next phase tool)",
-      "green": false,
-      "msg": "fail"
+      "green": true,
+      "msg": "ok"
     },
     {
       "id": "todo:unify",
@@ -691,8 +745,8 @@
       "group": "remaining_tools",
       "gate": false,
       "nudge": "build unify.py (next phase tool)",
-      "green": false,
-      "msg": "fail"
+      "green": true,
+      "msg": "ok"
     }
   ]
 }

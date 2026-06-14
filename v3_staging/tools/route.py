@@ -10,6 +10,19 @@ cfgcell setting.
 Net source: the real connectivity in hierarchy.json (figure + PS-PL routing edges), each
 endpoint mapped deterministically onto the grid. Output device/routes.json.
 Usage: route.py [--grid R C]
+
+L2 — PHASE STATUS (read before extending). This router is the STRUCTURAL-PROOF phase: it
+proves the netlist is *routable* through an INT-tile PIP crossbar under the P3 gate
+(single-driver-per-wire, no-shorts) with automatic reroute on contention. Endpoint placement
+is SYNTHETIC — `coord()` hashes the net name onto the grid (md5 % grid). That is deterministic
+and gives a valid, conflict-checked PIP path, but it is NOT real placement: it carries no
+locality, no clock-region awareness, and no UG572 track structure. It answers "can these nets
+be routed without shorts," not "where do they physically go."
+  NEXT (P3 clock-fabric, clkfab.py): real clock routing replaces the synthetic placement for
+  clock nets — endpoints map onto documented UG572 clock regions / global+regional clock tracks
+  (BUFG/BUFGCE spines, the clk_root M:1 distribution PIP in pip_lib.py), so clock nets follow the
+  real distribution fabric instead of a hash. Logic-net placement locality is a later refinement.
+  Until then, treat routes.json as a routability proof, not a physical floorplan.
 """
 import sys, os, json, hashlib, argparse
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
@@ -19,6 +32,10 @@ def Lj(*cands):
     return None
 
 def coord(name, R, C):
+    # L2: SYNTHETIC placement — hash the net name onto the grid. Deterministic and good enough
+    # to prove routability (the P3 structural-proof gate), but carries NO locality and NO
+    # clock-region awareness. clkfab.py (pending) replaces this for clock nets with real UG572
+    # clock-region/track placement. Do not read grid coords here as a physical floorplan.
     h = int(hashlib.md5(name.encode()).hexdigest(), 16)
     return (h % R, (h // R) % C)
 

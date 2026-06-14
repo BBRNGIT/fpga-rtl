@@ -15,47 +15,12 @@ static fabric_element muxf9[65340]; /* CLB · 4p · 1 configs */
 static fabric_element dsp48e2[1968]; /* ARITHMETIC · 54p · 1 configs */
 static fabric_element ramb18e2[1968]; /* BLOCKRAM · 87p · 2 configs */
 static fabric_element ramb36e2[984]; /* BLOCKRAM · 100p · 2 configs */
-static fabric_element bitslice_control[668]; /* I · 57p · 1 configs */
-static fabric_element dcireset[668]; /* I · 2p · 1 configs */
-static fabric_element hpio_vref[668]; /* I · 2p · 1 configs */
-static fabric_element ibuf[668]; /* I · 2p · 1 configs */
-static fabric_element ibufds[668]; /* I · 3p · 1 configs */
-static fabric_element ibufdse3[668]; /* I · 6p · 1 configs */
-static fabric_element ibufds_diff_out[668]; /* I · 4p · 1 configs */
-static fabric_element ibufds_diff_out_ibufdisable[668]; /* I · 5p · 1 configs */
-static fabric_element ibufds_diff_out_intermdisable[668]; /* I · 6p · 1 configs */
-static fabric_element ibufds_dphy[668]; /* I · 7p · 1 configs */
-static fabric_element ibufds_ibufdisable[668]; /* I · 4p · 1 configs */
-static fabric_element ibufds_intermdisable[668]; /* I · 5p · 1 configs */
-static fabric_element ibufe3[668]; /* I · 6p · 1 configs */
+static fabric_element io_buffer[668]; /* I · 25p · 31 configs */
 static fabric_element ibuf_analog[668]; /* I · 2p · 1 configs */
-static fabric_element ibuf_ibufdisable[668]; /* I · 3p · 1 configs */
-static fabric_element ibuf_intermdisable[668]; /* I · 4p · 1 configs */
-static fabric_element idelayctrl[668]; /* I · 3p · 1 configs */
 static fabric_element idelaye3[668]; /* I · 14p · 1 configs */
-static fabric_element iobuf[668]; /* I · 4p · 1 configs */
-static fabric_element iobufds[668]; /* I · 5p · 1 configs */
-static fabric_element iobufdse3[668]; /* I · 9p · 1 configs */
-static fabric_element iobufds_dcien[668]; /* I · 7p · 1 configs */
-static fabric_element iobufds_diff_out[668]; /* I · 7p · 1 configs */
-static fabric_element iobufds_diff_out_dcien[668]; /* I · 9p · 1 configs */
-static fabric_element iobufds_diff_out_intermdisable[668]; /* I · 9p · 1 configs */
-static fabric_element iobufds_intermdisable[668]; /* I · 7p · 1 configs */
-static fabric_element iobufe3[668]; /* I · 9p · 1 configs */
-static fabric_element iobuf_dcien[668]; /* I · 6p · 1 configs */
-static fabric_element iobuf_intermdisable[668]; /* I · 6p · 1 configs */
 static fabric_element iserdese3[668]; /* I · 10p · 1 configs */
-static fabric_element keeper[668]; /* I · 1p · 1 configs */
-static fabric_element obuf[668]; /* I · 2p · 1 configs */
-static fabric_element obufds[668]; /* I · 3p · 1 configs */
-static fabric_element obufds_dphy[668]; /* I · 7p · 1 configs */
-static fabric_element obuft[668]; /* I · 3p · 1 configs */
-static fabric_element obuftds[668]; /* I · 4p · 1 configs */
 static fabric_element odelaye3[668]; /* I · 13p · 1 configs */
 static fabric_element oserdese3[668]; /* I · 7p · 1 configs */
-static fabric_element pulldown[668]; /* I · 1p · 1 configs */
-static fabric_element pullup[668]; /* I · 1p · 1 configs */
-static fabric_element riu_or[668]; /* I · 6p · 1 configs */
 static fabric_element rxtx_bitslice[668]; /* I · 33p · 1 configs */
 static fabric_element rx_bitslice[668]; /* I · 27p · 1 configs */
 static fabric_element tx_bitslice[668]; /* I · 18p · 1 configs */
@@ -96,47 +61,12 @@ static const cast_row CAST[] = {
   {"DSP48E2", 1968ULL, "ARITHMETIC"},
   {"RAMB18E2", 1968ULL, "BLOCKRAM"},
   {"RAMB36E2", 984ULL, "BLOCKRAM"},
-  {"BITSLICE_CONTROL", 668ULL, "I"},
-  {"DCIRESET", 668ULL, "I"},
-  {"HPIO_VREF", 668ULL, "I"},
-  {"IBUF", 668ULL, "I"},
-  {"IBUFDS", 668ULL, "I"},
-  {"IBUFDSE3", 668ULL, "I"},
-  {"IBUFDS_DIFF_OUT", 668ULL, "I"},
-  {"IBUFDS_DIFF_OUT_IBUFDISABLE", 668ULL, "I"},
-  {"IBUFDS_DIFF_OUT_INTERMDISABLE", 668ULL, "I"},
-  {"IBUFDS_DPHY", 668ULL, "I"},
-  {"IBUFDS_IBUFDISABLE", 668ULL, "I"},
-  {"IBUFDS_INTERMDISABLE", 668ULL, "I"},
-  {"IBUFE3", 668ULL, "I"},
+  {"IO_BUFFER", 668ULL, "I"},
   {"IBUF_ANALOG", 668ULL, "I"},
-  {"IBUF_IBUFDISABLE", 668ULL, "I"},
-  {"IBUF_INTERMDISABLE", 668ULL, "I"},
-  {"IDELAYCTRL", 668ULL, "I"},
   {"IDELAYE3", 668ULL, "I"},
-  {"IOBUF", 668ULL, "I"},
-  {"IOBUFDS", 668ULL, "I"},
-  {"IOBUFDSE3", 668ULL, "I"},
-  {"IOBUFDS_DCIEN", 668ULL, "I"},
-  {"IOBUFDS_DIFF_OUT", 668ULL, "I"},
-  {"IOBUFDS_DIFF_OUT_DCIEN", 668ULL, "I"},
-  {"IOBUFDS_DIFF_OUT_INTERMDISABLE", 668ULL, "I"},
-  {"IOBUFDS_INTERMDISABLE", 668ULL, "I"},
-  {"IOBUFE3", 668ULL, "I"},
-  {"IOBUF_DCIEN", 668ULL, "I"},
-  {"IOBUF_INTERMDISABLE", 668ULL, "I"},
   {"ISERDESE3", 668ULL, "I"},
-  {"KEEPER", 668ULL, "I"},
-  {"OBUF", 668ULL, "I"},
-  {"OBUFDS", 668ULL, "I"},
-  {"OBUFDS_DPHY", 668ULL, "I"},
-  {"OBUFT", 668ULL, "I"},
-  {"OBUFTDS", 668ULL, "I"},
   {"ODELAYE3", 668ULL, "I"},
   {"OSERDESE3", 668ULL, "I"},
-  {"PULLDOWN", 668ULL, "I"},
-  {"PULLUP", 668ULL, "I"},
-  {"RIU_OR", 668ULL, "I"},
   {"RXTX_BITSLICE", 668ULL, "I"},
   {"RX_BITSLICE", 668ULL, "I"},
   {"TX_BITSLICE", 668ULL, "I"},
@@ -166,7 +96,7 @@ static const cast_row CAST[] = {
   {"PLLE4_ADV", 11ULL, "CLOCK"},
   {"PLLE4_BASE", 11ULL, "CLOCK"},
 };
-enum { CAST_TYPES = 78 };
-static const unsigned long long CAST_TOTAL = 2126341ULL;
+enum { CAST_TYPES = 43 };
+static const unsigned long long CAST_TOTAL = 2102961ULL;
 static const unsigned long long CAST_SLICES = 65340ULL;
 #endif

@@ -1,6 +1,763 @@
 {
+  "AND2B1L": {
+    "element": "AND2B1L",
+    "kind": "leaf",
+    "subsystem": "CLB",
+    "ports": [
+      {
+        "name": "DI",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "SRI",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "AND2B1L"
+    ],
+    "configs": {
+      "AND2B1L": {
+        "init": null,
+        "inverts": [
+          "IS_SRI_INVERTED"
+        ]
+      }
+    }
+  },
+  "BITSLICE_CONTROL": {
+    "element": "BITSLICE_CONTROL",
+    "kind": "leaf",
+    "subsystem": "I",
+    "ports": [
+      {
+        "name": "CLK_FROM_EXT",
+        "dir": "in"
+      },
+      {
+        "name": "CLK_TO_EXT_NORTH",
+        "dir": "out"
+      },
+      {
+        "name": "CLK_TO_EXT_SOUTH",
+        "dir": "out"
+      },
+      {
+        "name": "DLY_RDY",
+        "dir": "out"
+      },
+      {
+        "name": "DYN_DCI",
+        "dir": "out",
+        "width": 7
+      },
+      {
+        "name": "EN_VTC",
+        "dir": "in"
+      },
+      {
+        "name": "NCLK_NIBBLE_IN",
+        "dir": "in"
+      },
+      {
+        "name": "NCLK_NIBBLE_OUT",
+        "dir": "out"
+      },
+      {
+        "name": "PCLK_NIBBLE_IN",
+        "dir": "in"
+      },
+      {
+        "name": "PCLK_NIBBLE_OUT",
+        "dir": "out"
+      },
+      {
+        "name": "PHY_RDCS0",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "PHY_RDCS1",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "PHY_RDEN",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "PHY_WRCS0",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "PHY_WRCS1",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "PLL_CLK",
+        "dir": "in"
+      },
+      {
+        "name": "REFCLK",
+        "dir": "in"
+      },
+      {
+        "name": "RIU_ADDR",
+        "dir": "in",
+        "width": 6
+      },
+      {
+        "name": "RIU_CLK",
+        "dir": "in"
+      },
+      {
+        "name": "RIU_NIBBLE_SEL",
+        "dir": "in"
+      },
+      {
+        "name": "RIU_RD_DATA",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "RIU_VALID",
+        "dir": "out"
+      },
+      {
+        "name": "RIU_WR_DATA",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "RIU_WR_EN",
+        "dir": "in"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      },
+      {
+        "name": "RX_BIT_CTRL_IN0",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "RX_BIT_CTRL_IN1",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "RX_BIT_CTRL_IN2",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "RX_BIT_CTRL_IN3",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "RX_BIT_CTRL_IN4",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "RX_BIT_CTRL_IN5",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "RX_BIT_CTRL_IN6",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "RX_BIT_CTRL_OUT0",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "RX_BIT_CTRL_OUT1",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "RX_BIT_CTRL_OUT2",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "RX_BIT_CTRL_OUT3",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "RX_BIT_CTRL_OUT4",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "RX_BIT_CTRL_OUT5",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "RX_BIT_CTRL_OUT6",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "TBYTE_IN",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "TX_BIT_CTRL_IN0",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_IN1",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_IN2",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_IN3",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_IN4",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_IN5",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_IN6",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_IN_TRI",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_OUT0",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_OUT1",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_OUT2",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_OUT3",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_OUT4",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_OUT5",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_OUT6",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_OUT_TRI",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "VTC_RDY",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "BITSLICE_CONTROL"
+    ],
+    "configs": {
+      "BITSLICE_CONTROL": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "BSCANE2": {
+    "element": "BSCANE2",
+    "kind": "leaf",
+    "subsystem": "CONFIGURATION",
+    "ports": [
+      {
+        "name": "CAPTURE",
+        "dir": "out"
+      },
+      {
+        "name": "DRCK",
+        "dir": "out"
+      },
+      {
+        "name": "RESET",
+        "dir": "out"
+      },
+      {
+        "name": "RUNTEST",
+        "dir": "out"
+      },
+      {
+        "name": "SEL",
+        "dir": "out"
+      },
+      {
+        "name": "SHIFT",
+        "dir": "out"
+      },
+      {
+        "name": "TCK",
+        "dir": "out"
+      },
+      {
+        "name": "TDI",
+        "dir": "out"
+      },
+      {
+        "name": "TDO",
+        "dir": "in"
+      },
+      {
+        "name": "TMS",
+        "dir": "out"
+      },
+      {
+        "name": "UPDATE",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "BSCANE2"
+    ],
+    "configs": {
+      "BSCANE2": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "BUFG": {
+    "element": "BUFG",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "I",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "BUFG"
+    ],
+    "configs": {
+      "BUFG": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "BUFGCE": {
+    "element": "BUFGCE",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "CE",
+        "dir": "in"
+      },
+      {
+        "name": "I",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "BUFGCE"
+    ],
+    "configs": {
+      "BUFGCE": {
+        "init": null,
+        "inverts": [
+          "IS_CE_INVERTED",
+          "IS_I_INVERTED"
+        ]
+      }
+    }
+  },
+  "BUFGCE_1": {
+    "element": "BUFGCE_1",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "CE",
+        "dir": "in"
+      },
+      {
+        "name": "I",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "BUFGCE_1"
+    ],
+    "configs": {
+      "BUFGCE_1": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "BUFGCE_DIV": {
+    "element": "BUFGCE_DIV",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "CE",
+        "dir": "in"
+      },
+      {
+        "name": "CLR",
+        "dir": "in"
+      },
+      {
+        "name": "I",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "BUFGCE_DIV"
+    ],
+    "configs": {
+      "BUFGCE_DIV": {
+        "init": null,
+        "inverts": [
+          "IS_CE_INVERTED",
+          "IS_CLR_INVERTED",
+          "IS_I_INVERTED"
+        ]
+      }
+    }
+  },
+  "BUFGCTRL": {
+    "element": "BUFGCTRL",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "CE0",
+        "dir": "in"
+      },
+      {
+        "name": "CE1",
+        "dir": "in"
+      },
+      {
+        "name": "I0",
+        "dir": "in"
+      },
+      {
+        "name": "I1",
+        "dir": "in"
+      },
+      {
+        "name": "IGNORE0",
+        "dir": "in"
+      },
+      {
+        "name": "IGNORE1",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "S0",
+        "dir": "in"
+      },
+      {
+        "name": "S1",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "BUFGCTRL"
+    ],
+    "configs": {
+      "BUFGCTRL": {
+        "init": null,
+        "inverts": [
+          "IS_CE0_INVERTED",
+          "IS_CE1_INVERTED",
+          "IS_I0_INVERTED",
+          "IS_I1_INVERTED",
+          "IS_IGNORE0_INVERTED",
+          "IS_IGNORE1_INVERTED",
+          "IS_S0_INVERTED",
+          "IS_S1_INVERTED"
+        ]
+      }
+    }
+  },
+  "BUFGMUX": {
+    "element": "BUFGMUX",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "I0",
+        "dir": "in"
+      },
+      {
+        "name": "I1",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "S",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "BUFGMUX"
+    ],
+    "configs": {
+      "BUFGMUX": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "BUFGMUX_1": {
+    "element": "BUFGMUX_1",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "I0",
+        "dir": "in"
+      },
+      {
+        "name": "I1",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "S",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "BUFGMUX_1"
+    ],
+    "configs": {
+      "BUFGMUX_1": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "BUFGMUX_CTRL": {
+    "element": "BUFGMUX_CTRL",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "I0",
+        "dir": "in"
+      },
+      {
+        "name": "I1",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "S",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "BUFGMUX_CTRL"
+    ],
+    "configs": {
+      "BUFGMUX_CTRL": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "BUFG_GT": {
+    "element": "BUFG_GT",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "CE",
+        "dir": "in"
+      },
+      {
+        "name": "CEMASK",
+        "dir": "in"
+      },
+      {
+        "name": "CLR",
+        "dir": "in"
+      },
+      {
+        "name": "CLRMASK",
+        "dir": "in"
+      },
+      {
+        "name": "DIV",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "I",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "BUFG_GT"
+    ],
+    "configs": {
+      "BUFG_GT": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "BUFG_GT_SYNC": {
+    "element": "BUFG_GT_SYNC",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "CE",
+        "dir": "in"
+      },
+      {
+        "name": "CESYNC",
+        "dir": "out"
+      },
+      {
+        "name": "CLK",
+        "dir": "in"
+      },
+      {
+        "name": "CLR",
+        "dir": "in"
+      },
+      {
+        "name": "CLRSYNC",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "BUFG_GT_SYNC"
+    ],
+    "configs": {
+      "BUFG_GT_SYNC": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "BUFG_PS": {
+    "element": "BUFG_PS",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "I",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "BUFG_PS"
+    ],
+    "configs": {
+      "BUFG_PS": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
   "CARRY8": {
     "element": "CARRY8",
+    "kind": "decomposed",
+    "subsystem": "CLB",
     "ports": [
       {
         "name": "CI",
@@ -43,6 +800,8 @@
   },
   "LUT6": {
     "element": "LUT6",
+    "kind": "decomposed",
+    "subsystem": "CLB",
     "ports": [
       {
         "name": "A",
@@ -349,7 +1108,8 @@
         "inverts": [
           "IS_CLK_INVERTED"
         ],
-        "mode": "reconfig"
+        "mode": "reconfig",
+        "inputs": null
       },
       "LUT1": {
         "init": "2'h0",
@@ -398,7 +1158,8 @@
         "inverts": [
           "IS_WCLK_INVERTED"
         ],
-        "mode": "dist_ram"
+        "mode": "dist_ram",
+        "inputs": null
       },
       "RAM128X1S": {
         "init": "128'h00000000000000000000000000000000",
@@ -406,7 +1167,8 @@
           "IS_WCLK_INVERTED"
         ],
         "mode": "dist_ram",
-        "resource": "Single-port"
+        "resource": "Single-port",
+        "inputs": null
       },
       "RAM256X1D": {
         "init": "256'h0000000000000000000000000000000000000000000000000000000000000000",
@@ -414,21 +1176,24 @@
           "IS_WCLK_INVERTED"
         ],
         "mode": "dist_ram",
-        "resource": "Dual-port"
+        "resource": "Dual-port",
+        "inputs": null
       },
       "RAM256X1S": {
         "init": "256'h0000000000000000000000000000000000000000000000000000000000000000",
         "inverts": [
           "IS_WCLK_INVERTED"
         ],
-        "mode": "dist_ram"
+        "mode": "dist_ram",
+        "inputs": null
       },
       "RAM32M": {
         "init": null,
         "inverts": [
           "IS_WCLK_INVERTED"
         ],
-        "mode": "dist_ram"
+        "mode": "dist_ram",
+        "inputs": null
       },
       "RAM32M16": {
         "init": null,
@@ -436,21 +1201,24 @@
           "IS_WCLK_INVERTED"
         ],
         "mode": "dist_ram",
-        "resource": "Octal 2-bit port"
+        "resource": "Octal 2-bit port",
+        "inputs": null
       },
       "RAM32X16DR8": {
         "init": null,
         "inverts": [
           "IS_WCLK_INVERTED"
         ],
-        "mode": "dist_ram"
+        "mode": "dist_ram",
+        "inputs": null
       },
       "RAM32X1D": {
         "init": "32'h00000000",
         "inverts": [
           "IS_WCLK_INVERTED"
         ],
-        "mode": "dist_ram"
+        "mode": "dist_ram",
+        "inputs": null
       },
       "RAM32X1S": {
         "init": "32'h00000000",
@@ -458,7 +1226,8 @@
           "IS_WCLK_INVERTED"
         ],
         "mode": "dist_ram",
-        "resource": "Single-port"
+        "resource": "Single-port",
+        "inputs": null
       },
       "RAM512X1S": {
         "init": "512'h00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
@@ -466,14 +1235,16 @@
           "IS_WCLK_INVERTED"
         ],
         "mode": "dist_ram",
-        "resource": "Single-port"
+        "resource": "Single-port",
+        "inputs": null
       },
       "RAM64M": {
         "init": null,
         "inverts": [
           "IS_WCLK_INVERTED"
         ],
-        "mode": "dist_ram"
+        "mode": "dist_ram",
+        "inputs": null
       },
       "RAM64M8": {
         "init": null,
@@ -481,7 +1252,8 @@
           "IS_WCLK_INVERTED"
         ],
         "mode": "dist_ram",
-        "resource": "Octal-port"
+        "resource": "Octal-port",
+        "inputs": null
       },
       "RAM64X1D": {
         "init": "64'h0000000000000000",
@@ -489,7 +1261,8 @@
           "IS_WCLK_INVERTED"
         ],
         "mode": "dist_ram",
-        "resource": "Dual-port"
+        "resource": "Dual-port",
+        "inputs": null
       },
       "RAM64X1S": {
         "init": "64'h0000000000000000",
@@ -497,33 +1270,385 @@
           "IS_WCLK_INVERTED"
         ],
         "mode": "dist_ram",
-        "resource": "Single-port"
+        "resource": "Single-port",
+        "inputs": null
       },
       "RAM64X8SW": {
         "init": null,
         "inverts": [
           "IS_WCLK_INVERTED"
         ],
-        "mode": "dist_ram"
+        "mode": "dist_ram",
+        "inputs": null
       },
       "SRL16E": {
         "init": "16'h0000",
         "inverts": [
           "IS_CLK_INVERTED"
         ],
-        "mode": "srl"
+        "mode": "srl",
+        "inputs": null
       },
       "SRLC32E": {
         "init": "32'h00000000",
         "inverts": [
           "IS_CLK_INVERTED"
         ],
-        "mode": "srl"
+        "mode": "srl",
+        "inputs": null
+      }
+    }
+  },
+  "DCIRESET": {
+    "element": "DCIRESET",
+    "kind": "leaf",
+    "subsystem": "I",
+    "ports": [
+      {
+        "name": "LOCKED",
+        "dir": "out"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "DCIRESET"
+    ],
+    "configs": {
+      "DCIRESET": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "DNA_PORTE2": {
+    "element": "DNA_PORTE2",
+    "kind": "leaf",
+    "subsystem": "CONFIGURATION",
+    "ports": [
+      {
+        "name": "CLK",
+        "dir": "in"
+      },
+      {
+        "name": "DIN",
+        "dir": "in"
+      },
+      {
+        "name": "DOUT",
+        "dir": "out"
+      },
+      {
+        "name": "READ",
+        "dir": "in"
+      },
+      {
+        "name": "SHIFT",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "DNA_PORTE2"
+    ],
+    "configs": {
+      "DNA_PORTE2": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "DSP48E2": {
+    "element": "DSP48E2",
+    "kind": "leaf",
+    "subsystem": "ARITHMETIC",
+    "ports": [
+      {
+        "name": "A",
+        "dir": "in",
+        "width": 30
+      },
+      {
+        "name": "ACIN",
+        "dir": "in",
+        "width": 30
+      },
+      {
+        "name": "ACOUT",
+        "dir": "out",
+        "width": 30
+      },
+      {
+        "name": "ALUMODE",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "B",
+        "dir": "in",
+        "width": 18
+      },
+      {
+        "name": "BCIN",
+        "dir": "in",
+        "width": 18
+      },
+      {
+        "name": "BCOUT",
+        "dir": "out",
+        "width": 18
+      },
+      {
+        "name": "C",
+        "dir": "in",
+        "width": 48
+      },
+      {
+        "name": "CARRYCASCIN",
+        "dir": "in"
+      },
+      {
+        "name": "CARRYCASCOUT",
+        "dir": "out"
+      },
+      {
+        "name": "CARRYIN",
+        "dir": "in"
+      },
+      {
+        "name": "CARRYINSEL",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "CARRYOUT",
+        "dir": "out",
+        "width": 4
+      },
+      {
+        "name": "CEA1",
+        "dir": "in"
+      },
+      {
+        "name": "CEA2",
+        "dir": "in"
+      },
+      {
+        "name": "CEAD",
+        "dir": "in"
+      },
+      {
+        "name": "CEALUMODE",
+        "dir": "in"
+      },
+      {
+        "name": "CEB1",
+        "dir": "in"
+      },
+      {
+        "name": "CEB2",
+        "dir": "in"
+      },
+      {
+        "name": "CEC",
+        "dir": "in"
+      },
+      {
+        "name": "CECARRYIN",
+        "dir": "in"
+      },
+      {
+        "name": "CECTRL",
+        "dir": "in"
+      },
+      {
+        "name": "CED",
+        "dir": "in"
+      },
+      {
+        "name": "CEINMODE",
+        "dir": "in"
+      },
+      {
+        "name": "CEM",
+        "dir": "in"
+      },
+      {
+        "name": "CEP",
+        "dir": "in"
+      },
+      {
+        "name": "CLK",
+        "dir": "in"
+      },
+      {
+        "name": "Cascade:_Cascade_Ports",
+        "dir": "in"
+      },
+      {
+        "name": "Control:_Control_Inputs/Status_Bits",
+        "dir": "in"
+      },
+      {
+        "name": "D",
+        "dir": "in",
+        "width": 27
+      },
+      {
+        "name": "Data:_Data_Ports",
+        "dir": "in"
+      },
+      {
+        "name": "INMODE",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "MULTSIGNIN",
+        "dir": "in"
+      },
+      {
+        "name": "MULTSIGNOUT",
+        "dir": "out"
+      },
+      {
+        "name": "OPMODE",
+        "dir": "in",
+        "width": 9
+      },
+      {
+        "name": "OVERFLOW",
+        "dir": "out"
+      },
+      {
+        "name": "P",
+        "dir": "out",
+        "width": 48
+      },
+      {
+        "name": "PATTERNBDETECT",
+        "dir": "out"
+      },
+      {
+        "name": "PATTERNDETECT",
+        "dir": "out"
+      },
+      {
+        "name": "PCIN",
+        "dir": "in",
+        "width": 48
+      },
+      {
+        "name": "PCOUT",
+        "dir": "out",
+        "width": 48
+      },
+      {
+        "name": "RSTA",
+        "dir": "in"
+      },
+      {
+        "name": "RSTALLCARRYIN",
+        "dir": "in"
+      },
+      {
+        "name": "RSTALUMODE",
+        "dir": "in"
+      },
+      {
+        "name": "RSTB",
+        "dir": "in"
+      },
+      {
+        "name": "RSTC",
+        "dir": "in"
+      },
+      {
+        "name": "RSTCTRL",
+        "dir": "in"
+      },
+      {
+        "name": "RSTD",
+        "dir": "in"
+      },
+      {
+        "name": "RSTINMODE",
+        "dir": "in"
+      },
+      {
+        "name": "RSTM",
+        "dir": "in"
+      },
+      {
+        "name": "RSTP",
+        "dir": "in"
+      },
+      {
+        "name": "Reset/Clock_Enable:_Reset/Clock_Enable_Inputs.",
+        "dir": "in"
+      },
+      {
+        "name": "UNDERFLOW",
+        "dir": "out"
+      },
+      {
+        "name": "XOROUT",
+        "dir": "out",
+        "width": 8
+      }
+    ],
+    "members": [
+      "DSP48E2"
+    ],
+    "configs": {
+      "DSP48E2": {
+        "init": null,
+        "inverts": [
+          "IS_ALUMODE_INVERTED",
+          "IS_CARRYIN_INVERTED",
+          "IS_CLK_INVERTED",
+          "IS_INMODE_INVERTED",
+          "IS_OPMODE_INVERTED",
+          "IS_RSTALLCARRYIN_INVERTED",
+          "IS_RSTALUMODE_INVERTED",
+          "IS_RSTA_INVERTED",
+          "IS_RSTB_INVERTED",
+          "IS_RSTCTRL_INVERTED",
+          "IS_RSTC_INVERTED",
+          "IS_RSTD_INVERTED",
+          "IS_RSTINMODE_INVERTED",
+          "IS_RSTM_INVERTED",
+          "IS_RSTP_INVERTED"
+        ]
+      }
+    }
+  },
+  "EFUSE_USR": {
+    "element": "EFUSE_USR",
+    "kind": "leaf",
+    "subsystem": "CONFIGURATION",
+    "ports": [
+      {
+        "name": "EFUSEUSR",
+        "dir": "out",
+        "width": 32
+      }
+    ],
+    "members": [
+      "EFUSE_USR"
+    ],
+    "configs": {
+      "EFUSE_USR": {
+        "init": null,
+        "inverts": []
       }
     }
   },
   "storage_element": {
     "element": "storage_element",
+    "kind": "decomposed",
+    "subsystem": "REGISTER",
     "ports": [
       {
         "name": "C",
@@ -649,8 +1774,5024 @@
       }
     }
   },
+  "RAMB18E2": {
+    "element": "RAMB18E2",
+    "kind": "leaf",
+    "subsystem": "BLOCKRAM",
+    "ports": [
+      {
+        "name": "ADDRARDADDR",
+        "dir": "in",
+        "width": 14
+      },
+      {
+        "name": "ADDRBWRADDR",
+        "dir": "in",
+        "width": 14
+      },
+      {
+        "name": "ADDRENA",
+        "dir": "in"
+      },
+      {
+        "name": "ADDRENB",
+        "dir": "in"
+      },
+      {
+        "name": "CASDIMUXA",
+        "dir": "in"
+      },
+      {
+        "name": "CASDIMUXB",
+        "dir": "in"
+      },
+      {
+        "name": "CASDIN",
+        "dir": "in",
+        "width": 32
+      },
+      {
+        "name": "CASDINA",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "CASDINB",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "CASDINP",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "CASDINPA",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "CASDINPB",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "CASDOMUX",
+        "dir": "in"
+      },
+      {
+        "name": "CASDOMUXA",
+        "dir": "in"
+      },
+      {
+        "name": "CASDOMUXB",
+        "dir": "in"
+      },
+      {
+        "name": "CASDOMUXEN",
+        "dir": "in"
+      },
+      {
+        "name": "CASDOMUXEN_A",
+        "dir": "in"
+      },
+      {
+        "name": "CASDOMUXEN_B",
+        "dir": "in"
+      },
+      {
+        "name": "CASDOUT",
+        "dir": "out",
+        "width": 32
+      },
+      {
+        "name": "CASDOUTA",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "CASDOUTB",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "CASDOUTP",
+        "dir": "out",
+        "width": 4
+      },
+      {
+        "name": "CASDOUTPA",
+        "dir": "out",
+        "width": 2
+      },
+      {
+        "name": "CASDOUTPB",
+        "dir": "out",
+        "width": 2
+      },
+      {
+        "name": "CASNXTEMPTY",
+        "dir": "out"
+      },
+      {
+        "name": "CASNXTRDEN",
+        "dir": "in"
+      },
+      {
+        "name": "CASOREGIMUX",
+        "dir": "in"
+      },
+      {
+        "name": "CASOREGIMUXA",
+        "dir": "in"
+      },
+      {
+        "name": "CASOREGIMUXB",
+        "dir": "in"
+      },
+      {
+        "name": "CASOREGIMUXEN",
+        "dir": "in"
+      },
+      {
+        "name": "CASOREGIMUXEN_A",
+        "dir": "in"
+      },
+      {
+        "name": "CASOREGIMUXEN_B",
+        "dir": "in"
+      },
+      {
+        "name": "CASPRVEMPTY",
+        "dir": "in"
+      },
+      {
+        "name": "CASPRVRDEN",
+        "dir": "out"
+      },
+      {
+        "name": "CLKARDCLK",
+        "dir": "in"
+      },
+      {
+        "name": "CLKBWRCLK",
+        "dir": "in"
+      },
+      {
+        "name": "Cascade_Signals:_Signals_used_when_cascading_more_than_one_FIFO.",
+        "dir": "in"
+      },
+      {
+        "name": "Cascade_Signals:_Signals_used_when_cascading_more_than_one_RAMB18E2_components",
+        "dir": "in"
+      },
+      {
+        "name": "DIN",
+        "dir": "in",
+        "width": 32
+      },
+      {
+        "name": "DINADIN",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "DINBDIN",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "DINP",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "DINPADINP",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "DINPBDINP",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "DOUT",
+        "dir": "out",
+        "width": 32
+      },
+      {
+        "name": "DOUTADOUT",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "DOUTBDOUT",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "DOUTP",
+        "dir": "out",
+        "width": 4
+      },
+      {
+        "name": "DOUTPADOUTP",
+        "dir": "out",
+        "width": 2
+      },
+      {
+        "name": "DOUTPBDOUTP",
+        "dir": "out",
+        "width": 2
+      },
+      {
+        "name": "EMPTY",
+        "dir": "out"
+      },
+      {
+        "name": "ENARDEN",
+        "dir": "in"
+      },
+      {
+        "name": "ENBWREN",
+        "dir": "in"
+      },
+      {
+        "name": "FULL",
+        "dir": "out"
+      },
+      {
+        "name": "PROGEMPTY",
+        "dir": "out"
+      },
+      {
+        "name": "PROGFULL",
+        "dir": "out"
+      },
+      {
+        "name": "Port_A_Address/Control_Signals:_Port_A_address_and_control_(clock,_reset,_enables,_etc.)_signals.",
+        "dir": "in"
+      },
+      {
+        "name": "Port_A_Data:_Port_A_data_signals.",
+        "dir": "in"
+      },
+      {
+        "name": "Port_B_Address/Control_Signals:_Port_B_address_and_control_(clock,_reset,_enables,_etc.).",
+        "dir": "in"
+      },
+      {
+        "name": "Port_B_Data:_Port_B_data_signals.",
+        "dir": "in"
+      },
+      {
+        "name": "RDCLK",
+        "dir": "in"
+      },
+      {
+        "name": "RDCOUNT",
+        "dir": "out",
+        "width": 13
+      },
+      {
+        "name": "RDEN",
+        "dir": "in"
+      },
+      {
+        "name": "RDERR",
+        "dir": "out"
+      },
+      {
+        "name": "RDRSTBUSY",
+        "dir": "out"
+      },
+      {
+        "name": "REGCE",
+        "dir": "in"
+      },
+      {
+        "name": "REGCEAREGCE",
+        "dir": "in"
+      },
+      {
+        "name": "REGCEB",
+        "dir": "in"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      },
+      {
+        "name": "RSTRAMARSTRAM",
+        "dir": "in"
+      },
+      {
+        "name": "RSTRAMB",
+        "dir": "in"
+      },
+      {
+        "name": "RSTREG",
+        "dir": "in"
+      },
+      {
+        "name": "RSTREGARSTREG",
+        "dir": "in"
+      },
+      {
+        "name": "RSTREGB",
+        "dir": "in"
+      },
+      {
+        "name": "Read_Control_Signals:_Read_clock,_enable,_and_reset_input_signals.",
+        "dir": "in"
+      },
+      {
+        "name": "Read_Data:_Read_output_data.",
+        "dir": "in"
+      },
+      {
+        "name": "SLEEP",
+        "dir": "in"
+      },
+      {
+        "name": "Status:_Flags_and_other_FIFO_status_outputs.",
+        "dir": "in"
+      },
+      {
+        "name": "WEA",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "WEBWE",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "WRCLK",
+        "dir": "in"
+      },
+      {
+        "name": "WRCOUNT",
+        "dir": "out",
+        "width": 13
+      },
+      {
+        "name": "WREN",
+        "dir": "in"
+      },
+      {
+        "name": "WRERR",
+        "dir": "out"
+      },
+      {
+        "name": "WRRSTBUSY",
+        "dir": "out"
+      },
+      {
+        "name": "Write_Control_Signals:_Write_clock_and_enable_input_signals.",
+        "dir": "in"
+      },
+      {
+        "name": "Write_Data:_Write_input_data.",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "FIFO18E2",
+      "RAMB18E2"
+    ],
+    "configs": {
+      "FIFO18E2": {
+        "init": "36'h000000000",
+        "inverts": [
+          "IS_RDCLK_INVERTED",
+          "IS_RDEN_INVERTED",
+          "IS_RSTREG_INVERTED",
+          "IS_RST_INVERTED",
+          "IS_WRCLK_INVERTED",
+          "IS_WREN_INVERTED"
+        ],
+        "mode": "fifo"
+      },
+      "RAMB18E2": {
+        "init": null,
+        "inverts": [
+          "IS_CLKARDCLK_INVERTED",
+          "IS_CLKBWRCLK_INVERTED",
+          "IS_ENARDEN_INVERTED",
+          "IS_ENBWREN_INVERTED",
+          "IS_RSTRAMARSTRAM_INVERTED",
+          "IS_RSTRAMB_INVERTED",
+          "IS_RSTREGARSTREG_INVERTED",
+          "IS_RSTREGB_INVERTED"
+        ],
+        "mode": "ram"
+      }
+    }
+  },
+  "RAMB36E2": {
+    "element": "RAMB36E2",
+    "kind": "leaf",
+    "subsystem": "BLOCKRAM",
+    "ports": [
+      {
+        "name": "ADDRARDADDR",
+        "dir": "in",
+        "width": 15
+      },
+      {
+        "name": "ADDRBWRADDR",
+        "dir": "in",
+        "width": 15
+      },
+      {
+        "name": "ADDRENA",
+        "dir": "in"
+      },
+      {
+        "name": "ADDRENB",
+        "dir": "in"
+      },
+      {
+        "name": "CASDIMUXA",
+        "dir": "in"
+      },
+      {
+        "name": "CASDIMUXB",
+        "dir": "in"
+      },
+      {
+        "name": "CASDIN",
+        "dir": "in",
+        "width": 64
+      },
+      {
+        "name": "CASDINA",
+        "dir": "in",
+        "width": 32
+      },
+      {
+        "name": "CASDINB",
+        "dir": "in",
+        "width": 32
+      },
+      {
+        "name": "CASDINP",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "CASDINPA",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "CASDINPB",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "CASDOMUX",
+        "dir": "in"
+      },
+      {
+        "name": "CASDOMUXA",
+        "dir": "in"
+      },
+      {
+        "name": "CASDOMUXB",
+        "dir": "in"
+      },
+      {
+        "name": "CASDOMUXEN",
+        "dir": "in"
+      },
+      {
+        "name": "CASDOMUXEN_A",
+        "dir": "in"
+      },
+      {
+        "name": "CASDOMUXEN_B",
+        "dir": "in"
+      },
+      {
+        "name": "CASDOUT",
+        "dir": "out",
+        "width": 64
+      },
+      {
+        "name": "CASDOUTA",
+        "dir": "out",
+        "width": 32
+      },
+      {
+        "name": "CASDOUTB",
+        "dir": "out",
+        "width": 32
+      },
+      {
+        "name": "CASDOUTP",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "CASDOUTPA",
+        "dir": "out",
+        "width": 4
+      },
+      {
+        "name": "CASDOUTPB",
+        "dir": "out",
+        "width": 4
+      },
+      {
+        "name": "CASINDBITERR",
+        "dir": "in"
+      },
+      {
+        "name": "CASINSBITERR",
+        "dir": "in"
+      },
+      {
+        "name": "CASNXTEMPTY",
+        "dir": "out"
+      },
+      {
+        "name": "CASNXTRDEN",
+        "dir": "in"
+      },
+      {
+        "name": "CASOREGIMUX",
+        "dir": "in"
+      },
+      {
+        "name": "CASOREGIMUXA",
+        "dir": "in"
+      },
+      {
+        "name": "CASOREGIMUXB",
+        "dir": "in"
+      },
+      {
+        "name": "CASOREGIMUXEN",
+        "dir": "in"
+      },
+      {
+        "name": "CASOREGIMUXEN_A",
+        "dir": "in"
+      },
+      {
+        "name": "CASOREGIMUXEN_B",
+        "dir": "in"
+      },
+      {
+        "name": "CASOUTDBITERR",
+        "dir": "out"
+      },
+      {
+        "name": "CASOUTSBITERR",
+        "dir": "out"
+      },
+      {
+        "name": "CASPRVEMPTY",
+        "dir": "in"
+      },
+      {
+        "name": "CASPRVRDEN",
+        "dir": "out"
+      },
+      {
+        "name": "CLKARDCLK",
+        "dir": "in"
+      },
+      {
+        "name": "CLKBWRCLK",
+        "dir": "in"
+      },
+      {
+        "name": "Cascade_Signals:_Signals_used_when_cascading_more_than_one_FIFO.",
+        "dir": "in"
+      },
+      {
+        "name": "Cascade_Signals:_Signals_used_when_cascading_more_than_one_RAMB36E2_components",
+        "dir": "in"
+      },
+      {
+        "name": "DBITERR",
+        "dir": "out"
+      },
+      {
+        "name": "DIN",
+        "dir": "in",
+        "width": 64
+      },
+      {
+        "name": "DINADIN",
+        "dir": "in",
+        "width": 32
+      },
+      {
+        "name": "DINBDIN",
+        "dir": "in",
+        "width": 32
+      },
+      {
+        "name": "DINP",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "DINPADINP",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "DINPBDINP",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "DOUT",
+        "dir": "out",
+        "width": 64
+      },
+      {
+        "name": "DOUTADOUT",
+        "dir": "out",
+        "width": 32
+      },
+      {
+        "name": "DOUTBDOUT",
+        "dir": "out",
+        "width": 32
+      },
+      {
+        "name": "DOUTP",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "DOUTPADOUTP",
+        "dir": "out",
+        "width": 4
+      },
+      {
+        "name": "DOUTPBDOUTP",
+        "dir": "out",
+        "width": 4
+      },
+      {
+        "name": "ECCPARITY",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "ECCPIPECE",
+        "dir": "in"
+      },
+      {
+        "name": "ECC_Signals:_Error_Correction_Circuitry_ports",
+        "dir": "in"
+      },
+      {
+        "name": "ECC_Signals:_Error_Correction_Circuitry_ports.",
+        "dir": "in"
+      },
+      {
+        "name": "EMPTY",
+        "dir": "out"
+      },
+      {
+        "name": "ENARDEN",
+        "dir": "in"
+      },
+      {
+        "name": "ENBWREN",
+        "dir": "in"
+      },
+      {
+        "name": "FULL",
+        "dir": "out"
+      },
+      {
+        "name": "INJECTDBITERR",
+        "dir": "in"
+      },
+      {
+        "name": "INJECTSBITERR",
+        "dir": "in"
+      },
+      {
+        "name": "PROGEMPTY",
+        "dir": "out"
+      },
+      {
+        "name": "PROGFULL",
+        "dir": "out"
+      },
+      {
+        "name": "Port_A_Address/Control_Signals:_Port_A_address_and_control_(clock,_reset,_enables,_etc.)_signals.",
+        "dir": "in"
+      },
+      {
+        "name": "Port_A_Data:_Port_A_data_signals.",
+        "dir": "in"
+      },
+      {
+        "name": "Port_B_Address/Control_Signals:_Port_B_address_and_control_(clock,_reset,_enables,_etc.).",
+        "dir": "in"
+      },
+      {
+        "name": "Port_B_Data:_Port_B_data_signals.",
+        "dir": "in"
+      },
+      {
+        "name": "RDADDRECC",
+        "dir": "out",
+        "width": 9
+      },
+      {
+        "name": "RDCLK",
+        "dir": "in"
+      },
+      {
+        "name": "RDCOUNT",
+        "dir": "out",
+        "width": 14
+      },
+      {
+        "name": "RDEN",
+        "dir": "in"
+      },
+      {
+        "name": "RDERR",
+        "dir": "out"
+      },
+      {
+        "name": "RDRSTBUSY",
+        "dir": "out"
+      },
+      {
+        "name": "REGCE",
+        "dir": "in"
+      },
+      {
+        "name": "REGCEAREGCE",
+        "dir": "in"
+      },
+      {
+        "name": "REGCEB",
+        "dir": "in"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      },
+      {
+        "name": "RSTRAMARSTRAM",
+        "dir": "in"
+      },
+      {
+        "name": "RSTRAMB",
+        "dir": "in"
+      },
+      {
+        "name": "RSTREG",
+        "dir": "in"
+      },
+      {
+        "name": "RSTREGARSTREG",
+        "dir": "in"
+      },
+      {
+        "name": "RSTREGB",
+        "dir": "in"
+      },
+      {
+        "name": "Read_Control_Signals:_Read_clock,_enable_and_reset_input_signals.",
+        "dir": "in"
+      },
+      {
+        "name": "Read_Data:_Read_output_data.",
+        "dir": "in"
+      },
+      {
+        "name": "SBITERR",
+        "dir": "out"
+      },
+      {
+        "name": "SLEEP",
+        "dir": "in"
+      },
+      {
+        "name": "Status:_Flags_and_other_FIFO_status_outputs.",
+        "dir": "in"
+      },
+      {
+        "name": "WEA",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "WEBWE",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "WRCLK",
+        "dir": "in"
+      },
+      {
+        "name": "WRCOUNT",
+        "dir": "out",
+        "width": 14
+      },
+      {
+        "name": "WREN",
+        "dir": "in"
+      },
+      {
+        "name": "WRERR",
+        "dir": "out"
+      },
+      {
+        "name": "WRRSTBUSY",
+        "dir": "out"
+      },
+      {
+        "name": "Write_Control_Signals:_Write_clock_and_enable_input_signals.",
+        "dir": "in"
+      },
+      {
+        "name": "Write_Data:_Write_input_data.",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "FIFO36E2",
+      "RAMB36E2"
+    ],
+    "configs": {
+      "FIFO36E2": {
+        "init": "72'h000000000000000000",
+        "inverts": [
+          "IS_RDCLK_INVERTED",
+          "IS_RDEN_INVERTED",
+          "IS_RSTREG_INVERTED",
+          "IS_RST_INVERTED",
+          "IS_WRCLK_INVERTED",
+          "IS_WREN_INVERTED"
+        ],
+        "mode": "fifo"
+      },
+      "RAMB36E2": {
+        "init": null,
+        "inverts": [
+          "IS_CLKARDCLK_INVERTED",
+          "IS_CLKBWRCLK_INVERTED",
+          "IS_ENARDEN_INVERTED",
+          "IS_ENBWREN_INVERTED",
+          "IS_RSTRAMARSTRAM_INVERTED",
+          "IS_RSTRAMB_INVERTED",
+          "IS_RSTREGARSTREG_INVERTED",
+          "IS_RSTREGB_INVERTED"
+        ],
+        "mode": "ram"
+      }
+    }
+  },
+  "GTHE4_CHANNEL": {
+    "element": "GTHE4_CHANNEL",
+    "kind": "leaf",
+    "subsystem": "ADVANCED",
+    "ports": [
+      {
+        "name": "CDRSTEPDIR",
+        "dir": "in"
+      },
+      {
+        "name": "CDRSTEPSQ",
+        "dir": "in"
+      },
+      {
+        "name": "CDRSTEPSX",
+        "dir": "in"
+      },
+      {
+        "name": "CFGRESET",
+        "dir": "in"
+      },
+      {
+        "name": "CPLLFBCLKLOST",
+        "dir": "out"
+      },
+      {
+        "name": "CPLLFREQLOCK",
+        "dir": "in"
+      },
+      {
+        "name": "CPLLLOCK",
+        "dir": "out"
+      },
+      {
+        "name": "CPLLLOCKDETCLK",
+        "dir": "in"
+      },
+      {
+        "name": "CPLLLOCKEN",
+        "dir": "in"
+      },
+      {
+        "name": "CPLLPD",
+        "dir": "in"
+      },
+      {
+        "name": "CPLLREFCLKLOST",
+        "dir": "out"
+      },
+      {
+        "name": "CPLLREFCLKSEL",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "CPLLRESET",
+        "dir": "in"
+      },
+      {
+        "name": "DMONFIFORESET",
+        "dir": "in"
+      },
+      {
+        "name": "DMONITORCLK",
+        "dir": "in"
+      },
+      {
+        "name": "DMONITOROUT",
+        "dir": "out",
+        "width": 17
+      },
+      {
+        "name": "DMONITOROUTCLK",
+        "dir": "out"
+      },
+      {
+        "name": "DRPADDR",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "DRPCLK",
+        "dir": "in"
+      },
+      {
+        "name": "DRPDI",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "DRPDO",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "DRPEN",
+        "dir": "in"
+      },
+      {
+        "name": "DRPRDY",
+        "dir": "out"
+      },
+      {
+        "name": "DRPRST",
+        "dir": "in"
+      },
+      {
+        "name": "DRPWE",
+        "dir": "in"
+      },
+      {
+        "name": "EYESCANDATAERROR",
+        "dir": "out"
+      },
+      {
+        "name": "EYESCANMODE",
+        "dir": "in"
+      },
+      {
+        "name": "EYESCANRESET",
+        "dir": "in"
+      },
+      {
+        "name": "EYESCANTRIGGER",
+        "dir": "in"
+      },
+      {
+        "name": "FREQOS",
+        "dir": "in"
+      },
+      {
+        "name": "GTGREFCLK",
+        "dir": "in"
+      },
+      {
+        "name": "GTHRXN",
+        "dir": "in"
+      },
+      {
+        "name": "GTHRXP",
+        "dir": "in"
+      },
+      {
+        "name": "GTNORTHREFCLK0",
+        "dir": "in"
+      },
+      {
+        "name": "GTNORTHREFCLK1",
+        "dir": "in"
+      },
+      {
+        "name": "GTPOWERGOOD",
+        "dir": "out"
+      },
+      {
+        "name": "GTREFCLK0",
+        "dir": "in"
+      },
+      {
+        "name": "GTREFCLK1",
+        "dir": "in"
+      },
+      {
+        "name": "GTREFCLKMONITOR",
+        "dir": "out"
+      },
+      {
+        "name": "GTRXRESET",
+        "dir": "in"
+      },
+      {
+        "name": "GTSOUTHREFCLK0",
+        "dir": "in"
+      },
+      {
+        "name": "GTSOUTHREFCLK1",
+        "dir": "in"
+      },
+      {
+        "name": "GTTXRESET",
+        "dir": "in"
+      },
+      {
+        "name": "INCPCTRL",
+        "dir": "in"
+      },
+      {
+        "name": "LOOPBACK",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "MGTHTXN",
+        "dir": "out"
+      },
+      {
+        "name": "MGTHTXP",
+        "dir": "out"
+      },
+      {
+        "name": "PCIEEQRXEQADAPTDONE",
+        "dir": "in"
+      },
+      {
+        "name": "PCIERATEGEN3",
+        "dir": "out"
+      },
+      {
+        "name": "PCIERATEIDLE",
+        "dir": "out"
+      },
+      {
+        "name": "PCIERATEQPLLPD",
+        "dir": "out"
+      },
+      {
+        "name": "PCIERATEQPLLRESET",
+        "dir": "out"
+      },
+      {
+        "name": "PCIERSTIDLE",
+        "dir": "in"
+      },
+      {
+        "name": "PCIERSTTXSYNCSTART",
+        "dir": "in"
+      },
+      {
+        "name": "PCIESYNCTXSYNCDONE",
+        "dir": "out"
+      },
+      {
+        "name": "PCIEUSERGEN3RDY",
+        "dir": "out"
+      },
+      {
+        "name": "PCIEUSERPHYSTATUSRST",
+        "dir": "out"
+      },
+      {
+        "name": "PCIEUSERRATEDONE",
+        "dir": "in"
+      },
+      {
+        "name": "PCIEUSERRATESTART",
+        "dir": "out"
+      },
+      {
+        "name": "PCSRSVDOUT",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "PHYSTATUS",
+        "dir": "out"
+      },
+      {
+        "name": "RESETEXCEPTION",
+        "dir": "out"
+      },
+      {
+        "name": "RSOSINTDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RX8B10BEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXAFECFOKEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXBUFRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXBUFSTATUS",
+        "dir": "out",
+        "width": 3
+      },
+      {
+        "name": "RXCDRFREQRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXCDRHOLD",
+        "dir": "in"
+      },
+      {
+        "name": "RXCDRLOCK",
+        "dir": "out"
+      },
+      {
+        "name": "RXCDROVRDEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXCDRPHDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXCDRRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXCDRRESETRSV",
+        "dir": "in"
+      },
+      {
+        "name": "RXCHANBONDSEQ",
+        "dir": "out"
+      },
+      {
+        "name": "RXCHANISALIGNED",
+        "dir": "out"
+      },
+      {
+        "name": "RXCHANREALIGN",
+        "dir": "out"
+      },
+      {
+        "name": "RXCHBONDEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXCHBONDI",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "RXCHBONDLEVEL",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "RXCHBONDMASTER",
+        "dir": "in"
+      },
+      {
+        "name": "RXCHBONDO",
+        "dir": "out",
+        "width": 5
+      },
+      {
+        "name": "RXCHBONDSLAVE",
+        "dir": "in"
+      },
+      {
+        "name": "RXCKCALDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXCKCALRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXCKCALSTART",
+        "dir": "in",
+        "width": 7
+      },
+      {
+        "name": "RXCLKCORCNT",
+        "dir": "out",
+        "width": 2
+      },
+      {
+        "name": "RXCOMINITDET",
+        "dir": "out"
+      },
+      {
+        "name": "RXCOMSASDET",
+        "dir": "out"
+      },
+      {
+        "name": "RXCOMWAKEDET",
+        "dir": "out"
+      },
+      {
+        "name": "RXCTRL0",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "RXCTRL1",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "RXCTRL2",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "RXCTRL3",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "RXDATA",
+        "dir": "out",
+        "width": 128
+      },
+      {
+        "name": "RXDATAEXTENDRSVD",
+        "dir": "out"
+      },
+      {
+        "name": "RXDFEAGCCTRL",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "RXDFECFOKFCNUM",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "RXDFECFOKFEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXDFECFOKFPULSE",
+        "dir": "in"
+      },
+      {
+        "name": "RXDFELPMRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXDFEVSEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXDFEXYDEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXDLYBYPASS",
+        "dir": "in"
+      },
+      {
+        "name": "RXDLYEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXDLYOVRDEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXDLYSRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXDLYSRESETDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXELECIDLE",
+        "dir": "out"
+      },
+      {
+        "name": "RXELECIDLEMODE",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "RXLPMEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXMONITOROUT",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "RXMONITORSEL",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "RXOOBRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXOSCALRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXOSINTCFG",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "RXOSINTDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXOSINTEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXOSINTOVRDEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXOSINTSTARTED",
+        "dir": "out"
+      },
+      {
+        "name": "RXOSINTSTROBE",
+        "dir": "in"
+      },
+      {
+        "name": "RXOSINTSTROBEDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXOSINTSTROBESTARTED",
+        "dir": "in"
+      },
+      {
+        "name": "RXOUTCLK",
+        "dir": "out"
+      },
+      {
+        "name": "RXOUTCLKFABRIC",
+        "dir": "out"
+      },
+      {
+        "name": "RXOUTCLKPCS",
+        "dir": "out"
+      },
+      {
+        "name": "RXOUTCLKSEL",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "RXPCSRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXPD",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "RXPHALIGN",
+        "dir": "in"
+      },
+      {
+        "name": "RXPHALIGNDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXPHALIGNEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXPHALIGNERR",
+        "dir": "out"
+      },
+      {
+        "name": "RXPHDLYPD",
+        "dir": "in"
+      },
+      {
+        "name": "RXPHDLYRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXPHOVRDEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXPLLCLKSEL",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "RXPMARESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXPMARESETDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXPOLARITY",
+        "dir": "in"
+      },
+      {
+        "name": "RXPRBSCNTRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXPRBSERR",
+        "dir": "out"
+      },
+      {
+        "name": "RXPRBSLOCKED",
+        "dir": "out"
+      },
+      {
+        "name": "RXPRBSSEL",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "RXPRGDIVRESETDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXPROGDIVRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXQPIEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXQPISENN",
+        "dir": "out"
+      },
+      {
+        "name": "RXQPISENP",
+        "dir": "out"
+      },
+      {
+        "name": "RXRATE",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "RXRATEDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXRATEMODE",
+        "dir": "in"
+      },
+      {
+        "name": "RXRESETDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXSLIPOUTCLK",
+        "dir": "in"
+      },
+      {
+        "name": "RXSLIPPMA",
+        "dir": "in"
+      },
+      {
+        "name": "RXSTATUS",
+        "dir": "out",
+        "width": 3
+      },
+      {
+        "name": "RXSYNCALLIN",
+        "dir": "in"
+      },
+      {
+        "name": "RXSYNCDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXSYNCIN",
+        "dir": "in"
+      },
+      {
+        "name": "RXSYNCMODE",
+        "dir": "in"
+      },
+      {
+        "name": "RXSYNCOUT",
+        "dir": "out"
+      },
+      {
+        "name": "RXSYSCLKSEL",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "RXTERMINATION",
+        "dir": "in"
+      },
+      {
+        "name": "RXUSERRDY",
+        "dir": "in"
+      },
+      {
+        "name": "RXUSRCLK",
+        "dir": "in"
+      },
+      {
+        "name": "RXUSRCLK2",
+        "dir": "in"
+      },
+      {
+        "name": "TX8B10BBYPASS",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "TX8B10BEN",
+        "dir": "in"
+      },
+      {
+        "name": "TXBUFDIFFCTRL",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "TXBUFSTATUS",
+        "dir": "out",
+        "width": 2
+      },
+      {
+        "name": "TXCOMFINISH",
+        "dir": "out"
+      },
+      {
+        "name": "TXCOMINIT",
+        "dir": "in"
+      },
+      {
+        "name": "TXCOMSAS",
+        "dir": "in"
+      },
+      {
+        "name": "TXCOMWAKE",
+        "dir": "in"
+      },
+      {
+        "name": "TXCTRL0",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "TXCTRL1",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "TXCTRL2",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "TXDATA",
+        "dir": "in",
+        "width": 128
+      },
+      {
+        "name": "TXDATAEXTENDRSVD",
+        "dir": "in"
+      },
+      {
+        "name": "TXDCCDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXDCCFORCESTART",
+        "dir": "in"
+      },
+      {
+        "name": "TXDCCRESET",
+        "dir": "in"
+      },
+      {
+        "name": "TXDEEMPH",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "TXDETECTRX",
+        "dir": "in"
+      },
+      {
+        "name": "TXDIFFCTRL",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "TXDIFFPD",
+        "dir": "in"
+      },
+      {
+        "name": "TXDLYBYPASS",
+        "dir": "in"
+      },
+      {
+        "name": "TXDLYEN",
+        "dir": "in"
+      },
+      {
+        "name": "TXDLYHOLD",
+        "dir": "in"
+      },
+      {
+        "name": "TXDLYOVRDEN",
+        "dir": "in"
+      },
+      {
+        "name": "TXDLYSRESET",
+        "dir": "in"
+      },
+      {
+        "name": "TXDLYSRESETDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXDLYUPDOWN",
+        "dir": "in"
+      },
+      {
+        "name": "TXELECIDLE",
+        "dir": "in"
+      },
+      {
+        "name": "TXINHIBIT",
+        "dir": "in"
+      },
+      {
+        "name": "TXMAINCURSOR",
+        "dir": "in",
+        "width": 7
+      },
+      {
+        "name": "TXMARGIN",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "TXOUTCLK",
+        "dir": "out"
+      },
+      {
+        "name": "TXOUTCLKFABRIC",
+        "dir": "out"
+      },
+      {
+        "name": "TXOUTCLKPCS",
+        "dir": "out"
+      },
+      {
+        "name": "TXOUTCLKSEL",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "TXPCSRESET",
+        "dir": "in"
+      },
+      {
+        "name": "TXPD",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "TXPDELECIDLEMODE",
+        "dir": "in"
+      },
+      {
+        "name": "TXPHALIGN",
+        "dir": "in"
+      },
+      {
+        "name": "TXPHALIGNDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXPHALIGNEN",
+        "dir": "in"
+      },
+      {
+        "name": "TXPHDLYPD",
+        "dir": "in"
+      },
+      {
+        "name": "TXPHDLYRESET",
+        "dir": "in"
+      },
+      {
+        "name": "TXPHDLYTSTCLK",
+        "dir": "in"
+      },
+      {
+        "name": "TXPHINIT",
+        "dir": "in"
+      },
+      {
+        "name": "TXPHINITDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXPHOVRDEN",
+        "dir": "in"
+      },
+      {
+        "name": "TXPIPPMEN",
+        "dir": "in"
+      },
+      {
+        "name": "TXPIPPMOVRDEN",
+        "dir": "in"
+      },
+      {
+        "name": "TXPIPPMPD",
+        "dir": "in"
+      },
+      {
+        "name": "TXPIPPMSEL",
+        "dir": "in"
+      },
+      {
+        "name": "TXPIPPMSTEPSIZE",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "TXPISOPD",
+        "dir": "in"
+      },
+      {
+        "name": "TXPLLCLKSEL",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "TXPMARESET",
+        "dir": "in"
+      },
+      {
+        "name": "TXPMARESETDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXPOLARITY",
+        "dir": "in"
+      },
+      {
+        "name": "TXPOSTCURSOR",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "TXPRECURSOR",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "TXPRGDIVRESETDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXPROGDIVRESET",
+        "dir": "in"
+      },
+      {
+        "name": "TXQPIBIASEN",
+        "dir": "in"
+      },
+      {
+        "name": "TXQPISENN",
+        "dir": "out"
+      },
+      {
+        "name": "TXQPISENP",
+        "dir": "out"
+      },
+      {
+        "name": "TXQPISTRONGPDOWN",
+        "dir": "in"
+      },
+      {
+        "name": "TXQPIWEAKPUP",
+        "dir": "in"
+      },
+      {
+        "name": "TXRATE",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "TXRATEDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXRATEMODE",
+        "dir": "in"
+      },
+      {
+        "name": "TXRESETDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXSWING",
+        "dir": "in"
+      },
+      {
+        "name": "TXSYNCALLIN",
+        "dir": "in"
+      },
+      {
+        "name": "TXSYNCDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXSYNCIN",
+        "dir": "in"
+      },
+      {
+        "name": "TXSYNCMODE",
+        "dir": "in"
+      },
+      {
+        "name": "TXSYNCOUT",
+        "dir": "out"
+      },
+      {
+        "name": "TXSYSCLKSEL",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "TXUSERRDY",
+        "dir": "in"
+      },
+      {
+        "name": "TXUSRCLK",
+        "dir": "in"
+      },
+      {
+        "name": "TXUSRCLK2",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "GTHE4_CHANNEL"
+    ],
+    "configs": {
+      "GTHE4_CHANNEL": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "GTHE4_COMMON": {
+    "element": "GTHE4_COMMON",
+    "kind": "leaf",
+    "subsystem": "ADVANCED",
+    "ports": [
+      {
+        "name": "BGBYPASSB",
+        "dir": "in"
+      },
+      {
+        "name": "BGMONITORENB",
+        "dir": "in"
+      },
+      {
+        "name": "BGPDB",
+        "dir": "in"
+      },
+      {
+        "name": "BGRCALOVRD",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "BGRCALOVRDENB",
+        "dir": "in"
+      },
+      {
+        "name": "GTNORTHREFCLK00",
+        "dir": "in"
+      },
+      {
+        "name": "GTNORTHREFCLK01",
+        "dir": "in"
+      },
+      {
+        "name": "GTNORTHREFCLK10",
+        "dir": "in"
+      },
+      {
+        "name": "GTNORTHREFCLK11",
+        "dir": "in"
+      },
+      {
+        "name": "GTREFCLK00",
+        "dir": "in"
+      },
+      {
+        "name": "GTREFCLK01",
+        "dir": "in"
+      },
+      {
+        "name": "GTREFCLK10",
+        "dir": "in"
+      },
+      {
+        "name": "GTREFCLK11",
+        "dir": "in"
+      },
+      {
+        "name": "GTRESETSEL",
+        "dir": "in"
+      },
+      {
+        "name": "GTRXRESETSEL",
+        "dir": "in"
+      },
+      {
+        "name": "GTSOUTHREFCLK00",
+        "dir": "in"
+      },
+      {
+        "name": "GTSOUTHREFCLK01",
+        "dir": "in"
+      },
+      {
+        "name": "GTSOUTHREFCLK10",
+        "dir": "in"
+      },
+      {
+        "name": "GTSOUTHREFCLK11",
+        "dir": "in"
+      },
+      {
+        "name": "GTTXRESETSEL",
+        "dir": "in"
+      },
+      {
+        "name": "PMARSVD0",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "PMARSVD1",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "QPLL0CLK",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL0CLKRSVD0",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL0CLKRSVD1",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL0FBCLKLOST",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL0FBDIV",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "QPLL0FREQLOCK",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL0LOCK",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL0LOCKDETCLK",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL0LOCKEN",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL0OUTCLK",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL0OUTREFCLK",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL0PD",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL0REFCLK",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL0REFCLKLOST",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL0REFCLKSEL",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "QPLL0RESET",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1CLK",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1CLKRSVD0",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1CLKRSVD1",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1FBCLKLOST",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL1FBDIV",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "QPLL1FREQLOCK",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1LOCK",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL1LOCKDETCLK",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1LOCKEN",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1OUTCLK",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL1OUTREFCLK",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL1PD",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1REFCLK",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1REFCLKLOST",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL1REFCLKSEL",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "QPLL1RESET",
+        "dir": "in"
+      },
+      {
+        "name": "QPLLDMONITOR0",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "QPLLDMONITOR1",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "QPLLRSVD1",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "QPLLRSVD2",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "QPLLRSVD3",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "QPLLRSVD4",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "RCALENB",
+        "dir": "in"
+      },
+      {
+        "name": "REFCLKOUTMONITOR0",
+        "dir": "out"
+      },
+      {
+        "name": "REFCLKOUTMONITOR1",
+        "dir": "out"
+      },
+      {
+        "name": "RESETOVRD",
+        "dir": "in"
+      },
+      {
+        "name": "SDM0DATA",
+        "dir": "in",
+        "width": 25
+      },
+      {
+        "name": "SDM0FINALOUT",
+        "dir": "out",
+        "width": 4
+      },
+      {
+        "name": "SDM0RESET",
+        "dir": "in"
+      },
+      {
+        "name": "SDM0TESTDATA",
+        "dir": "out",
+        "width": 15
+      },
+      {
+        "name": "SDM0TOGGLE",
+        "dir": "in"
+      },
+      {
+        "name": "SDM0WIDTH",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "SDM1DATA",
+        "dir": "in",
+        "width": 25
+      },
+      {
+        "name": "SDM1FINALOUT",
+        "dir": "out",
+        "width": 4
+      },
+      {
+        "name": "SDM1RESET",
+        "dir": "in"
+      },
+      {
+        "name": "SDM1TESTDATA",
+        "dir": "out",
+        "width": 15
+      },
+      {
+        "name": "SDM1TOGGLE",
+        "dir": "in"
+      },
+      {
+        "name": "SDM1WIDTH",
+        "dir": "in",
+        "width": 2
+      }
+    ],
+    "members": [
+      "GTHE4_COMMON"
+    ],
+    "configs": {
+      "GTHE4_COMMON": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "GTYE4_CHANNEL": {
+    "element": "GTYE4_CHANNEL",
+    "kind": "leaf",
+    "subsystem": "ADVANCED",
+    "ports": [
+      {
+        "name": "CDRSTEPDIR",
+        "dir": "in"
+      },
+      {
+        "name": "CDRSTEPSQ",
+        "dir": "in"
+      },
+      {
+        "name": "CDRSTEPSX",
+        "dir": "in"
+      },
+      {
+        "name": "CFGRESET",
+        "dir": "in"
+      },
+      {
+        "name": "CPLLFBCLKLOST",
+        "dir": "out"
+      },
+      {
+        "name": "CPLLFREQLOCK",
+        "dir": "in"
+      },
+      {
+        "name": "CPLLLOCK",
+        "dir": "out"
+      },
+      {
+        "name": "CPLLLOCKDETCLK",
+        "dir": "in"
+      },
+      {
+        "name": "CPLLLOCKEN",
+        "dir": "in"
+      },
+      {
+        "name": "CPLLPD",
+        "dir": "in"
+      },
+      {
+        "name": "CPLLREFCLKLOST",
+        "dir": "out"
+      },
+      {
+        "name": "CPLLREFCLKSEL",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "CPLLRESET",
+        "dir": "in"
+      },
+      {
+        "name": "DMONFIFORESET",
+        "dir": "in"
+      },
+      {
+        "name": "DMONITORCLK",
+        "dir": "in"
+      },
+      {
+        "name": "DMONITOROUT",
+        "dir": "out",
+        "width": 17
+      },
+      {
+        "name": "DMONITOROUTCLK",
+        "dir": "out"
+      },
+      {
+        "name": "DRPADDR",
+        "dir": "in",
+        "width": 10
+      },
+      {
+        "name": "DRPCLK",
+        "dir": "in"
+      },
+      {
+        "name": "DRPDI",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "DRPDO",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "DRPEN",
+        "dir": "in"
+      },
+      {
+        "name": "DRPRDY",
+        "dir": "out"
+      },
+      {
+        "name": "DRPRST",
+        "dir": "in"
+      },
+      {
+        "name": "DRPWE",
+        "dir": "in"
+      },
+      {
+        "name": "EYESCANDATAERROR",
+        "dir": "out"
+      },
+      {
+        "name": "EYESCANMODE",
+        "dir": "in"
+      },
+      {
+        "name": "EYESCANRESET",
+        "dir": "in"
+      },
+      {
+        "name": "EYESCANTRIGGER",
+        "dir": "in"
+      },
+      {
+        "name": "FREQOS",
+        "dir": "in"
+      },
+      {
+        "name": "GTGREFCLK",
+        "dir": "in"
+      },
+      {
+        "name": "GTNORTHREFCLK0",
+        "dir": "in"
+      },
+      {
+        "name": "GTNORTHREFCLK1",
+        "dir": "in"
+      },
+      {
+        "name": "GTPOWERGOOD",
+        "dir": "out"
+      },
+      {
+        "name": "GTREFCLK0",
+        "dir": "in"
+      },
+      {
+        "name": "GTREFCLK1",
+        "dir": "in"
+      },
+      {
+        "name": "GTREFCLKMONITOR",
+        "dir": "out"
+      },
+      {
+        "name": "GTRXRESET",
+        "dir": "in"
+      },
+      {
+        "name": "GTSOUTHREFCLK0",
+        "dir": "in"
+      },
+      {
+        "name": "GTSOUTHREFCLK1",
+        "dir": "in"
+      },
+      {
+        "name": "GTTXRESET",
+        "dir": "in"
+      },
+      {
+        "name": "GTYRXN",
+        "dir": "in"
+      },
+      {
+        "name": "GTYRXP",
+        "dir": "in"
+      },
+      {
+        "name": "INCPCTRL",
+        "dir": "in"
+      },
+      {
+        "name": "LOOPBACK",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "MGTYTXN",
+        "dir": "out"
+      },
+      {
+        "name": "MGTYTXP",
+        "dir": "out"
+      },
+      {
+        "name": "PCIEEQRXEQADAPTDONE",
+        "dir": "in"
+      },
+      {
+        "name": "PCIERATEGEN3",
+        "dir": "out"
+      },
+      {
+        "name": "PCIERATEIDLE",
+        "dir": "out"
+      },
+      {
+        "name": "PCIERATEQPLLPD",
+        "dir": "out"
+      },
+      {
+        "name": "PCIERATEQPLLRESET",
+        "dir": "out"
+      },
+      {
+        "name": "PCIERSTIDLE",
+        "dir": "in"
+      },
+      {
+        "name": "PCIERSTTXSYNCSTART",
+        "dir": "in"
+      },
+      {
+        "name": "PCIESYNCTXSYNCDONE",
+        "dir": "out"
+      },
+      {
+        "name": "PCIEUSERGEN3RDY",
+        "dir": "out"
+      },
+      {
+        "name": "PCIEUSERPHYSTATUSRST",
+        "dir": "out"
+      },
+      {
+        "name": "PCIEUSERRATEDONE",
+        "dir": "in"
+      },
+      {
+        "name": "PCIEUSERRATESTART",
+        "dir": "out"
+      },
+      {
+        "name": "PCSRSVDOUT",
+        "dir": "out"
+      },
+      {
+        "name": "PHYSTATUS",
+        "dir": "out"
+      },
+      {
+        "name": "RESETEXCEPTION",
+        "dir": "out"
+      },
+      {
+        "name": "RSOSINTDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RX8B10BEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXAFECFOKEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXBUFRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXBUFSTATUS",
+        "dir": "out",
+        "width": 3
+      },
+      {
+        "name": "RXCDRFREQRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXCDRHOLD",
+        "dir": "in"
+      },
+      {
+        "name": "RXCDRLOCK",
+        "dir": "out"
+      },
+      {
+        "name": "RXCDROVRDEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXCDRPHDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXCDRRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXCDRRESETRSV",
+        "dir": "in"
+      },
+      {
+        "name": "RXCHANBONDSEQ",
+        "dir": "out"
+      },
+      {
+        "name": "RXCHANISALIGNED",
+        "dir": "out"
+      },
+      {
+        "name": "RXCHANREALIGN",
+        "dir": "out"
+      },
+      {
+        "name": "RXCHBONDEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXCHBONDI",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "RXCHBONDLEVEL",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "RXCHBONDMASTER",
+        "dir": "in"
+      },
+      {
+        "name": "RXCHBONDO",
+        "dir": "out",
+        "width": 5
+      },
+      {
+        "name": "RXCHBONDSLAVE",
+        "dir": "in"
+      },
+      {
+        "name": "RXCKCALDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXCKCALRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXCKCALSTART",
+        "dir": "in",
+        "width": 7
+      },
+      {
+        "name": "RXCLKCORCNT",
+        "dir": "out",
+        "width": 2
+      },
+      {
+        "name": "RXCOMINITDET",
+        "dir": "out"
+      },
+      {
+        "name": "RXCOMSASDET",
+        "dir": "out"
+      },
+      {
+        "name": "RXCOMWAKEDET",
+        "dir": "out"
+      },
+      {
+        "name": "RXCTRL0",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "RXCTRL1",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "RXCTRL2",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "RXCTRL3",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "RXDATA",
+        "dir": "out",
+        "width": 128
+      },
+      {
+        "name": "RXDATAEXTENDRSVD",
+        "dir": "out"
+      },
+      {
+        "name": "RXDFEAGCCTRL",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "RXDFECFOKFCNUM",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "RXDFECFOKFEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXDFECFOKFPULSE",
+        "dir": "in"
+      },
+      {
+        "name": "RXDFELPMRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXDFEVSEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXDFEXYDEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXDLYBYPASS",
+        "dir": "in"
+      },
+      {
+        "name": "RXDLYEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXDLYOVRDEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXDLYSRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXDLYSRESETDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXELECIDLE",
+        "dir": "out"
+      },
+      {
+        "name": "RXELECIDLEMODE",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "RXLPMEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXMONITOROUT",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "RXMONITORSEL",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "RXOOBRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXOSCALRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXOSINTCFG",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "RXOSINTDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXOSINTEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXOSINTOVRDEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXOSINTSTARTED",
+        "dir": "out"
+      },
+      {
+        "name": "RXOSINTSTROBE",
+        "dir": "in"
+      },
+      {
+        "name": "RXOSINTSTROBEDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXOSINTSTROBESTARTED",
+        "dir": "in"
+      },
+      {
+        "name": "RXOUTCLK",
+        "dir": "out"
+      },
+      {
+        "name": "RXOUTCLKFABRIC",
+        "dir": "out"
+      },
+      {
+        "name": "RXOUTCLKPCS",
+        "dir": "out"
+      },
+      {
+        "name": "RXOUTCLKSEL",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "RXPCSRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXPD",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "RXPHALIGN",
+        "dir": "in"
+      },
+      {
+        "name": "RXPHALIGNDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXPHALIGNEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXPHALIGNERR",
+        "dir": "out"
+      },
+      {
+        "name": "RXPHDLYPD",
+        "dir": "in"
+      },
+      {
+        "name": "RXPHDLYRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXPHOVRDEN",
+        "dir": "in"
+      },
+      {
+        "name": "RXPLLCLKSEL",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "RXPMARESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXPMARESETDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXPOLARITY",
+        "dir": "in"
+      },
+      {
+        "name": "RXPRBSCNTRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXPRBSERR",
+        "dir": "out"
+      },
+      {
+        "name": "RXPRBSLOCKED",
+        "dir": "out"
+      },
+      {
+        "name": "RXPRBSSEL",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "RXPRGDIVRESETDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXPROGDIVRESET",
+        "dir": "in"
+      },
+      {
+        "name": "RXRATE",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "RXRATEDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXRATEMODE",
+        "dir": "in"
+      },
+      {
+        "name": "RXRESETDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXSLIPOUTCLK",
+        "dir": "in"
+      },
+      {
+        "name": "RXSLIPPMA",
+        "dir": "in"
+      },
+      {
+        "name": "RXSTATUS",
+        "dir": "out",
+        "width": 3
+      },
+      {
+        "name": "RXSYNCALLIN",
+        "dir": "in"
+      },
+      {
+        "name": "RXSYNCDONE",
+        "dir": "out"
+      },
+      {
+        "name": "RXSYNCIN",
+        "dir": "in"
+      },
+      {
+        "name": "RXSYNCMODE",
+        "dir": "in"
+      },
+      {
+        "name": "RXSYNCOUT",
+        "dir": "out"
+      },
+      {
+        "name": "RXSYSCLKSEL",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "RXTERMINATION",
+        "dir": "in"
+      },
+      {
+        "name": "RXUSERRDY",
+        "dir": "in"
+      },
+      {
+        "name": "RXUSRCLK",
+        "dir": "in"
+      },
+      {
+        "name": "RXUSRCLK2",
+        "dir": "in"
+      },
+      {
+        "name": "TX8B10BBYPASS",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "TX8B10BEN",
+        "dir": "in"
+      },
+      {
+        "name": "TXBUFDIFFCTRL",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "TXBUFSTATUS",
+        "dir": "out",
+        "width": 2
+      },
+      {
+        "name": "TXCOMFINISH",
+        "dir": "out"
+      },
+      {
+        "name": "TXCOMINIT",
+        "dir": "in"
+      },
+      {
+        "name": "TXCOMSAS",
+        "dir": "in"
+      },
+      {
+        "name": "TXCOMWAKE",
+        "dir": "in"
+      },
+      {
+        "name": "TXCTRL0",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "TXCTRL1",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "TXCTRL2",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "TXDATA",
+        "dir": "in",
+        "width": 128
+      },
+      {
+        "name": "TXDATAEXTENDRSVD",
+        "dir": "in"
+      },
+      {
+        "name": "TXDCCDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXDCCFORCESTART",
+        "dir": "out"
+      },
+      {
+        "name": "TXDCCRESET",
+        "dir": "out"
+      },
+      {
+        "name": "TXDEEMPH",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "TXDETECTRX",
+        "dir": "in"
+      },
+      {
+        "name": "TXDIFFCTRL",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "TXDIFFPD",
+        "dir": "in"
+      },
+      {
+        "name": "TXDLYBYPASS",
+        "dir": "in"
+      },
+      {
+        "name": "TXDLYEN",
+        "dir": "in"
+      },
+      {
+        "name": "TXDLYHOLD",
+        "dir": "in"
+      },
+      {
+        "name": "TXDLYOVRDEN",
+        "dir": "in"
+      },
+      {
+        "name": "TXDLYSRESET",
+        "dir": "in"
+      },
+      {
+        "name": "TXDLYSRESETDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXDLYUPDOWN",
+        "dir": "in"
+      },
+      {
+        "name": "TXELECIDLE",
+        "dir": "in"
+      },
+      {
+        "name": "TXINHIBIT",
+        "dir": "in"
+      },
+      {
+        "name": "TXMAINCURSOR",
+        "dir": "in",
+        "width": 7
+      },
+      {
+        "name": "TXMARGIN",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "TXOUTCLK",
+        "dir": "out"
+      },
+      {
+        "name": "TXOUTCLKFABRIC",
+        "dir": "out"
+      },
+      {
+        "name": "TXOUTCLKPCS",
+        "dir": "out"
+      },
+      {
+        "name": "TXOUTCLKSEL",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "TXPCSRESET",
+        "dir": "in"
+      },
+      {
+        "name": "TXPD",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "TXPDELECIDLEMODE",
+        "dir": "in"
+      },
+      {
+        "name": "TXPHALIGN",
+        "dir": "in"
+      },
+      {
+        "name": "TXPHALIGNDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXPHALIGNEN",
+        "dir": "in"
+      },
+      {
+        "name": "TXPHDLYPD",
+        "dir": "in"
+      },
+      {
+        "name": "TXPHDLYRESET",
+        "dir": "in"
+      },
+      {
+        "name": "TXPHDLYTSTCLK",
+        "dir": "in"
+      },
+      {
+        "name": "TXPHINIT",
+        "dir": "in"
+      },
+      {
+        "name": "TXPHINITDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXPHOVRDEN",
+        "dir": "in"
+      },
+      {
+        "name": "TXPIPPMEN",
+        "dir": "in"
+      },
+      {
+        "name": "TXPIPPMOVRDEN",
+        "dir": "in"
+      },
+      {
+        "name": "TXPIPPMPD",
+        "dir": "in"
+      },
+      {
+        "name": "TXPIPPMSEL",
+        "dir": "in"
+      },
+      {
+        "name": "TXPIPPMSTEPSIZE",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "TXPISOPD",
+        "dir": "in"
+      },
+      {
+        "name": "TXPLLCLKSEL",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "TXPMARESET",
+        "dir": "in"
+      },
+      {
+        "name": "TXPMARESETDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXPOLARITY",
+        "dir": "in"
+      },
+      {
+        "name": "TXPOSTCURSOR",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "TXPRECURSOR",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "TXPRGDIVRESETDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXPROGDIVRESET",
+        "dir": "in"
+      },
+      {
+        "name": "TXRATE",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "TXRATEDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXRATEMODE",
+        "dir": "in"
+      },
+      {
+        "name": "TXRESETDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXSWING",
+        "dir": "in"
+      },
+      {
+        "name": "TXSYNCALLIN",
+        "dir": "in"
+      },
+      {
+        "name": "TXSYNCDONE",
+        "dir": "out"
+      },
+      {
+        "name": "TXSYNCIN",
+        "dir": "in"
+      },
+      {
+        "name": "TXSYNCMODE",
+        "dir": "in"
+      },
+      {
+        "name": "TXSYNCOUT",
+        "dir": "out"
+      },
+      {
+        "name": "TXSYSCLKSEL",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "TXUSERRDY",
+        "dir": "in"
+      },
+      {
+        "name": "TXUSRCLK",
+        "dir": "in"
+      },
+      {
+        "name": "TXUSRCLK2",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "GTYE4_CHANNEL"
+    ],
+    "configs": {
+      "GTYE4_CHANNEL": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "GTYE4_COMMON": {
+    "element": "GTYE4_COMMON",
+    "kind": "leaf",
+    "subsystem": "ADVANCED",
+    "ports": [
+      {
+        "name": "BGBYPASSB",
+        "dir": "in"
+      },
+      {
+        "name": "BGMONITORENB",
+        "dir": "in"
+      },
+      {
+        "name": "BGPDB",
+        "dir": "in"
+      },
+      {
+        "name": "BGRCALOVRD",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "BGRCALOVRDENB",
+        "dir": "in"
+      },
+      {
+        "name": "CEB",
+        "dir": "in"
+      },
+      {
+        "name": "GTNORTHREFCLK00",
+        "dir": "in"
+      },
+      {
+        "name": "GTNORTHREFCLK01",
+        "dir": "in"
+      },
+      {
+        "name": "GTNORTHREFCLK10",
+        "dir": "in"
+      },
+      {
+        "name": "GTNORTHREFCLK11",
+        "dir": "in"
+      },
+      {
+        "name": "GTREFCLK00",
+        "dir": "in"
+      },
+      {
+        "name": "GTREFCLK01",
+        "dir": "in"
+      },
+      {
+        "name": "GTREFCLK10",
+        "dir": "in"
+      },
+      {
+        "name": "GTREFCLK11",
+        "dir": "in"
+      },
+      {
+        "name": "GTRESETSEL",
+        "dir": "in"
+      },
+      {
+        "name": "GTRXRESETSEL",
+        "dir": "in"
+      },
+      {
+        "name": "GTSOUTHREFCLK00",
+        "dir": "in"
+      },
+      {
+        "name": "GTSOUTHREFCLK01",
+        "dir": "in"
+      },
+      {
+        "name": "GTSOUTHREFCLK10",
+        "dir": "in"
+      },
+      {
+        "name": "GTSOUTHREFCLK11",
+        "dir": "in"
+      },
+      {
+        "name": "GTTXRESETSEL",
+        "dir": "in"
+      },
+      {
+        "name": "PMARSVD0",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "PMARSVD1",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "QPLL0CLK",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL0CLKRSVD0",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL0CLKRSVD1",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL0FBCLKLOST",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL0FBDIV",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "QPLL0FREQLOCK",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL0LOCK",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL0LOCKDETCLK",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL0LOCKEN",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL0OUTCLK",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL0OUTREFCLK",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL0PD",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL0REFCLK",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL0REFCLKLOST",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL0REFCLKSEL",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "QPLL0RESET",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1CLK",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1CLKRSVD0",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1CLKRSVD1",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1FBCLKLOST",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL1FBDIV",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "QPLL1FREQLOCK",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1LOCK",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL1LOCKDETCLK",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1LOCKEN",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1OUTCLK",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL1OUTREFCLK",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL1PD",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1REFCLK",
+        "dir": "in"
+      },
+      {
+        "name": "QPLL1REFCLKLOST",
+        "dir": "out"
+      },
+      {
+        "name": "QPLL1REFCLKSEL",
+        "dir": "in",
+        "width": 3
+      },
+      {
+        "name": "QPLL1RESET",
+        "dir": "in"
+      },
+      {
+        "name": "QPLLDMONITOR0",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "QPLLDMONITOR1",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "QPLLRSVD1",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "QPLLRSVD2",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "QPLLRSVD3",
+        "dir": "in",
+        "width": 5
+      },
+      {
+        "name": "QPLLRSVD4",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "RCALENB",
+        "dir": "in"
+      },
+      {
+        "name": "REFCLKOUTMONITOR0",
+        "dir": "out"
+      },
+      {
+        "name": "REFCLKOUTMONITOR1",
+        "dir": "out"
+      },
+      {
+        "name": "RESETOVRD",
+        "dir": "in"
+      },
+      {
+        "name": "SDM0DATA",
+        "dir": "in",
+        "width": 25
+      },
+      {
+        "name": "SDM0FINALOUT",
+        "dir": "out",
+        "width": 4
+      },
+      {
+        "name": "SDM0RESET",
+        "dir": "in"
+      },
+      {
+        "name": "SDM0TESTDATA",
+        "dir": "out",
+        "width": 15
+      },
+      {
+        "name": "SDM0TOGGLE",
+        "dir": "in"
+      },
+      {
+        "name": "SDM0WIDTH",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "SDM1DATA",
+        "dir": "in",
+        "width": 25
+      },
+      {
+        "name": "SDM1FINALOUT",
+        "dir": "out",
+        "width": 4
+      },
+      {
+        "name": "SDM1RESET",
+        "dir": "in"
+      },
+      {
+        "name": "SDM1TESTDATA",
+        "dir": "out",
+        "width": 15
+      },
+      {
+        "name": "SDM1TOGGLE",
+        "dir": "in"
+      },
+      {
+        "name": "SDM1WIDTH",
+        "dir": "in",
+        "width": 2
+      }
+    ],
+    "members": [
+      "GTYE4_COMMON"
+    ],
+    "configs": {
+      "GTYE4_COMMON": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "HARD_SYNC": {
+    "element": "HARD_SYNC",
+    "kind": "leaf",
+    "subsystem": "REGISTER",
+    "ports": [
+      {
+        "name": "CLK",
+        "dir": "in"
+      },
+      {
+        "name": "DIN",
+        "dir": "in"
+      },
+      {
+        "name": "DOUT",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "HARD_SYNC"
+    ],
+    "configs": {
+      "HARD_SYNC": {
+        "init": "1'b0",
+        "inverts": [
+          "IS_CLK_INVERTED"
+        ]
+      }
+    }
+  },
+  "HPIO_VREF": {
+    "element": "HPIO_VREF",
+    "kind": "leaf",
+    "subsystem": "I",
+    "ports": [
+      {
+        "name": "FABRIC_VREF_TUNE",
+        "dir": "in",
+        "width": 7
+      },
+      {
+        "name": "VREF",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "HPIO_VREF"
+    ],
+    "configs": {
+      "HPIO_VREF": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "IO_BUFFER": {
+    "element": "IO_BUFFER",
+    "kind": "leaf",
+    "subsystem": "I",
+    "ports": [
+      {
+        "name": "DCITERMDISABLE",
+        "dir": "in"
+      },
+      {
+        "name": "HSRX_DISABLE",
+        "dir": "in"
+      },
+      {
+        "name": "HSRX_O",
+        "dir": "out"
+      },
+      {
+        "name": "HSTX_I",
+        "dir": "in"
+      },
+      {
+        "name": "HSTX_T",
+        "dir": "in"
+      },
+      {
+        "name": "I",
+        "dir": "in"
+      },
+      {
+        "name": "IB",
+        "dir": "in"
+      },
+      {
+        "name": "IBUFDISABLE",
+        "dir": "in"
+      },
+      {
+        "name": "INTERMDISABLE",
+        "dir": "in"
+      },
+      {
+        "name": "IO",
+        "dir": "inout"
+      },
+      {
+        "name": "IOB",
+        "dir": "inout"
+      },
+      {
+        "name": "LPRX_DISABLE",
+        "dir": "in"
+      },
+      {
+        "name": "LPRX_O_N",
+        "dir": "out"
+      },
+      {
+        "name": "LPRX_O_P",
+        "dir": "out"
+      },
+      {
+        "name": "LPTX_I_N",
+        "dir": "in"
+      },
+      {
+        "name": "LPTX_I_P",
+        "dir": "in"
+      },
+      {
+        "name": "LPTX_T",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "OB",
+        "dir": "out"
+      },
+      {
+        "name": "OSC",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "OSC_EN",
+        "dir": "in",
+        "width": 2
+      },
+      {
+        "name": "T",
+        "dir": "in"
+      },
+      {
+        "name": "TM",
+        "dir": "in"
+      },
+      {
+        "name": "TS",
+        "dir": "in"
+      },
+      {
+        "name": "VREF",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "IBUF",
+      "IBUFDS",
+      "IBUFDSE3",
+      "IBUFDS_DIFF_OUT",
+      "IBUFDS_DIFF_OUT_IBUFDISABLE",
+      "IBUFDS_DIFF_OUT_INTERMDISABLE",
+      "IBUFDS_DPHY",
+      "IBUFDS_IBUFDISABLE",
+      "IBUFDS_INTERMDISABLE",
+      "IBUFE3",
+      "IBUF_IBUFDISABLE",
+      "IBUF_INTERMDISABLE",
+      "IOBUF",
+      "IOBUFDS",
+      "IOBUFDSE3",
+      "IOBUFDS_DCIEN",
+      "IOBUFDS_DIFF_OUT",
+      "IOBUFDS_DIFF_OUT_DCIEN",
+      "IOBUFDS_DIFF_OUT_INTERMDISABLE",
+      "IOBUFDS_INTERMDISABLE",
+      "IOBUFE3",
+      "IOBUF_DCIEN",
+      "IOBUF_INTERMDISABLE",
+      "KEEPER",
+      "OBUF",
+      "OBUFDS",
+      "OBUFDS_DPHY",
+      "OBUFT",
+      "OBUFTDS",
+      "PULLDOWN",
+      "PULLUP"
+    ],
+    "configs": {
+      "IBUF": {
+        "init": null,
+        "inverts": [],
+        "direction": "input",
+        "differential": false,
+        "tristate": false
+      },
+      "IBUFDS": {
+        "init": null,
+        "inverts": [],
+        "direction": "input",
+        "differential": true,
+        "tristate": false
+      },
+      "IBUFDSE3": {
+        "init": null,
+        "inverts": [],
+        "direction": "input",
+        "differential": true,
+        "tristate": false
+      },
+      "IBUFDS_DIFF_OUT": {
+        "init": null,
+        "inverts": [],
+        "direction": "input",
+        "differential": true,
+        "tristate": false
+      },
+      "IBUFDS_DIFF_OUT_IBUFDISABLE": {
+        "init": null,
+        "inverts": [],
+        "direction": "input",
+        "differential": true,
+        "tristate": false
+      },
+      "IBUFDS_DIFF_OUT_INTERMDISABLE": {
+        "init": null,
+        "inverts": [],
+        "direction": "input",
+        "differential": true,
+        "tristate": false
+      },
+      "IBUFDS_DPHY": {
+        "init": null,
+        "inverts": [],
+        "direction": "input",
+        "differential": true,
+        "tristate": false
+      },
+      "IBUFDS_IBUFDISABLE": {
+        "init": null,
+        "inverts": [],
+        "direction": "input",
+        "differential": true,
+        "tristate": false
+      },
+      "IBUFDS_INTERMDISABLE": {
+        "init": null,
+        "inverts": [],
+        "direction": "input",
+        "differential": true,
+        "tristate": false
+      },
+      "IBUFE3": {
+        "init": null,
+        "inverts": [],
+        "direction": "input",
+        "differential": false,
+        "tristate": false
+      },
+      "IBUF_IBUFDISABLE": {
+        "init": null,
+        "inverts": [],
+        "direction": "input",
+        "differential": false,
+        "tristate": false
+      },
+      "IBUF_INTERMDISABLE": {
+        "init": null,
+        "inverts": [],
+        "direction": "input",
+        "differential": false,
+        "tristate": false
+      },
+      "IOBUF": {
+        "init": null,
+        "inverts": [],
+        "direction": "inout",
+        "differential": false,
+        "tristate": true
+      },
+      "IOBUFDS": {
+        "init": null,
+        "inverts": [],
+        "direction": "inout",
+        "differential": true,
+        "tristate": true
+      },
+      "IOBUFDSE3": {
+        "init": null,
+        "inverts": [],
+        "direction": "inout",
+        "differential": true,
+        "tristate": true
+      },
+      "IOBUFDS_DCIEN": {
+        "init": null,
+        "inverts": [],
+        "direction": "inout",
+        "differential": true,
+        "tristate": true
+      },
+      "IOBUFDS_DIFF_OUT": {
+        "init": null,
+        "inverts": [],
+        "direction": "inout",
+        "differential": true,
+        "tristate": true
+      },
+      "IOBUFDS_DIFF_OUT_DCIEN": {
+        "init": null,
+        "inverts": [],
+        "direction": "inout",
+        "differential": true,
+        "tristate": true
+      },
+      "IOBUFDS_DIFF_OUT_INTERMDISABLE": {
+        "init": null,
+        "inverts": [],
+        "direction": "inout",
+        "differential": true,
+        "tristate": true
+      },
+      "IOBUFDS_INTERMDISABLE": {
+        "init": null,
+        "inverts": [],
+        "direction": "inout",
+        "differential": true,
+        "tristate": true
+      },
+      "IOBUFE3": {
+        "init": null,
+        "inverts": [],
+        "direction": "inout",
+        "differential": false,
+        "tristate": true
+      },
+      "IOBUF_DCIEN": {
+        "init": null,
+        "inverts": [],
+        "direction": "inout",
+        "differential": false,
+        "tristate": true
+      },
+      "IOBUF_INTERMDISABLE": {
+        "init": null,
+        "inverts": [],
+        "direction": "inout",
+        "differential": false,
+        "tristate": true
+      },
+      "KEEPER": {
+        "init": null,
+        "inverts": [],
+        "direction": "passive",
+        "differential": false,
+        "tristate": false
+      },
+      "OBUF": {
+        "init": null,
+        "inverts": [],
+        "direction": "output",
+        "differential": false,
+        "tristate": false
+      },
+      "OBUFDS": {
+        "init": null,
+        "inverts": [],
+        "direction": "output",
+        "differential": true,
+        "tristate": false
+      },
+      "OBUFDS_DPHY": {
+        "init": null,
+        "inverts": [],
+        "direction": "output",
+        "differential": true,
+        "tristate": false
+      },
+      "OBUFT": {
+        "init": null,
+        "inverts": [],
+        "direction": "output",
+        "differential": false,
+        "tristate": true
+      },
+      "OBUFTDS": {
+        "init": null,
+        "inverts": [],
+        "direction": "output",
+        "differential": true,
+        "tristate": true
+      },
+      "PULLDOWN": {
+        "init": null,
+        "inverts": [],
+        "direction": "passive",
+        "differential": false,
+        "tristate": false
+      },
+      "PULLUP": {
+        "init": null,
+        "inverts": [],
+        "direction": "passive",
+        "differential": false,
+        "tristate": false
+      }
+    }
+  },
+  "IBUFDS_GTE3": {
+    "element": "IBUFDS_GTE3",
+    "kind": "leaf",
+    "subsystem": "ADVANCED",
+    "ports": [
+      {
+        "name": "CEB",
+        "dir": "in"
+      },
+      {
+        "name": "I",
+        "dir": "in"
+      },
+      {
+        "name": "IB",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "ODIV2",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "IBUFDS_GTE3"
+    ],
+    "configs": {
+      "IBUFDS_GTE3": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "IBUFDS_GTE4": {
+    "element": "IBUFDS_GTE4",
+    "kind": "leaf",
+    "subsystem": "ADVANCED",
+    "ports": [
+      {
+        "name": "CEB",
+        "dir": "in"
+      },
+      {
+        "name": "I",
+        "dir": "in"
+      },
+      {
+        "name": "IB",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "ODIV2",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "IBUFDS_GTE4"
+    ],
+    "configs": {
+      "IBUFDS_GTE4": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "IBUF_ANALOG": {
+    "element": "IBUF_ANALOG",
+    "kind": "leaf",
+    "subsystem": "I",
+    "ports": [
+      {
+        "name": "I",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "IBUF_ANALOG"
+    ],
+    "configs": {
+      "IBUF_ANALOG": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "ICAPE3": {
+    "element": "ICAPE3",
+    "kind": "leaf",
+    "subsystem": "CONFIGURATION",
+    "ports": [
+      {
+        "name": "AVAIL",
+        "dir": "out"
+      },
+      {
+        "name": "CLK",
+        "dir": "in"
+      },
+      {
+        "name": "CSIB",
+        "dir": "in"
+      },
+      {
+        "name": "I",
+        "dir": "in",
+        "width": 32
+      },
+      {
+        "name": "O",
+        "dir": "out",
+        "width": 32
+      },
+      {
+        "name": "PRDONE",
+        "dir": "out"
+      },
+      {
+        "name": "PRERROR",
+        "dir": "out"
+      },
+      {
+        "name": "RDWRB",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "ICAPE3"
+    ],
+    "configs": {
+      "ICAPE3": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "IDDRE1": {
+    "element": "IDDRE1",
+    "kind": "leaf",
+    "subsystem": "REGISTER",
+    "ports": [
+      {
+        "name": "C",
+        "dir": "in"
+      },
+      {
+        "name": "CB",
+        "dir": "in"
+      },
+      {
+        "name": "D",
+        "dir": "in"
+      },
+      {
+        "name": "Q1",
+        "dir": "out"
+      },
+      {
+        "name": "Q2",
+        "dir": "out"
+      },
+      {
+        "name": "R",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "IDDRE1"
+    ],
+    "configs": {
+      "IDDRE1": {
+        "init": null,
+        "inverts": [
+          "IS_CB_INVERTED",
+          "IS_C_INVERTED"
+        ]
+      }
+    }
+  },
+  "IDELAYCTRL": {
+    "element": "IDELAYCTRL",
+    "kind": "leaf",
+    "subsystem": "I",
+    "ports": [
+      {
+        "name": "RDY",
+        "dir": "out"
+      },
+      {
+        "name": "REFCLK",
+        "dir": "in"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "IDELAYCTRL"
+    ],
+    "configs": {
+      "IDELAYCTRL": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "IDELAYE3": {
+    "element": "IDELAYE3",
+    "kind": "leaf",
+    "subsystem": "I",
+    "ports": [
+      {
+        "name": "CASC_IN",
+        "dir": "in"
+      },
+      {
+        "name": "CASC_OUT",
+        "dir": "out"
+      },
+      {
+        "name": "CASC_RETURN",
+        "dir": "in"
+      },
+      {
+        "name": "CE",
+        "dir": "in"
+      },
+      {
+        "name": "CLK",
+        "dir": "in"
+      },
+      {
+        "name": "CNTVALUEIN",
+        "dir": "in",
+        "width": 9
+      },
+      {
+        "name": "CNTVALUEOUT",
+        "dir": "out",
+        "width": 9
+      },
+      {
+        "name": "DATAIN",
+        "dir": "in"
+      },
+      {
+        "name": "DATAOUT",
+        "dir": "out"
+      },
+      {
+        "name": "EN_VTC",
+        "dir": "in"
+      },
+      {
+        "name": "IDATAIN",
+        "dir": "in"
+      },
+      {
+        "name": "INC",
+        "dir": "in"
+      },
+      {
+        "name": "LOAD",
+        "dir": "in"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "IDELAYE3"
+    ],
+    "configs": {
+      "IDELAYE3": {
+        "init": null,
+        "inverts": [
+          "IS_CLK_INVERTED",
+          "IS_RST_INVERTED"
+        ]
+      }
+    }
+  },
+  "ISERDESE3": {
+    "element": "ISERDESE3",
+    "kind": "leaf",
+    "subsystem": "I",
+    "ports": [
+      {
+        "name": "CLK",
+        "dir": "in"
+      },
+      {
+        "name": "CLKDIV",
+        "dir": "in"
+      },
+      {
+        "name": "CLK_B",
+        "dir": "in"
+      },
+      {
+        "name": "D",
+        "dir": "in"
+      },
+      {
+        "name": "FIFO_EMPTY",
+        "dir": "out"
+      },
+      {
+        "name": "FIFO_RD_CLK",
+        "dir": "in"
+      },
+      {
+        "name": "FIFO_RD_EN",
+        "dir": "in"
+      },
+      {
+        "name": "INTERNAL_DIVCLK",
+        "dir": "out"
+      },
+      {
+        "name": "Q",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "ISERDESE3"
+    ],
+    "configs": {
+      "ISERDESE3": {
+        "init": null,
+        "inverts": [
+          "IS_CLK_B_INVERTED",
+          "IS_CLK_INVERTED",
+          "IS_RST_INVERTED"
+        ]
+      }
+    }
+  },
+  "MASTER_JTAG": {
+    "element": "MASTER_JTAG",
+    "kind": "leaf",
+    "subsystem": "CONFIGURATION",
+    "ports": [
+      {
+        "name": "TCK",
+        "dir": "in"
+      },
+      {
+        "name": "TDI",
+        "dir": "in"
+      },
+      {
+        "name": "TDO",
+        "dir": "out"
+      },
+      {
+        "name": "TMS",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "MASTER_JTAG"
+    ],
+    "configs": {
+      "MASTER_JTAG": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "MMCME3_ADV": {
+    "element": "MMCME3_ADV",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "CDDCDONE",
+        "dir": "out"
+      },
+      {
+        "name": "CDDCREQ",
+        "dir": "in"
+      },
+      {
+        "name": "CLKFBIN",
+        "dir": "in"
+      },
+      {
+        "name": "CLKFBOUT",
+        "dir": "out"
+      },
+      {
+        "name": "CLKFBOUTB",
+        "dir": "out"
+      },
+      {
+        "name": "CLKFBSTOPPED",
+        "dir": "out"
+      },
+      {
+        "name": "CLKIN1",
+        "dir": "in"
+      },
+      {
+        "name": "CLKIN2",
+        "dir": "in"
+      },
+      {
+        "name": "CLKINSEL",
+        "dir": "in"
+      },
+      {
+        "name": "CLKINSTOPPED",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT0",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT0B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT1",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT1B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT2",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT2B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT3",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT3B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT4",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT5",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT6",
+        "dir": "out"
+      },
+      {
+        "name": "Clock_Inputs:_MMCM_input_clock(s)._Connect_CLKIN2_if_input_clock_multiplexing_feature_is_used.",
+        "dir": "in"
+      },
+      {
+        "name": "Clock_Outputs:_User_configurable_clock_outputs_that_can_be_divided_versions_of_the_VCO_phase_outputs_(user_controllable)_from_1_(bypassed)_to_128._The_output_clocks_are_phase_aligned_to_each_other_(unless_phase_shifted)_and_aligned_to_the_input_clock_with_a_proper_feedback_configuration._The_CLKOUT#B_outputs_are_180_degrees_out_of_phase_with_the_non-B_outputs.",
+        "dir": "in"
+      },
+      {
+        "name": "Control_Ports:_MMCM_control_ports.",
+        "dir": "in"
+      },
+      {
+        "name": "DADDR",
+        "dir": "in",
+        "width": 7
+      },
+      {
+        "name": "DCLK",
+        "dir": "in"
+      },
+      {
+        "name": "DEN",
+        "dir": "in"
+      },
+      {
+        "name": "DI",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "DO",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "DRDY",
+        "dir": "out"
+      },
+      {
+        "name": "DRP_Ports:_Ports_used_when_using_the_dynamic_reconfigurable_ports_for_reading_and_writing_the_configuration_of_the_MMCM.",
+        "dir": "in"
+      },
+      {
+        "name": "DWE",
+        "dir": "in"
+      },
+      {
+        "name": "Dynamic_Phase_Shift_Ports:_Ports_used_when_using_the_dynamic_phase_shift_capability_of_the_MMCM.",
+        "dir": "in"
+      },
+      {
+        "name": "Feedback:_Required_ports_to_form_the_feedback_path_for_the_MMCM_phase_alignment_capabilities.",
+        "dir": "in"
+      },
+      {
+        "name": "LOCKED",
+        "dir": "out"
+      },
+      {
+        "name": "PSCLK",
+        "dir": "in"
+      },
+      {
+        "name": "PSDONE",
+        "dir": "out"
+      },
+      {
+        "name": "PSEN",
+        "dir": "in"
+      },
+      {
+        "name": "PSINCDEC",
+        "dir": "in"
+      },
+      {
+        "name": "PWRDWN",
+        "dir": "in"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      },
+      {
+        "name": "Status_Ports:_MMCM_status_ports.",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "MMCME3_ADV"
+    ],
+    "configs": {
+      "MMCME3_ADV": {
+        "init": null,
+        "inverts": [
+          "IS_CLKFBIN_INVERTED",
+          "IS_CLKIN1_INVERTED",
+          "IS_CLKIN2_INVERTED",
+          "IS_CLKINSEL_INVERTED",
+          "IS_PSEN_INVERTED",
+          "IS_PSINCDEC_INVERTED",
+          "IS_PWRDWN_INVERTED",
+          "IS_RST_INVERTED"
+        ]
+      }
+    }
+  },
+  "MMCME3_BASE": {
+    "element": "MMCME3_BASE",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "CLKFBIN",
+        "dir": "in"
+      },
+      {
+        "name": "CLKFBOUT",
+        "dir": "out"
+      },
+      {
+        "name": "CLKFBOUTB",
+        "dir": "out"
+      },
+      {
+        "name": "CLKIN1",
+        "dir": "in"
+      },
+      {
+        "name": "CLKOUT0",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT0B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT1",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT1B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT2",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT2B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT3",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT3B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT4",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT5",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT6",
+        "dir": "out"
+      },
+      {
+        "name": "Clock_Inputs:_MMCM_input_clock.",
+        "dir": "in"
+      },
+      {
+        "name": "Clock_Outputs:_User_configurable_clock_outputs_that_can_be_divided_versions_of_the_VCO_phase_outputs_(user_controllable)_from_1_(bypassed)_to_128._The_output_clocks_are_phase_aligned_to_each_other_(unless_phase_shifted)_and_aligned_to_the_input_clock_with_a_proper_feedback_configuration._The_CLKOUT#B_outputs_are_180_degrees_out_of_phase_with_the_non-B_outputs.",
+        "dir": "in"
+      },
+      {
+        "name": "Control_Ports:_MMCM_control_ports.",
+        "dir": "in"
+      },
+      {
+        "name": "Feedback:_Required_ports_to_form_the_feedback_path_for_the_MMCM_phase_alignment_capabilities.",
+        "dir": "in"
+      },
+      {
+        "name": "LOCKED",
+        "dir": "out"
+      },
+      {
+        "name": "PWRDWN",
+        "dir": "in"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      },
+      {
+        "name": "Status_Ports:_MMCM_status_ports.",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "MMCME3_BASE"
+    ],
+    "configs": {
+      "MMCME3_BASE": {
+        "init": null,
+        "inverts": [
+          "IS_CLKFBIN_INVERTED",
+          "IS_CLKIN1_INVERTED",
+          "IS_PWRDWN_INVERTED",
+          "IS_RST_INVERTED"
+        ]
+      }
+    }
+  },
+  "MMCME4_ADV": {
+    "element": "MMCME4_ADV",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "CDDCDONE",
+        "dir": "out"
+      },
+      {
+        "name": "CDDCREQ",
+        "dir": "in"
+      },
+      {
+        "name": "CLKFBIN",
+        "dir": "in"
+      },
+      {
+        "name": "CLKFBOUT",
+        "dir": "out"
+      },
+      {
+        "name": "CLKFBOUTB",
+        "dir": "out"
+      },
+      {
+        "name": "CLKFBSTOPPED",
+        "dir": "out"
+      },
+      {
+        "name": "CLKIN1",
+        "dir": "in"
+      },
+      {
+        "name": "CLKIN2",
+        "dir": "in"
+      },
+      {
+        "name": "CLKINSEL",
+        "dir": "in"
+      },
+      {
+        "name": "CLKINSTOPPED",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT0",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT0B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT1",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT1B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT2",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT2B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT3",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT3B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT4",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT5",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT6",
+        "dir": "out"
+      },
+      {
+        "name": "DADDR",
+        "dir": "in",
+        "width": 7
+      },
+      {
+        "name": "DCLK",
+        "dir": "in"
+      },
+      {
+        "name": "DEN",
+        "dir": "in"
+      },
+      {
+        "name": "DI",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "DO",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "DRDY",
+        "dir": "out"
+      },
+      {
+        "name": "DWE",
+        "dir": "in"
+      },
+      {
+        "name": "LOCKED",
+        "dir": "out"
+      },
+      {
+        "name": "PSCLK",
+        "dir": "in"
+      },
+      {
+        "name": "PSDONE",
+        "dir": "out"
+      },
+      {
+        "name": "PSEN",
+        "dir": "in"
+      },
+      {
+        "name": "PSINCDEC",
+        "dir": "in"
+      },
+      {
+        "name": "PWRDWN",
+        "dir": "in"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "MMCME4_ADV"
+    ],
+    "configs": {
+      "MMCME4_ADV": {
+        "init": null,
+        "inverts": [
+          "IS_CLKFBIN_INVERTED",
+          "IS_CLKIN1_INVERTED",
+          "IS_CLKIN2_INVERTED",
+          "IS_CLKINSEL_INVERTED",
+          "IS_PSEN_INVERTED",
+          "IS_PSINCDEC_INVERTED",
+          "IS_PWRDWN_INVERTED",
+          "IS_RST_INVERTED"
+        ]
+      }
+    }
+  },
+  "MMCME4_BASE": {
+    "element": "MMCME4_BASE",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "CLKFBIN",
+        "dir": "in"
+      },
+      {
+        "name": "CLKFBOUT",
+        "dir": "out"
+      },
+      {
+        "name": "CLKFBOUTB",
+        "dir": "out"
+      },
+      {
+        "name": "CLKIN1",
+        "dir": "in"
+      },
+      {
+        "name": "CLKOUT0",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT0B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT1",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT1B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT2",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT2B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT3",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT3B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT4",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT5",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT6",
+        "dir": "out"
+      },
+      {
+        "name": "LOCKED",
+        "dir": "out"
+      },
+      {
+        "name": "PWRDWN",
+        "dir": "in"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "MMCME4_BASE"
+    ],
+    "configs": {
+      "MMCME4_BASE": {
+        "init": null,
+        "inverts": [
+          "IS_CLKFBIN_INVERTED",
+          "IS_CLKIN1_INVERTED",
+          "IS_PWRDWN_INVERTED",
+          "IS_RST_INVERTED"
+        ]
+      }
+    }
+  },
   "MUXF7": {
     "element": "MUXF7",
+    "kind": "decomposed",
+    "subsystem": "CLB",
     "ports": [
       {
         "name": "I0",
@@ -681,6 +6822,8 @@
   },
   "MUXF8": {
     "element": "MUXF8",
+    "kind": "decomposed",
+    "subsystem": "CLB",
     "ports": [
       {
         "name": "I0",
@@ -711,6 +6854,8 @@
   },
   "MUXF9": {
     "element": "MUXF9",
+    "kind": "decomposed",
+    "subsystem": "CLB",
     "ports": [
       {
         "name": "I0",
@@ -734,6 +6879,2010 @@
     ],
     "configs": {
       "MUXF9": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "OBUFDS_GTE3": {
+    "element": "OBUFDS_GTE3",
+    "kind": "leaf",
+    "subsystem": "ADVANCED",
+    "ports": [
+      {
+        "name": "CEB",
+        "dir": "in"
+      },
+      {
+        "name": "I",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "OB",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "OBUFDS_GTE3"
+    ],
+    "configs": {
+      "OBUFDS_GTE3": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "OBUFDS_GTE3_ADV": {
+    "element": "OBUFDS_GTE3_ADV",
+    "kind": "leaf",
+    "subsystem": "ADVANCED",
+    "ports": [
+      {
+        "name": "CEB",
+        "dir": "in"
+      },
+      {
+        "name": "I",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "OB",
+        "dir": "out"
+      },
+      {
+        "name": "RXRECCLK_SEL",
+        "dir": "in",
+        "width": 2
+      }
+    ],
+    "members": [
+      "OBUFDS_GTE3_ADV"
+    ],
+    "configs": {
+      "OBUFDS_GTE3_ADV": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "OBUFDS_GTE4": {
+    "element": "OBUFDS_GTE4",
+    "kind": "leaf",
+    "subsystem": "ADVANCED",
+    "ports": [
+      {
+        "name": "CEB",
+        "dir": "in"
+      },
+      {
+        "name": "I",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "OB",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "OBUFDS_GTE4"
+    ],
+    "configs": {
+      "OBUFDS_GTE4": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "OBUFDS_GTE4_ADV": {
+    "element": "OBUFDS_GTE4_ADV",
+    "kind": "leaf",
+    "subsystem": "ADVANCED",
+    "ports": [
+      {
+        "name": "CEB",
+        "dir": "in"
+      },
+      {
+        "name": "I",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "OB",
+        "dir": "out"
+      },
+      {
+        "name": "RXRECCLK_SEL",
+        "dir": "in",
+        "width": 2
+      }
+    ],
+    "members": [
+      "OBUFDS_GTE4_ADV"
+    ],
+    "configs": {
+      "OBUFDS_GTE4_ADV": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "ODDRE1": {
+    "element": "ODDRE1",
+    "kind": "leaf",
+    "subsystem": "REGISTER",
+    "ports": [
+      {
+        "name": "C",
+        "dir": "in"
+      },
+      {
+        "name": "D1",
+        "dir": "in"
+      },
+      {
+        "name": "D2",
+        "dir": "in"
+      },
+      {
+        "name": "Q",
+        "dir": "out"
+      },
+      {
+        "name": "SR",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "ODDRE1"
+    ],
+    "configs": {
+      "ODDRE1": {
+        "init": null,
+        "inverts": [
+          "IS_C_INVERTED",
+          "IS_D1_INVERTED",
+          "IS_D2_INVERTED"
+        ]
+      }
+    }
+  },
+  "ODELAYE3": {
+    "element": "ODELAYE3",
+    "kind": "leaf",
+    "subsystem": "I",
+    "ports": [
+      {
+        "name": "CASC_IN",
+        "dir": "in"
+      },
+      {
+        "name": "CASC_OUT",
+        "dir": "out"
+      },
+      {
+        "name": "CASC_RETURN",
+        "dir": "in"
+      },
+      {
+        "name": "CE",
+        "dir": "in"
+      },
+      {
+        "name": "CLK",
+        "dir": "in"
+      },
+      {
+        "name": "CNTVALUEIN",
+        "dir": "in",
+        "width": 9
+      },
+      {
+        "name": "CNTVALUEOUT",
+        "dir": "out",
+        "width": 9
+      },
+      {
+        "name": "DATAOUT",
+        "dir": "out"
+      },
+      {
+        "name": "EN_VTC",
+        "dir": "in"
+      },
+      {
+        "name": "INC",
+        "dir": "in"
+      },
+      {
+        "name": "LOAD",
+        "dir": "in"
+      },
+      {
+        "name": "ODATAIN",
+        "dir": "in"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "ODELAYE3"
+    ],
+    "configs": {
+      "ODELAYE3": {
+        "init": null,
+        "inverts": [
+          "IS_CLK_INVERTED",
+          "IS_RST_INVERTED"
+        ]
+      }
+    }
+  },
+  "OR2L": {
+    "element": "OR2L",
+    "kind": "leaf",
+    "subsystem": "CLB",
+    "ports": [
+      {
+        "name": "DI",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "SRI",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "OR2L"
+    ],
+    "configs": {
+      "OR2L": {
+        "init": null,
+        "inverts": [
+          "IS_SRI_INVERTED"
+        ]
+      }
+    }
+  },
+  "OSERDESE3": {
+    "element": "OSERDESE3",
+    "kind": "leaf",
+    "subsystem": "I",
+    "ports": [
+      {
+        "name": "CLK",
+        "dir": "in"
+      },
+      {
+        "name": "CLKDIV",
+        "dir": "in"
+      },
+      {
+        "name": "D",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "OQ",
+        "dir": "out"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      },
+      {
+        "name": "T",
+        "dir": "in"
+      },
+      {
+        "name": "T_OUT",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "OSERDESE3"
+    ],
+    "configs": {
+      "OSERDESE3": {
+        "init": "1'b0",
+        "inverts": [
+          "IS_CLKDIV_INVERTED",
+          "IS_CLK_INVERTED",
+          "IS_RST_INVERTED"
+        ]
+      }
+    }
+  },
+  "PLLE3_ADV": {
+    "element": "PLLE3_ADV",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "CLKFBIN",
+        "dir": "in"
+      },
+      {
+        "name": "CLKFBOUT",
+        "dir": "out"
+      },
+      {
+        "name": "CLKIN",
+        "dir": "in"
+      },
+      {
+        "name": "CLKOUT0",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT0B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT1",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT1B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUTPHY",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUTPHYEN",
+        "dir": "in"
+      },
+      {
+        "name": "Clock_Outputs:_User_configurable_clock_outputs_that_can_be_divided_versions_of_the_VCO_phase_outputs_(user_controllable)_from_1_(bypassed)_to_256._The_output_clocks_are_phase_aligned_to_each_other_(unless_phase_shifted)_and_aligned_to_the_input_clock_with_a_proper_feedback_configuration.",
+        "dir": "in"
+      },
+      {
+        "name": "Control_Ports:_PLL_control_ports.",
+        "dir": "in"
+      },
+      {
+        "name": "DADDR",
+        "dir": "in",
+        "width": 7
+      },
+      {
+        "name": "DCLK",
+        "dir": "in"
+      },
+      {
+        "name": "DEN",
+        "dir": "in"
+      },
+      {
+        "name": "DI",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "DO",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "DRDY",
+        "dir": "out"
+      },
+      {
+        "name": "DRP_Ports:_Ports_used_when_using_the_dynamic_reconfigurable_ports_for_reading_and_writing_the_configuration_of_the_PLL.",
+        "dir": "in"
+      },
+      {
+        "name": "DWE",
+        "dir": "in"
+      },
+      {
+        "name": "Feedback_Clocks:_Required_ports_to_form_the_feedback_path_for_the_PLL_phase_alignment_capabilities.",
+        "dir": "in"
+      },
+      {
+        "name": "LOCKED",
+        "dir": "out"
+      },
+      {
+        "name": "PWRDWN",
+        "dir": "in"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "PLLE3_ADV"
+    ],
+    "configs": {
+      "PLLE3_ADV": {
+        "init": null,
+        "inverts": [
+          "IS_CLKFBIN_INVERTED",
+          "IS_CLKIN_INVERTED",
+          "IS_PWRDWN_INVERTED",
+          "IS_RST_INVERTED"
+        ]
+      }
+    }
+  },
+  "PLLE3_BASE": {
+    "element": "PLLE3_BASE",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "CLKFBIN",
+        "dir": "in"
+      },
+      {
+        "name": "CLKFBOUT",
+        "dir": "out"
+      },
+      {
+        "name": "CLKIN",
+        "dir": "in"
+      },
+      {
+        "name": "CLKOUT0",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT0B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT1",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT1B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUTPHY",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUTPHYEN",
+        "dir": "in"
+      },
+      {
+        "name": "Clock_Outputs:_User_configurable_clock_outputs_that_can_be_divided_versions_of_the_VCO_phase_outputs_(user_controllable)_from_1_(bypassed)_to_256._The_output_clocks_are_phase_aligned_to_each_other_(unless_phase_shifted)_and_aligned_to_the_input_clock_with_a_proper_feedback_configuration.",
+        "dir": "in"
+      },
+      {
+        "name": "Control_Ports:_PLL_control_ports.",
+        "dir": "in"
+      },
+      {
+        "name": "Feedback_Clocks:_Required_ports_to_form_the_feedback_path_for_the_PLL_phase_alignment_capabilities.",
+        "dir": "in"
+      },
+      {
+        "name": "LOCKED",
+        "dir": "out"
+      },
+      {
+        "name": "PWRDWN",
+        "dir": "in"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "PLLE3_BASE"
+    ],
+    "configs": {
+      "PLLE3_BASE": {
+        "init": null,
+        "inverts": [
+          "IS_CLKFBIN_INVERTED",
+          "IS_CLKIN_INVERTED",
+          "IS_PWRDWN_INVERTED",
+          "IS_RST_INVERTED"
+        ]
+      }
+    }
+  },
+  "PLLE4_ADV": {
+    "element": "PLLE4_ADV",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "CLKFBIN",
+        "dir": "in"
+      },
+      {
+        "name": "CLKFBOUT",
+        "dir": "out"
+      },
+      {
+        "name": "CLKIN",
+        "dir": "in"
+      },
+      {
+        "name": "CLKOUT0",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT0B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT1",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT1B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUTPHY",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUTPHYEN",
+        "dir": "in"
+      },
+      {
+        "name": "DADDR",
+        "dir": "in",
+        "width": 7
+      },
+      {
+        "name": "DCLK",
+        "dir": "in"
+      },
+      {
+        "name": "DEN",
+        "dir": "in"
+      },
+      {
+        "name": "DI",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "DO",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "DRDY",
+        "dir": "out"
+      },
+      {
+        "name": "DWE",
+        "dir": "in"
+      },
+      {
+        "name": "LOCKED",
+        "dir": "out"
+      },
+      {
+        "name": "PWRDWN",
+        "dir": "in"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "PLLE4_ADV"
+    ],
+    "configs": {
+      "PLLE4_ADV": {
+        "init": null,
+        "inverts": [
+          "IS_CLKFBIN_INVERTED",
+          "IS_CLKIN_INVERTED",
+          "IS_PWRDWN_INVERTED",
+          "IS_RST_INVERTED"
+        ]
+      }
+    }
+  },
+  "PLLE4_BASE": {
+    "element": "PLLE4_BASE",
+    "kind": "leaf",
+    "subsystem": "CLOCK",
+    "ports": [
+      {
+        "name": "CLKFBIN",
+        "dir": "in"
+      },
+      {
+        "name": "CLKFBOUT",
+        "dir": "out"
+      },
+      {
+        "name": "CLKIN",
+        "dir": "in"
+      },
+      {
+        "name": "CLKOUT0",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT0B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT1",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUT1B",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUTPHY",
+        "dir": "out"
+      },
+      {
+        "name": "CLKOUTPHYEN",
+        "dir": "in"
+      },
+      {
+        "name": "LOCKED",
+        "dir": "out"
+      },
+      {
+        "name": "PWRDWN",
+        "dir": "in"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "PLLE4_BASE"
+    ],
+    "configs": {
+      "PLLE4_BASE": {
+        "init": null,
+        "inverts": [
+          "IS_CLKFBIN_INVERTED",
+          "IS_CLKIN_INVERTED",
+          "IS_PWRDWN_INVERTED",
+          "IS_RST_INVERTED"
+        ]
+      }
+    }
+  },
+  "RIU_OR": {
+    "element": "RIU_OR",
+    "kind": "leaf",
+    "subsystem": "I",
+    "ports": [
+      {
+        "name": "RIU_RD_DATA",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "RIU_RD_DATA_LOW",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "RIU_RD_DATA_UPP",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "RIU_RD_VALID",
+        "dir": "out"
+      },
+      {
+        "name": "RIU_RD_VALID_LOW",
+        "dir": "in"
+      },
+      {
+        "name": "RIU_RD_VALID_UPP",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "RIU_OR"
+    ],
+    "configs": {
+      "RIU_OR": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "RXTX_BITSLICE": {
+    "element": "RXTX_BITSLICE",
+    "kind": "leaf",
+    "subsystem": "I",
+    "ports": [
+      {
+        "name": "D",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "DATAIN",
+        "dir": "in"
+      },
+      {
+        "name": "FIFO_EMPTY",
+        "dir": "out"
+      },
+      {
+        "name": "FIFO_RD_CLK",
+        "dir": "in"
+      },
+      {
+        "name": "FIFO_RD_EN",
+        "dir": "in"
+      },
+      {
+        "name": "FIFO_WRCLK_OUT",
+        "dir": "out"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "Q",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "RX_BIT_CTRL_IN",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "RX_BIT_CTRL_OUT",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "RX_CE",
+        "dir": "in"
+      },
+      {
+        "name": "RX_CLK",
+        "dir": "in"
+      },
+      {
+        "name": "RX_CNTVALUEIN",
+        "dir": "in",
+        "width": 9
+      },
+      {
+        "name": "RX_CNTVALUEOUT",
+        "dir": "out",
+        "width": 9
+      },
+      {
+        "name": "RX_EN_VTC",
+        "dir": "in"
+      },
+      {
+        "name": "RX_INC",
+        "dir": "in"
+      },
+      {
+        "name": "RX_LOAD",
+        "dir": "in"
+      },
+      {
+        "name": "RX_RST",
+        "dir": "in"
+      },
+      {
+        "name": "RX_RST_DLY",
+        "dir": "in"
+      },
+      {
+        "name": "T",
+        "dir": "in"
+      },
+      {
+        "name": "TBYTE_IN",
+        "dir": "in"
+      },
+      {
+        "name": "TX_BIT_CTRL_IN",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_OUT",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "TX_CE",
+        "dir": "in"
+      },
+      {
+        "name": "TX_CLK",
+        "dir": "in"
+      },
+      {
+        "name": "TX_CNTVALUEIN",
+        "dir": "in",
+        "width": 9
+      },
+      {
+        "name": "TX_CNTVALUEOUT",
+        "dir": "out",
+        "width": 9
+      },
+      {
+        "name": "TX_EN_VTC",
+        "dir": "in"
+      },
+      {
+        "name": "TX_INC",
+        "dir": "in"
+      },
+      {
+        "name": "TX_LOAD",
+        "dir": "in"
+      },
+      {
+        "name": "TX_RST",
+        "dir": "in"
+      },
+      {
+        "name": "TX_RST_DLY",
+        "dir": "in"
+      },
+      {
+        "name": "T_OUT",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "RXTX_BITSLICE"
+    ],
+    "configs": {
+      "RXTX_BITSLICE": {
+        "init": "1'b1",
+        "inverts": [
+          "IS_RX_CLK_INVERTED",
+          "IS_RX_RST_DLY_INVERTED",
+          "IS_RX_RST_INVERTED",
+          "IS_TX_CLK_INVERTED",
+          "IS_TX_RST_DLY_INVERTED",
+          "IS_TX_RST_INVERTED"
+        ]
+      }
+    }
+  },
+  "RX_BITSLICE": {
+    "element": "RX_BITSLICE",
+    "kind": "leaf",
+    "subsystem": "I",
+    "ports": [
+      {
+        "name": "CE",
+        "dir": "in"
+      },
+      {
+        "name": "CE_EXT",
+        "dir": "in"
+      },
+      {
+        "name": "CLK",
+        "dir": "in"
+      },
+      {
+        "name": "CLK_EXT",
+        "dir": "in"
+      },
+      {
+        "name": "CNTVALUEIN",
+        "dir": "in",
+        "width": 9
+      },
+      {
+        "name": "CNTVALUEIN_EXT",
+        "dir": "in",
+        "width": 9
+      },
+      {
+        "name": "CNTVALUEOUT",
+        "dir": "out",
+        "width": 9
+      },
+      {
+        "name": "CNTVALUEOUT_EXT",
+        "dir": "out",
+        "width": 9
+      },
+      {
+        "name": "DATAIN",
+        "dir": "in"
+      },
+      {
+        "name": "EN_VTC",
+        "dir": "in"
+      },
+      {
+        "name": "EN_VTC_EXT",
+        "dir": "in"
+      },
+      {
+        "name": "FIFO_EMPTY",
+        "dir": "out"
+      },
+      {
+        "name": "FIFO_RD_CLK",
+        "dir": "in"
+      },
+      {
+        "name": "FIFO_RD_EN",
+        "dir": "in"
+      },
+      {
+        "name": "FIFO_WRCLK_OUT",
+        "dir": "out"
+      },
+      {
+        "name": "INC",
+        "dir": "in"
+      },
+      {
+        "name": "INC_EXT",
+        "dir": "in"
+      },
+      {
+        "name": "LOAD",
+        "dir": "in"
+      },
+      {
+        "name": "LOAD_EXT",
+        "dir": "in"
+      },
+      {
+        "name": "Q",
+        "dir": "out",
+        "width": 8
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      },
+      {
+        "name": "RST_DLY",
+        "dir": "in"
+      },
+      {
+        "name": "RST_DLY_EXT",
+        "dir": "in"
+      },
+      {
+        "name": "RX_BIT_CTRL_IN",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "RX_BIT_CTRL_OUT",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_IN",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_OUT",
+        "dir": "out",
+        "width": 40
+      }
+    ],
+    "members": [
+      "RX_BITSLICE"
+    ],
+    "configs": {
+      "RX_BITSLICE": {
+        "init": null,
+        "inverts": [
+          "IS_CLK_EXT_INVERTED",
+          "IS_CLK_INVERTED",
+          "IS_RST_DLY_EXT_INVERTED",
+          "IS_RST_DLY_INVERTED",
+          "IS_RST_INVERTED"
+        ]
+      }
+    }
+  },
+  "STARTUPE3": {
+    "element": "STARTUPE3",
+    "kind": "leaf",
+    "subsystem": "CONFIGURATION",
+    "ports": [
+      {
+        "name": "CFGCLK",
+        "dir": "out"
+      },
+      {
+        "name": "CFGMCLK",
+        "dir": "out"
+      },
+      {
+        "name": "DI",
+        "dir": "out",
+        "width": 4
+      },
+      {
+        "name": "DO",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "DTS",
+        "dir": "in",
+        "width": 4
+      },
+      {
+        "name": "EOS",
+        "dir": "out"
+      },
+      {
+        "name": "FCSBO",
+        "dir": "in"
+      },
+      {
+        "name": "FCSBTS",
+        "dir": "in"
+      },
+      {
+        "name": "GSR",
+        "dir": "in"
+      },
+      {
+        "name": "GTS",
+        "dir": "in"
+      },
+      {
+        "name": "KEYCLEARB",
+        "dir": "in"
+      },
+      {
+        "name": "PACK",
+        "dir": "in"
+      },
+      {
+        "name": "PREQ",
+        "dir": "out"
+      },
+      {
+        "name": "USRCCLKO",
+        "dir": "in"
+      },
+      {
+        "name": "USRCCLKTS",
+        "dir": "in"
+      },
+      {
+        "name": "USRDONEO",
+        "dir": "in"
+      },
+      {
+        "name": "USRDONETS",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "STARTUPE3"
+    ],
+    "configs": {
+      "STARTUPE3": {
+        "init": null,
+        "inverts": []
+      }
+    }
+  },
+  "SYSMONE1": {
+    "element": "SYSMONE1",
+    "kind": "leaf",
+    "subsystem": "ADVANCED",
+    "ports": [
+      {
+        "name": "ALARMS:_SYSMON_alarm_ports.",
+        "dir": "in"
+      },
+      {
+        "name": "ALM",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "Auxiliary_Analog-Input_Pairs:_Sixteen_auxiliary_analog_input_pairs._In_addition_to_the_dedicated_differential_analog_input,_SYSMON_can_access_16_differential_analog_inputs_by_configuring_digital_I/O_as_analog_inputs._These_inputs_can_also_be_enabled_preconfiguration_via_the_JTAG_port.",
+        "dir": "in"
+      },
+      {
+        "name": "BUSY",
+        "dir": "out"
+      },
+      {
+        "name": "CHANNEL",
+        "dir": "out",
+        "width": 6
+      },
+      {
+        "name": "CONTROL_and_CLOCK:_SYSMON_reset,_conversion_start_and_clock_inputs.",
+        "dir": "in"
+      },
+      {
+        "name": "CONVST",
+        "dir": "in"
+      },
+      {
+        "name": "CONVSTCLK",
+        "dir": "in"
+      },
+      {
+        "name": "DADDR",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "DCLK",
+        "dir": "in"
+      },
+      {
+        "name": "DEN",
+        "dir": "in"
+      },
+      {
+        "name": "DI",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "DO",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "DRDY",
+        "dir": "out"
+      },
+      {
+        "name": "DWE",
+        "dir": "in"
+      },
+      {
+        "name": "Dedicated_Analog_Input_Pair:_One_dedicated_analog_input_pair._SYSMON_has_one_pair_of_dedicated_analog_input_pins_that_provide_a_differential_analog_input._If_you_are_designing_with_SYSMON_but_not_using_the_dedicated_external_channel_of_VP_and_VN,_connect_both_VP_and_VN_to_analog_ground.",
+        "dir": "in"
+      },
+      {
+        "name": "Dynamic_Reconfiguration_Port_(DRP):_Dynamic_Reconfiguration_Ports,_ports_used_to_access_and_control_the_System_Monitor_block.",
+        "dir": "in"
+      },
+      {
+        "name": "EOC",
+        "dir": "out"
+      },
+      {
+        "name": "EOS",
+        "dir": "out"
+      },
+      {
+        "name": "I2C_Interface:_Ports_used_with_the_I2C_DRP_interface.",
+        "dir": "in"
+      },
+      {
+        "name": "I2C_SCLK",
+        "dir": "in"
+      },
+      {
+        "name": "I2C_SCLK_TS",
+        "dir": "out"
+      },
+      {
+        "name": "I2C_SDA",
+        "dir": "in"
+      },
+      {
+        "name": "I2C_SDA_TS",
+        "dir": "out"
+      },
+      {
+        "name": "JTAGBUSY",
+        "dir": "out"
+      },
+      {
+        "name": "JTAGLOCKED",
+        "dir": "out"
+      },
+      {
+        "name": "JTAGMODIFIED",
+        "dir": "out"
+      },
+      {
+        "name": "MUXADDR",
+        "dir": "out",
+        "width": 5
+      },
+      {
+        "name": "OT",
+        "dir": "out"
+      },
+      {
+        "name": "RESET",
+        "dir": "in"
+      },
+      {
+        "name": "STATUS:_SYSMON_status_ports.",
+        "dir": "in"
+      },
+      {
+        "name": "VAUXN",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "VAUXP",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "VN",
+        "dir": "in"
+      },
+      {
+        "name": "VP",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "SYSMONE1"
+    ],
+    "configs": {
+      "SYSMONE1": {
+        "init": null,
+        "inverts": [
+          "IS_CONVSTCLK_INVERTED",
+          "IS_DCLK_INVERTED"
+        ]
+      }
+    }
+  },
+  "SYSMONE4": {
+    "element": "SYSMONE4",
+    "kind": "leaf",
+    "subsystem": "ADVANCED",
+    "ports": [
+      {
+        "name": "ADC_DATA",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "ALARMS:_SYSMON_alarm_ports.",
+        "dir": "in"
+      },
+      {
+        "name": "ALM",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "Auxiliary_Analog-Input_Pairs:_Sixteen_auxiliary_analog_input_pairs._In_addition_to_the_dedicated_differential_analog_input,_SYSMON_can_access_16_differential_analog_inputs_by_configuring_digital_I/O_as_analog_inputs._These_inputs_can_also_be_enabled_preconfiguration_via_the_JTAG_port.",
+        "dir": "in"
+      },
+      {
+        "name": "BUSY",
+        "dir": "out"
+      },
+      {
+        "name": "CHANNEL",
+        "dir": "out",
+        "width": 6
+      },
+      {
+        "name": "CONTROL_and_CLOCK:_SYSMON_reset,_conversion_start_and_clock_inputs.",
+        "dir": "in"
+      },
+      {
+        "name": "CONVST",
+        "dir": "in"
+      },
+      {
+        "name": "CONVSTCLK",
+        "dir": "in"
+      },
+      {
+        "name": "DADDR",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "DCLK",
+        "dir": "in"
+      },
+      {
+        "name": "DEN",
+        "dir": "in"
+      },
+      {
+        "name": "DI",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "DO",
+        "dir": "out",
+        "width": 16
+      },
+      {
+        "name": "DRDY",
+        "dir": "out"
+      },
+      {
+        "name": "DWE",
+        "dir": "in"
+      },
+      {
+        "name": "Dedicated_Analog_Input_Pair:_One_dedicated_analog_input_pair._SYSMON_has_one_pair_of_dedicated_analog_input_pins_that_provide_a_differential_analog_input._If_you_are_designing_with_SYSMON_but_not_using_the_dedicated_external_channel_of_VP_and_VN,_connect_both_VP_and_VN_to_analog_ground.",
+        "dir": "in"
+      },
+      {
+        "name": "Direct_Data_Out:_Direct_data_output._Measurement_results_updated_every_conversion_(EOC)._Use_with_channel.",
+        "dir": "in"
+      },
+      {
+        "name": "Dynamic_Reconfiguration_Port_(DRP):_Dynamic_Reconfiguration_Ports,_ports_used_to_access_and_control_the_System_Monitor_block.",
+        "dir": "in"
+      },
+      {
+        "name": "EOC",
+        "dir": "out"
+      },
+      {
+        "name": "EOS",
+        "dir": "out"
+      },
+      {
+        "name": "I2C_Interface:_Ports_used_with_the_I2C_DRP_interface.",
+        "dir": "in"
+      },
+      {
+        "name": "I2C_SCLK",
+        "dir": "in"
+      },
+      {
+        "name": "I2C_SCLK_TS",
+        "dir": "out"
+      },
+      {
+        "name": "I2C_SDA",
+        "dir": "in"
+      },
+      {
+        "name": "I2C_SDA_TS",
+        "dir": "out"
+      },
+      {
+        "name": "JTAGBUSY",
+        "dir": "out"
+      },
+      {
+        "name": "JTAGLOCKED",
+        "dir": "out"
+      },
+      {
+        "name": "JTAGMODIFIED",
+        "dir": "out"
+      },
+      {
+        "name": "MUXADDR",
+        "dir": "out",
+        "width": 5
+      },
+      {
+        "name": "OT",
+        "dir": "out"
+      },
+      {
+        "name": "RESET",
+        "dir": "in"
+      },
+      {
+        "name": "SMBALERT_TS",
+        "dir": "out"
+      },
+      {
+        "name": "STATUS:_SYSMON_status_ports.",
+        "dir": "in"
+      },
+      {
+        "name": "VAUXN",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "VAUXP",
+        "dir": "in",
+        "width": 16
+      },
+      {
+        "name": "VN",
+        "dir": "in"
+      },
+      {
+        "name": "VP",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "SYSMONE4"
+    ],
+    "configs": {
+      "SYSMONE4": {
+        "init": null,
+        "inverts": [
+          "IS_CONVSTCLK_INVERTED",
+          "IS_DCLK_INVERTED"
+        ]
+      }
+    }
+  },
+  "TX_BITSLICE": {
+    "element": "TX_BITSLICE",
+    "kind": "leaf",
+    "subsystem": "I",
+    "ports": [
+      {
+        "name": "CE",
+        "dir": "in"
+      },
+      {
+        "name": "CLK",
+        "dir": "in"
+      },
+      {
+        "name": "CNTVALUEIN",
+        "dir": "in",
+        "width": 9
+      },
+      {
+        "name": "CNTVALUEOUT",
+        "dir": "out",
+        "width": 9
+      },
+      {
+        "name": "D",
+        "dir": "in",
+        "width": 8
+      },
+      {
+        "name": "EN_VTC",
+        "dir": "in"
+      },
+      {
+        "name": "INC",
+        "dir": "in"
+      },
+      {
+        "name": "LOAD",
+        "dir": "in"
+      },
+      {
+        "name": "O",
+        "dir": "out"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      },
+      {
+        "name": "RST_DLY",
+        "dir": "in"
+      },
+      {
+        "name": "RX_BIT_CTRL_IN",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "RX_BIT_CTRL_OUT",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "T",
+        "dir": "in"
+      },
+      {
+        "name": "TBYTE_IN",
+        "dir": "in"
+      },
+      {
+        "name": "TX_BIT_CTRL_IN",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "TX_BIT_CTRL_OUT",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "T_OUT",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "TX_BITSLICE"
+    ],
+    "configs": {
+      "TX_BITSLICE": {
+        "init": "1'b1",
+        "inverts": [
+          "IS_CLK_INVERTED",
+          "IS_RST_DLY_INVERTED",
+          "IS_RST_INVERTED"
+        ]
+      }
+    }
+  },
+  "TX_BITSLICE_TRI": {
+    "element": "TX_BITSLICE_TRI",
+    "kind": "leaf",
+    "subsystem": "I",
+    "ports": [
+      {
+        "name": "BIT_CTRL_IN",
+        "dir": "in",
+        "width": 40
+      },
+      {
+        "name": "BIT_CTRL_OUT",
+        "dir": "out",
+        "width": 40
+      },
+      {
+        "name": "CE",
+        "dir": "in"
+      },
+      {
+        "name": "CLK",
+        "dir": "in"
+      },
+      {
+        "name": "CNTVALUEIN",
+        "dir": "in",
+        "width": 9
+      },
+      {
+        "name": "CNTVALUEOUT",
+        "dir": "out",
+        "width": 9
+      },
+      {
+        "name": "EN_VTC",
+        "dir": "in"
+      },
+      {
+        "name": "INC",
+        "dir": "in"
+      },
+      {
+        "name": "LOAD",
+        "dir": "in"
+      },
+      {
+        "name": "RST",
+        "dir": "in"
+      },
+      {
+        "name": "RST_DLY",
+        "dir": "in"
+      },
+      {
+        "name": "TRI_OUT",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "TX_BITSLICE_TRI"
+    ],
+    "configs": {
+      "TX_BITSLICE_TRI": {
+        "init": "1'b1",
+        "inverts": [
+          "IS_CLK_INVERTED",
+          "IS_RST_DLY_INVERTED",
+          "IS_RST_INVERTED"
+        ]
+      }
+    }
+  },
+  "URAM288": {
+    "element": "URAM288",
+    "kind": "leaf",
+    "subsystem": "BLOCKRAM",
+    "ports": [
+      {
+        "name": "ADDR_A",
+        "dir": "in",
+        "width": 23
+      },
+      {
+        "name": "ADDR_B",
+        "dir": "in",
+        "width": 23
+      },
+      {
+        "name": "BWE_A",
+        "dir": "in",
+        "width": 9
+      },
+      {
+        "name": "BWE_B",
+        "dir": "in",
+        "width": 9
+      },
+      {
+        "name": "CAS_IN_ADDR_A",
+        "dir": "in",
+        "width": 23
+      },
+      {
+        "name": "CAS_IN_ADDR_B",
+        "dir": "in",
+        "width": 23
+      },
+      {
+        "name": "CAS_IN_BWE_A",
+        "dir": "in",
+        "width": 9
+      },
+      {
+        "name": "CAS_IN_BWE_B",
+        "dir": "in",
+        "width": 9
+      },
+      {
+        "name": "CAS_IN_DBITERR_A",
+        "dir": "in"
+      },
+      {
+        "name": "CAS_IN_DBITERR_B",
+        "dir": "in"
+      },
+      {
+        "name": "CAS_IN_DIN_A",
+        "dir": "in",
+        "width": 72
+      },
+      {
+        "name": "CAS_IN_DIN_B",
+        "dir": "in",
+        "width": 72
+      },
+      {
+        "name": "CAS_IN_DOUT_A",
+        "dir": "in",
+        "width": 72
+      },
+      {
+        "name": "CAS_IN_DOUT_B",
+        "dir": "in",
+        "width": 72
+      },
+      {
+        "name": "CAS_IN_EN_A",
+        "dir": "in"
+      },
+      {
+        "name": "CAS_IN_EN_B",
+        "dir": "in"
+      },
+      {
+        "name": "CAS_IN_RDACCESS_A",
+        "dir": "in"
+      },
+      {
+        "name": "CAS_IN_RDACCESS_B",
+        "dir": "in"
+      },
+      {
+        "name": "CAS_IN_RDB_WR_A",
+        "dir": "in"
+      },
+      {
+        "name": "CAS_IN_RDB_WR_B",
+        "dir": "in"
+      },
+      {
+        "name": "CAS_IN_SBITERR_A",
+        "dir": "in"
+      },
+      {
+        "name": "CAS_IN_SBITERR_B",
+        "dir": "in"
+      },
+      {
+        "name": "CAS_OUT_ADDR_A",
+        "dir": "out",
+        "width": 23
+      },
+      {
+        "name": "CAS_OUT_ADDR_B",
+        "dir": "out",
+        "width": 23
+      },
+      {
+        "name": "CAS_OUT_BWE_A",
+        "dir": "out",
+        "width": 9
+      },
+      {
+        "name": "CAS_OUT_BWE_B",
+        "dir": "out",
+        "width": 9
+      },
+      {
+        "name": "CAS_OUT_DBITERR_A",
+        "dir": "out"
+      },
+      {
+        "name": "CAS_OUT_DBITERR_B",
+        "dir": "out"
+      },
+      {
+        "name": "CAS_OUT_DIN_A",
+        "dir": "out",
+        "width": 72
+      },
+      {
+        "name": "CAS_OUT_DIN_B",
+        "dir": "out",
+        "width": 72
+      },
+      {
+        "name": "CAS_OUT_DOUT_A",
+        "dir": "out",
+        "width": 72
+      },
+      {
+        "name": "CAS_OUT_DOUT_B",
+        "dir": "out",
+        "width": 72
+      },
+      {
+        "name": "CAS_OUT_EN_A",
+        "dir": "out"
+      },
+      {
+        "name": "CAS_OUT_EN_B",
+        "dir": "out"
+      },
+      {
+        "name": "CAS_OUT_RDACCESS_A",
+        "dir": "out"
+      },
+      {
+        "name": "CAS_OUT_RDACCESS_B",
+        "dir": "out"
+      },
+      {
+        "name": "CAS_OUT_RDB_WR_A",
+        "dir": "out"
+      },
+      {
+        "name": "CAS_OUT_RDB_WR_B",
+        "dir": "out"
+      },
+      {
+        "name": "CAS_OUT_SBITERR_A",
+        "dir": "out"
+      },
+      {
+        "name": "CAS_OUT_SBITERR_B",
+        "dir": "out"
+      },
+      {
+        "name": "CLK",
+        "dir": "in"
+      },
+      {
+        "name": "DBITERR_A",
+        "dir": "out"
+      },
+      {
+        "name": "DBITERR_B",
+        "dir": "out"
+      },
+      {
+        "name": "DIN_A",
+        "dir": "in",
+        "width": 72
+      },
+      {
+        "name": "DIN_B",
+        "dir": "in",
+        "width": 72
+      },
+      {
+        "name": "DOUT_A",
+        "dir": "out",
+        "width": 72
+      },
+      {
+        "name": "DOUT_B",
+        "dir": "out",
+        "width": 72
+      },
+      {
+        "name": "EN_A",
+        "dir": "in"
+      },
+      {
+        "name": "EN_B",
+        "dir": "in"
+      },
+      {
+        "name": "INJECT_DBITERR_A",
+        "dir": "in"
+      },
+      {
+        "name": "INJECT_DBITERR_B",
+        "dir": "in"
+      },
+      {
+        "name": "INJECT_SBITERR_A",
+        "dir": "in"
+      },
+      {
+        "name": "INJECT_SBITERR_B",
+        "dir": "in"
+      },
+      {
+        "name": "OREG_CE_A",
+        "dir": "in"
+      },
+      {
+        "name": "OREG_CE_B",
+        "dir": "in"
+      },
+      {
+        "name": "OREG_ECC_CE_A",
+        "dir": "in"
+      },
+      {
+        "name": "OREG_ECC_CE_B",
+        "dir": "in"
+      },
+      {
+        "name": "RDACCESS_A",
+        "dir": "out"
+      },
+      {
+        "name": "RDACCESS_B",
+        "dir": "out"
+      },
+      {
+        "name": "RDB_WR_A",
+        "dir": "in"
+      },
+      {
+        "name": "RDB_WR_B",
+        "dir": "in"
+      },
+      {
+        "name": "RST_A",
+        "dir": "in"
+      },
+      {
+        "name": "RST_B",
+        "dir": "in"
+      },
+      {
+        "name": "SBITERR_A",
+        "dir": "out"
+      },
+      {
+        "name": "SBITERR_B",
+        "dir": "out"
+      },
+      {
+        "name": "SLEEP",
+        "dir": "in"
+      }
+    ],
+    "members": [
+      "URAM288",
+      "URAM288_BASE"
+    ],
+    "configs": {
+      "URAM288": {
+        "init": null,
+        "inverts": [
+          "IS_CLK_INVERTED",
+          "IS_EN_A_INVERTED",
+          "IS_EN_B_INVERTED",
+          "IS_RDB_WR_A_INVERTED",
+          "IS_RDB_WR_B_INVERTED",
+          "IS_RST_A_INVERTED",
+          "IS_RST_B_INVERTED"
+        ]
+      },
+      "URAM288_BASE": {
+        "init": null,
+        "inverts": [
+          "IS_CLK_INVERTED",
+          "IS_EN_A_INVERTED",
+          "IS_EN_B_INVERTED",
+          "IS_RDB_WR_A_INVERTED",
+          "IS_RDB_WR_B_INVERTED",
+          "IS_RST_A_INVERTED",
+          "IS_RST_B_INVERTED"
+        ]
+      }
+    }
+  },
+  "USR_ACCESSE2": {
+    "element": "USR_ACCESSE2",
+    "kind": "leaf",
+    "subsystem": "CONFIGURATION",
+    "ports": [
+      {
+        "name": "CFGCLK",
+        "dir": "out"
+      },
+      {
+        "name": "DATA",
+        "dir": "out",
+        "width": 32
+      },
+      {
+        "name": "DATAVALID",
+        "dir": "out"
+      }
+    ],
+    "members": [
+      "USR_ACCESSE2"
+    ],
+    "configs": {
+      "USR_ACCESSE2": {
         "init": null,
         "inverts": []
       }

@@ -74,108 +74,12 @@
       "configs": 2
     },
     {
-      "name": "BITSLICE_CONTROL",
+      "name": "IO_BUFFER",
       "kind": "leaf",
       "subsystem": "I",
       "count": 668,
-      "ports": 57,
-      "configs": 1
-    },
-    {
-      "name": "DCIRESET",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 2,
-      "configs": 1
-    },
-    {
-      "name": "HPIO_VREF",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 2,
-      "configs": 1
-    },
-    {
-      "name": "IBUF",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 2,
-      "configs": 1
-    },
-    {
-      "name": "IBUFDS",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 3,
-      "configs": 1
-    },
-    {
-      "name": "IBUFDSE3",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 6,
-      "configs": 1
-    },
-    {
-      "name": "IBUFDS_DIFF_OUT",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 4,
-      "configs": 1
-    },
-    {
-      "name": "IBUFDS_DIFF_OUT_IBUFDISABLE",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 5,
-      "configs": 1
-    },
-    {
-      "name": "IBUFDS_DIFF_OUT_INTERMDISABLE",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 6,
-      "configs": 1
-    },
-    {
-      "name": "IBUFDS_DPHY",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 7,
-      "configs": 1
-    },
-    {
-      "name": "IBUFDS_IBUFDISABLE",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 4,
-      "configs": 1
-    },
-    {
-      "name": "IBUFDS_INTERMDISABLE",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 5,
-      "configs": 1
-    },
-    {
-      "name": "IBUFE3",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 6,
-      "configs": 1
+      "ports": 25,
+      "configs": 31
     },
     {
       "name": "IBUF_ANALOG",
@@ -183,30 +87,6 @@
       "subsystem": "I",
       "count": 668,
       "ports": 2,
-      "configs": 1
-    },
-    {
-      "name": "IBUF_IBUFDISABLE",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 3,
-      "configs": 1
-    },
-    {
-      "name": "IBUF_INTERMDISABLE",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 4,
-      "configs": 1
-    },
-    {
-      "name": "IDELAYCTRL",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 3,
       "configs": 1
     },
     {
@@ -218,147 +98,11 @@
       "configs": 1
     },
     {
-      "name": "IOBUF",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 4,
-      "configs": 1
-    },
-    {
-      "name": "IOBUFDS",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 5,
-      "configs": 1
-    },
-    {
-      "name": "IOBUFDSE3",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 9,
-      "configs": 1
-    },
-    {
-      "name": "IOBUFDS_DCIEN",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 7,
-      "configs": 1
-    },
-    {
-      "name": "IOBUFDS_DIFF_OUT",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 7,
-      "configs": 1
-    },
-    {
-      "name": "IOBUFDS_DIFF_OUT_DCIEN",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 9,
-      "configs": 1
-    },
-    {
-      "name": "IOBUFDS_DIFF_OUT_INTERMDISABLE",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 9,
-      "configs": 1
-    },
-    {
-      "name": "IOBUFDS_INTERMDISABLE",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 7,
-      "configs": 1
-    },
-    {
-      "name": "IOBUFE3",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 9,
-      "configs": 1
-    },
-    {
-      "name": "IOBUF_DCIEN",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 6,
-      "configs": 1
-    },
-    {
-      "name": "IOBUF_INTERMDISABLE",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 6,
-      "configs": 1
-    },
-    {
       "name": "ISERDESE3",
       "kind": "leaf",
       "subsystem": "I",
       "count": 668,
       "ports": 10,
-      "configs": 1
-    },
-    {
-      "name": "KEEPER",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 1,
-      "configs": 1
-    },
-    {
-      "name": "OBUF",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 2,
-      "configs": 1
-    },
-    {
-      "name": "OBUFDS",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 3,
-      "configs": 1
-    },
-    {
-      "name": "OBUFDS_DPHY",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 7,
-      "configs": 1
-    },
-    {
-      "name": "OBUFT",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 3,
-      "configs": 1
-    },
-    {
-      "name": "OBUFTDS",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 4,
       "configs": 1
     },
     {
@@ -375,30 +119,6 @@
       "subsystem": "I",
       "count": 668,
       "ports": 7,
-      "configs": 1
-    },
-    {
-      "name": "PULLDOWN",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 1,
-      "configs": 1
-    },
-    {
-      "name": "PULLUP",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 1,
-      "configs": 1
-    },
-    {
-      "name": "RIU_OR",
-      "kind": "leaf",
-      "subsystem": "I",
-      "count": 668,
-      "ports": 6,
       "configs": 1
     },
     {
@@ -634,11 +354,27 @@
       "configs": 1
     },
     {
+      "name": "BITSLICE_CONTROL",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": null,
+      "ports": 57,
+      "configs": 1
+    },
+    {
       "name": "BSCANE2",
       "kind": "leaf",
       "subsystem": "CONFIGURATION",
       "count": null,
       "ports": 11,
+      "configs": 1
+    },
+    {
+      "name": "DCIRESET",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": null,
+      "ports": 2,
       "configs": 1
     },
     {
@@ -663,6 +399,14 @@
       "subsystem": "REGISTER",
       "count": null,
       "ports": 3,
+      "configs": 1
+    },
+    {
+      "name": "HPIO_VREF",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": null,
+      "ports": 2,
       "configs": 1
     },
     {
@@ -695,6 +439,14 @@
       "subsystem": "REGISTER",
       "count": null,
       "ports": 6,
+      "configs": 1
+    },
+    {
+      "name": "IDELAYCTRL",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": null,
+      "ports": 3,
       "configs": 1
     },
     {
@@ -754,6 +506,14 @@
       "configs": 1
     },
     {
+      "name": "RIU_OR",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": null,
+      "ports": 6,
+      "configs": 1
+    },
+    {
       "name": "STARTUPE3",
       "kind": "leaf",
       "subsystem": "CONFIGURATION",
@@ -794,9 +554,10 @@
     "note": "synthesized column/region floorplan; (X,Y) is identity, no allocation"
   },
   "totals": {
-    "physical_element_types": 98,
-    "total_placed_instances": 2126341,
+    "physical_element_types": 68,
+    "total_placed_instances": 2102961,
     "system_logic_cells_DS891": 1143450,
-    "uncounted_element_types": 20
+    "authentic_sizing_target_note": "founder target ~8.1M full-authentic; see roadmap \u00a7P2 (M1)",
+    "uncounted_element_types": 25
   }
 }

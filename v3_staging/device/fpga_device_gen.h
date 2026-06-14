@@ -7,7 +7,7 @@
 typedef struct { uint64_t state; uint64_t cfg; } ps_block;
 static ps_block ps_domain[7];
 /* interconnect + loaded design configuration (PIP bits + placements) */
-static const unsigned long long DEVICE_FABRIC_CELLS = 2126341ULL;
+static const unsigned long long DEVICE_FABRIC_CELLS = 2102961ULL;
 static const unsigned long long DEVICE_PIP_BITS    = 121671ULL;
 static const int DEVICE_PS_BLOCKS = 7;
 static const int DEVICE_PS_SIGNALS = 104;
@@ -20,6 +20,11 @@ static unsigned long fpga_device_flipflops(void){ return 1045440UL; }
 static unsigned long fpga_device_luts(void){ return 522720UL; }
 static void fpga_device_power_on(void){ _fd_pwr = 1; }
 static void fpga_device_power_off(void){ _fd_pwr = 0; }
+/* M2 — PLACEHOLDER POST tick (NOT the final gate-level device tick). The native `if(_fd_pwr)`
+   and `^=` below VIOLATE Law #3 (branchless gate-level datapath) and exist ONLY as a power-on
+   liveness probe for BIOS review. P6-final replaces this body with structural cells (cell_mux on
+   _fd_pwr gating a cell-driven register toggle) once the unified fabric tick is wired. Do NOT
+   mistake this for a realized branchless tick — it is scaffolding, flagged for P6 unify. */
 static void fpga_device_tick(void){ if(_fd_pwr){ _fd_ticks++; storage_element[0].state ^= 1ULL; } }
 static void fpga_device_display(void){
   printf("  [DEVICE] XCZU19EG  power:%s  ticks:%lu\n", _fd_pwr?"ON":"OFF", _fd_ticks);

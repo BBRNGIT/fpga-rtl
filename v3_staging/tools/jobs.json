@@ -1,6 +1,6 @@
 {
   "generated_from": "jobgen.py",
-  "count": 81,
+  "count": 82,
   "jobs": [
     {
       "id": "tool:assemble",
@@ -535,6 +535,14 @@
       "kind": "integrity",
       "group": "invariants",
       "check": "python3 checks_lib.py no_ai_attribution",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "inv:no_orphan_primitives",
+      "kind": "integrity",
+      "group": "invariants",
+      "check": "python3 checks_lib.py no_orphan_primitives",
       "gate": true,
       "nudge": ""
     },
