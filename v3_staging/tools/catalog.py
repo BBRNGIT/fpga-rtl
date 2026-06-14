@@ -115,6 +115,9 @@ def run(cachedir, out):
             if pg is None: continue
             txt = "".join(recs[p]["text"] for p in range(pg - 1, min(len(recs), pg + 1)))
             refs = [r for r in re.findall(r'(?:UG|PG)\d{3}', txt) if r != "UG974"]
+            # the port spec lives in the architecture UG (e.g. UG576/UG578); a PG is the
+            # configuration wizard. Prefer a UG pointer when the page cites one.
+            refs.sort(key=lambda r: (0 if r.startswith("UG") else 1))
             if refs: v["note"] = f"hard-IP block — ports specified in {refs[0]} (not in UG974)"
     for v in cat.values(): v.pop("_pg", None)
     json.dump(cat, open(out, "w"), indent=2)
