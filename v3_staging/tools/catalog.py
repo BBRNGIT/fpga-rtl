@@ -136,6 +136,17 @@ def run(cachedir, out):
     else:
         json.dump(cat, open(out, "w"), indent=2)
     if merged: print(f"  merged transceiver ports into {merged} primitives from tx_ports.json")
+    # fold the PS (UG1085) in as first-class PS-domain blocks (new primitives, not stubs)
+    psf = os.path.join(os.path.dirname(out), "ps_ports.json")
+    if os.path.exists(psf):
+        ps = json.load(open(psf)); added = 0
+        for nm, ports in ps.items():
+            if nm not in cat:
+                cat[nm] = {"name": nm, "ports": ports, "params": [], "template": "",
+                           "source": "ug1085", "group": "PS", "port_src": "UG1085 (Zynq US+ TRM)"}
+                added += 1
+        json.dump(cat, open(out, "w"), indent=2)
+        if added: print(f"  added {added} PS-domain blocks from ps_ports.json ({sum(len(v) for v in ps.values())} signals)")
     full = {k: v for k, v in cat.items() if v["ports"]}
     stubs = {k: v for k, v in cat.items() if not v["ports"]}
     print(f"catalog: {len(cat)} primitives across all docs -> {out}")
