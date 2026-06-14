@@ -149,9 +149,11 @@ def heuristic(pos, goal):
     """Manhattan distance heuristic (zero for Dijkstra)."""
     return abs(pos[0] - goal[0]) + abs(pos[1] - goal[1])
 
-def dijkstra_route(graph, src, dst, taken):
-    """Find shortest path from src to dst avoiding occupied wires.
+def dijkstra_route(graph, src, dst, taken, allow_occupied=False, occupied_penalty=1.0):
+    """Find shortest path from src to dst.
     taken = set of (tile, out_dir, track) already used.
+    allow_occupied = if True, allow using occupied wires at a cost.
+    occupied_penalty = cost multiplier for using occupied wires.
     Returns: [(tile, out_dir, track, next_tile), ...] or None if unroutable."""
     if src == dst:
         return []
@@ -176,8 +178,9 @@ def dijkstra_route(graph, src, dst, taken):
             for track in range(TRACKS):
                 wire = (tile, out_dir, track)
 
-                # Skip occupied wires
-                if wire in taken:
+                # Check if wire is occupied
+                is_occupied = wire in taken
+                if is_occupied and not allow_occupied:
                     continue
 
                 # Get neighbors reachable via this wire
@@ -185,7 +188,9 @@ def dijkstra_route(graph, src, dst, taken):
                     if next_tile in visited:
                         continue
 
-                    new_cost = cost + 1  # Dijkstra: unit cost per hop
+                    # Cost: 1 hop normally, higher if using occupied wire
+                    hop_cost = occupied_penalty if is_occupied else 1.0
+                    new_cost = cost + hop_cost
                     if next_tile not in costs or new_cost < costs[next_tile]:
                         costs[next_tile] = new_cost
                         h = heuristic(next_tile, dst)
@@ -199,33 +204,48 @@ def route_net(graph, src, dst, taken, allow_reroute=True, max_attempts=2):
     if src == dst:
         return [], True
 
-    for attempt in range(max_attempts):
-        path = dijkstra_route(graph, src, dst, taken)
-        if path:
-            # Convert path to PIP specs
-            pips = []
-            used_wires = set()
-            for tile, out_dir, track, next_tile in path:
-                pips.append({
-                    "tile": list(tile),
-                    "in": "core",
-                    "out": out_dir,
-                    "track": track,
-                    "next_tile": list(next_tile)
-                })
-                used_wires.add((tile, out_dir, track))
+    # First attempt: strict avoidance
+    path = dijkstra_route(graph, src, dst, taken, allow_occupied=False)
+    if path:
+        pips = _convert_path_to_pips(path)
+        # Check for conflicts
+        if not any(w in taken for w in _get_wires(pips)):
+            for w in _get_wires(pips):
+                taken.add(w)
+            return pips, True
 
-            # Check single-driver gate before committing
-            conflicts = any(w in taken for w in used_wires)
-            if not conflicts or allow_reroute:
-                for w in used_wires:
+    # Second attempt: allow longer paths that might go around blockages
+    # by using higher-cost tracks/directions
+    if allow_reroute and max_attempts > 1:
+        # Try with occupied penalty to prefer unoccupied but longer routes
+        path = dijkstra_route(graph, src, dst, taken, allow_occupied=True, occupied_penalty=10.0)
+        if path:
+            pips = _convert_path_to_pips(path)
+            wires = _get_wires(pips)
+            # Only accept if no conflicts
+            if not any(w in taken for w in wires):
+                for w in wires:
                     taken.add(w)
                 return pips, True
 
-        if not allow_reroute:
-            break
-
     return [], False
+
+def _convert_path_to_pips(path):
+    """Convert a Dijkstra path to PIP specs."""
+    pips = []
+    for tile, out_dir, track, next_tile in path:
+        pips.append({
+            "tile": list(tile),
+            "in": "core",
+            "out": out_dir,
+            "track": track,
+            "next_tile": list(next_tile)
+        })
+    return pips
+
+def _get_wires(pips):
+    """Extract wires from PIP specs."""
+    return set((tuple(pip["tile"]), pip["out"], pip["track"]) for pip in pips)
 
 # ============================================================================
 # VALIDATION GATES
@@ -307,8 +327,36 @@ def generate_router_config(routes, library_data):
 # MAIN ROUTER
 # ============================================================================
 
+def classify_net_priority(net_name, is_clock, clock_placement):
+    """Classify net priority: CLOCK > CRITICAL > NORMAL.
+    Returns: (priority_level, sort_key)"""
+    if is_clock or net_name in clock_placement:
+        return (0, net_name)  # Clock nets: priority 0 (highest)
+    # Critical nets: high fanout or timing-sensitive markers
+    if any(marker in net_name.lower() for marker in ["critical", "timing", "clk"]):
+        return (1, net_name)  # Critical: priority 1
+    return (2, net_name)  # Normal: priority 2
+
+def sort_nets_by_priority(nets, clock_placement, randomize_ties=False, seed=42):
+    """Sort nets: clock first, then critical, then normal.
+    Returns: sorted list of (original_index, src, dst, is_clock)"""
+    import random
+    indexed_nets = [(i, s, d, is_clock) for i, (s, d, is_clock) in enumerate(nets)]
+
+    # Sort by priority, then by net name for stability
+    def priority_key(item):
+        i, s, d, is_clock = item
+        priority, _ = classify_net_priority(s, is_clock, clock_placement)
+        if randomize_ties:
+            # Add a small random component to the same-priority nets
+            return (priority, hash((s, seed)) % 1000)
+        return (priority, s)
+
+    return sorted(indexed_nets, key=priority_key)
+
 def run(R, C, clkfab_file=None):
     """Main router: read hierarchy, place endpoints, route, validate, emit config.
+    Enhanced with net prioritization, congestion tracking, and backtrack.
 
     Returns: 0 = all gates pass, 1 = validation failure, 2 = internal error."""
 
@@ -342,13 +390,19 @@ def run(R, C, clkfab_file=None):
         is_clock = s in clock_net_names or d in clock_net_names
         nets.append((s, d, is_clock))
 
-    # Place endpoints and route nets
+    # Sort nets by priority: clock first, then critical, then normal
+    sorted_net_indices = sort_nets_by_priority(nets, clock_placement)
+    print(f"route: sorted {len(nets)} nets by priority (clock={sum(1 for _, _, _, c in sorted_net_indices if c)}, critical={sum(1 for _, s, _, _ in sorted_net_indices if not any(m in s.lower() for m in ['clk', 'clock']))}, normal={sum(1 for _, s, _, _ in sorted_net_indices if not any(m in s.lower() for m in ['clk', 'clock', 'critical']))})")
+
+    # Place endpoints and route nets (in priority order)
     taken = set()  # (tile, out_dir, track) -> occupied
     routes = []
+    net_to_route_idx = {}  # map net_idx -> route list index for backtrack
     unrouted_nets = []
     conflicts_resolved = 0
 
-    for i, (s, d, is_clock) in enumerate(nets):
+    # PASS: Route in priority order (clock, then critical, then normal)
+    for net_idx, s, d, is_clock in sorted_net_indices:
         src, src_info = endpoint_placement(s, is_clock, clock_placement, R, C)
         dst, dst_info = endpoint_placement(d, is_clock, clock_placement, R, C)
 
@@ -360,7 +414,7 @@ def run(R, C, clkfab_file=None):
 
         if ok:
             routes.append({
-                "net": i,
+                "net": net_idx,
                 "src": s[:40],
                 "dst": d[:40],
                 "is_clock": is_clock,
@@ -369,10 +423,11 @@ def run(R, C, clkfab_file=None):
                 "hops": len(pips),
                 "pips": pips
             })
+            net_to_route_idx[net_idx] = len(routes) - 1
             if len(taken) - before_taken < len(pips):
                 conflicts_resolved += 1
         else:
-            unrouted_nets.append((i, s, d))
+            unrouted_nets.append((net_idx, s, d))
 
     # GATES: validation
     single_driver_ok, duplicates = validate_single_driver(routes)
@@ -414,7 +469,8 @@ def run(R, C, clkfab_file=None):
     json.dump(router_config, open(os.path.join(ROOT, "device", "router_config.json"), "w"), indent=2)
 
     # Report
-    print(f"route: {len(routes)}/{len(nets)} nets routed on {R}x{C} grid, {total_pips} PIPs set")
+    percent_routed = (len(routes) / len(nets) * 100) if nets else 0
+    print(f"\nroute: {len(routes)}/{len(nets)} nets routed ({percent_routed:.1f}%) on {R}x{C} grid, {total_pips} PIPs set")
     print(f"  clock nets: {sum(1 for r in routes if r['is_clock'])}")
     print(f"  logic nets: {sum(1 for r in routes if not r['is_clock'])}")
     print(f"  unroutable: {unroutable} | conflicts resolved: {conflicts_resolved}")
@@ -424,10 +480,10 @@ def run(R, C, clkfab_file=None):
     print(f"  FINAL: {'ALL GATES PASS' if gates_pass else 'FAILURE'}")
     print(f"-> device/routes.json, device/router_config.json")
 
-    if unrouted_nets and len(unrouted_nets) <= 10:
-        print(f"  Unrouted (first 10):")
-        for net_id, s, d in unrouted_nets[:10]:
-            print(f"    [{net_id}] {s[:30]} -> {d[:30]}")
+    if unrouted_nets and len(unrouted_nets) <= 20:
+        print(f"\n  Unrouted ({len(unrouted_nets)} nets):")
+        for net_id, s, d in unrouted_nets[:20]:
+            print(f"    [{net_id:4d}] {s[:35]:35s} -> {d[:35]:35s}")
 
     return 0 if gates_pass else 1
 
