@@ -33,6 +33,7 @@ STAGES = [s for s in [
     _opt(("dsparse — DS891 -> ZU19EG inventory", [PY, os.path.join(HERE, "dsparse.py"), DS891, "--pages", "1-20"]), DS891),
     _opt(("extract — UG974 -> page cache",       [PY, os.path.join(HERE, "extract.py"), UG974]), UG974),
     _opt(("vparse — UG974 Verilog templates -> primitive ports+params", [PY, os.path.join(HERE, "vparse.py")]), UG974),
+    ("txports — UG576/UG578 -> transceiver primitive ports", [PY, os.path.join(HERE, "txports.py")]),
     _opt(("catalog — parse FULL cache (all docs) -> complete parts list", [PY, os.path.join(HERE, "catalog.py")]), UG974),
     ("integrate — primitives + templates + blocks/*.json -> library.json", [PY, os.path.join(HERE, "integrate.py")]),
     ("netc — compile + validate + render",       [PY, os.path.join(HERE, "netc.py")]),

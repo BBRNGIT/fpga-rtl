@@ -120,7 +120,22 @@ def run(cachedir, out):
             refs.sort(key=lambda r: (0 if r.startswith("UG") else 1))
             if refs: v["note"] = f"hard-IP block — ports specified in {refs[0]} (not in UG974)"
     for v in cat.values(): v.pop("_pg", None)
-    json.dump(cat, open(out, "w"), indent=2)
+    # merge transceiver ports harvested from UG576/UG578 (txports.py) into their stubs
+    txf = os.path.join(os.path.dirname(out), "tx_ports.json")
+    merged = 0
+    if os.path.exists(txf):
+        tx = json.load(open(txf))
+        guide = {"GTH": "UG576", "GTY": "UG578"}
+        for nm, ports in tx.items():
+            if nm in cat and not cat[nm]["ports"] and ports:
+                cat[nm]["ports"] = ports
+                cat[nm]["port_src"] = guide.get(nm[:3], "transceiver UG") + " port-description chapter"
+                cat[nm].pop("note", None)
+                merged += 1
+        json.dump(cat, open(out, "w"), indent=2)
+    else:
+        json.dump(cat, open(out, "w"), indent=2)
+    if merged: print(f"  merged transceiver ports into {merged} primitives from tx_ports.json")
     full = {k: v for k, v in cat.items() if v["ports"]}
     stubs = {k: v for k, v in cat.items() if not v["ports"]}
     print(f"catalog: {len(cat)} primitives across all docs -> {out}")
