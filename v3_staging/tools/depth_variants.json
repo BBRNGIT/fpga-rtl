@@ -1,0 +1,323 @@
+{
+  "DSP48E2": {
+    "_augment": "config_variants",
+    "modes": [
+      "multiplier",
+      "multiplier_with_cascade",
+      "adder",
+      "adder_with_cascade",
+      "accumulator",
+      "xadd_mode",
+      "pattern_detector",
+      "fully_pipelined"
+    ],
+    "pipeline_configs": [
+      {
+        "name": "no_pipeline",
+        "areg": 0,
+        "breg": 0,
+        "mreg": 0,
+        "preg": 0
+      },
+      {
+        "name": "input_stage",
+        "areg": 1,
+        "breg": 1,
+        "mreg": 0,
+        "preg": 0
+      },
+      {
+        "name": "mult_stage",
+        "areg": 0,
+        "breg": 0,
+        "mreg": 1,
+        "preg": 0
+      },
+      {
+        "name": "output_stage",
+        "areg": 0,
+        "breg": 0,
+        "mreg": 0,
+        "preg": 1
+      },
+      {
+        "name": "full_pipeline",
+        "areg": 2,
+        "breg": 2,
+        "mreg": 1,
+        "preg": 1
+      }
+    ],
+    "multiplier_widths": [
+      "18x30",
+      "18x25",
+      "25x18"
+    ],
+    "accumulator_widths": [
+      48,
+      48
+    ],
+    "cascade_depth": "unlimited"
+  },
+  "RAMB36E2": {
+    "_augment": "config_variants",
+    "element": "RAMB36E2",
+    "modes": [
+      "ram",
+      "fifo"
+    ],
+    "width_variants": [
+      {
+        "name": "1024x36",
+        "width": 36,
+        "depth": 1024,
+        "parity": false
+      },
+      {
+        "name": "512x72",
+        "width": 72,
+        "depth": 512,
+        "parity": true
+      },
+      {
+        "name": "2048x18",
+        "width": 18,
+        "depth": 2048,
+        "parity": false
+      },
+      {
+        "name": "4096x9",
+        "width": 9,
+        "depth": 4096,
+        "parity": false
+      },
+      {
+        "name": "8192x4",
+        "width": 4,
+        "depth": 8192,
+        "parity": false
+      },
+      {
+        "name": "16384x2",
+        "width": 2,
+        "depth": 16384,
+        "parity": false
+      },
+      {
+        "name": "32768x1",
+        "width": 1,
+        "depth": 32768,
+        "parity": false
+      }
+    ],
+    "fifo_modes": [
+      "synchronous",
+      "asynchronous"
+    ],
+    "ecc_capable": true,
+    "cascade_capable": true
+  },
+  "RAMB18E2": {
+    "_augment": "config_variants",
+    "element": "RAMB18E2",
+    "modes": [
+      "ram",
+      "fifo"
+    ],
+    "width_variants": [
+      {
+        "name": "512x36",
+        "width": 36,
+        "depth": 512,
+        "parity": false
+      },
+      {
+        "name": "1024x18",
+        "width": 18,
+        "depth": 1024,
+        "parity": false
+      },
+      {
+        "name": "2048x9",
+        "width": 9,
+        "depth": 2048,
+        "parity": false
+      },
+      {
+        "name": "4096x4",
+        "width": 4,
+        "depth": 4096,
+        "parity": false
+      },
+      {
+        "name": "8192x2",
+        "width": 2,
+        "depth": 8192,
+        "parity": false
+      },
+      {
+        "name": "16384x1",
+        "width": 1,
+        "depth": 16384,
+        "parity": false
+      }
+    ],
+    "fifo_modes": [
+      "synchronous",
+      "asynchronous"
+    ],
+    "ecc_capable": false,
+    "cascade_capable": true
+  },
+  "URAM288": {
+    "_augment": "config_variants",
+    "element": "URAM288",
+    "width": 72,
+    "depth_variants": [
+      {
+        "name": "single_4kb",
+        "depth": 512,
+        "cascade": "none"
+      },
+      {
+        "name": "dual_8kb",
+        "depth": 1024,
+        "cascade": "dual"
+      },
+      {
+        "name": "quad_16kb",
+        "depth": 2048,
+        "cascade": "quad"
+      },
+      {
+        "name": "octet_36kb",
+        "depth": 4096,
+        "cascade": "octet"
+      }
+    ],
+    "ecc_modes": [
+      "none",
+      "sbiterr",
+      "dbiterr"
+    ],
+    "port_modes": [
+      "independent_rw",
+      "synchronized"
+    ],
+    "cascade_capable": true
+  },
+  "GTYE4_CHANNEL": {
+    "_augment": "config_variants",
+    "element": "GTYE4_CHANNEL",
+    "line_rates": [
+      "1.6 Gbps",
+      "2.0 Gbps",
+      "2.5 Gbps",
+      "3.125 Gbps",
+      "5.0 Gbps",
+      "6.25 Gbps",
+      "8.0 Gbps",
+      "10.3125 Gbps",
+      "16.375 Gbps",
+      "25.78125 Gbps",
+      "32.75 Gbps"
+    ],
+    "protocols": [
+      "8b10b",
+      "64b66b",
+      "PAM4",
+      "gearbox_16to32",
+      "gearbox_20to40"
+    ],
+    "datawidth_modes": [
+      16,
+      20,
+      32,
+      40,
+      64
+    ],
+    "adaptive_eq": true,
+    "dfe_modes": [
+      "off",
+      "lpm",
+      "dfe"
+    ],
+    "pll_type": "CPLL",
+    "refclk_range_mhz": [
+      61,
+      650
+    ]
+  },
+  "GTHE4_CHANNEL": {
+    "_augment": "config_variants",
+    "element": "GTHE4_CHANNEL",
+    "line_rates": [
+      "1.6 Gbps",
+      "2.0 Gbps",
+      "2.5 Gbps",
+      "3.125 Gbps",
+      "5.0 Gbps",
+      "6.25 Gbps",
+      "8.0 Gbps",
+      "10.3125 Gbps",
+      "16.375 Gbps",
+      "25.78125 Gbps"
+    ],
+    "protocols": [
+      "8b10b",
+      "64b66b",
+      "gearbox_16to32",
+      "gearbox_20to40"
+    ],
+    "datawidth_modes": [
+      16,
+      20,
+      32,
+      40
+    ],
+    "adaptive_eq": true,
+    "dfe_modes": [
+      "off",
+      "lpm",
+      "dfe"
+    ],
+    "pll_type": "CPLL",
+    "refclk_range_mhz": [
+      61,
+      650
+    ]
+  },
+  "GTYE4_COMMON": {
+    "_augment": "config_variants",
+    "element": "GTYE4_COMMON",
+    "quad_pll_types": [
+      "QPLL0",
+      "QPLL1"
+    ],
+    "line_rates": [
+      "5.0 Gbps",
+      "6.25 Gbps",
+      "8.0 Gbps",
+      "10.3125 Gbps",
+      "16.375 Gbps",
+      "25.78125 Gbps",
+      "32.75 Gbps"
+    ],
+    "refclk_range_mhz": [
+      61,
+      800
+    ],
+    "pll_multipliers": [
+      16,
+      20,
+      25,
+      32,
+      40,
+      50,
+      64,
+      66,
+      80,
+      100
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+name: PLL
+description: Phase-Locked Loop for I/O clocking
+kind: clock
+config_type: registered
+ports:
+  inputs:
+  - CLKIN
+  outputs:
+  - CLKOUT0
+  - CLKOUT1
+attributes:
+  BANDWIDTH:
+    type: string
+    default: OPTIMIZED
+    values:
+    - HIGH
+    - LOW
+    - OPTIMIZED
+  CLKFBOUT_PHASE:
+    type: real
+    default: '0.0'
+    range: -360.0 to 360.0
+  REF_JITTER:
+    type: real
+    default: '0.010'
+    range: 0.0 to 0.999
+config_space:
+  CLKIN_RANGE: 19 MHz to 300 MHz
+  VCO_RANGE: 400 MHz to 1000 MHz
+  CLKOUT_DIVIDE: 1 to 128
+  MULT: 2 to 64
+variants:
+  PLLE2:
+    devices:
+    - 7Series
+    - UltraScale
+    data_width: 32
+    note: Simpler PLL for I/O clocking (subset of MMCM)
+source: UG572 page 9

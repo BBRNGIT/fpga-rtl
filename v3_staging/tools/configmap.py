@@ -15,11 +15,19 @@ assemble.py emits them and netc.py validates the whole library. Faithful: groupi
 doc's (UG574 CLB folding, UG573 FIFO=BRAM mode); ports are extracted; nothing invented.
 Usage: configmap.py
 """
-import json, os, re
+import json, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 cat = json.load(open(os.path.join(HERE, "catalog.json")))
 phys = json.load(open(os.path.join(HERE, "phys.json")))
 res_of = {m["primitive"]: m["resource"] for m in phys["prim_resource_map"]}
+
+# Import depth variants from depth_extractor (P1 hard-IP depth modeling)
+try:
+    import depth_extractor
+    depth_variants = depth_extractor.build_depth_augment()
+except Exception as e:
+    depth_variants = {}
+    print(f"warning: depth_extractor load failed: {e}", file=sys.stderr)
 
 DECOMP = {"storage_element", "LUT6", "CARRY8", "MUXF7", "MUXF8", "MUXF9"}  # realized by phys_lib/atom
 
@@ -55,6 +63,11 @@ def element_of(name, v):
     if re.match(r"(RAMB36|FIFO36)", n): return "RAMB36E2"
     if re.match(r"(RAMB18|FIFO18)", n): return "RAMB18E2"
     if re.match(r"URAM", n): return "URAM288"
+    # --- Transceivers: channel and common folded by transceiver type/family ---
+    if re.match(r"GTYE4_CHANNEL", n): return "GTYE4_CHANNEL"
+    if re.match(r"GTYE4_COMMON", n): return "GTYE4_COMMON"
+    if re.match(r"GTHE4_CHANNEL", n): return "GTHE4_CHANNEL"
+    if re.match(r"GTHE4_COMMON", n): return "GTHE4_COMMON"
     # --- IO: buffer config-variants fold onto ONE physical I/O-buffer element ---
     if is_io_buffer(n): return IO_BUFFER_EL
     # --- everything else: the hard block IS its own physical element (leaf) ---
@@ -77,6 +90,36 @@ def config_of(name, v, el):
         m = re.match(r"LUT(\d)", name.upper()); cfg["inputs"] = int(m.group(1)) if m else None
     elif el in ("RAMB36E2", "RAMB18E2"):
         cfg["mode"] = "fifo" if name.upper().startswith("FIFO") else "ram"
+        # BRAM width/depth variants: config each member by port width presence
+        cfg["width_variants"] = ["64-bit", "32-bit", "18-bit", "9-bit"]
+        cfg["depth_config"] = "cascadeable"
+    elif el == "URAM288":
+        # URAM has fixed 72-bit width, variable depth via cascade
+        cfg["width"] = 72
+        cfg["depth_variants"] = ["single", "cascaded"]
+        cfg["ecc_enabled"] = "INJECT_DBITERR_A" in ports or "INJECT_SBITERR_A" in ports
+    elif el == "DSP48E2":
+        # DSP48E2 pipeline and arithmetic configuration variants
+        cfg["arithmetic_mode"] = ("multiplier" if "P" in ports else
+                                  "adder" if "CARRYOUT" in ports else
+                                  "logic")
+        cfg["pipeline_stages"] = ["0", "1", "2", "3"]  # configurable via AREG, BREG, PREG
+        cfg["mult_width"] = "18x30"  # A=30, B=18 multiplier
+        cfg["accumulator_width"] = 48
+        cfg["pattern_detect"] = "PATTERNDETECT" in ports or "PATTERNBDETECT" in ports
+    elif el in ("GTYE4_CHANNEL", "GTHE4_CHANNEL"):
+        # Transceiver lane configuration: protocol, width, skew
+        cfg["transceiver_type"] = "GTY" if "GTYE4" in name.upper() else "GTH"
+        cfg["lane_count"] = "single"  # single channel; quad use multiple
+        cfg["protocols"] = ["8b10b", "64b66b", "gearbox"]
+        cfg["datawidth"] = ["16", "20", "32", "40", "64"]
+        cfg["adaptive_eq"] = "ADPRESET" in ports or "ADPRESETVALUE" in ports
+    elif el in ("GTYE4_COMMON", "GTHE4_COMMON"):
+        # Transceiver common (quad) configuration
+        cfg["transceiver_type"] = "GTY" if "GTYE4" in name.upper() else "GTH"
+        cfg["quad_pll"] = "QPLL"
+        cfg["pll_modes"] = ["QPLL0", "QPLL1"]
+        cfg["refclk_sources"] = ["internal", "external"]
     elif el == IO_BUFFER_EL:
         n = name.upper()
         cfg["direction"] = ("inout" if n.startswith("IOBUF") else
@@ -101,9 +144,38 @@ for name in sorted(cat):
     e["members"].append(name); e["configs"][name] = config_of(name, v, el)
     for p in v["ports"]: e["ports"].setdefault(p["name"], p)
 
-out = {el: {"element": el, "kind": d["kind"], "subsystem": d["subsystem"],
-            "ports": sorted(d["ports"].values(), key=lambda p: p["name"]),
-            "members": sorted(d["members"]), "configs": d["configs"]} for el, d in elements.items()}
+out = {}
+for el, d in elements.items():
+    entry = {
+        "element": el,
+        "kind": d["kind"],
+        "subsystem": d["subsystem"],
+        "ports": sorted(d["ports"].values(), key=lambda p: p["name"]),
+        "members": sorted(d["members"]),
+        "configs": d["configs"]
+    }
+    # Merge depth variants (P1 hard-IP depth modeling)
+    if el in depth_variants:
+        dv = depth_variants[el]
+        # Add variant metadata alongside configs (non-invasive augmentation)
+        if "modes" in dv:
+            entry["_modes"] = dv["modes"]
+        if "pipeline_configs" in dv:
+            entry["_pipeline"] = dv["pipeline_configs"]
+        if "width_variants" in dv:
+            entry["_width_variants"] = dv["width_variants"]
+        if "depth_variants" in dv:
+            entry["_depth_variants"] = dv["depth_variants"]
+        if "line_rates" in dv:
+            entry["_line_rates"] = dv["line_rates"]
+        if "protocols" in dv:
+            entry["_protocols"] = dv["protocols"]
+        if "datawidth_modes" in dv:
+            entry["_datawidth_modes"] = dv["datawidth_modes"]
+        if "quad_pll_types" in dv:
+            entry["_quad_pll_types"] = dv["quad_pll_types"]
+    out[el] = entry
+
 json.dump(out, open(os.path.join(HERE, "configmap.json"), "w"), indent=2)
 
 # inject LEAF elements into primitives.json as configurable base primitives (behavior is spec).
@@ -131,6 +203,8 @@ orphaned = len(removed) - added
 
 mapped = sum(len(d["members"]) for d in out.values())
 dec = sum(1 for d in out.values() if d["kind"] == "decomposed")
+depth_enabled = sum(1 for d in out.values() if "_modes" in d or "_width_variants" in d or "_line_rates" in d)
+
 print(f"configmap: {mapped} catalogue entries -> {len(out)} physical elements "
       f"({dec} decomposed CLB + {len(out)-dec} leaf), {added} leaf primitives injected "
       f"({len(removed)} evicted, net {orphaned:+d} orphans removed) -> primitives.json")
@@ -138,3 +212,10 @@ print(f"  excluded (E3/PS/hard-IP-doc-pointer): {len(excluded)} -> {excluded[:8]
 import collections
 bysub = collections.Counter(d["subsystem"] for d in out.values())
 print("  physical elements by subsystem:", dict(bysub))
+if depth_enabled > 0:
+    print(f"  hard-IP depth modeling (P1): {depth_enabled} elements with config variants (DSP/BRAM/URAM/GT*)")
+    for el in sorted([e for e in out.keys() if "_modes" in out[e] or "_width_variants" in out[e] or "_line_rates" in out[e]]):
+        modes = len(out[el].get("_modes", []))
+        variants = len(out[el].get("_width_variants", []))
+        rates = len(out[el].get("_line_rates", []))
+        print(f"    {el}: modes={modes}, variants={variants}, rates={rates}")

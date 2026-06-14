@@ -1,0 +1,114 @@
+name: MMCM
+description: Mixed-Mode Clock Manager (MMCME3/MMCME4)
+kind: clock
+config_type: registered
+ports:
+  inputs:
+  - CDDCREQ
+  - CLKFBIN
+  - CLKIN1
+  - CLKIN2
+  - CLKINSEL
+  - DADDR[6:0]
+  - DCLK
+  - DEN
+  - DI[15:0]
+  - DWE
+  - PSCLK
+  - PSEN
+  - PSINCDEC
+  - PWRDWN
+  - RST
+  outputs:
+  - CDDCDONE
+  - CLKFBOUT
+  - CLKFBOUTB
+  - CLKFBSTOPPED
+  - CLKINSTOPPED
+  - CLKOUT[0:3]B
+  - CLKOUT[0:6]
+  - DO[15:0]
+  - DRDY
+  - LOCKED
+  - PSDONE
+attributes:
+  BANDWIDTH:
+    type: String
+    default: OPTIMIZED
+  CLKOUT[1:6] DIVIDE _:
+    type: Integer
+    default: '1'
+  CLKOUT[0] DIVIDE F(1) _ _:
+    type: Integer or Real
+    default: '1'
+  CLKOUT[0:6] PHASE _:
+    type: Real
+    default: '0.0'
+  CLKOUT[0:6] DUTY CYCLE _ _:
+    type: Real
+    default: '0.50'
+  CLKFBOUT MULT F(1) _ _:
+    type: Integer or Real
+    default: '5'
+  DIVCLK DIVIDE _:
+    type: Integer
+    default: '1'
+  CLKFBOUT PHASE _:
+    type: Real
+    default: '0.0'
+  REF JITTER1 _ REF JITTER2 _:
+    type: Real
+    default: '0.010'
+  CLKIN1 PERIOD _:
+    type: Real
+    default: '0.000'
+  CLKIN2 PERIOD _:
+    type: Real
+    default: '0.000'
+  CLKFBOUT USE FINE PS (2) _ _ _:
+    type: String
+    default: 'FALSE'
+  CLKOUT0 USE FINE PS (2) _ _ _:
+    type: String
+    default: 'FALSE'
+  CLKOUT[1:6] USE FINE PS (2) _ _ _:
+    type: String
+    default: 'FALSE'
+  STARTUP WAIT _:
+    type: String
+    default: 'FALSE'
+  CLKOUT4 CASCADE _:
+    type: String
+    default: 'FALSE'
+  COMPENSATION:
+    type: String
+    default: AUTO
+  SS EN _:
+    type: String
+    default: 'FALSE'
+  SS MODE _:
+    type: String
+    default: CENTER _ HIGH
+  SS MOD PERIOD _ _:
+    type: Integer
+    default: '10000'
+config_space:
+  CLKIN_RANGE: 30 MHz to 1000 MHz
+  VCO_RANGE: 600 MHz to 1440 MHz
+  CLKOUT_DIVIDE: 1 to 128
+  MULT: 2 to 64
+  BANDWIDTH_OPTIONS:
+  - HIGH
+  - LOW
+  - OPTIMIZED
+variants:
+  MMCME3:
+    devices:
+    - UltraScale
+    data_width: 32
+  MMCME4:
+    devices:
+    - UltraScale+
+    data_width: 32
+    note: UltraScale+ variant, same as MMCME3_ADV
+source: UG572 (v1.10) Chapter 3

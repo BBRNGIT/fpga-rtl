@@ -1,8 +1,8 @@
 {
-  "ts": 1781457306,
+  "ts": 1781460425,
   "bulletproof": false,
   "integrity": {
-    "green": 70,
+    "green": 67,
     "total": 71
   },
   "progress": {
@@ -548,7 +548,7 @@
       "gate": true,
       "nudge": "",
       "green": false,
-      "msg": "1 uncommitted changes"
+      "msg": "34 uncommitted changes"
     },
     {
       "id": "inv:clean_layout",
@@ -556,8 +556,8 @@
       "group": "invariants",
       "gate": true,
       "nudge": "",
-      "green": true,
-      "msg": "tools/ has no generated artifacts"
+      "green": false,
+      "msg": "generated artifacts in tools/: ['library.json']"
     },
     {
       "id": "inv:configmap_subset_catalog",
@@ -619,8 +619,8 @@
       "group": "invariants",
       "gate": true,
       "nudge": "",
-      "green": true,
-      "msg": "0 orphans \u2014 all 62 configmap leaf elements \u21c4 library primitives (bidirectional)"
+      "green": false,
+      "msg": "orphan primitives: 0 stale in library [], 62 configmap leaves missing from library ['AND2B1L', 'BITSLICE_CONTROL', 'BSCA"
     },
     {
       "id": "inv:no_verilog",
@@ -646,8 +646,8 @@
       "group": "invariants",
       "gate": true,
       "nudge": "",
-      "green": true,
-      "msg": "0 untracked tool/device files"
+      "green": false,
+      "msg": "23 untracked files in tools/device"
     },
     {
       "id": "phase:P1",
@@ -673,8 +673,8 @@
       "group": "phases",
       "gate": false,
       "nudge": "advance P3: run `realize.py worklist P3` and execute the next item",
-      "green": true,
-      "msg": "ok"
+      "green": false,
+      "msg": "fail"
     },
     {
       "id": "phase:P4",
@@ -718,8 +718,8 @@
       "group": "remaining_tools",
       "gate": false,
       "nudge": "build clkfab.py (next phase tool)",
-      "green": false,
-      "msg": "fail"
+      "green": true,
+      "msg": "ok"
     },
     {
       "id": "todo:ps_realize",

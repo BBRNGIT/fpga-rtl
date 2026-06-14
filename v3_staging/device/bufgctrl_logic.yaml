@@ -1,0 +1,25 @@
+name: BUFGCTRL
+description: Gated global clock buffer with dual inputs and mux
+kind: clock
+config_type: registered
+ports:
+  inputs:
+  - I0
+  - I1
+  - S0
+  - S1
+  - CE0
+  - CE1
+  - IGNORE0
+  - IGNORE1
+  outputs:
+  - O
+routing:
+  mux: 2-to-1 selectable via S0/S1
+  gating: Independent CE per input
+  ignore: Mask input glitches during clock switching
+variants:
+  BUFGCTRL:
+    purpose: Clock muxing with glitch-free switching
+    clock_regions: 4
+source: UG572

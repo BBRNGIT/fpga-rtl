@@ -1620,9 +1620,66 @@
           "IS_RSTINMODE_INVERTED",
           "IS_RSTM_INVERTED",
           "IS_RSTP_INVERTED"
-        ]
+        ],
+        "arithmetic_mode": "multiplier",
+        "pipeline_stages": [
+          "0",
+          "1",
+          "2",
+          "3"
+        ],
+        "mult_width": "18x30",
+        "accumulator_width": 48,
+        "pattern_detect": true
       }
-    }
+    },
+    "_modes": [
+      "multiplier",
+      "multiplier_with_cascade",
+      "adder",
+      "adder_with_cascade",
+      "accumulator",
+      "xadd_mode",
+      "pattern_detector",
+      "fully_pipelined"
+    ],
+    "_pipeline": [
+      {
+        "name": "no_pipeline",
+        "areg": 0,
+        "breg": 0,
+        "mreg": 0,
+        "preg": 0
+      },
+      {
+        "name": "input_stage",
+        "areg": 1,
+        "breg": 1,
+        "mreg": 0,
+        "preg": 0
+      },
+      {
+        "name": "mult_stage",
+        "areg": 0,
+        "breg": 0,
+        "mreg": 1,
+        "preg": 0
+      },
+      {
+        "name": "output_stage",
+        "areg": 0,
+        "breg": 0,
+        "mreg": 0,
+        "preg": 1
+      },
+      {
+        "name": "full_pipeline",
+        "areg": 2,
+        "breg": 2,
+        "mreg": 1,
+        "preg": 1
+      }
+    ]
   },
   "EFUSE_USR": {
     "element": "EFUSE_USR",
@@ -2173,7 +2230,14 @@
           "IS_WRCLK_INVERTED",
           "IS_WREN_INVERTED"
         ],
-        "mode": "fifo"
+        "mode": "fifo",
+        "width_variants": [
+          "64-bit",
+          "32-bit",
+          "18-bit",
+          "9-bit"
+        ],
+        "depth_config": "cascadeable"
       },
       "RAMB18E2": {
         "init": null,
@@ -2187,9 +2251,58 @@
           "IS_RSTREGARSTREG_INVERTED",
           "IS_RSTREGB_INVERTED"
         ],
-        "mode": "ram"
+        "mode": "ram",
+        "width_variants": [
+          "64-bit",
+          "32-bit",
+          "18-bit",
+          "9-bit"
+        ],
+        "depth_config": "cascadeable"
       }
-    }
+    },
+    "_modes": [
+      "ram",
+      "fifo"
+    ],
+    "_width_variants": [
+      {
+        "name": "512x36",
+        "width": 36,
+        "depth": 512,
+        "parity": false
+      },
+      {
+        "name": "1024x18",
+        "width": 18,
+        "depth": 1024,
+        "parity": false
+      },
+      {
+        "name": "2048x9",
+        "width": 9,
+        "depth": 2048,
+        "parity": false
+      },
+      {
+        "name": "4096x4",
+        "width": 4,
+        "depth": 4096,
+        "parity": false
+      },
+      {
+        "name": "8192x2",
+        "width": 2,
+        "depth": 8192,
+        "parity": false
+      },
+      {
+        "name": "16384x1",
+        "width": 1,
+        "depth": 16384,
+        "parity": false
+      }
+    ]
   },
   "RAMB36E2": {
     "element": "RAMB36E2",
@@ -2644,7 +2757,14 @@
           "IS_WRCLK_INVERTED",
           "IS_WREN_INVERTED"
         ],
-        "mode": "fifo"
+        "mode": "fifo",
+        "width_variants": [
+          "64-bit",
+          "32-bit",
+          "18-bit",
+          "9-bit"
+        ],
+        "depth_config": "cascadeable"
       },
       "RAMB36E2": {
         "init": null,
@@ -2658,9 +2778,64 @@
           "IS_RSTREGARSTREG_INVERTED",
           "IS_RSTREGB_INVERTED"
         ],
-        "mode": "ram"
+        "mode": "ram",
+        "width_variants": [
+          "64-bit",
+          "32-bit",
+          "18-bit",
+          "9-bit"
+        ],
+        "depth_config": "cascadeable"
       }
-    }
+    },
+    "_modes": [
+      "ram",
+      "fifo"
+    ],
+    "_width_variants": [
+      {
+        "name": "1024x36",
+        "width": 36,
+        "depth": 1024,
+        "parity": false
+      },
+      {
+        "name": "512x72",
+        "width": 72,
+        "depth": 512,
+        "parity": true
+      },
+      {
+        "name": "2048x18",
+        "width": 18,
+        "depth": 2048,
+        "parity": false
+      },
+      {
+        "name": "4096x9",
+        "width": 9,
+        "depth": 4096,
+        "parity": false
+      },
+      {
+        "name": "8192x4",
+        "width": 4,
+        "depth": 8192,
+        "parity": false
+      },
+      {
+        "name": "16384x2",
+        "width": 2,
+        "depth": 16384,
+        "parity": false
+      },
+      {
+        "name": "32768x1",
+        "width": 1,
+        "depth": 32768,
+        "parity": false
+      }
+    ]
   },
   "GTHE4_CHANNEL": {
     "element": "GTHE4_CHANNEL",
@@ -3708,9 +3883,48 @@
     "configs": {
       "GTHE4_CHANNEL": {
         "init": null,
-        "inverts": []
+        "inverts": [],
+        "transceiver_type": "GTH",
+        "lane_count": "single",
+        "protocols": [
+          "8b10b",
+          "64b66b",
+          "gearbox"
+        ],
+        "datawidth": [
+          "16",
+          "20",
+          "32",
+          "40",
+          "64"
+        ],
+        "adaptive_eq": false
       }
-    }
+    },
+    "_line_rates": [
+      "1.6 Gbps",
+      "2.0 Gbps",
+      "2.5 Gbps",
+      "3.125 Gbps",
+      "5.0 Gbps",
+      "6.25 Gbps",
+      "8.0 Gbps",
+      "10.3125 Gbps",
+      "16.375 Gbps",
+      "25.78125 Gbps"
+    ],
+    "_protocols": [
+      "8b10b",
+      "64b66b",
+      "gearbox_16to32",
+      "gearbox_20to40"
+    ],
+    "_datawidth_modes": [
+      16,
+      20,
+      32,
+      40
+    ]
   },
   "GTHE4_COMMON": {
     "element": "GTHE4_COMMON",
@@ -4049,7 +4263,17 @@
     "configs": {
       "GTHE4_COMMON": {
         "init": null,
-        "inverts": []
+        "inverts": [],
+        "transceiver_type": "GTH",
+        "quad_pll": "QPLL",
+        "pll_modes": [
+          "QPLL0",
+          "QPLL1"
+        ],
+        "refclk_sources": [
+          "internal",
+          "external"
+        ]
       }
     }
   },
@@ -5066,9 +5290,51 @@
     "configs": {
       "GTYE4_CHANNEL": {
         "init": null,
-        "inverts": []
+        "inverts": [],
+        "transceiver_type": "GTY",
+        "lane_count": "single",
+        "protocols": [
+          "8b10b",
+          "64b66b",
+          "gearbox"
+        ],
+        "datawidth": [
+          "16",
+          "20",
+          "32",
+          "40",
+          "64"
+        ],
+        "adaptive_eq": false
       }
-    }
+    },
+    "_line_rates": [
+      "1.6 Gbps",
+      "2.0 Gbps",
+      "2.5 Gbps",
+      "3.125 Gbps",
+      "5.0 Gbps",
+      "6.25 Gbps",
+      "8.0 Gbps",
+      "10.3125 Gbps",
+      "16.375 Gbps",
+      "25.78125 Gbps",
+      "32.75 Gbps"
+    ],
+    "_protocols": [
+      "8b10b",
+      "64b66b",
+      "PAM4",
+      "gearbox_16to32",
+      "gearbox_20to40"
+    ],
+    "_datawidth_modes": [
+      16,
+      20,
+      32,
+      40,
+      64
+    ]
   },
   "GTYE4_COMMON": {
     "element": "GTYE4_COMMON",
@@ -5411,9 +5677,32 @@
     "configs": {
       "GTYE4_COMMON": {
         "init": null,
-        "inverts": []
+        "inverts": [],
+        "transceiver_type": "GTY",
+        "quad_pll": "QPLL",
+        "pll_modes": [
+          "QPLL0",
+          "QPLL1"
+        ],
+        "refclk_sources": [
+          "internal",
+          "external"
+        ]
       }
-    }
+    },
+    "_line_rates": [
+      "5.0 Gbps",
+      "6.25 Gbps",
+      "8.0 Gbps",
+      "10.3125 Gbps",
+      "16.375 Gbps",
+      "25.78125 Gbps",
+      "32.75 Gbps"
+    ],
+    "_quad_pll_types": [
+      "QPLL0",
+      "QPLL1"
+    ]
   },
   "HARD_SYNC": {
     "element": "HARD_SYNC",
@@ -8843,7 +9132,13 @@
           "IS_RDB_WR_B_INVERTED",
           "IS_RST_A_INVERTED",
           "IS_RST_B_INVERTED"
-        ]
+        ],
+        "width": 72,
+        "depth_variants": [
+          "single",
+          "cascaded"
+        ],
+        "ecc_enabled": true
       },
       "URAM288_BASE": {
         "init": null,
@@ -8855,9 +9150,37 @@
           "IS_RDB_WR_B_INVERTED",
           "IS_RST_A_INVERTED",
           "IS_RST_B_INVERTED"
-        ]
+        ],
+        "width": 72,
+        "depth_variants": [
+          "single",
+          "cascaded"
+        ],
+        "ecc_enabled": true
       }
-    }
+    },
+    "_depth_variants": [
+      {
+        "name": "single_4kb",
+        "depth": 512,
+        "cascade": "none"
+      },
+      {
+        "name": "dual_8kb",
+        "depth": 1024,
+        "cascade": "dual"
+      },
+      {
+        "name": "quad_16kb",
+        "depth": 2048,
+        "cascade": "quad"
+      },
+      {
+        "name": "octet_36kb",
+        "depth": 4096,
+        "cascade": "octet"
+      }
+    ]
   },
   "USR_ACCESSE2": {
     "element": "USR_ACCESSE2",

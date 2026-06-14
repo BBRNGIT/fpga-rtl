@@ -1,0 +1,22 @@
+name: BUFGCE
+description: Gated global clock buffer with clock enable
+kind: clock
+config_type: registered
+ports:
+  inputs:
+  - I
+  - CE
+  outputs:
+  - O
+variants:
+  BUFGCE:
+    purpose: Global clock distribution with gating
+    slew_controlled: true
+  BUFGCE_DIV:
+    purpose: Gated buffer with integrated divider
+    divisions:
+    - 1
+    - 2
+    - 4
+    - 8
+source: UG572

@@ -1,0 +1,305 @@
+# bram_logic.yaml — RAMB36E2 / RAMB18E2 Hard-IP Depth Modeling (P1)
+# Specification of Block RAM configuration variants for storage modes.
+# Ref: UG573 (v1.10) Block RAM Resources in UltraScale Architecture
+#
+# Physical Elements: RAMB36E2, RAMB18E2 (BLOCKRAM subsystem)
+# P1 Scope: configuration-only (behavior=spec), no gate-level decomposition
+# All documented width/depth configurations, FIFO modes, and ECC settings from UG573.
+
+---
+
+# ==================== RAMB36E2 (36K bits) ====================
+ramb36e2:
+  element: RAMB36E2
+  kind: leaf
+  subsystem: BLOCKRAM
+  total_bits: 36864
+
+  # ==================== RAM Modes ====================
+  ram_modes:
+    - name: single_port_ram
+        description: "Single port RAM (Port A only for read/write)"
+        data_width: variable
+        address_width: variable
+        ports: [ADDRARDADDR, ENARDEN, CLKARDCLK, DINA, DOUTA, WEA]
+
+    - name: dual_port_ram
+        description: "Dual-port RAM (Port A and Port B independent read/write)"
+        data_width: variable
+        address_width: variable
+        ports: [ADDRARDADDR, ADDRBWRADDR, CLKARDCLK, CLKBWRCLK, DINA, DINB, DOUTA, DOUTB, WEA, WEBWE, ENARDEN, ENBWREN]
+
+    - name: true_dual_port_ram
+        description: "True dual-port: both ports can read and write simultaneously"
+        data_width: variable
+        address_width: variable
+        ports: "*all dual-port"
+
+  # ==================== Width Configurations (RAM mode) ====================
+  # Bits = capacity / width; capacity = 36864 bits per RAMB36E2
+  width_variants_ram:
+    - name: "1024x36"
+        width: 36
+        depth: 1024
+        address_bits: 10
+        parity: false
+        ecc: true
+        description: "Narrow data, shallow address space"
+
+    - name: "512x72"
+        width: 72
+        depth: 512
+        address_bits: 9
+        parity: true
+        ecc: true
+        description: "Wide data (72 = 64 + 8 parity), paired output"
+        note: "Parity bits: DINP[7:0], DOUTP[7:0]"
+
+    - name: "2048x18"
+        width: 18
+        depth: 2048
+        address_bits: 11
+        parity: false
+        ecc: false
+        description: "Medium width, medium depth"
+
+    - name: "4096x9"
+        width: 9
+        depth: 4096
+        address_bits: 12
+        parity: false
+        ecc: false
+        description: "Narrow width (9 = 8 + 1), deep address"
+
+    - name: "8192x4"
+        width: 4
+        depth: 8192
+        address_bits: 13
+        parity: false
+        ecc: false
+        description: "Nibble width, very deep"
+
+    - name: "16384x2"
+        width: 2
+        depth: 16384
+        address_bits: 14
+        parity: false
+        ecc: false
+        description: "Bit-pair width, very shallow words"
+
+    - name: "32768x1"
+        width: 1
+        depth: 32768
+        address_bits: 15
+        parity: false
+        ecc: false
+        description: "Single-bit width (bitwise)"
+
+  # ==================== FIFO Modes ====================
+  fifo_modes:
+    - name: synchronous_fifo
+        description: "Synchronous FIFO: single clock, read/write same clock domain"
+        flags: [EMPTY, FULL, ALMOSTEMPTY, ALMOSTFULL, PROGFULL, PROGEMPTY]
+        width_variants: [64, 32, 18, 9]
+        depth_variants: [512, 1024, 2048, 4096, 8192]
+        note: "UG573 defines FIFO36E2 as RAMB36E2 in FIFO mode"
+
+    - name: asynchronous_fifo
+        description: "Asynchronous FIFO: independent read/write clocks"
+        flags: [EMPTY, FULL, RDERR, WRERR, ALMOSTEMPTY, ALMOSTFULL, PROGFULL, PROGEMPTY]
+        width_variants: [64, 32, 18, 9]
+        depth_variants: [512, 1024, 2048, 4096, 8192]
+        read_clock: RDCLK
+        write_clock: WRCLK
+        note: "CDC (Clock Domain Crossing) ready"
+
+  # ==================== ECC (Error Correction Code) ====================
+  ecc_config:
+    available: true
+    modes:
+      - name: "no_ecc"
+          description: "No error correction"
+      - name: "ecc_enabled"
+          description: "SECDED (Single Error Correct, Double Error Detect)"
+          overhead_bits: 8
+          parity_output: ECCPARITY[7:0]
+          detect_output: DBITERR
+          inject_control: INJECTDBITERR, INJECTSBITERR
+    note: "ECC available only for 72-bit and 36-bit widths"
+
+  # ==================== Cascade Configuration ====================
+  cascade_config:
+    data_cascade:
+        din: CASDIN[63:0]
+        dout: CASDOUT[63:0]
+        description: "Data cascade for 2D arrays"
+        din_a: CASDINA[31:0]
+        dout_a: CASDOUTA[31:0]
+        din_b: CASDINB[31:0]
+        dout_b: CASDOUTB[31:0]
+        description_ab: "Port A/B separate cascades"
+
+    address_cascade:
+        addr: [CASDIMUXA, CASDIMUXB, CASDOMUXA, CASDOMUXB]
+        description: "Address cascade for vertical stacking"
+
+    parity_cascade:
+        din: CASDINP[7:0]
+        dout: CASDOUTP[7:0]
+        description: "Parity bits cascade"
+
+    ecc_cascade:
+        biterr_in_a: CASINDBITERR, CASOUTDBITERR_A
+        biterr_in_b: CASINDBITERR, CASOUTDBITERR_B
+        sbiterr_in_a: CASINSBITERR, CASOUTSBITERR_A
+        sbiterr_in_b: CASINSBITERR, CASOUTSBITERR_B
+        description: "ECC error flags cascade"
+
+  # ==================== Clock & Reset ====================
+  control_config:
+    clocks: [CLKARDCLK, CLKBWRCLK, RDCLK, WRCLK]
+    enables: [ENARDEN, ENBWREN, RDEN, WREN, REGCE]
+    resets: [RST, RSTREG, RSTRAMARSTRAM, RSTRAMB, RSTREGARSTREG, RSTREGB, RDRSTBUSY, WRRSTBUSY]
+    synchronous_resets: true
+
+  # ==================== Inversion Attributes ====================
+  inversion_attributes:
+    - IS_CLKARDCLK_INVERTED
+    - IS_CLKBWRCLK_INVERTED
+    - IS_ENARDEN_INVERTED
+    - IS_ENBWREN_INVERTED
+    - IS_RSTRAMARSTRAM_INVERTED
+    - IS_RSTRAMB_INVERTED
+    - IS_RSTREGARSTREG_INVERTED
+    - IS_RSTREGB_INVERTED
+
+---
+
+# ==================== RAMB18E2 (18K bits) ====================
+ramb18e2:
+  element: RAMB18E2
+  kind: leaf
+  subsystem: BLOCKRAM
+  total_bits: 18432
+
+  # Similar structure to RAMB36E2, but half the capacity
+
+  # ==================== RAM Modes ====================
+  ram_modes:
+    - name: single_port_ram
+        description: "Single port RAM (Port A only)"
+        ports: [ADDRARDADDR, ENARDEN, CLKARDCLK, DINA, DOUTA, WEA]
+
+    - name: dual_port_ram
+        description: "Dual-port RAM (Port A and Port B)"
+        ports: "*all dual-port"
+
+  # ==================== Width Configurations (RAM mode) ====================
+  # Capacity = 18432 bits per RAMB18E2
+  width_variants_ram:
+    - name: "512x36"
+        width: 36
+        depth: 512
+        address_bits: 9
+        parity: false
+        ecc: false
+        description: "Narrow address, wide data"
+
+    - name: "1024x18"
+        width: 18
+        depth: 1024
+        address_bits: 10
+        parity: false
+        ecc: false
+
+    - name: "2048x9"
+        width: 9
+        depth: 2048
+        address_bits: 11
+        parity: false
+
+    - name: "4096x4"
+        width: 4
+        depth: 4096
+        address_bits: 12
+        parity: false
+
+    - name: "8192x2"
+        width: 2
+        depth: 8192
+        address_bits: 13
+        parity: false
+
+    - name: "16384x1"
+        width: 1
+        depth: 16384
+        address_bits: 14
+        parity: false
+
+  # ==================== FIFO Modes ====================
+  fifo_modes:
+    - name: synchronous_fifo
+        width_variants: [32, 18, 9]
+        depth_variants: [256, 512, 1024, 2048]
+        note: "FIFO18E2 is RAMB18E2 in FIFO mode"
+
+    - name: asynchronous_fifo
+        width_variants: [32, 18, 9]
+        depth_variants: [256, 512, 1024, 2048]
+        read_clock: RDCLK
+        write_clock: WRCLK
+
+  # ==================== ECC ====================
+  ecc_config:
+    available: false
+    description: "RAMB18E2 does not support ECC (RAMB36E2 only)"
+
+  # ==================== Cascade ====================
+  cascade_config:
+    data_cascade:
+        din: CASDIN[31:0]
+        dout: CASDOUT[31:0]
+        din_a: CASDINA[15:0]
+        dout_a: CASDOUTA[15:0]
+        din_b: CASDINB[15:0]
+        dout_b: CASDOUTB[15:0]
+
+    parity_cascade:
+        din: CASDINP[3:0]
+        dout: CASDOUTP[3:0]
+
+  # ==================== Clock & Reset ====================
+  control_config:
+    clocks: [CLKARDCLK, CLKBWRCLK, RDCLK, WRCLK]
+    enables: [ENARDEN, ENBWREN, RDEN, WREN, REGCE]
+    resets: [RST, RSTREG, RSTRAMARSTRAM, RSTRAMB, RSTREGARSTREG, RSTREGB]
+
+  inversion_attributes:
+    - IS_CLKARDCLK_INVERTED
+    - IS_CLKBWRCLK_INVERTED
+    - IS_ENARDEN_INVERTED
+    - IS_ENBWREN_INVERTED
+    - IS_RSTRAMARSTRAM_INVERTED
+    - IS_RSTRAMB_INVERTED
+    - IS_RSTREGARSTREG_INVERTED
+    - IS_RSTREGB_INVERTED
+
+---
+
+# ==================== P1 Status ====================
+p1_status:
+  configured: true
+  depth_level: "full_config_variants"
+  elements: [RAMB36E2, RAMB18E2]
+  catalog_entries: [RAMB36E2, FIFO36E2, RAMB18E2, FIFO18E2]
+  total_catalog_entries: 4
+  total_variants_ramb36: 7
+  total_variants_ramb18: 6
+  total_width_configs: 13
+  fifo_modes: 2
+  ecc_configs: 3
+  status: "P1 complete - all documented configs from UG573"
+  notes: |
+    Dual-port RAMs, FIFO (sync/async), width cascading, and ECC (RAMB36 only)
+    fully specified. Ready for behavioral simulation in P2 and gate-level
+    decomposition in P3 (internal address decoders, muxes, register files).

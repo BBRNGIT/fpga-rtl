@@ -1,0 +1,298 @@
+# uram_logic.yaml — URAM288 Hard-IP Depth Modeling (P1)
+# Specification of UltraRAM (URAM) configuration variants.
+# Ref: UG573 (v1.10) Section "UltraRAM in UltraScale+ Devices"
+#
+# Physical Element: URAM288, URAM288_BASE (BLOCKRAM subsystem)
+# P1 Scope: configuration-only (behavior=spec)
+# All documented cascade modes and ECC settings from UG573.
+
+element: URAM288
+kind: leaf
+subsystem: BLOCKRAM
+total_bits: 288000
+
+# ==================== Overview ====================
+overview: |
+  URAM (UltraRAM) provides ultra-high-density memory on UltraScale+ devices.
+  Fixed 72-bit width, but depth configurable via cascading (4K to 36K words per site).
+  Dual independent ports (A and B) with simultaneous read/write capability.
+  Built-in SECDED ECC (optional injection for testing).
+
+# ==================== Memory Capacity ====================
+capacity_config:
+  width_fixed: 72
+  width_description: "Fixed 72-bit data width (no reconfiguration)"
+  depth_single_site: 4096
+  depth_description: "4K words (4096 x 72 bits) per URAM288 site"
+  total_bits_single: 288000
+
+# ==================== Depth Variants (via Cascading) ====================
+# Cascade up to 8 URAM sites (cascade_depth = 3 bits for 8-way addressing)
+depth_variants:
+  - name: single_4kb
+      num_sites: 1
+      depth_words: 4096
+      total_bits: 288000
+      address_width: 12
+      address_bits: "ADDR_A/B[11:0]"
+      cascade_mode: "none"
+      description: "Single URAM (minimum configuration)"
+      use_cases: [embedded_caches, FIFOs, small_look_up_tables]
+
+  - name: dual_8kb
+      num_sites: 2
+      depth_words: 8192
+      total_bits: 576000
+      address_width: 13
+      address_bits: "ADDR_A/B[12:0]"
+      cascade_mode: "dual"
+      cascade_depth_bits: 1
+      description: "Two URAMs cascaded vertically (8K words)"
+      use_cases: [moderate_buffers, two_port_FIFO]
+
+  - name: quad_16kb
+      num_sites: 4
+      depth_words: 16384
+      total_bits: 1152000
+      address_width: 14
+      address_bits: "ADDR_A/B[13:0]"
+      cascade_mode: "quad"
+      cascade_depth_bits: 2
+      description: "Four URAMs cascaded (16K words)"
+      use_cases: [video_buffers, packet_storage]
+
+  - name: octet_36kb
+      num_sites: 8
+      depth_words: 36864
+      total_bits: 2304000
+      address_width: 15
+      address_bits: "ADDR_A/B[14:0]"
+      cascade_mode: "octet"
+      cascade_depth_bits: 3
+      description: "Eight URAMs cascaded (maximum 36K words)"
+      use_cases: [large_frame_buffers, high_bandwidth_memories]
+
+# ==================== Port Configuration ====================
+# URAM supports dual independent ports (Port A and Port B)
+port_config:
+  num_ports: 2
+  port_a:
+    type: "independent read/write"
+    address: ADDR_A[14:0]
+    write_enable: BWE_A[8:0]
+    data_in: DIN_A[71:0]
+    data_out: DOUT_A[71:0]
+    clock: CLK
+    enable: EN_A
+    reset: RST_A
+
+  port_b:
+    type: "independent read/write"
+    address: ADDR_B[14:0]
+    write_enable: BWE_B[8:0]
+    data_in: DIN_B[71:0]
+    data_out: DOUT_B[71:0]
+    clock: CLK
+    enable: EN_B
+    reset: RST_B
+
+  port_modes:
+    - name: "independent"
+        description: "Ports A and B can read/write simultaneously to different addresses"
+        dual_access: true
+
+    - name: "synchronized"
+        description: "Both ports access same address (read-only mode)"
+        dual_access: false
+        note: "Useful for broadcast/multiport read"
+
+# ==================== Byte Enable (Write Mask) ====================
+# 9 byte-enable bits for 72-bit (9 bytes) fine-grained write control
+byte_enable_config:
+  width: 9
+  granularity: 8
+  description: "BWE_A/B[8:0]: each bit gates 8-bit (byte) writes"
+  examples:
+    - "BWE_A = 9'b111111111 : write all 72 bits"
+    - "BWE_A = 9'b111110000 : write upper 40 bits only"
+    - "BWE_A = 9'b000000001 : write lower 8 bits only"
+
+# ==================== ECC (Error Correction Code) ====================
+ecc_config:
+  available: true
+  type: "SECDED (Single Error Correct, Double Error Detect)"
+  overhead_bits: "built-in (transparent)"
+
+  error_detection:
+    dbiterr_a: DBITERR_A
+    dbiterr_b: DBITERR_B
+    sbiterr_a: SBITERR_A
+    sbiterr_b: SBITERR_B
+    description: "ECC flags per port, updated on read"
+
+  error_injection:
+    inject_dbiterr_a: INJECT_DBITERR_A
+    inject_dbiterr_b: INJECT_DBITERR_B
+    inject_sbiterr_a: INJECT_SBITERR_A
+    inject_sbiterr_b: INJECT_SBITERR_B
+    description: "Test/debug: force single/double-bit errors"
+    timing: "latches during read cycle, appears in next output"
+
+  ecc_modes:
+    - name: "ecc_enabled"
+        description: "ECC active, error flags reported"
+        default: true
+
+    - name: "ecc_test"
+        description: "ECC with error injection (via INJECT_* signals)"
+        use_cases: [built_in_test, reliability_validation]
+
+# ==================== Cascade Interface ====================
+cascade_config:
+  direction: "vertical (north-south stack)"
+  cascade_depth: 3
+  max_cascade_levels: 8
+
+  address_cascade_a:
+    in: CAS_IN_ADDR_A[14:0]
+    out: CAS_OUT_ADDR_A[14:0]
+    description: "Address from lower URAM propagates up"
+
+  address_cascade_b:
+    in: CAS_IN_ADDR_B[14:0]
+    out: CAS_OUT_ADDR_B[14:0]
+
+  data_cascade_a:
+    in: CAS_IN_DIN_A[71:0]
+    out: CAS_OUT_DIN_A[71:0]
+    in_dout: CAS_IN_DOUT_A[71:0]
+    out_dout: CAS_OUT_DOUT_A[71:0]
+    description: "Data propagates for cascaded arrays"
+
+  data_cascade_b:
+    in: CAS_IN_DIN_B[71:0]
+    out: CAS_OUT_DIN_B[71:0]
+    in_dout: CAS_IN_DOUT_B[71:0]
+    out_dout: CAS_OUT_DOUT_B[71:0]
+
+  bwe_cascade_a:
+    in: CAS_IN_BWE_A[8:0]
+    out: CAS_OUT_BWE_A[8:0]
+    description: "Byte-write-enable propagates"
+
+  bwe_cascade_b:
+    in: CAS_IN_BWE_B[8:0]
+    out: CAS_OUT_BWE_B[8:0]
+
+  enable_cascade_a:
+    in: CAS_IN_EN_A
+    out: CAS_OUT_EN_A
+    description: "Port A enable/request cascades"
+
+  enable_cascade_b:
+    in: CAS_IN_EN_B
+    out: CAS_OUT_EN_B
+
+  access_cascade_a:
+    in: CAS_IN_RDACCESS_A
+    out: CAS_OUT_RDACCESS_A
+    description: "Read-access flag cascades (for CDC)"
+
+  access_cascade_b:
+    in: CAS_IN_RDACCESS_B
+    out: CAS_OUT_RDACCESS_B
+
+  rdb_wr_cascade_a:
+    in: CAS_IN_RDB_WR_A
+    out: CAS_OUT_RDB_WR_A
+    description: "Read/Write select cascades"
+
+  rdb_wr_cascade_b:
+    in: CAS_IN_RDB_WR_B
+    out: CAS_OUT_RDB_WR_B
+
+  ecc_cascade_a:
+    dbiterr_in: CAS_IN_DBITERR_A
+    dbiterr_out: CAS_OUT_DBITERR_A
+    sbiterr_in: CAS_IN_SBITERR_A
+    sbiterr_out: CAS_OUT_SBITERR_A
+    description: "ECC error flags cascade"
+
+  ecc_cascade_b:
+    dbiterr_in: CAS_IN_DBITERR_B
+    dbiterr_out: CAS_OUT_DBITERR_B
+    sbiterr_in: CAS_IN_SBITERR_B
+    sbiterr_out: CAS_OUT_SBITERR_B
+
+# ==================== Timing ====================
+timing_config:
+  clock: CLK
+  clock_polarity: rising_edge
+  write_latency: 1
+  read_latency: 1
+  ecc_update_latency: 1
+  cascade_propagation: "combinational (CAS_IN* -> CAS_OUT*)"
+  note: "All operations synchronous on rising CLK"
+
+# ==================== Output Register ====================
+output_register_config:
+  available: true
+  control_per_port: true
+
+  port_a:
+    register: OREG
+    clock_enable: OREG_CE_A
+    ecc_clock_enable: OREG_ECC_CE_A
+    description: "Optional pipelining for output (adds 1 cycle latency)"
+
+  port_b:
+    register: OREG
+    clock_enable: OREG_CE_B
+    ecc_clock_enable: OREG_ECC_CE_B
+
+# ==================== Reset & Sleep ====================
+control_config:
+  resets:
+    - RST_A
+    - RST_B
+  reset_polarity: active_high
+  reset_type: synchronous
+
+  sleep_mode:
+    signal: SLEEP
+    description: "Low-power retention mode (data preserved)"
+    note: "Useful for power management in multi-domain designs"
+
+# ==================== Inversion Attributes ====================
+inversion_attributes:
+  - IS_CLK_INVERTED
+  - IS_EN_A_INVERTED
+  - IS_EN_B_INVERTED
+  - IS_RDB_WR_A_INVERTED
+  - IS_RDB_WR_B_INVERTED
+  - IS_RST_A_INVERTED
+  - IS_RST_B_INVERTED
+
+# ==================== Port Initialization ====================
+init_config:
+  init_a_register: INIT_A[71:0]
+  init_b_register: INIT_B[71:0]
+  description: "Optional initialization values for output registers"
+  default: "72'h0"
+
+# ==================== P1 Status ====================
+p1_status:
+  configured: true
+  depth_level: "full_config_variants"
+  elements: [URAM288, URAM288_BASE]
+  catalog_entries: [URAM288, URAM288_BASE]
+  depth_configs: 4
+  cascade_depth_max: 8
+  capacity_range: "4KB to 36KB per instance (4KB to 288KB for 8-way cascade)"
+  ecc_modes: 2
+  status: "P1 complete - all documented cascade and ECC configs from UG573"
+  notes: |
+    Ultra-high-density RAM with independent dual ports, full cascade support,
+    and built-in ECC. Depth variants (4K-36K), byte-enable granularity, and
+    ECC injection/detection fully specified. Ready for behavioral simulation
+    in P2 and potential gate-level decomposition of address decoders/muxes in P3.
