@@ -107,6 +107,16 @@ def measure(pid):
         router = os.path.exists(os.path.join(HERE, "route.py"))
         done = len(have) + (1 if router else 0)
         return done, 2, f"interconnect: {have or 'none'} synthesized; router={'yes' if router else 'pending'}"
+    if pid == "P4":
+        psr = load("ps_realize.json", {})
+        n = psr.get("total_signals", 0); seam = len(psr.get("ps_pl_axi_seam", []))
+        return (1 if psr.get("blocks") else 0), 1, (f"PS: {len(psr.get('blocks',[]))} blocks ({n} signals) + {seam} AXI-seam ifaces realized" if psr else "PS not realized")
+    if pid == "P5":
+        lm = load("loadmap.json", {})
+        return (1 if lm.get("placed") else 0), 1, ("design loaded" if lm.get("placed") else "no design payload mapped")
+    if pid == "P6":
+        fd = os.path.exists(os.path.join(DEVICE, "fpga_device_gen.h"))
+        return (1 if fd else 0), 1, ("fpga_device unified + boots" if fd else "not unified")
     return 0, 1, "not started"
 
 def status():

@@ -1,6 +1,6 @@
 {
   "generated_from": "jobgen.py",
-  "count": 76,
+  "count": 78,
   "jobs": [
     {
       "id": "tool:assemble",
@@ -171,6 +171,14 @@
       "nudge": ""
     },
     {
+      "id": "tool:ps_realize",
+      "kind": "integrity",
+      "group": "tools",
+      "check": "python3 -m py_compile /Users/bbrn/fpga-rtl/v3_staging/tools/ps_realize.py",
+      "gate": true,
+      "nudge": ""
+    },
+    {
       "id": "tool:psports",
       "kind": "integrity",
       "group": "tools",
@@ -271,6 +279,14 @@
       "kind": "integrity",
       "group": "artifacts",
       "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/device/library.json'))\"",
+      "gate": true,
+      "nudge": ""
+    },
+    {
+      "id": "artifact:ps_realize.json",
+      "kind": "integrity",
+      "group": "artifacts",
+      "check": "python3 -c \"import json;json.load(open(r'/Users/bbrn/fpga-rtl/v3_staging/device/ps_realize.json'))\"",
       "gate": true,
       "nudge": ""
     },

@@ -3349,6 +3349,207 @@
       "state": true,
       "config": "configs: USR_ACCESSE2",
       "_note": "physical CONFIGURATION element (leaf, behavior=spec); see configmap.json"
+    },
+    "PS_SIGNALS_INTERFACES_AND_PINS": {
+      "pins": [
+        "POR_OVERRIDE",
+        "PS_DONE",
+        "PS_ERROR_OUT",
+        "PS_ERROR_STATUS",
+        "PS_INIT_B",
+        "PS_JTAG_TCK",
+        "PS_JTAG_TDI",
+        "PS_JTAG_TDO",
+        "PS_JTAG_TMS",
+        "PS_MGTREFCLK",
+        "PS_MODE",
+        "PS_PADI",
+        "PS_PADO",
+        "PS_POR_B",
+        "PS_PROG_B",
+        "PS_REF_CLK",
+        "PS_SRST_B"
+      ],
+      "out": [
+        "PS_DONE",
+        "PS_ERROR_OUT",
+        "PS_ERROR_STATUS",
+        "PS_JTAG_TDO",
+        "PS_PADO"
+      ],
+      "state": true,
+      "config": "PS hard block \u2014 17 documented signals (UG1085)",
+      "_note": "physical PS-domain element (leaf, behavior=spec); see ps_ports.json"
+    },
+    "PS_PLATFORM_MANAGEMENT_UNIT": {
+      "pins": [
+        "pmu_error_to_pl",
+        "pmu_pl_err",
+        "pmu_psio_gpo",
+        "psio_pmu_gpi"
+      ],
+      "out": [
+        "pmu_error_to_pl",
+        "pmu_psio_gpo"
+      ],
+      "state": true,
+      "config": "PS hard block \u2014 4 documented signals (UG1085)",
+      "_note": "physical PS-domain element (leaf, behavior=spec); see ps_ports.json"
+    },
+    "PS_DDR_MEMORY_CONTROLLER": {
+      "pins": [
+        "PS_DDR_A",
+        "PS_DDR_ACT_N",
+        "PS_DDR_ALERT_N",
+        "PS_DDR_BA",
+        "PS_DDR_BG",
+        "PS_DDR_CK",
+        "PS_DDR_CKE",
+        "PS_DDR_CK_N",
+        "PS_DDR_CS",
+        "PS_DDR_DM",
+        "PS_DDR_DQ",
+        "PS_DDR_DQS_N",
+        "PS_DDR_DQS_P",
+        "PS_DDR_ODT",
+        "PS_DDR_PARITY",
+        "PS_DDR_RAM_RST_N",
+        "PS_DDR_ZQ"
+      ],
+      "out": [
+        "PS_DDR_A",
+        "PS_DDR_ACT_N",
+        "PS_DDR_BA",
+        "PS_DDR_BG",
+        "PS_DDR_CK",
+        "PS_DDR_CKE",
+        "PS_DDR_CK_N",
+        "PS_DDR_CS",
+        "PS_DDR_DM",
+        "PS_DDR_ODT",
+        "PS_DDR_PARITY",
+        "PS_DDR_RAM_RST_N"
+      ],
+      "state": true,
+      "config": "PS hard block \u2014 17 documented signals (UG1085)",
+      "_note": "physical PS-domain element (leaf, behavior=spec); see ps_ports.json"
+    },
+    "PS_DISPLAYPORT_CONTROLLER": {
+      "pins": [
+        "dp_live_gfx_alpha_in",
+        "dp_live_gfx_pixel1_in",
+        "dp_live_video_de_in",
+        "dp_live_video_hsync_in",
+        "dp_live_video_in_clk",
+        "dp_live_video_pixel1_in",
+        "dp_live_video_vsync_in",
+        "dp_m_axis_mixed_audio_tdata_out",
+        "dp_m_axis_mixed_audio_tid_out",
+        "dp_m_axis_mixed_audio_tvalid_out",
+        "dp_s_axis_live_audio_aclk",
+        "dp_s_axis_live_audio_tdata_in",
+        "dp_s_axis_live_audio_tid_in",
+        "dp_s_axis_live_audio_tready_in",
+        "dp_s_axis_live_audio_tvalid_in",
+        "dp_video_hsync_out",
+        "dp_video_pixel1_out",
+        "dp_video_vid_de_out",
+        "dp_video_vsync_out"
+      ],
+      "out": [
+        "dp_m_axis_mixed_audio_tdata_out",
+        "dp_m_axis_mixed_audio_tid_out",
+        "dp_m_axis_mixed_audio_tvalid_out",
+        "dp_s_axis_live_audio_tready_in",
+        "dp_video_hsync_out",
+        "dp_video_pixel1_out",
+        "dp_video_vid_de_out",
+        "dp_video_vsync_out"
+      ],
+      "state": true,
+      "config": "PS hard block \u2014 19 documented signals (UG1085)",
+      "_note": "physical PS-domain element (leaf, behavior=spec); see ps_ports.json"
+    },
+    "PS_GEM_ETHERNET": {
+      "pins": [
+        "dma_tx_end_tog",
+        "dma_tx_status_tog",
+        "rx_w_data",
+        "rx_w_eop",
+        "rx_w_err",
+        "rx_w_flush",
+        "rx_w_overflow",
+        "rx_w_sop",
+        "rx_w_status",
+        "rx_w_wr",
+        "tx_r_status"
+      ],
+      "out": [
+        "dma_tx_end_tog",
+        "rx_w_data",
+        "rx_w_eop",
+        "rx_w_err",
+        "rx_w_flush",
+        "rx_w_sop",
+        "rx_w_status",
+        "rx_w_wr",
+        "tx_r_status"
+      ],
+      "state": true,
+      "config": "PS hard block \u2014 11 documented signals (UG1085)",
+      "_note": "physical PS-domain element (leaf, behavior=spec); see ps_ports.json"
+    },
+    "PS_PL_AXI_INTERFACES": {
+      "pins": [
+        "M_AXI_HPM0",
+        "M_AXI_HPM0_FPD",
+        "M_AXI_HPM0_LPD",
+        "M_AXI_HPM1_FPD",
+        "S_AXI_ACE_FPD",
+        "S_AXI_ACP_FPD",
+        "S_AXI_HP0_FPD",
+        "S_AXI_HP1_FPD",
+        "S_AXI_HP2_FPD",
+        "S_AXI_HP3_FPD",
+        "S_AXI_HPC0_FPD",
+        "S_AXI_HPC1_FPD",
+        "S_AXI_HPM0_LPD",
+        "S_AXI_LPD"
+      ],
+      "out": [],
+      "state": true,
+      "config": "PS hard block \u2014 14 documented signals (UG1085)",
+      "_note": "physical PS-domain element (leaf, behavior=spec); see ps_ports.json"
+    },
+    "PS_POWER_SUPPLY": {
+      "pins": [
+        "GND",
+        "PS_MGTRAVCC",
+        "PS_MGTRAVTT",
+        "VCCADC",
+        "VCCAUX",
+        "VCCBRAM",
+        "VCCINT",
+        "VCCO_PSDDR",
+        "VCCO_PSIO",
+        "VCCO_PSIO0",
+        "VCCO_PSIO1",
+        "VCCO_PSIO2",
+        "VCCO_PSIO3",
+        "VCC_PSADC",
+        "VCC_PSAUX",
+        "VCC_PSBATT",
+        "VCC_PSDDR",
+        "VCC_PSINTFP",
+        "VCC_PSINTLP",
+        "VCC_PSIO0",
+        "VCC_PSIO3",
+        "VCC_PSPLL"
+      ],
+      "out": [],
+      "state": true,
+      "config": "PS hard block \u2014 22 documented signals (UG1085)",
+      "_note": "physical PS-domain element (leaf, behavior=spec); see ps_ports.json"
     }
   },
   "blocks": {

@@ -1,0 +1,93 @@
+{
+  "domain": "PS",
+  "source": "UG1085",
+  "blocks": [
+    {
+      "name": "PS_POWER_SUPPLY",
+      "signals": 22
+    },
+    {
+      "name": "PS_DISPLAYPORT_CONTROLLER",
+      "signals": 19
+    },
+    {
+      "name": "PS_SIGNALS_INTERFACES_AND_PINS",
+      "signals": 17
+    },
+    {
+      "name": "PS_DDR_MEMORY_CONTROLLER",
+      "signals": 17
+    },
+    {
+      "name": "PS_PL_AXI_INTERFACES",
+      "signals": 14
+    },
+    {
+      "name": "PS_GEM_ETHERNET",
+      "signals": 11
+    },
+    {
+      "name": "PS_PLATFORM_MANAGEMENT_UNIT",
+      "signals": 4
+    }
+  ],
+  "ps_pl_axi_seam": [
+    {
+      "interface": "M_AXI_HPM0",
+      "dir": "master"
+    },
+    {
+      "interface": "M_AXI_HPM0_FPD",
+      "dir": "master"
+    },
+    {
+      "interface": "M_AXI_HPM0_LPD",
+      "dir": "master"
+    },
+    {
+      "interface": "M_AXI_HPM1_FPD",
+      "dir": "master"
+    },
+    {
+      "interface": "S_AXI_ACE_FPD",
+      "dir": "slave"
+    },
+    {
+      "interface": "S_AXI_ACP_FPD",
+      "dir": "slave"
+    },
+    {
+      "interface": "S_AXI_HP0_FPD",
+      "dir": "slave"
+    },
+    {
+      "interface": "S_AXI_HP1_FPD",
+      "dir": "slave"
+    },
+    {
+      "interface": "S_AXI_HP2_FPD",
+      "dir": "slave"
+    },
+    {
+      "interface": "S_AXI_HP3_FPD",
+      "dir": "slave"
+    },
+    {
+      "interface": "S_AXI_HPC0_FPD",
+      "dir": "slave"
+    },
+    {
+      "interface": "S_AXI_HPC1_FPD",
+      "dir": "slave"
+    },
+    {
+      "interface": "S_AXI_HPM0_LPD",
+      "dir": "slave"
+    },
+    {
+      "interface": "S_AXI_LPD",
+      "dir": "slave"
+    }
+  ],
+  "total_signals": 104
+}
