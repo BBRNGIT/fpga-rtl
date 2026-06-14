@@ -1,0 +1,802 @@
+{
+  "part": "ZU19EG",
+  "elements": [
+    {
+      "name": "storage_element",
+      "kind": "decomposed",
+      "subsystem": "REGISTER",
+      "count": 1045440,
+      "ports": 10,
+      "configs": 6
+    },
+    {
+      "name": "LUT6",
+      "kind": "decomposed",
+      "subsystem": "CLB",
+      "count": 522720,
+      "ports": 61,
+      "configs": 25
+    },
+    {
+      "name": "MUXF7",
+      "kind": "decomposed",
+      "subsystem": "CLB",
+      "count": 261360,
+      "ports": 4,
+      "configs": 1
+    },
+    {
+      "name": "MUXF8",
+      "kind": "decomposed",
+      "subsystem": "CLB",
+      "count": 130680,
+      "ports": 4,
+      "configs": 1
+    },
+    {
+      "name": "CARRY8",
+      "kind": "decomposed",
+      "subsystem": "CLB",
+      "count": 65340,
+      "ports": 6,
+      "configs": 1
+    },
+    {
+      "name": "MUXF9",
+      "kind": "decomposed",
+      "subsystem": "CLB",
+      "count": 65340,
+      "ports": 4,
+      "configs": 1
+    },
+    {
+      "name": "DSP48E2",
+      "kind": "leaf",
+      "subsystem": "ARITHMETIC",
+      "count": 1968,
+      "ports": 54,
+      "configs": 1
+    },
+    {
+      "name": "RAMB18E2",
+      "kind": "leaf",
+      "subsystem": "BLOCKRAM",
+      "count": 1968,
+      "ports": 87,
+      "configs": 2
+    },
+    {
+      "name": "RAMB36E2",
+      "kind": "leaf",
+      "subsystem": "BLOCKRAM",
+      "count": 984,
+      "ports": 100,
+      "configs": 2
+    },
+    {
+      "name": "BITSLICE_CONTROL",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 57,
+      "configs": 1
+    },
+    {
+      "name": "DCIRESET",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 2,
+      "configs": 1
+    },
+    {
+      "name": "HPIO_VREF",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 2,
+      "configs": 1
+    },
+    {
+      "name": "IBUF",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 2,
+      "configs": 1
+    },
+    {
+      "name": "IBUFDS",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 3,
+      "configs": 1
+    },
+    {
+      "name": "IBUFDSE3",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 6,
+      "configs": 1
+    },
+    {
+      "name": "IBUFDS_DIFF_OUT",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 4,
+      "configs": 1
+    },
+    {
+      "name": "IBUFDS_DIFF_OUT_IBUFDISABLE",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 5,
+      "configs": 1
+    },
+    {
+      "name": "IBUFDS_DIFF_OUT_INTERMDISABLE",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 6,
+      "configs": 1
+    },
+    {
+      "name": "IBUFDS_DPHY",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 7,
+      "configs": 1
+    },
+    {
+      "name": "IBUFDS_IBUFDISABLE",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 4,
+      "configs": 1
+    },
+    {
+      "name": "IBUFDS_INTERMDISABLE",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 5,
+      "configs": 1
+    },
+    {
+      "name": "IBUFE3",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 6,
+      "configs": 1
+    },
+    {
+      "name": "IBUF_ANALOG",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 2,
+      "configs": 1
+    },
+    {
+      "name": "IBUF_IBUFDISABLE",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 3,
+      "configs": 1
+    },
+    {
+      "name": "IBUF_INTERMDISABLE",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 4,
+      "configs": 1
+    },
+    {
+      "name": "IDELAYCTRL",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 3,
+      "configs": 1
+    },
+    {
+      "name": "IDELAYE3",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 14,
+      "configs": 1
+    },
+    {
+      "name": "IOBUF",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 4,
+      "configs": 1
+    },
+    {
+      "name": "IOBUFDS",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 5,
+      "configs": 1
+    },
+    {
+      "name": "IOBUFDSE3",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 9,
+      "configs": 1
+    },
+    {
+      "name": "IOBUFDS_DCIEN",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 7,
+      "configs": 1
+    },
+    {
+      "name": "IOBUFDS_DIFF_OUT",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 7,
+      "configs": 1
+    },
+    {
+      "name": "IOBUFDS_DIFF_OUT_DCIEN",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 9,
+      "configs": 1
+    },
+    {
+      "name": "IOBUFDS_DIFF_OUT_INTERMDISABLE",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 9,
+      "configs": 1
+    },
+    {
+      "name": "IOBUFDS_INTERMDISABLE",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 7,
+      "configs": 1
+    },
+    {
+      "name": "IOBUFE3",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 9,
+      "configs": 1
+    },
+    {
+      "name": "IOBUF_DCIEN",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 6,
+      "configs": 1
+    },
+    {
+      "name": "IOBUF_INTERMDISABLE",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 6,
+      "configs": 1
+    },
+    {
+      "name": "ISERDESE3",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 10,
+      "configs": 1
+    },
+    {
+      "name": "KEEPER",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 1,
+      "configs": 1
+    },
+    {
+      "name": "OBUF",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 2,
+      "configs": 1
+    },
+    {
+      "name": "OBUFDS",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 3,
+      "configs": 1
+    },
+    {
+      "name": "OBUFDS_DPHY",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 7,
+      "configs": 1
+    },
+    {
+      "name": "OBUFT",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 3,
+      "configs": 1
+    },
+    {
+      "name": "OBUFTDS",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 4,
+      "configs": 1
+    },
+    {
+      "name": "ODELAYE3",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 13,
+      "configs": 1
+    },
+    {
+      "name": "OSERDESE3",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 7,
+      "configs": 1
+    },
+    {
+      "name": "PULLDOWN",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 1,
+      "configs": 1
+    },
+    {
+      "name": "PULLUP",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 1,
+      "configs": 1
+    },
+    {
+      "name": "RIU_OR",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 6,
+      "configs": 1
+    },
+    {
+      "name": "RXTX_BITSLICE",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 33,
+      "configs": 1
+    },
+    {
+      "name": "RX_BITSLICE",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 27,
+      "configs": 1
+    },
+    {
+      "name": "TX_BITSLICE",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 18,
+      "configs": 1
+    },
+    {
+      "name": "TX_BITSLICE_TRI",
+      "kind": "leaf",
+      "subsystem": "I",
+      "count": 668,
+      "ports": 12,
+      "configs": 1
+    },
+    {
+      "name": "URAM288",
+      "kind": "leaf",
+      "subsystem": "BLOCKRAM",
+      "count": 128,
+      "ports": 66,
+      "configs": 2
+    },
+    {
+      "name": "GTHE4_CHANNEL",
+      "kind": "leaf",
+      "subsystem": "ADVANCED",
+      "count": 44,
+      "ports": 246,
+      "configs": 1
+    },
+    {
+      "name": "GTHE4_COMMON",
+      "kind": "leaf",
+      "subsystem": "ADVANCED",
+      "count": 44,
+      "ports": 76,
+      "configs": 1
+    },
+    {
+      "name": "GTYE4_CHANNEL",
+      "kind": "leaf",
+      "subsystem": "ADVANCED",
+      "count": 28,
+      "ports": 238,
+      "configs": 1
+    },
+    {
+      "name": "GTYE4_COMMON",
+      "kind": "leaf",
+      "subsystem": "ADVANCED",
+      "count": 28,
+      "ports": 77,
+      "configs": 1
+    },
+    {
+      "name": "BUFG",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 2,
+      "configs": 1
+    },
+    {
+      "name": "BUFGCE",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 3,
+      "configs": 1
+    },
+    {
+      "name": "BUFGCE_1",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 3,
+      "configs": 1
+    },
+    {
+      "name": "BUFGCE_DIV",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 4,
+      "configs": 1
+    },
+    {
+      "name": "BUFGCTRL",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 9,
+      "configs": 1
+    },
+    {
+      "name": "BUFGMUX",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 4,
+      "configs": 1
+    },
+    {
+      "name": "BUFGMUX_1",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 4,
+      "configs": 1
+    },
+    {
+      "name": "BUFGMUX_CTRL",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 4,
+      "configs": 1
+    },
+    {
+      "name": "BUFG_GT",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 7,
+      "configs": 1
+    },
+    {
+      "name": "BUFG_GT_SYNC",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 5,
+      "configs": 1
+    },
+    {
+      "name": "BUFG_PS",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 2,
+      "configs": 1
+    },
+    {
+      "name": "MMCME3_ADV",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 42,
+      "configs": 1
+    },
+    {
+      "name": "MMCME3_BASE",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 23,
+      "configs": 1
+    },
+    {
+      "name": "MMCME4_ADV",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 35,
+      "configs": 1
+    },
+    {
+      "name": "MMCME4_BASE",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 18,
+      "configs": 1
+    },
+    {
+      "name": "PLLE3_ADV",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 23,
+      "configs": 1
+    },
+    {
+      "name": "PLLE3_BASE",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 15,
+      "configs": 1
+    },
+    {
+      "name": "PLLE4_ADV",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 19,
+      "configs": 1
+    },
+    {
+      "name": "PLLE4_BASE",
+      "kind": "leaf",
+      "subsystem": "CLOCK",
+      "count": 11,
+      "ports": 12,
+      "configs": 1
+    },
+    {
+      "name": "AND2B1L",
+      "kind": "leaf",
+      "subsystem": "CLB",
+      "count": null,
+      "ports": 3,
+      "configs": 1
+    },
+    {
+      "name": "BSCANE2",
+      "kind": "leaf",
+      "subsystem": "CONFIGURATION",
+      "count": null,
+      "ports": 11,
+      "configs": 1
+    },
+    {
+      "name": "DNA_PORTE2",
+      "kind": "leaf",
+      "subsystem": "CONFIGURATION",
+      "count": null,
+      "ports": 5,
+      "configs": 1
+    },
+    {
+      "name": "EFUSE_USR",
+      "kind": "leaf",
+      "subsystem": "CONFIGURATION",
+      "count": null,
+      "ports": 1,
+      "configs": 1
+    },
+    {
+      "name": "HARD_SYNC",
+      "kind": "leaf",
+      "subsystem": "REGISTER",
+      "count": null,
+      "ports": 3,
+      "configs": 1
+    },
+    {
+      "name": "IBUFDS_GTE3",
+      "kind": "leaf",
+      "subsystem": "ADVANCED",
+      "count": null,
+      "ports": 5,
+      "configs": 1
+    },
+    {
+      "name": "IBUFDS_GTE4",
+      "kind": "leaf",
+      "subsystem": "ADVANCED",
+      "count": null,
+      "ports": 5,
+      "configs": 1
+    },
+    {
+      "name": "ICAPE3",
+      "kind": "leaf",
+      "subsystem": "CONFIGURATION",
+      "count": null,
+      "ports": 8,
+      "configs": 1
+    },
+    {
+      "name": "IDDRE1",
+      "kind": "leaf",
+      "subsystem": "REGISTER",
+      "count": null,
+      "ports": 6,
+      "configs": 1
+    },
+    {
+      "name": "MASTER_JTAG",
+      "kind": "leaf",
+      "subsystem": "CONFIGURATION",
+      "count": null,
+      "ports": 4,
+      "configs": 1
+    },
+    {
+      "name": "OBUFDS_GTE3",
+      "kind": "leaf",
+      "subsystem": "ADVANCED",
+      "count": null,
+      "ports": 4,
+      "configs": 1
+    },
+    {
+      "name": "OBUFDS_GTE3_ADV",
+      "kind": "leaf",
+      "subsystem": "ADVANCED",
+      "count": null,
+      "ports": 5,
+      "configs": 1
+    },
+    {
+      "name": "OBUFDS_GTE4",
+      "kind": "leaf",
+      "subsystem": "ADVANCED",
+      "count": null,
+      "ports": 4,
+      "configs": 1
+    },
+    {
+      "name": "OBUFDS_GTE4_ADV",
+      "kind": "leaf",
+      "subsystem": "ADVANCED",
+      "count": null,
+      "ports": 5,
+      "configs": 1
+    },
+    {
+      "name": "ODDRE1",
+      "kind": "leaf",
+      "subsystem": "REGISTER",
+      "count": null,
+      "ports": 5,
+      "configs": 1
+    },
+    {
+      "name": "OR2L",
+      "kind": "leaf",
+      "subsystem": "CLB",
+      "count": null,
+      "ports": 3,
+      "configs": 1
+    },
+    {
+      "name": "STARTUPE3",
+      "kind": "leaf",
+      "subsystem": "CONFIGURATION",
+      "count": null,
+      "ports": 17,
+      "configs": 1
+    },
+    {
+      "name": "SYSMONE1",
+      "kind": "leaf",
+      "subsystem": "ADVANCED",
+      "count": null,
+      "ports": 35,
+      "configs": 1
+    },
+    {
+      "name": "SYSMONE4",
+      "kind": "leaf",
+      "subsystem": "ADVANCED",
+      "count": null,
+      "ports": 38,
+      "configs": 1
+    },
+    {
+      "name": "USR_ACCESSE2",
+      "kind": "leaf",
+      "subsystem": "CONFIGURATION",
+      "count": null,
+      "ports": 3,
+      "configs": 1
+    }
+  ],
+  "grid": {
+    "slices": 65340,
+    "rows": 255,
+    "cols": 257,
+    "clock_regions_est": 132,
+    "note": "synthesized column/region floorplan; (X,Y) is identity, no allocation"
+  },
+  "totals": {
+    "physical_element_types": 98,
+    "total_placed_instances": 2126341,
+    "system_logic_cells_DS891": 1143450,
+    "uncounted_element_types": 20
+  }
+}
