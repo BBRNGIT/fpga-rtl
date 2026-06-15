@@ -1,0 +1,10 @@
+{
+  "direction": "PL\u2192PS",
+  "data_width": 128,
+  "address_width": 49,
+  "master_id_width": 6,
+  "fifo_depth": 128,
+  "coherency": "I/O coherent (one-way snoop)",
+  "destination": "CCI ACE-Lite slave",
+  "table_ref": "35-1"
+}

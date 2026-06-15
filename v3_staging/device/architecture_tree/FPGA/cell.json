@@ -1,0 +1,419 @@
+{
+  "type": "device",
+  "name": "Zynq UltraScale+ MPSoC",
+  "device_name": "XCZU19EG",
+  "description": "Zynq UltraScale+ with 4 processing cores, 2 real-time cores, GPU, dual power domains",
+  "PS": {
+    "type": "domain",
+    "name": "Processing System",
+    "description": "Processor subsystem with APU, RPU, GPU, DDR controller, interconnect",
+    "children": [
+      "FPD",
+      "LPD"
+    ],
+    "FPD": {
+      "type": "power_domain",
+      "name": "Full-Power Domain (FPD)",
+      "description": "Full-power processor domain: APU, GPU, DDR, FPD interconnect",
+      "power_rail": "VCCINT_FPD",
+      "children": [
+        "APU",
+        "GPU",
+        "DDR_CONTROLLER",
+        "FPD_MAIN_SWITCH",
+        "CCI",
+        "FPD_SLCR"
+      ],
+      "APU": {
+        "type": "processor_unit",
+        "name": "Application Processing Unit",
+        "description": "ARM Cortex-A53 quad-core processor with GIC, L2 cache",
+        "cores": 4,
+        "processor": "ARM Cortex-A53",
+        "frequency_mhz": 1500,
+        "l2_cache_kb": 2048,
+        "references": {
+          "chapter": 3,
+          "pages": "51-77",
+          "tables": [
+            "3-1",
+            "3-2"
+          ]
+        },
+        "connections": [
+          {
+            "to": "CCI",
+            "signal": "ACE",
+            "width": 128,
+            "direction": "bidirectional",
+            "coherency": "full",
+            "via": "ADB (AXI Domain Bridge)"
+          }
+        ]
+      },
+      "GPU": {
+        "type": "processor_unit",
+        "name": "Graphics Processing Unit",
+        "description": "Mali-400 GPU for graphics acceleration",
+        "references": {
+          "chapter": 5,
+          "pages": "95-114"
+        },
+        "connections": [
+          {
+            "to": "CCI",
+            "signal": "ACE-Lite",
+            "width": 128,
+            "direction": "master",
+            "coherency": "I/O coherent"
+          }
+        ]
+      },
+      "DDR_CONTROLLER": {
+        "type": "memory_controller",
+        "name": "DDR Memory Controller",
+        "description": "DDR4 SDRAM controller with 6 slave ports",
+        "data_width": 512,
+        "references": {
+          "chapter": 17,
+          "pages": "424-512",
+          "tables": [
+            "17-1",
+            "17-2"
+          ]
+        },
+        "children": [
+          "DDR_PORT_0",
+          "DDR_PORT_1",
+          "DDR_PORT_2",
+          "DDR_PORT_3",
+          "DDR_PORT_4",
+          "DDR_PORT_5"
+        ],
+        "connections": [
+          {
+            "to": "FPD_MAIN_SWITCH",
+            "direction": "slave"
+          },
+          {
+            "to": "CCI",
+            "signal": "DDR_Slave",
+            "direction": "slave"
+          }
+        ],
+        "DDR_PORT_0": {
+          "port_id": 0,
+          "arbiter": "QoS",
+          "description": "Priority port"
+        },
+        "DDR_PORT_1": {
+          "port_id": 1,
+          "arbiter": "QoS",
+          "description": "Standard port"
+        },
+        "DDR_PORT_2": {
+          "port_id": 2,
+          "arbiter": "QoS"
+        },
+        "DDR_PORT_3": {
+          "port_id": 3,
+          "arbiter": "QoS"
+        },
+        "DDR_PORT_4": {
+          "port_id": 4,
+          "arbiter": "QoS"
+        },
+        "DDR_PORT_5": {
+          "port_id": 5,
+          "arbiter": "QoS"
+        }
+      },
+      "FPD_MAIN_SWITCH": {
+        "type": "interconnect",
+        "name": "FPD Main Switch",
+        "description": "128-bit AXI switch: APU/GPU/SATA/PCIe \u2192 DDR + LPD slaves",
+        "data_width": 128,
+        "references": {
+          "chapter": 15,
+          "pages": "364-380"
+        },
+        "connections": [
+          {
+            "to": "DDR_CONTROLLER",
+            "direction": "master"
+          },
+          {
+            "to": "CCI",
+            "direction": "master"
+          }
+        ]
+      },
+      "CCI": {
+        "type": "interconnect",
+        "name": "Coherency and Interconnect (CCI-400)",
+        "description": "Central coherent interconnect: ACE ports for APU/GPU/PL, DDR masters, SMMU DVM",
+        "data_width": 128,
+        "ports": {
+          "ACE_slave": [
+            0,
+            1
+          ],
+          "ACE_lite_slave": [
+            2,
+            3,
+            4
+          ],
+          "ACE_lite_master": [
+            0,
+            1
+          ],
+          "DVM": "SMMU message interface"
+        },
+        "references": {
+          "chapter": 15,
+          "pages": "369-380"
+        },
+        "connections": [
+          {
+            "to": "APU",
+            "signal": "ACE",
+            "direction": "slave"
+          },
+          {
+            "to": "GPU",
+            "signal": "ACE-Lite",
+            "direction": "slave"
+          },
+          {
+            "to": "DDR_CONTROLLER",
+            "signal": "DDR_Master",
+            "direction": "master"
+          }
+        ]
+      },
+      "FPD_SLCR": {
+        "type": "config",
+        "name": "FPD System Level Control Registers",
+        "description": "Configuration and control registers for FPD domain"
+      }
+    },
+    "LPD": {
+      "type": "power_domain",
+      "name": "Low-Power Domain (LPD)",
+      "description": "Low-power subsystem: RPU, OCM, peripherals, LPD interconnect",
+      "power_rail": "VCCINT_LPD",
+      "children": [
+        "RPU",
+        "OCM",
+        "LPD_MAIN_SWITCH",
+        "IOP_PERIPHERALS",
+        "LPD_DMA"
+      ],
+      "RPU": {
+        "type": "processor_unit",
+        "name": "Real-time Processing Unit",
+        "description": "ARM Cortex-R5 dual-core real-time processor",
+        "cores": 2,
+        "processor": "ARM Cortex-R5",
+        "frequency_mhz": 600,
+        "tcm_kb": 128,
+        "references": {
+          "chapter": 4,
+          "pages": "79-94"
+        },
+        "connections": [
+          {
+            "to": "LPD_MAIN_SWITCH",
+            "signal": "AXI",
+            "direction": "master"
+          }
+        ]
+      },
+      "OCM": {
+        "type": "memory",
+        "name": "On-Chip Memory",
+        "description": "Tightly-coupled memory: 256 KB total, accessible from RPU and FPD",
+        "capacity_kb": 256,
+        "references": {
+          "chapter": 18,
+          "pages": "514-519"
+        }
+      },
+      "LPD_MAIN_SWITCH": {
+        "type": "interconnect",
+        "name": "LPD Main Switch",
+        "description": "Low-power AXI switch: RPU/IOP \u2192 OCM/FPD bridge",
+        "data_width": 32,
+        "references": {
+          "chapter": 15,
+          "pages": "364-368"
+        },
+        "connections": [
+          {
+            "to": "RPU",
+            "direction": "slave"
+          },
+          {
+            "to": "OCM",
+            "direction": "master"
+          },
+          {
+            "to": "FPD",
+            "via": "TBU2",
+            "direction": "master"
+          }
+        ]
+      },
+      "IOP_PERIPHERALS": {
+        "type": "peripheral_group",
+        "name": "I/O Peripherals",
+        "description": "UART, CAN, I2C, SPI, QSPI, GEM, SDIO, USB, etc.",
+        "references": {
+          "chapter": "20-34",
+          "pages": "552-1046"
+        },
+        "children": [
+          "UART_0",
+          "UART_1",
+          "CAN_0",
+          "CAN_1",
+          "I2C_0",
+          "I2C_1",
+          "SPI",
+          "QSPI",
+          "GEM",
+          "SDIO",
+          "USB"
+        ]
+      },
+      "LPD_DMA": {
+        "type": "dma_engine",
+        "name": "LPD DMA Controller",
+        "description": "4-channel DMA engine for LPD peripherals",
+        "channels": 4
+      }
+    }
+  },
+  "PL": {
+    "type": "domain",
+    "name": "Programmable Logic",
+    "description": "User-programmable FPGA fabric and hard blocks",
+    "children": [
+      "FABRIC",
+      "HARD_BLOCKS"
+    ],
+    "FABRIC": {
+      "type": "fabric",
+      "name": "FPGA Fabric",
+      "description": "General routing interconnect (switch matrices), CLB, LUT, carry, distributed RAM",
+      "grid": [
+        64,
+        64
+      ],
+      "routing_resources": {
+        "switch_matrices": "per-tile general interconnect (Vivado-internal)",
+        "track_types": "routing and distribution (clock domain)"
+      },
+      "references": {
+        "chapter": "UG574 (CLB), UG573 (Memory), UG579 (DSP)"
+      }
+    },
+    "HARD_BLOCKS": {
+      "type": "peripheral_group",
+      "name": "Hard IP Blocks",
+      "description": "Embedded functional blocks in PL",
+      "references": {
+        "chapter": 36,
+        "pages": "1082-1095"
+      },
+      "children": [
+        "PCIE",
+        "ETHERNET_100G",
+        "GTH",
+        "GTY",
+        "VCU",
+        "RFSOC"
+      ]
+    }
+  },
+  "CLOCKING": {
+    "type": "subsystem",
+    "name": "Clock Subsystem",
+    "description": "PLL, clock distribution, clock regions, segmentation",
+    "references": {
+      "chapter": 37,
+      "pages": "1096-1122"
+    },
+    "clock_regions": {
+      "x": 6,
+      "y": 4
+    },
+    "clock_tracks_per_region": {
+      "routing": 24,
+      "distribution": 24
+    }
+  },
+  "RESET": {
+    "type": "subsystem",
+    "name": "Reset Subsystem",
+    "description": "Global, domain, and module resets",
+    "references": {
+      "chapter": 38,
+      "pages": "1123-1134"
+    }
+  },
+  "POWER_DOMAINS": {
+    "type": "config_group",
+    "name": "Power Domains",
+    "description": "Power islands and isolation",
+    "children": [
+      "FPD_DOMAIN",
+      "LPD_DOMAIN",
+      "PLPD_DOMAIN",
+      "BPD_DOMAIN"
+    ],
+    "FPD_DOMAIN": {
+      "name": "Full-Power Domain",
+      "rails": [
+        "VCCINT_FPD"
+      ]
+    },
+    "LPD_DOMAIN": {
+      "name": "Low-Power Domain",
+      "rails": [
+        "VCCINT_LPD"
+      ]
+    },
+    "PLPD_DOMAIN": {
+      "name": "PL Low-Power Domain",
+      "rails": [
+        "VCCINT_PLPD"
+      ]
+    },
+    "BPD_DOMAIN": {
+      "name": "Battery-backed Power Domain",
+      "rails": [
+        "VCCBATT"
+      ]
+    }
+  },
+  "BOUNDARY": {
+    "type": "interface_group",
+    "name": "PS\u2194PL Boundary Interfaces",
+    "description": "All signals crossing the PS-PL die boundary",
+    "references": {
+      "chapter": 2,
+      "pages": "40-49",
+      "chapter_detailed": 35,
+      "pages_detailed": "1055-1077"
+    },
+    "children": [
+      "AXI_INTERFACES",
+      "INTERRUPTS",
+      "CLOCKS_BOUNDARY",
+      "EMIO",
+      "SYSTEM_SIGNALS",
+      "DEBUG"
+    ]
+  }
+}

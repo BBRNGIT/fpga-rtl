@@ -1,0 +1,15 @@
+{
+  "direction": "PL\u2192PS",
+  "data_width": 128,
+  "address_width": 40,
+  "master_id_width": 6,
+  "coherency": "Full ACE (bidirectional coherency)",
+  "snoop_channels": [
+    "ACADDR",
+    "CRRESP",
+    "CDDATA"
+  ],
+  "destination": "CCI ACE slave (full coherency)",
+  "use_case": "PL cache coherent with APU (bidirectional snooping)",
+  "table_ref": "35-1"
+}

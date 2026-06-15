@@ -1,0 +1,13 @@
+{
+  "direction": "PS\u2192PL",
+  "data_width": 32,
+  "address_width": 32,
+  "master_id_width": 16,
+  "sources": [
+    "RPU",
+    "IOP peripherals"
+  ],
+  "address_space": "lowest 512 MB",
+  "use_case": "Low-power LPD\u2192PL (works when FPD powered down)",
+  "table_ref": "35-3"
+}

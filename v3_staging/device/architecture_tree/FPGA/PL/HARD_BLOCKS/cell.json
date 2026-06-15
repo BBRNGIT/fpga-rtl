@@ -1,0 +1,9 @@
+{
+  "type": "peripheral_group",
+  "name": "Hard IP Blocks",
+  "description": "Embedded functional blocks in PL",
+  "references": {
+    "chapter": 36,
+    "pages": "1082-1095"
+  }
+}

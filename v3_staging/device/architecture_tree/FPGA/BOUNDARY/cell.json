@@ -1,0 +1,11 @@
+{
+  "type": "interface_group",
+  "name": "PS\u2194PL Boundary Interfaces",
+  "description": "All signals crossing the PS-PL die boundary",
+  "references": {
+    "chapter": 2,
+    "pages": "40-49",
+    "chapter_detailed": 35,
+    "pages_detailed": "1055-1077"
+  }
+}

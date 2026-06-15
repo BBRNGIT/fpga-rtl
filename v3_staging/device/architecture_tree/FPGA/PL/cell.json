@@ -1,0 +1,38 @@
+{
+  "type": "domain",
+  "name": "Programmable Logic",
+  "description": "User-programmable FPGA fabric and hard blocks",
+  "FABRIC": {
+    "type": "fabric",
+    "name": "FPGA Fabric",
+    "description": "General routing interconnect (switch matrices), CLB, LUT, carry, distributed RAM",
+    "grid": [
+      64,
+      64
+    ],
+    "routing_resources": {
+      "switch_matrices": "per-tile general interconnect (Vivado-internal)",
+      "track_types": "routing and distribution (clock domain)"
+    },
+    "references": {
+      "chapter": "UG574 (CLB), UG573 (Memory), UG579 (DSP)"
+    }
+  },
+  "HARD_BLOCKS": {
+    "type": "peripheral_group",
+    "name": "Hard IP Blocks",
+    "description": "Embedded functional blocks in PL",
+    "references": {
+      "chapter": 36,
+      "pages": "1082-1095"
+    },
+    "children": [
+      "PCIE",
+      "ETHERNET_100G",
+      "GTH",
+      "GTY",
+      "VCU",
+      "RFSOC"
+    ]
+  }
+}

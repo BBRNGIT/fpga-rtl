@@ -1,0 +1,51 @@
+{
+  "type": "memory_controller",
+  "name": "DDR Memory Controller",
+  "description": "DDR4 SDRAM controller with 6 slave ports",
+  "data_width": 512,
+  "references": {
+    "chapter": 17,
+    "pages": "424-512",
+    "tables": [
+      "17-1",
+      "17-2"
+    ]
+  },
+  "connections": [
+    {
+      "to": "FPD_MAIN_SWITCH",
+      "direction": "slave"
+    },
+    {
+      "to": "CCI",
+      "signal": "DDR_Slave",
+      "direction": "slave"
+    }
+  ],
+  "DDR_PORT_0": {
+    "port_id": 0,
+    "arbiter": "QoS",
+    "description": "Priority port"
+  },
+  "DDR_PORT_1": {
+    "port_id": 1,
+    "arbiter": "QoS",
+    "description": "Standard port"
+  },
+  "DDR_PORT_2": {
+    "port_id": 2,
+    "arbiter": "QoS"
+  },
+  "DDR_PORT_3": {
+    "port_id": 3,
+    "arbiter": "QoS"
+  },
+  "DDR_PORT_4": {
+    "port_id": 4,
+    "arbiter": "QoS"
+  },
+  "DDR_PORT_5": {
+    "port_id": 5,
+    "arbiter": "QoS"
+  }
+}

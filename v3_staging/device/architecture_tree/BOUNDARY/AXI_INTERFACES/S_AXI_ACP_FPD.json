@@ -1,0 +1,14 @@
+{
+  "direction": "PL\u2192PS",
+  "data_width": 128,
+  "address_width": 40,
+  "master_id_width": 5,
+  "coherency": "APU SCU cache-coherent (high-latency)",
+  "destination": "APU L1/L2 cache (direct SCU port)",
+  "restrictions": [
+    "64B and 16B INCR txns only",
+    "max 4 outstanding"
+  ],
+  "use_case": "Legacy cache coherency (not recommended; use ACE or HPC)",
+  "table_ref": "35-1"
+}

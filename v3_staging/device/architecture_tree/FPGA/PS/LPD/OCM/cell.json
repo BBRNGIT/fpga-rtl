@@ -1,0 +1,10 @@
+{
+  "type": "memory",
+  "name": "On-Chip Memory",
+  "description": "Tightly-coupled memory: 256 KB total, accessible from RPU and FPD",
+  "capacity_kb": 256,
+  "references": {
+    "chapter": 18,
+    "pages": "514-519"
+  }
+}

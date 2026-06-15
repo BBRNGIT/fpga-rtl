@@ -1,0 +1,17 @@
+{
+  "type": "subsystem",
+  "name": "Clock Subsystem",
+  "description": "PLL, clock distribution, clock regions, segmentation",
+  "references": {
+    "chapter": 37,
+    "pages": "1096-1122"
+  },
+  "clock_regions": {
+    "x": 6,
+    "y": 4
+  },
+  "clock_tracks_per_region": {
+    "routing": 24,
+    "distribution": 24
+  }
+}

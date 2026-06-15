@@ -1,0 +1,18 @@
+{
+  "type": "processor_unit",
+  "name": "Graphics Processing Unit",
+  "description": "Mali-400 GPU for graphics acceleration",
+  "references": {
+    "chapter": 5,
+    "pages": "95-114"
+  },
+  "connections": [
+    {
+      "to": "CCI",
+      "signal": "ACE-Lite",
+      "width": 128,
+      "direction": "master",
+      "coherency": "I/O coherent"
+    }
+  ]
+}

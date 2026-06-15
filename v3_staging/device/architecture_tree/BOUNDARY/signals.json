@@ -1,0 +1,37 @@
+{
+  "interrupts": {
+    "pl_to_ps": 16,
+    "ps_to_pl": 100,
+    "pmu_ipi": {
+      "pl_to_lpdpmu": 4,
+      "lpdpmu_to_pl": 7
+    },
+    "references": "Table 2-5"
+  },
+  "clocks": {
+    "pl_clk": 4,
+    "f2p_clk": 2,
+    "rtc_clk": 1,
+    "references": "Table 2-10"
+  },
+  "processor_comms": {
+    "p2f_pmu": 32,
+    "f2p_pmu": 32,
+    "apu_wfi_wfe": 2,
+    "references": "Table 2-5"
+  },
+  "emio": {
+    "description": "Extended MIO: GPIO, GEM, SPI, UART, I2C, CAN, etc. into PL",
+    "gpio_banks": [
+      3,
+      4,
+      5
+    ],
+    "gpio_channels": 96
+  },
+  "system_errors": {
+    "ps_to_pl": 49,
+    "seu_alarm": 1,
+    "references": "Table 2-6"
+  }
+}

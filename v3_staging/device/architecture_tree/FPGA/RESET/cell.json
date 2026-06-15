@@ -1,0 +1,9 @@
+{
+  "type": "subsystem",
+  "name": "Reset Subsystem",
+  "description": "Global, domain, and module resets",
+  "references": {
+    "chapter": 38,
+    "pages": "1123-1134"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "type": "interconnect",
+  "name": "LPD Main Switch",
+  "description": "Low-power AXI switch: RPU/IOP \u2192 OCM/FPD bridge",
+  "data_width": 32,
+  "references": {
+    "chapter": 15,
+    "pages": "364-368"
+  },
+  "connections": [
+    {
+      "to": "RPU",
+      "direction": "slave"
+    },
+    {
+      "to": "OCM",
+      "direction": "master"
+    },
+    {
+      "to": "FPD",
+      "via": "TBU2",
+      "direction": "master"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "direction": "PS\u2192PL",
+  "data_width": 32,
+  "address_width": 40,
+  "master_id_width": 16,
+  "sources": [
+    "APU",
+    "FPD DMA",
+    "PCIe"
+  ],
+  "use_case": "FPD masters driving PL slaves",
+  "table_ref": "35-1"
+}

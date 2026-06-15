@@ -1,0 +1,43 @@
+{
+  "type": "interconnect",
+  "name": "Coherency and Interconnect (CCI-400)",
+  "description": "Central coherent interconnect: ACE ports for APU/GPU/PL, DDR masters, SMMU DVM",
+  "data_width": 128,
+  "ports": {
+    "ACE_slave": [
+      0,
+      1
+    ],
+    "ACE_lite_slave": [
+      2,
+      3,
+      4
+    ],
+    "ACE_lite_master": [
+      0,
+      1
+    ],
+    "DVM": "SMMU message interface"
+  },
+  "references": {
+    "chapter": 15,
+    "pages": "369-380"
+  },
+  "connections": [
+    {
+      "to": "APU",
+      "signal": "ACE",
+      "direction": "slave"
+    },
+    {
+      "to": "GPU",
+      "signal": "ACE-Lite",
+      "direction": "slave"
+    },
+    {
+      "to": "DDR_CONTROLLER",
+      "signal": "DDR_Master",
+      "direction": "master"
+    }
+  ]
+}

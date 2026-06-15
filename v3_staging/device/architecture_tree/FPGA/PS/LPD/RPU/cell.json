@@ -1,0 +1,20 @@
+{
+  "type": "processor_unit",
+  "name": "Real-time Processing Unit",
+  "description": "ARM Cortex-R5 dual-core real-time processor",
+  "cores": 2,
+  "processor": "ARM Cortex-R5",
+  "frequency_mhz": 600,
+  "tcm_kb": 128,
+  "references": {
+    "chapter": 4,
+    "pages": "79-94"
+  },
+  "connections": [
+    {
+      "to": "LPD_MAIN_SWITCH",
+      "signal": "AXI",
+      "direction": "master"
+    }
+  ]
+}

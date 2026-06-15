@@ -1,0 +1,20 @@
+{
+  "type": "interconnect",
+  "name": "FPD Main Switch",
+  "description": "128-bit AXI switch: APU/GPU/SATA/PCIe \u2192 DDR + LPD slaves",
+  "data_width": 128,
+  "references": {
+    "chapter": 15,
+    "pages": "364-380"
+  },
+  "connections": [
+    {
+      "to": "DDR_CONTROLLER",
+      "direction": "master"
+    },
+    {
+      "to": "CCI",
+      "direction": "master"
+    }
+  ]
+}

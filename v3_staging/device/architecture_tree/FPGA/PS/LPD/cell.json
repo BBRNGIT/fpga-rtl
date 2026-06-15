@@ -1,0 +1,89 @@
+{
+  "type": "power_domain",
+  "name": "Low-Power Domain (LPD)",
+  "description": "Low-power subsystem: RPU, OCM, peripherals, LPD interconnect",
+  "power_rail": "VCCINT_LPD",
+  "RPU": {
+    "type": "processor_unit",
+    "name": "Real-time Processing Unit",
+    "description": "ARM Cortex-R5 dual-core real-time processor",
+    "cores": 2,
+    "processor": "ARM Cortex-R5",
+    "frequency_mhz": 600,
+    "tcm_kb": 128,
+    "references": {
+      "chapter": 4,
+      "pages": "79-94"
+    },
+    "connections": [
+      {
+        "to": "LPD_MAIN_SWITCH",
+        "signal": "AXI",
+        "direction": "master"
+      }
+    ]
+  },
+  "OCM": {
+    "type": "memory",
+    "name": "On-Chip Memory",
+    "description": "Tightly-coupled memory: 256 KB total, accessible from RPU and FPD",
+    "capacity_kb": 256,
+    "references": {
+      "chapter": 18,
+      "pages": "514-519"
+    }
+  },
+  "LPD_MAIN_SWITCH": {
+    "type": "interconnect",
+    "name": "LPD Main Switch",
+    "description": "Low-power AXI switch: RPU/IOP \u2192 OCM/FPD bridge",
+    "data_width": 32,
+    "references": {
+      "chapter": 15,
+      "pages": "364-368"
+    },
+    "connections": [
+      {
+        "to": "RPU",
+        "direction": "slave"
+      },
+      {
+        "to": "OCM",
+        "direction": "master"
+      },
+      {
+        "to": "FPD",
+        "via": "TBU2",
+        "direction": "master"
+      }
+    ]
+  },
+  "IOP_PERIPHERALS": {
+    "type": "peripheral_group",
+    "name": "I/O Peripherals",
+    "description": "UART, CAN, I2C, SPI, QSPI, GEM, SDIO, USB, etc.",
+    "references": {
+      "chapter": "20-34",
+      "pages": "552-1046"
+    },
+    "children": [
+      "UART_0",
+      "UART_1",
+      "CAN_0",
+      "CAN_1",
+      "I2C_0",
+      "I2C_1",
+      "SPI",
+      "QSPI",
+      "GEM",
+      "SDIO",
+      "USB"
+    ]
+  },
+  "LPD_DMA": {
+    "type": "dma_engine",
+    "name": "LPD DMA Controller",
+    "description": "4-channel DMA engine for LPD peripherals",
+    "channels": 4
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "config_group",
+  "name": "Power Domains",
+  "description": "Power islands and isolation",
+  "FPD_DOMAIN": {
+    "name": "Full-Power Domain",
+    "rails": [
+      "VCCINT_FPD"
+    ]
+  },
+  "LPD_DOMAIN": {
+    "name": "Low-Power Domain",
+    "rails": [
+      "VCCINT_LPD"
+    ]
+  },
+  "PLPD_DOMAIN": {
+    "name": "PL Low-Power Domain",
+    "rails": [
+      "VCCINT_PLPD"
+    ]
+  },
+  "BPD_DOMAIN": {
+    "name": "Battery-backed Power Domain",
+    "rails": [
+      "VCCBATT"
+    ]
+  }
+}

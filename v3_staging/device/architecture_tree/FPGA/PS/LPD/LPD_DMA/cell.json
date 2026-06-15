@@ -1,0 +1,6 @@
+{
+  "type": "dma_engine",
+  "name": "LPD DMA Controller",
+  "description": "4-channel DMA engine for LPD peripherals",
+  "channels": 4
+}

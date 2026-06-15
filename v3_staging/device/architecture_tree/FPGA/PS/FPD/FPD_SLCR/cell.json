@@ -1,0 +1,5 @@
+{
+  "type": "config",
+  "name": "FPD System Level Control Registers",
+  "description": "Configuration and control registers for FPD domain"
+}

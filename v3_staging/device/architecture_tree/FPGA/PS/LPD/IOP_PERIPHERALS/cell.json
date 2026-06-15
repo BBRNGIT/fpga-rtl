@@ -1,0 +1,9 @@
+{
+  "type": "peripheral_group",
+  "name": "I/O Peripherals",
+  "description": "UART, CAN, I2C, SPI, QSPI, GEM, SDIO, USB, etc.",
+  "references": {
+    "chapter": "20-34",
+    "pages": "552-1046"
+  }
+}
