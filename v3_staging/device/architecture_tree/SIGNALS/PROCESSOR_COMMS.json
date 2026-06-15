@@ -1,0 +1,12 @@
+{
+  "group": "PROCESSOR_COMMS",
+  "count": 5,
+  "signals": [
+    "P2F PMU signal",
+    "F2P PMU signal",
+    "P2F PMU error",
+    "F2P PMU error",
+    "F2P clocks"
+  ],
+  "extracted_from": "UG1085 Chapter 2"
+}
