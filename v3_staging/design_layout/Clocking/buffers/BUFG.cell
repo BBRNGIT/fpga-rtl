@@ -1,0 +1,38 @@
+---
+name: BUFG
+role: global clock distribution
+tier: buffers
+count: 1516
+count_scope: stated
+ports:
+  - CLKINSTOPPED
+  - CLKFBSTOPPED
+  - LOCKED
+  - DO
+  - DRDY
+  - PSDONE
+  - CDDCREQ
+  - CDDCDONE
+feeds: clock fabric routing
+fed_by: clock buffers / MMCM / PLL
+source: ug572-ultrascale-clocking p30
+cascades_to: adjacent BUFGCTRL (ring of 8 BUFGMUX, ug572 p16)
+instances: 1516
+---
+
+# BUFG
+
+BUFG — global clock distribution. Leaf cell (1516 instances, stated). No internal sub-cells documented in cache.
+
+## Ports (connectors)
+
+| port | dir |
+| --- | --- |
+| `CLKINSTOPPED` | out |
+| `CLKFBSTOPPED` | out |
+| `LOCKED` | out |
+| `DO` | out |
+| `DRDY` | out |
+| `PSDONE` | out |
+| `CDDCREQ` | in |
+| `CDDCDONE` | out |

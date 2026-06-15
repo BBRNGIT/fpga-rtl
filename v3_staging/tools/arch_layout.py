@@ -172,7 +172,8 @@ def build_module(pages, module, group, gdir, ledger):
     count,scope,ccite = derive_count(pages, module)
     ports,pcite = derive_ports(pages, module)
     attrs,acite = derive_attributes(pages, module)
-    internals = derive_internals(pages, module)
+    peers = [m for m in group["modules"] if m != module]
+    internals = derive_internals(pages, module, peers)
     ledger["modules"]+=1; ledger["ports"]+=len(ports); ledger["attributes"]+=len(attrs)
 
     fm = {"name":module, "role":group["role"], "tier":group["name"],

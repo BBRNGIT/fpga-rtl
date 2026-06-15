@@ -1,0 +1,15 @@
+---
+name: MMCME4_BASE
+role: clock generation / frequency synthesis
+tier: sources
+count: pending
+feeds: clock buffers
+fed_by: input clock / MIO
+source: not in cache
+instances: pending
+---
+
+# MMCME4_BASE
+
+MMCME4_BASE — clock generation / frequency synthesis. Leaf cell (? instances, ). No internal sub-cells documented in cache.
+

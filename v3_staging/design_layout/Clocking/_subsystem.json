@@ -1,0 +1,134 @@
+{
+  "subsystem": "Clocking",
+  "ledger": {
+    "groups": 2,
+    "modules": 12,
+    "folders": 0,
+    "cells": 12,
+    "ports": 53,
+    "attributes": 4,
+    "pending": 2
+  },
+  "modules": [
+    {
+      "module": "BUFGCE",
+      "shape": "cell",
+      "count": 24,
+      "internals": 0,
+      "ports": 0,
+      "attrs": 0,
+      "source": "ug572-ultrascale-clocking p16",
+      "group": "buffers"
+    },
+    {
+      "module": "BUFGCTRL",
+      "shape": "cell",
+      "count": 8,
+      "internals": 0,
+      "ports": 0,
+      "attrs": 0,
+      "source": "ug572-ultrascale-clocking p16",
+      "group": "buffers"
+    },
+    {
+      "module": "BUFGCE_DIV",
+      "shape": "cell",
+      "count": 4,
+      "internals": 0,
+      "ports": 0,
+      "attrs": 0,
+      "source": "ug572-ultrascale-clocking p16",
+      "group": "buffers"
+    },
+    {
+      "module": "BUFG",
+      "shape": "cell",
+      "count": 1516,
+      "internals": 0,
+      "ports": 8,
+      "attrs": 0,
+      "source": "ug572-ultrascale-clocking p30",
+      "group": "buffers"
+    },
+    {
+      "module": "BUFGCE_1",
+      "shape": "cell",
+      "count": 1,
+      "internals": 0,
+      "ports": 0,
+      "attrs": 0,
+      "source": "ug572-ultrascale-clocking p17",
+      "group": "buffers"
+    },
+    {
+      "module": "BUFGMUX",
+      "shape": "cell",
+      "count": 1,
+      "internals": 0,
+      "ports": 0,
+      "attrs": 0,
+      "source": "ug572-ultrascale-clocking p21",
+      "group": "buffers"
+    },
+    {
+      "module": "BUFG_GT",
+      "shape": "cell",
+      "count": 24,
+      "internals": 0,
+      "ports": 0,
+      "attrs": 0,
+      "source": "ug572-ultrascale-clocking p33",
+      "group": "buffers"
+    },
+    {
+      "module": "BUFG_GT_SYNC",
+      "shape": "cell",
+      "count": 10,
+      "internals": 0,
+      "ports": 0,
+      "attrs": 0,
+      "source": "ug572-ultrascale-clocking p33",
+      "group": "buffers"
+    },
+    {
+      "module": "MMCM",
+      "shape": "cell",
+      "count": 35,
+      "internals": 0,
+      "ports": 25,
+      "attrs": 2,
+      "source": "ug572-ultrascale-clocking p4",
+      "group": "sources"
+    },
+    {
+      "module": "PLL",
+      "shape": "cell",
+      "count": 35,
+      "internals": 0,
+      "ports": 16,
+      "attrs": 2,
+      "source": "ug572-ultrascale-clocking p4",
+      "group": "sources"
+    },
+    {
+      "module": "MMCME4_BASE",
+      "shape": "cell",
+      "count": null,
+      "internals": 0,
+      "ports": 0,
+      "attrs": 0,
+      "source": null,
+      "group": "sources"
+    },
+    {
+      "module": "PLLE4_BASE",
+      "shape": "cell",
+      "count": null,
+      "internals": 0,
+      "ports": 4,
+      "attrs": 0,
+      "source": null,
+      "group": "sources"
+    }
+  ]
+}

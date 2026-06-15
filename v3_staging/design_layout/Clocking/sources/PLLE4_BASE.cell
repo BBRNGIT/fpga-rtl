@@ -1,0 +1,28 @@
+---
+name: PLLE4_BASE
+role: clock generation / frequency synthesis
+tier: sources
+count: pending
+ports:
+  - CLKIN
+  - RST
+  - PWRDWN
+  - CLKOUT
+feeds: clock buffers
+fed_by: input clock / MIO
+source: ug572-ultrascale-clocking p73
+instances: pending
+---
+
+# PLLE4_BASE
+
+PLLE4_BASE — clock generation / frequency synthesis. Leaf cell (? instances, ). No internal sub-cells documented in cache.
+
+## Ports (connectors)
+
+| port | dir |
+| --- | --- |
+| `CLKIN` | in |
+| `RST` | in |
+| `PWRDWN` | in |
+| `CLKOUT` | out |

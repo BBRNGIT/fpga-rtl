@@ -1,0 +1,84 @@
+---
+name: MMCM
+role: clock generation / frequency synthesis
+tier: sources
+count: 35
+count_scope: stated
+ports:
+  - CLKIN1
+  - CLKIN2
+  - CLKFBIN
+  - CLKINSEL
+  - RST
+  - PWRDWN
+  - DADDR
+  - DI
+  - DWE
+  - DEN
+  - DCLK
+  - PSCLK
+  - PSEN
+  - PSINCDEC
+  - CLKOUT
+  - CLKFBOUT
+  - CLKFBOUTB
+  - CLKINSTOPPED
+  - CLKFBSTOPPED
+  - LOCKED
+  - DO
+  - DRDY
+  - PSDONE
+  - CDDCREQ
+  - CDDCDONE
+feeds: clock buffers
+fed_by: input clock / MIO
+source: ug572-ultrascale-clocking p4
+instances: 35
+---
+
+# MMCM
+
+MMCM — clock generation / frequency synthesis. Leaf cell (35 instances, stated). No internal sub-cells documented in cache.
+
+## Ports (connectors)
+
+| port | dir |
+| --- | --- |
+| `CLKIN1` | in |
+| `CLKIN2` | in |
+| `CLKFBIN` | in |
+| `CLKINSEL` | in |
+| `RST` | in |
+| `PWRDWN` | in |
+| `DADDR` | in |
+| `DI` | in |
+| `DWE` | in |
+| `DEN` | in |
+| `DCLK` | in |
+| `PSCLK` | in |
+| `PSEN` | in |
+| `PSINCDEC` | in |
+| `CLKOUT` | out |
+| `CLKFBOUT` | out |
+| `CLKFBOUTB` | out |
+| `CLKINSTOPPED` | out |
+| `CLKFBSTOPPED` | out |
+| `LOCKED` | out |
+| `DO` | out |
+| `DRDY` | out |
+| `PSDONE` | out |
+| `CDDCREQ` | in |
+| `CDDCDONE` | out |
+
+## Config / IO attributes
+
+| attribute | values | default | type |
+| --- | --- | --- | --- |
+| `BANDWIDTH` | HIGH
+LOW
+OPTIMIZED(6) | OPTIMIZED | String |
+| `COMPENSATION` | AUTO(3),
+ZHOLD,
+EXTERNAL,
+INTERNAL(5),
+B | AUTO | String |

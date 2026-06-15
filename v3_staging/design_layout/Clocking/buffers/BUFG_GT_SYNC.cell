@@ -1,0 +1,17 @@
+---
+name: BUFG_GT_SYNC
+role: global clock distribution
+tier: buffers
+count: 10
+count_scope: stated
+feeds: clock fabric routing
+fed_by: clock buffers / MMCM / PLL
+source: ug572-ultrascale-clocking p33
+cascades_to: adjacent BUFGCTRL (ring of 8 BUFGMUX, ug572 p16)
+instances: 10
+---
+
+# BUFG_GT_SYNC
+
+BUFG_GT_SYNC — global clock distribution. Leaf cell (10 instances, stated). No internal sub-cells documented in cache.
+

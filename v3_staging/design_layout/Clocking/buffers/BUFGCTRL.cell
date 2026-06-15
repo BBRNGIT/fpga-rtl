@@ -1,0 +1,17 @@
+---
+name: BUFGCTRL
+role: global clock distribution
+tier: buffers
+count: 8
+count_scope: stated
+feeds: clock fabric routing
+fed_by: clock buffers / MMCM / PLL
+source: ug572-ultrascale-clocking p16
+cascades_to: adjacent BUFGCTRL (ring of 8 BUFGMUX, ug572 p16)
+instances: 8
+---
+
+# BUFGCTRL
+
+BUFGCTRL — global clock distribution. Leaf cell (8 instances, stated). No internal sub-cells documented in cache.
+

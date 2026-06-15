@@ -1,0 +1,17 @@
+---
+name: BUFGMUX
+role: global clock distribution
+tier: buffers
+count: 1
+count_scope: stated
+feeds: clock fabric routing
+fed_by: clock buffers / MMCM / PLL
+source: ug572-ultrascale-clocking p21
+cascades_to: adjacent BUFGCTRL (ring of 8 BUFGMUX, ug572 p16)
+instances: 1
+---
+
+# BUFGMUX
+
+BUFGMUX — global clock distribution. Leaf cell (1 instances, stated). No internal sub-cells documented in cache.
+
