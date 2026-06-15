@@ -33825,5 +33825,88 @@
     "type": "programmable_interconnect_point",
     "function": "mux-based routing primitive",
     "source": ".hft_staging/interconnect/pip.net.json"
+  },
+  "PL_CLB_ports": {
+    "block": "CLB",
+    "ports": {
+      "LUT_inputs": "A0-A5 (6 bits per LUT)",
+      "LUT_output": "O (1 bit)",
+      "FF_D": "D input",
+      "FF_Q": "Q output",
+      "Carry_in": "CI (from south)",
+      "Carry_out": "CO (to north)",
+      "Clock": "CLK",
+      "Reset": "RST",
+      "Enable": "CE"
+    },
+    "source": "ug574 (CLB architecture)"
+  },
+  "PL_BRAM_ports": {
+    "block": "BRAM",
+    "RAMB36E2": {
+      "port_A": "32-bit data + 15-bit address",
+      "port_B": "32-bit data + 15-bit address",
+      "control": [
+        "WE",
+        "EN",
+        "RST",
+        "CLK"
+      ]
+    },
+    "RAMB18E2": {
+      "port_A": "32-bit data + 14-bit address",
+      "port_B": "32-bit data + 14-bit address"
+    },
+    "source": "ug573 (BRAM architecture)"
+  },
+  "PL_DSP_ports": {
+    "block": "DSP48E2",
+    "ports": {
+      "A": "30-bit multiplier input",
+      "B": "18-bit multiplier input",
+      "C": "48-bit adder input",
+      "D": "25-bit input (preadder)",
+      "P": "48-bit output",
+      "ACOUT": "Cascade output",
+      "BCOUT": "Cascade output"
+    },
+    "control": [
+      "CLK",
+      "RST",
+      "CEP",
+      "CED",
+      "CEAD",
+      "CEB",
+      "CEC"
+    ],
+    "source": "ug579 (DSP architecture)"
+  },
+  "PS_internal": {
+    "FPD_interconnect": {
+      "APU": "\u2192 CCI (ACE port)",
+      "GPU": "\u2192 CCI (ACE-Lite port)",
+      "DDR_CONTROLLER": "\u2190 FPD_MAIN_SWITCH (slave port S0-S5)",
+      "FPD_MAIN_SWITCH": "\u2190 CCI, GPU, SATA, PCIe"
+    },
+    "LPD_interconnect": {
+      "RPU": "\u2192 LPD_MAIN_SWITCH (master)",
+      "OCM": "\u2194 LPD_MAIN_SWITCH (slave)",
+      "LPD_MAIN_SWITCH": "\u2194 RPU, OCM, IOP peripherals"
+    },
+    "source": "UG1085 Ch15 (PS Interconnect)"
+  },
+  "PL_internal": {
+    "CLB_routing": "CLB \u2192 INT_TILE (4 neighbors: N/S/E/W)",
+    "BRAM_routing": "BRAM \u2192 INT_TILE (grid-based routing)",
+    "DSP_routing": "DSP \u2192 INT_TILE (via INT_TILE crossbar)",
+    "INT_TILE_structure": "24 tracks per direction, 4-neighbor mesh",
+    "source": "ug574 (fabric) + .hft_staging/interconnect/"
+  },
+  "PS_PL_boundary": {
+    "AXI_slaves": "S_AXI_HP/HPC/ACE/LPD (PL\u2192PS data)",
+    "AXI_masters": "M_AXI_HPM0/1 (PS\u2192PL control/data)",
+    "Interrupts": "16 PL\u2192PS IRQs + PMU IPI",
+    "Clocks": "4 PL_CLK from PS to PL fabric",
+    "source": "UG1085 Ch2, Ch35 (PS-PL boundary)"
   }
 }
