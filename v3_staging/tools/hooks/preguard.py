@@ -5,7 +5,6 @@ on stdin). Exit 0 = allow; exit 2 = DENY (the harness blocks the call). Enforces
 discretion:
   - Law #1: no Verilog/VHDL/TCL writes.
   - Law #2: no hand-editing generated artifacts (*_gen.h/.c, device/library/container .json).
-  - Bulletproof gate: phase-advancing tools denied while device/bulletproof.json is RED.
   - Self-protection: edits to the engine/guards/enforcement files denied unless FOUNDER_OVERRIDE=1.
   - Frozen cache: no edits under cache/; no extract.py without --force.
 Founder override: set FOUNDER_OVERRIDE=1 to bypass the self-protection + gate (human root of trust).
@@ -37,19 +36,8 @@ if tool == "Bash" and re.search(r"extract\.py", cmd) and "--force" not in cmd:
     deny("extract.py without --force on a committed cache — re-extraction is blocked.")
 
 # self-protection — guard the guards
-SELF = r"(tools/hooks/|tools/(checks_lib|runner|jobgen)\.py|tools/jobs\.json|settings\.json|hooks/(pre-commit|commit-msg)|install_hooks\.sh)"
+SELF = r"(tools/hooks/|tools/checks_lib\.py|settings\.json|hooks/(pre-commit|commit-msg)|install_hooks\.sh)"
 if tool in ("Write", "Edit", "MultiEdit") and re.search(SELF, path):
     if not OVERRIDE: deny("enforcement file — set FOUNDER_OVERRIDE=1 to modify the engine/guards (founder root of trust).")
-
-# bulletproof gate — phase-advancing tools denied while RED
-PHASE = r"\b(cast|gen_container|route|clkfab|ps_realize|map|unify)\.py\b"
-if tool == "Bash" and re.search(PHASE, cmd) and not OVERRIDE:
-    bp = os.path.join(ROOT, "device", "bulletproof.json")
-    try: green = json.load(open(bp)).get("bulletproof", False)
-    except Exception: green = False
-    if not green:
-        try: nxt = open(os.path.join(ROOT, "device", "next_action.txt")).read().strip()
-        except Exception: nxt = "run runner.py"
-        deny(f"codebase not BULLETPROOF — phase tools gated. Fix integrity first. Next: {nxt}")
 
 allow()

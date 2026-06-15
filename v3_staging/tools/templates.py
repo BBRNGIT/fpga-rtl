@@ -25,12 +25,17 @@ def bufgctrl():
         array="24 BUFGCE + 8 BUFGCTRL + 4 BUFGCE_DIV / clock region",
         ports=[P("I0","in",kind=CLK),P("I1","in",kind=CLK),P("S0","in"),P("S1","in"),
                P("CE0","in"),P("CE1","in"),P("IGNORE0","in"),P("IGNORE1","in"),P("O","out",kind=CLK)],
-        cells=[G("and0","and",A="S0",B="CE0",O="g0"),G("lat0","latch_d",D="g0",G="~I0",Q="l0"),
+        # the latch gate is driven by the INVERSE of the clock input: emit an explicit
+        # `not` cell (ni0/ni1) rather than the "~I0" shorthand, so every net has a real
+        # driver (C02 single-driver / no-floating; the inverter is a real silicon gate).
+        cells=[G("ni0","not",A="I0",O="ni0"),
+               G("and0","and",A="S0",B="CE0",O="g0"),G("lat0","latch_d",D="g0",G="ni0",Q="l0"),
                G("ig0","mux2",A="l0",B="g0",S="IGNORE0",O="sel0"),G("a0","and",A="I0",B="sel0",O="a0n"),
-               G("and1","and",A="S1",B="CE1",O="g1"),G("lat1","latch_d",D="g1",G="~I1",Q="l1"),
+               G("ni1","not",A="I1",O="ni1"),
+               G("and1","and",A="S1",B="CE1",O="g1"),G("lat1","latch_d",D="g1",G="ni1",Q="l1"),
                G("ig1","mux2",A="l1",B="g1",S="IGNORE1",O="sel1"),G("a1","and",A="I1",B="sel1",O="a1n"),
                G("oro","or",A="a0n",B="a1n",O="O")],
-        nets=["g0","l0","sel0","a0n","g1","l1","sel1","a1n"])
+        nets=["ni0","g0","l0","sel0","a0n","ni1","g1","l1","sel1","a1n"])
 
 # ---- glitchless gated buffer: BUFGCE / BUFCE_LEAF (UG572 Fig 2-18, Table 2-5/2-7) ----
 def gated_buffer(spec):

@@ -20,22 +20,22 @@ OUTPUTS:
 DESIGN PAYLOAD (P5 open decision, resolved at runtime):
   The payload is DECIDED SEPARATELY (not here). This tool:
   1. Reads config/payload.json or environment variable DESIGN_PAYLOAD
-  2. For each module (adapter, nic, tai, dom, timeframe, indicators):
-     - Load module HDL spec (if not pre-realized in P1)
+  2. For each design block (adapter, nic, tai, dom, timeframe, indicators):
+     - Load the block spec (if not pre-realized in P1)
      - Instantiate onto container via router
      - Merge routes into design_routes.json
   3. Emit design_netlist.json + design_routes.json
-  4. Gate: module-contract (2i), index-doctrine (2h), build-purity (2j), arithmetic (2b)
+  4. Gate: block-contract (2i), index-doctrine (2h), build-purity (2j), arithmetic (2b)
 
 SKELETON STATUS (2026-06-14):
-  - Placeholder: reads config/design_payload.md and instantiates a test module
-  - Full implementation blocked on founder decision: which design modules?
-  - When decided: replace test_module() with real module instantiation from library.json
+  - Placeholder: reads config/design_payload.md and instantiates a test block
+  - Full implementation blocked on founder decision: which design blocks?
+  - When decided: replace test_block() with real block instantiation from library.json
 
 CODE STYLE:
   Python 3.9+, functional, matches catalog.py structure.
   All paths relative to repo root (use HERE/ROOT pattern).
-  No hard-coded module names; read from config.
+  No hard-coded block names; read from config.
 
 DEPENDENCIES:
   - route.py (needs container routes from device/routes.json)
@@ -101,22 +101,22 @@ def load_design_payload_config():
 
 def instantiate_module(module_spec, container, library, next_cell_id):
     """
-    Instantiate a single module (e.g., 'adapter', 'nic', 'dom').
+    Instantiate a single design block (e.g., 'adapter', 'nic', 'dom').
 
     Args:
-      module_spec:  dict with 'name' (str) and optional 'params' (dict)
+      block_spec:   dict with 'name' (str) and optional 'params' (dict)
       container:    P2 cast (tile array)
       library:      P1 library (primitives)
-      next_cell_id: int, starting cell ID for this module
+      next_cell_id: int, starting cell ID for this block
 
     Returns:
       (cells, nets, next_cell_id) where:
         - cells: list of dicts with 'id', 'primitive', 'tile', 'params'
-        - nets: list of dicts with 'src', 'dst' (connectivity within module)
+        - nets: list of dicts with 'src', 'dst' (connectivity within the block)
 
     TODO:
-      When modules are specified, replace this with real instantiation:
-      1. Load module HDL / netlist
+      When design blocks are specified, replace this with real instantiation:
+      1. Load the block netlist
       2. Map nets through router
       3. Allocate cells on available tiles
     """

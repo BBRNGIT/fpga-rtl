@@ -117,7 +117,12 @@ for k, v in fig.items():
         for i in range(len(b)-1):
             edges.append({"src": b[i], "dst": b[i+1], "kind": "figure", "fig": k, "signals": c.get("signals", [])[:4]})
 for r in routing:
-    edges.append({"src": f"PS:{r.get('source','')}", "dst": f"PS:{r.get('destination','')}", "kind": "routing", "name": r.get("name","")})
+    # provenance derives from the extracted row itself (richtext kept the page);
+    # the edge carries the doc citation so C06 (connection-provenance) can trace it.
+    _pg = r.get("page")
+    _src = f"ug1085 p{_pg} Table 2-5" if _pg else ""
+    edges.append({"src": f"PS:{r.get('source','')}", "dst": f"PS:{r.get('destination','')}",
+                  "kind": "routing", "name": r.get("name",""), "source": _src})
 # UG572 clock-fabric nets (figparse): each net = pins wired together (clock distribution)
 for k, v in L("figparse_out.json", {}).items():
     for net in v.get("nets", []):

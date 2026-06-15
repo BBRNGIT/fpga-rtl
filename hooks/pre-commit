@@ -230,6 +230,49 @@ EOF
 fi
 
 # ============================================================================
+# V3 ENFORCEMENT LOCK (judges != judged) — sign-off suite files are protected.
+# Editing a gate/registry/conductor requires FOUNDER_OVERRIDE=1, so a commit
+# cannot weaken the gate in the same stroke that needs gating.
+# ============================================================================
+V3_ENFORCE='^v3_staging/tools/(erc|lvs|drc|integrity|toolgov|checks_lib)\.py$|^v3_staging/tools/gate_device\.sh$|^v3_staging/tools/enforcement_registry\.yaml$|^v3_staging/tools/hooks/preguard\.py$'
+v3_enf_changed=$(git diff --cached --name-only --diff-filter=MD 2>/dev/null | grep -E "$V3_ENFORCE" || true)
+if [ -n "$v3_enf_changed" ] && [ "$FOUNDER_OVERRIDE" != "1" ]; then
+    cat >&2 << EOF
+
+[FAIL] Protected v3 sign-off enforcement files modified without FOUNDER_OVERRIDE=1:
+$(echo "$v3_enf_changed" | sed 's/^/         /')
+       The judges may not be edited in the same stroke as the judged.
+       If founder-sanctioned:  FOUNDER_OVERRIDE=1 git commit ...
+EOF
+    exit 1
+fi
+
+# ============================================================================
+# V3 DEVICE SIGN-OFF (gate_device.sh) — staged tool/device changes must sign off.
+# FAIL-CLOSED: if the conductor is missing, the commit is blocked.
+# ============================================================================
+v3_changed=$(git diff --cached --name-only 2>/dev/null | grep -E '^v3_staging/(tools|device)/' || true)
+if [ -n "$v3_changed" ]; then
+    GATE="$ROOT/v3_staging/tools/gate_device.sh"
+    if [ ! -f "$GATE" ]; then
+        echo "[FAIL] v3 sign-off conductor missing: v3_staging/tools/gate_device.sh (fail-closed)" >&2
+        exit 1
+    fi
+    if ! ( sh "$GATE" >/tmp/v3gate_$$.log 2>&1 ); then
+        echo "[FAIL] v3 device sign-off FAILED — commit BLOCKED:" >&2
+        grep -E 'FAIL|RED' /tmp/v3gate_$$.log 2>/dev/null | head -5 | sed 's/^/        /' >&2
+        rm -f /tmp/v3gate_$$.log
+        if [ "$FOUNDER_OVERRIDE" = "1" ]; then
+            echo "  [v3gate] FOUNDER_OVERRIDE=1 — committing despite red sign-off (logged WIP)" >&2
+        else
+            echo "       Run it:  sh v3_staging/tools/gate_device.sh" >&2
+            exit 1
+        fi
+    fi
+    rm -f /tmp/v3gate_$$.log
+fi
+
+# ============================================================================
 # ALL CHECKS PASSED
 # ============================================================================
 

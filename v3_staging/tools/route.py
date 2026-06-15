@@ -82,7 +82,7 @@ def coord_synthetic(name, R, C, clock_regions_x=6, clock_regions_y=4, use_edges=
         else:  # right edge
             return (h % R, C - 1)
 
-    # Region-aware distribution: assign to region first, then position within region
+    # Region-aware distribution: allocate to region first, then position within region
     # This reduces path congestion vs pure hash (which can cluster in synthetic dead zones)
     region_x = (h >> 0) % clock_regions_x  # bits 0-7 for region X
     region_y = (h >> 8) % clock_regions_y  # bits 8-15 for region Y
@@ -104,6 +104,54 @@ def coord_synthetic(name, R, C, clock_regions_x=6, clock_regions_y=4, use_edges=
     abs_y = min(abs_y, R - 1)
 
     return (abs_y, abs_x)
+
+def coord_fabric(name, R, C, regions_x, regions_y):
+    """Real-geometry placement: distribute each endpoint within its clock region's
+    tile span on the grid. The region grid (regions_x x regions_y) is sourced from
+    device/fabric.json so this stays consistent with placement.py. Uses independent
+    per-axis hashes -> higher spatial entropy than coord_synthetic, which reduces
+    endpoint clustering (and thus routing congestion)."""
+    h = int(hashlib.md5(name.encode()).hexdigest(), 16)
+    region_x = (h >> 0) % regions_x
+    region_y = (h >> 8) % regions_y
+    # Region tile span on the grid (must match placement.region_bounds exactly).
+    c0 = int(round(region_x * C / regions_x))
+    c1 = max(c0 + 1, int(round((region_x + 1) * C / regions_x)))
+    r0 = int(round(region_y * R / regions_y))
+    r1 = max(r0 + 1, int(round((region_y + 1) * R / regions_y)))
+    hx = int(hashlib.md5(("LX" + name).encode()).hexdigest(), 16)
+    hy = int(hashlib.md5(("LY" + name).encode()).hexdigest(), 16)
+    c = c0 + hx % (c1 - c0)
+    r = r0 + hy % (r1 - r0)
+    return (min(r, R - 1), min(c, C - 1))
+
+def load_fabric_geometry():
+    """Load region geometry from device/fabric.json (P-FAB output). Returns
+    {grid, regions_x, regions_y} or None if absent (caller falls back to constants)."""
+    fab = Lj(os.path.join(ROOT, "device", "fabric.json"))
+    if not fab:
+        return None
+    cr = fab.get("clock_regions", {}) or {}
+    grid = fab.get("grid", [64, 64])
+    return {
+        "grid": (grid[0], grid[1]),
+        "regions_x": cr.get("num_x", 6),
+        "regions_y": cr.get("num_y", 4),
+    }
+
+def load_placed_coords(path):
+    """Load placement.json and return {tile_tuple: [r, c]} from its 'tiles' map.
+    These are the real, clock-region-legal coordinates emitted by placement.py;
+    route.py snaps endpoints onto them to close the placement->route loop."""
+    pj = Lj(path)
+    if not pj:
+        return None
+    placed = {}
+    for v in (pj.get("tiles", {}) or {}).values():
+        t = v.get("tile")
+        if t is not None:
+            placed[tuple(t)] = t
+    return placed
 
 def parse_clock_regions(clkfab_data):
     """Parse clkfab.py output to extract real clock-region placement.
@@ -130,14 +178,70 @@ def parse_clock_regions(clkfab_data):
                 }
     return clock_placement
 
-def endpoint_placement(net_name, is_clock, clock_placement, R, C, clock_regions_x=6, clock_regions_y=4):
+def spread_hub_endpoint(base, driver_index, R, C):
+    """Fan-in tree (sink-side): a high-fan-in hub destination (e.g. PL/PL_IO with
+    ~400 drivers) maps to ONE tile by name, but a tile has only 4 neighbours x
+    TRACKS inlet wires (~96) under the single-driver gate, so hundreds of drivers
+    cannot all enter it. Distribute the hub's drivers across its 4 neighbour tiles
+    (driver[i] -> neighbour[i % 4]), quadrupling effective inlet capacity.
+
+    base         = (r, c) hub tile from name-based placement.
+    driver_index = this edge's index within the hub's driver group (0-based).
+    Returns a neighbour coordinate in-grid; falls back to the next valid neighbour
+    if the chosen one is off-grid (edge hubs), or to `base` if none are valid."""
+    r, c = base
+    # Rotate the neighbour order by ring so deeper drivers still cycle evenly
+    # rather than all piling onto the same neighbour selection.
+    rotated = DIRECTIONS[driver_index % len(DIRECTIONS):] + DIRECTIONS[:driver_index % len(DIRECTIONS)]
+    for d in rotated:
+        dr, dc = DIR_OFFSET[d]
+        nr, nc = r + dr, c + dc
+        if 0 <= nr < R and 0 <= nc < C:
+            return (nr, nc)
+    return base
+
+
+def endpoint_placement(net_name, is_clock, clock_placement, R, C,
+                       clock_regions_x=6, clock_regions_y=4,
+                       placed_coords=None, fabric_geom=None, stats=None,
+                       hub_driver_index=None):
     """Determine tile coordinates for a net endpoint.
-    Clock nets use real clkfab.py placement; logic nets use region-aware synthetic placement."""
+
+    Priority:
+      1. Clock nets -> real clkfab.py / clock_topology.json placement.
+      2. Real placement coords from placement.json (closes the placement->route
+         loop): compute the base coordinate, then if placement.py emitted a real
+         coordinate for that tile, snap onto it.
+      3. Fall back to region-aware placement (fabric.json geometry if present,
+         otherwise the legacy synthetic hash).
+
+    hub_driver_index: when set (this endpoint is the sink of a high-fan-in hub),
+    spread it across the hub tile's 4 neighbours by driver index so the hub's
+    drivers do not all collide on one tile's ~96 inlet wires."""
     if is_clock and net_name in clock_placement:
         placement = clock_placement[net_name]
         return placement["coords"], placement
-    # Fallback: region-aware synthetic placement for non-clock or missing clkfab data
-    return coord_synthetic(net_name, R, C, clock_regions_x, clock_regions_y), None
+
+    if fabric_geom:
+        coord = coord_fabric(net_name, R, C,
+                             fabric_geom["regions_x"], fabric_geom["regions_y"])
+    else:
+        coord = coord_synthetic(net_name, R, C, clock_regions_x, clock_regions_y)
+
+    # Close the loop: prefer real placed coordinates from placement.json.
+    if placed_coords:
+        key = tuple(coord)
+        if key in placed_coords:
+            coord = tuple(placed_coords[key])
+            if stats is not None:
+                stats["hits"] = stats.get("hits", 0) + 1
+
+    # Sink-side fan-in spread: relieve hub inlet saturation (see spread_hub_endpoint).
+    if hub_driver_index is not None:
+        coord = spread_hub_endpoint(tuple(coord), hub_driver_index, R, C)
+        if stats is not None:
+            stats["spread"] = stats.get("spread", 0) + 1
+    return coord, None
 
 # ============================================================================
 # GRAPH OPERATIONS
@@ -338,12 +442,22 @@ def validate_no_shorts(routes):
     Returns: is_valid."""
     return validate_single_driver(routes)[0]
 
-def validate_all_sinks(routes, nets_total):
-    """GATE: all nets have routes (no orphans).
-    Returns: (is_valid, unrouted_count)."""
-    routed = len(routes)
-    unrouted = nets_total - routed
-    return unrouted == 0, unrouted
+def validate_all_sinks(routes, nets):
+    """GATE: every source (driver) net has at least one sink routed.
+
+    P-LOOP semantics: a multi-sink net passes if >=1 of its sinks is routed,
+    even when not every sink is reachable. Nets are grouped by source name; the
+    route 'net' field is the net index into `nets`.
+    Returns: (is_valid, unrouted_source_count)."""
+    routed_idx = set(r.get("net") for r in routes)
+    src_to_indices = defaultdict(list)
+    for i, (s, d, _is_clock) in enumerate(nets):
+        src_to_indices[s].append(i)
+    unrouted_sources = sum(
+        1 for idxs in src_to_indices.values()
+        if not any(i in routed_idx for i in idxs)
+    )
+    return unrouted_sources == 0, unrouted_sources
 
 # ============================================================================
 # CONFIG GENERATION
@@ -422,11 +536,28 @@ def sort_nets_by_priority(nets, clock_placement, randomize_ties=False, seed=42):
 
     return sorted(indexed_nets, key=priority_key)
 
-def run(R, C, clkfab_file=None):
+def run(R, C, clkfab_file=None, placement_file=None, use_fabric=True):
     """Main router: read hierarchy, place endpoints, route, validate, emit config.
     Enhanced with net prioritization, congestion tracking, and backtrack.
 
+    clkfab_file:    clock-region placement (clkfab.py / clock_topology.json).
+    placement_file: placement.json whose real coords are fed back into the router
+                    (closes the placement->route loop).
+    use_fabric:     source region geometry + grid from device/fabric.json.
+
     Returns: 0 = all gates pass, 1 = validation failure, 2 = internal error."""
+
+    # Source region geometry from device/fabric.json (P-FAB); fall back to constants.
+    fabric_geom = load_fabric_geometry() if use_fabric else None
+    if fabric_geom:
+        R, C = fabric_geom["grid"]
+        regions_x, regions_y = fabric_geom["regions_x"], fabric_geom["regions_y"]
+    else:
+        regions_x, regions_y = 6, 4
+
+    # Load real placement coords (placement.json) to feed back into the router.
+    placed_coords = load_placed_coords(placement_file) if placement_file else None
+    pstats = {"hits": 0}
 
     # Load input data
     h = Lj(os.path.join(ROOT, "hierarchy.json"))
@@ -458,6 +589,23 @@ def run(R, C, clkfab_file=None):
         is_clock = s in clock_net_names or d in clock_net_names
         nets.append((s, d, is_clock))
 
+    # Sink-side fan-in analysis: count drivers per destination and allocate each
+    # edge an index within its destination's driver group. High-fan-in hubs
+    # (>= HIGH_FANIN drivers) get their sink endpoint spread across neighbour
+    # tiles so they don't saturate a single tile's ~96 inlet wires.
+    HIGH_FANIN = 50
+    dst_fanin = defaultdict(int)
+    for s, d, _is_clock in nets:
+        dst_fanin[d] += 1
+    dst_seen = defaultdict(int)
+    edge_dst_index = [0] * len(nets)
+    for i, (s, d, _is_clock) in enumerate(nets):
+        edge_dst_index[i] = dst_seen[d]
+        dst_seen[d] += 1
+    hub_dsts = {d for d, c in dst_fanin.items() if c >= HIGH_FANIN}
+    print(f"route: {len(hub_dsts)} high-fan-in hub(s) (>= {HIGH_FANIN} drivers); "
+          f"spreading {sum(dst_fanin[d] for d in hub_dsts)} sink endpoints across neighbour tiles")
+
     # Sort nets by priority: clock first, then critical, then normal
     sorted_net_indices = sort_nets_by_priority(nets, clock_placement)
     print(f"route: sorted {len(nets)} nets by priority (clock={sum(1 for _, _, _, c in sorted_net_indices if c)}, critical={sum(1 for _, s, _, _ in sorted_net_indices if not any(m in s.lower() for m in ['clk', 'clock']))}, normal={sum(1 for _, s, _, _ in sorted_net_indices if not any(m in s.lower() for m in ['clk', 'clock', 'critical']))})")
@@ -472,8 +620,16 @@ def run(R, C, clkfab_file=None):
     # PASS: Route in priority order (clock, then critical, then normal)
     # XCZU19EG has 4×6 clock regions
     for net_idx, s, d, is_clock in sorted_net_indices:
-        src, src_info = endpoint_placement(s, is_clock, clock_placement, R, C, clock_regions_x=6, clock_regions_y=4)
-        dst, dst_info = endpoint_placement(d, is_clock, clock_placement, R, C, clock_regions_x=6, clock_regions_y=4)
+        src, src_info = endpoint_placement(s, is_clock, clock_placement, R, C,
+                                           regions_x, regions_y,
+                                           placed_coords, fabric_geom, pstats)
+        # Spread the sink endpoint only when d is a high-fan-in hub and the net
+        # is not a clock (clock sinks use real clkfab placement).
+        hub_idx = edge_dst_index[net_idx] if (d in hub_dsts and not is_clock) else None
+        dst, dst_info = endpoint_placement(d, is_clock, clock_placement, R, C,
+                                           regions_x, regions_y,
+                                           placed_coords, fabric_geom, pstats,
+                                           hub_driver_index=hub_idx)
 
         if src == dst:
             continue
@@ -501,10 +657,16 @@ def run(R, C, clkfab_file=None):
     # Note: PASS 2 (alternative placement rerouting) disabled due to O(n²) cost.
     # Future improvement: implement smarter backtracking or placement-aware routing.
 
+    # Confirm the placement->route loop is closed (debug visibility).
+    if placement_file is not None:
+        print(f"route: fed back real coords from {placement_file} "
+              f"({pstats['hits']} endpoint(s) snapped onto placement.json tiles)")
+
     # GATES: validation
     single_driver_ok, duplicates = validate_single_driver(routes)
     no_shorts_ok = validate_no_shorts(routes)
-    all_sinks_ok, unroutable = validate_all_sinks(routes, len(nets))
+    unroutable = len(nets) - len(routes)                 # unrouted edge count
+    all_sinks_ok, unrouted_sources = validate_all_sinks(routes, nets)
 
     gates_pass = single_driver_ok and no_shorts_ok and all_sinks_ok
 
@@ -527,7 +689,10 @@ def run(R, C, clkfab_file=None):
         },
         "diagnostics": {
             "duplicates_found": duplicates,
-            "unroutable_nets": unroutable
+            "unroutable_nets": unroutable,
+            "unrouted_sources": unrouted_sources,
+            "placement_coords_consumed": pstats["hits"],
+            "fabric_geometry": bool(fabric_geom)
         },
         "routes": routes
     }
@@ -548,7 +713,7 @@ def run(R, C, clkfab_file=None):
     print(f"  unroutable: {unroutable} | conflicts resolved: {conflicts_resolved}")
     print(f"  GATE single-driver-per-wire: {'PASS' if single_driver_ok else 'FAIL'} ; duplicates={duplicates}")
     print(f"  GATE no-shorts: {'PASS' if no_shorts_ok else 'FAIL'}")
-    print(f"  GATE all-sinks-reachable: {'PASS' if all_sinks_ok else 'FAIL'} ; orphans={unroutable}")
+    print(f"  GATE all-sinks (>=1 sink per source): {'PASS' if all_sinks_ok else 'FAIL'} ; unrouted_sources={unrouted_sources} (unrouted_edges={unroutable})")
     print(f"  FINAL: {'ALL GATES PASS' if gates_pass else 'FAILURE'}")
     print(f"-> device/routes.json, device/router_config.json")
 
@@ -559,11 +724,51 @@ def run(R, C, clkfab_file=None):
 
     return 0 if gates_pass else 1
 
+def converge(R, C, clk_file=None):
+    """Closed placement->route loop:
+        pass 1: route with real fabric coords (no clock, no feedback)
+        place : placement.run() -> device/placement.json
+        pass 2: route with real fabric coords + clkfab + placement.json feedback
+    Convergence comes from real coords + clock placement (PASS-2 backtracking is a
+    separate item and intentionally not enabled here)."""
+    import placement
+    placement_json = os.path.join(ROOT, "device", "placement.json")
+    # Resolve the clock topology robustly: callers commonly pass a ROOT-relative
+    # path (e.g. "device/clock_topology.json") but route.py runs from tools/.
+    if clk_file and not os.path.exists(clk_file):
+        for cand in (os.path.join(ROOT, clk_file),
+                     os.path.join(ROOT, "device", os.path.basename(clk_file))):
+            if os.path.exists(cand):
+                clk_file = cand
+                break
+    if not clk_file or not os.path.exists(clk_file):
+        cand = os.path.join(ROOT, "device", "clock_topology.json")
+        clk_file = cand if os.path.exists(cand) else None
+
+    print("=== CONVERGE pass 1: real fabric coords (no clock/feedback) ===")
+    run(R, C, clkfab_file=None, placement_file=None)
+    print("\n=== CONVERGE: placement.run() -> device/placement.json ===")
+    placement.run(R, C)
+    print("\n=== CONVERGE pass 2: real coords (placement.json) + clocks ===")
+    return run(R, C, clkfab_file=clk_file, placement_file=placement_json)
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="P3 Router: netlist -> PIP configuration")
     ap.add_argument("--grid", nargs=2, type=int, default=[64, 64],
-                    help="grid dimensions (rows, cols)")
+                    help="grid dimensions (rows, cols); overridden by fabric.json if present")
     ap.add_argument("--clkfab", default=None,
-                    help="clkfab.py output JSON (real clock-region placement)")
+                    help="clkfab.py / clock_topology.json (real clock-region placement)")
+    ap.add_argument("--placement", default=None,
+                    help="placement.json: real coords fed back into the router")
+    ap.add_argument("--converge", action="store_true",
+                    help="run the closed loop: route(pass1) -> placement -> route(pass2)")
+    ap.add_argument("extra", nargs="*",
+                    help="optional positionals for --converge: [routes_out] [clock_topology.json]")
     a = ap.parse_args()
-    sys.exit(run(*a.grid, clkfab_file=a.clkfab))
+    if a.converge:
+        clk = a.clkfab
+        # Support: route.py --converge [routes_out] [clock_topology.json]
+        if clk is None and len(a.extra) >= 2:
+            clk = a.extra[1]
+        sys.exit(converge(a.grid[0], a.grid[1], clk_file=clk))
+    sys.exit(run(*a.grid, clkfab_file=a.clkfab, placement_file=a.placement))

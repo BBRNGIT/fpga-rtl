@@ -591,7 +591,7 @@
         "O"
       ],
       "state": true,
-      "config": "bufgce_logic.yaml",
+      "config": "configs: BUFGCE",
       "_note": "physical CLOCK element (leaf, behavior=spec); see configmap.json"
     },
     "BUFGCE_1": {
@@ -637,7 +637,7 @@
         "O"
       ],
       "state": true,
-      "config": "bufgctrl_logic.yaml",
+      "config": "configs: BUFGCTRL",
       "_note": "physical CLOCK element (leaf, behavior=spec); see configmap.json"
     },
     "BUFGMUX": {
@@ -3115,112 +3115,6 @@
       "state": true,
       "config": "configs: USR_ACCESSE2",
       "_note": "physical CONFIGURATION element (leaf, behavior=spec); see configmap.json"
-    },
-    "MMCME3": {
-      "pins": [
-        "CDDCREQ",
-        "CLKFBIN",
-        "CLKIN1",
-        "CLKIN2",
-        "CLKINSEL",
-        "DADDR[6:0]",
-        "DCLK",
-        "DEN",
-        "DI[15:0]",
-        "DWE",
-        "PSCLK",
-        "PSEN",
-        "PSINCDEC",
-        "PWRDWN",
-        "RST",
-        "CDDCDONE",
-        "CLKFBOUT",
-        "CLKFBOUTB",
-        "CLKFBSTOPPED",
-        "CLKINSTOPPED",
-        "CLKOUT[0:3]B",
-        "CLKOUT[0:6]",
-        "DO[15:0]",
-        "DRDY",
-        "LOCKED",
-        "PSDONE"
-      ],
-      "out": [
-        "CDDCDONE",
-        "CLKFBOUT",
-        "CLKFBOUTB",
-        "CLKFBSTOPPED",
-        "CLKINSTOPPED",
-        "CLKOUT[0:3]B",
-        "CLKOUT[0:6]",
-        "DO[15:0]",
-        "DRDY",
-        "LOCKED",
-        "PSDONE"
-      ],
-      "config": "mmcm_logic.yaml",
-      "_kind": "clock",
-      "_note": "Mixed-Mode Clock Manager (UltraScale), see mmcm_logic.yaml"
-    },
-    "MMCME4": {
-      "pins": [
-        "CDDCREQ",
-        "CLKFBIN",
-        "CLKIN1",
-        "CLKIN2",
-        "CLKINSEL",
-        "DADDR[6:0]",
-        "DCLK",
-        "DEN",
-        "DI[15:0]",
-        "DWE",
-        "PSCLK",
-        "PSEN",
-        "PSINCDEC",
-        "PWRDWN",
-        "RST",
-        "CDDCDONE",
-        "CLKFBOUT",
-        "CLKFBOUTB",
-        "CLKFBSTOPPED",
-        "CLKINSTOPPED",
-        "CLKOUT[0:3]B",
-        "CLKOUT[0:6]",
-        "DO[15:0]",
-        "DRDY",
-        "LOCKED",
-        "PSDONE"
-      ],
-      "out": [
-        "CDDCDONE",
-        "CLKFBOUT",
-        "CLKFBOUTB",
-        "CLKFBSTOPPED",
-        "CLKINSTOPPED",
-        "CLKOUT[0:3]B",
-        "CLKOUT[0:6]",
-        "DO[15:0]",
-        "DRDY",
-        "LOCKED",
-        "PSDONE"
-      ],
-      "config": "mmcm_logic.yaml",
-      "_kind": "clock",
-      "_note": "Mixed-Mode Clock Manager (UltraScale+), see mmcm_logic.yaml"
-    },
-    "PLLE2": {
-      "pins": [
-        "CLKIN",
-        "CLKOUT0",
-        "CLKOUT1"
-      ],
-      "out": [
-        "CLKOUT0",
-        "CLKOUT1"
-      ],
-      "config": "pll_logic.yaml",
-      "_kind": "clock",
-      "_note": "Phase-Locked Loop (I/O clocking), see pll_logic.yaml"
     }
   },
   "blocks": {
@@ -3335,6 +3229,14 @@
       ],
       "cells": [
         {
+          "ref": "ni0",
+          "type": "not",
+          "conn": {
+            "A": "I0",
+            "O": "ni0"
+          }
+        },
+        {
           "ref": "and0",
           "type": "and",
           "conn": {
@@ -3348,7 +3250,7 @@
           "type": "latch_d",
           "conn": {
             "D": "g0",
-            "G": "~I0",
+            "G": "ni0",
             "Q": "l0"
           }
         },
@@ -3372,6 +3274,14 @@
           }
         },
         {
+          "ref": "ni1",
+          "type": "not",
+          "conn": {
+            "A": "I1",
+            "O": "ni1"
+          }
+        },
+        {
           "ref": "and1",
           "type": "and",
           "conn": {
@@ -3385,7 +3295,7 @@
           "type": "latch_d",
           "conn": {
             "D": "g1",
-            "G": "~I1",
+            "G": "ni1",
             "Q": "l1"
           }
         },
@@ -3419,10 +3329,12 @@
         }
       ],
       "nets": [
+        "ni0",
         "g0",
         "l0",
         "sel0",
         "a0n",
+        "ni1",
         "g1",
         "l1",
         "sel1",
@@ -32478,55 +32390,6 @@
       ],
       "cells": [],
       "nets": []
-    },
-    "clock_tree_mmcm": {
-      "description": "MMCM-based clock tree (synthesis + distribution)",
-      "abstract": true,
-      "ports": [
-        {
-          "name": "clkin",
-          "dir": "in",
-          "width": 1
-        },
-        {
-          "name": "clkout",
-          "dir": "out",
-          "width": 4
-        },
-        {
-          "name": "rst",
-          "dir": "in",
-          "width": 1
-        }
-      ],
-      "_note": "Abstract block \u2014 route.py decomposes into MMCME4 + BUFGCE instances"
-    },
-    "clock_mux_bufgctrl": {
-      "description": "Glitch-free clock mux using BUFGCTRL (dual-input selector)",
-      "abstract": true,
-      "ports": [
-        {
-          "name": "clk_a",
-          "dir": "in",
-          "width": 1
-        },
-        {
-          "name": "clk_b",
-          "dir": "in",
-          "width": 1
-        },
-        {
-          "name": "sel",
-          "dir": "in",
-          "width": 1
-        },
-        {
-          "name": "clkout",
-          "dir": "out",
-          "width": 1
-        }
-      ],
-      "_note": "Abstract block \u2014 route.py decomposes into BUFGCTRL instance"
     }
   },
   "_doc": "GENERATED by integrate.py (primitives.json + templates.py + blocks/*.json). DO NOT hand-edit."

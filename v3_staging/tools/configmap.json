@@ -1628,7 +1628,7 @@
           "2",
           "3"
         ],
-        "mult_width": "18x30",
+        "mult_width": "27x18",
         "accumulator_width": 48,
         "pattern_detect": true
       }

@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """
-checks_lib.py — the invariant checks the integrity jobs call. Each named check prints a
-one-line message and exits 0 (green) or 1 (red). Side-effect-free (read-only). runner.py
-invokes these via `python3 checks_lib.py <name>`. Add an invariant = add a function + a
-jobs.json entry (via jobgen.py).
+checks_lib.py — standalone invariant checks. Each named check prints a one-line
+message and exits 0 (green) or 1 (red). Side-effect-free (read-only). Invoke via
+`python3 checks_lib.py <name>`. Add an invariant = add a function.
 """
 import sys, os, json, glob, subprocess, re
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)

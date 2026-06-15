@@ -104,15 +104,15 @@ def config_of(name, v, el):
                                   "adder" if "CARRYOUT" in ports else
                                   "logic")
         cfg["pipeline_stages"] = ["0", "1", "2", "3"]  # configurable via AREG, BREG, PREG
-        cfg["mult_width"] = "18x30"  # A=30, B=18 multiplier
-        cfg["accumulator_width"] = 48
+        cfg["mult_width"] = "27x18"  # curated-constant: DSP48E2 27 x 18 multiplier (ug579 p_DSP, "27 x 18 multiplier"); A port is 30-bit, lower 27 to the multiplier
+        cfg["accumulator_width"] = 48  # curated-constant: 48-bit accumulator (ug579)
         cfg["pattern_detect"] = "PATTERNDETECT" in ports or "PATTERNBDETECT" in ports
     elif el in ("GTYE4_CHANNEL", "GTHE4_CHANNEL"):
         # Transceiver lane configuration: protocol, width, skew
         cfg["transceiver_type"] = "GTY" if "GTYE4" in name.upper() else "GTH"
         cfg["lane_count"] = "single"  # single channel; quad use multiple
-        cfg["protocols"] = ["8b10b", "64b66b", "gearbox"]
-        cfg["datawidth"] = ["16", "20", "32", "40", "64"]
+        cfg["protocols"] = ["8b10b", "64b66b", "gearbox"]  # curated-constant: GTY/GTH encodings (ug578/ug576 transceiver guides)
+        cfg["datawidth"] = ["16", "20", "32", "40", "64"]  # curated-constant: GTY/GTH datapath widths (ug578/ug576)
         cfg["adaptive_eq"] = "ADPRESET" in ports or "ADPRESETVALUE" in ports
     elif el in ("GTYE4_COMMON", "GTHE4_COMMON"):
         # Transceiver common (quad) configuration

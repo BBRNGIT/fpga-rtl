@@ -1,0 +1,33 @@
+# enforcement_registry.yaml — the CLOSED exemption registry for the sign-off suite.
+# The ONLY place an exemption may live. No tool, gate, or generated artifact may
+# exempt itself inline. Editing this file is gated like any enforcement file
+# (judges != judged): requires FOUNDER_OVERRIDE=1.
+#
+# Every entry must carry a one-line reason. An unexplained exemption is invalid.
+
+# --- C23 tool-output-is-generated -------------------------------------------
+# Tools whose triple-quoted string literals are POST/report/harness scaffolds
+# (NOT device datapath logic), so they legitimately contain C that is not a tick.
+c23_output_exempt: []
+  # e.g. "gen_container.py"  # emits a fixed POST harness, not a device tick
+
+# --- C24 tool-fact-provenance -----------------------------------------------
+# Tools allowed to carry curated hardware constants (each value must still be
+# tagged "curated-constant" in-source with its doc citation).
+curated_constant_ok: []
+
+# --- C03 no-dangling-output: declared device-level outputs -------------------
+# Nets that legitimately leave the device (probe/display/boundary), so a driver
+# with no internal load is not "dangling".
+declared_outputs: []
+
+# --- C05 net-completeness: documented no-connect ports -----------------------
+# Doc-declared ports that are intentionally unconnected (tie-off / reserved).
+no_connect_ports: []
+
+# --- C14 logic-content: blocks exempt from the >=1 cell_* rule ---------------
+# Passive register maps / boundary blocks with no compute by design.
+# container_gen.h: data-layout header (static fabric arrays); tick-function
+#   generation is deferred to P3/P4 (routing + logic emit). Not a stub-defect,
+#   a not-yet-wired stage. Remove this exemption once P3/P4 emit the tick.
+logic_content_exempt: ["container_gen.h"]

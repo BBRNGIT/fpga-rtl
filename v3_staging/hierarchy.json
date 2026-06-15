@@ -24024,6 +24024,41 @@
       "signals": []
     },
     {
+      "src": "CCI 2-way 2-way Coherency And Bypass QVN",
+      "dst": "DDR Memory Controller",
+      "kind": "figure",
+      "fig": "p27:Fig1-1",
+      "signals": []
+    },
+    {
+      "src": "DDR Memory Controller",
+      "dst": "LPD Main To all output Switch ports",
+      "kind": "figure",
+      "fig": "p27:Fig1-1",
+      "signals": []
+    },
+    {
+      "src": "LPD Main To all output Switch ports",
+      "dst": "SMMU TCU",
+      "kind": "figure",
+      "fig": "p27:Fig1-1",
+      "signals": []
+    },
+    {
+      "src": "SMMU TCU",
+      "dst": "TBU1",
+      "kind": "figure",
+      "fig": "p27:Fig1-1",
+      "signals": []
+    },
+    {
+      "src": "TBU1",
+      "dst": "TBU2",
+      "kind": "figure",
+      "fig": "p27:Fig1-1",
+      "signals": []
+    },
+    {
       "src": "SMMU TCU",
       "dst": "TBU2",
       "kind": "figure",
@@ -24089,34 +24124,6 @@
     {
       "src": "TBU1",
       "dst": "TBU3",
-      "kind": "figure",
-      "fig": "p27:Fig1-1",
-      "signals": []
-    },
-    {
-      "src": "CCI 2-way 2-way Coherency And Bypass QVN",
-      "dst": "DDR Memory Controller",
-      "kind": "figure",
-      "fig": "p27:Fig1-1",
-      "signals": []
-    },
-    {
-      "src": "DDR Memory Controller",
-      "dst": "LPD Main To all output Switch ports",
-      "kind": "figure",
-      "fig": "p27:Fig1-1",
-      "signals": []
-    },
-    {
-      "src": "LPD Main To all output Switch ports",
-      "dst": "SMMU TCU",
-      "kind": "figure",
-      "fig": "p27:Fig1-1",
-      "signals": []
-    },
-    {
-      "src": "SMMU TCU",
-      "dst": "TBU1",
       "kind": "figure",
       "fig": "p27:Fig1-1",
       "signals": []
@@ -25627,6 +25634,1511 @@
       "signals": []
     },
     {
+      "src": "APU GIC",
+      "dst": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+      "kind": "figure",
+      "fig": "p204:Fig9-4",
+      "signals": []
+    },
+    {
+      "src": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+      "dst": "PMU Global",
+      "kind": "figure",
+      "fig": "p204:Fig9-4",
+      "signals": []
+    },
+    {
+      "src": "CONFIG_REG registers",
+      "dst": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+      "kind": "figure",
+      "fig": "p204:Fig9-4",
+      "signals": []
+    },
+    {
+      "src": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+      "dst": "PS SYSMON",
+      "kind": "figure",
+      "fig": "p204:Fig9-4",
+      "signals": []
+    },
+    {
+      "src": "CONFIG_REG registers",
+      "dst": "PS SYSMON",
+      "kind": "figure",
+      "fig": "p204:Fig9-4",
+      "signals": []
+    },
+    {
+      "src": "CONFIG_REG registers",
+      "dst": "CSU",
+      "kind": "figure",
+      "fig": "p204:Fig9-4",
+      "signals": []
+    },
+    {
+      "src": "CSU",
+      "dst": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+      "kind": "figure",
+      "fig": "p204:Fig9-4",
+      "signals": []
+    },
+    {
+      "src": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+      "dst": "PMU Global",
+      "kind": "figure",
+      "fig": "p204:Fig9-4",
+      "signals": []
+    },
+    {
+      "src": "PMU Global",
+      "dst": "PS SYSMON",
+      "kind": "figure",
+      "fig": "p204:Fig9-4",
+      "signals": []
+    },
+    {
+      "src": "CSU",
+      "dst": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+      "kind": "figure",
+      "fig": "p204:Fig9-4",
+      "signals": []
+    },
+    {
+      "src": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+      "dst": "PS SYSMON",
+      "kind": "figure",
+      "fig": "p204:Fig9-4",
+      "signals": []
+    },
+    {
+      "src": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+      "dst": "PL SYSMON",
+      "kind": "figure",
+      "fig": "p204:Fig9-4",
+      "signals": []
+    },
+    {
+      "src": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+      "dst": "PL SYSMON",
+      "kind": "figure",
+      "fig": "p204:Fig9-4",
+      "signals": []
+    },
+    {
+      "src": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
+      "dst": "PL SYSMON",
+      "kind": "figure",
+      "fig": "p204:Fig9-4",
+      "signals": []
+    },
+    {
+      "src": "AMS Register Set ISR_1",
+      "dst": "PL Outputs",
+      "kind": "figure",
+      "fig": "p205:Fig9-5",
+      "signals": []
+    },
+    {
+      "src": "PL Outputs",
+      "dst": "PL SYSMON",
+      "kind": "figure",
+      "fig": "p205:Fig9-5",
+      "signals": []
+    },
+    {
+      "src": "AMS Register Set ISR_1",
+      "dst": "PL Outputs",
+      "kind": "figure",
+      "fig": "p205:Fig9-5",
+      "signals": []
+    },
+    {
+      "src": "PL Outputs",
+      "dst": "PL SYSMON",
+      "kind": "figure",
+      "fig": "p205:Fig9-5",
+      "signals": []
+    },
+    {
+      "src": "PL SYSMON",
+      "dst": "PMU Global",
+      "kind": "figure",
+      "fig": "p205:Fig9-5",
+      "signals": []
+    },
+    {
+      "src": "AMS Register Set ISR_1",
+      "dst": "PMU Global",
+      "kind": "figure",
+      "fig": "p205:Fig9-5",
+      "signals": []
+    },
+    {
+      "src": "PMU Global",
+      "dst": "PS SYSMON",
+      "kind": "figure",
+      "fig": "p205:Fig9-5",
+      "signals": []
+    },
+    {
+      "src": "AMS Register Set ISR_1",
+      "dst": "PMU Global",
+      "kind": "figure",
+      "fig": "p205:Fig9-5",
+      "signals": []
+    },
+    {
+      "src": "PMU Global",
+      "dst": "PS SYSMON",
+      "kind": "figure",
+      "fig": "p205:Fig9-5",
+      "signals": []
+    },
+    {
+      "src": "MB CSU, PMU, TCM, OCM",
+      "dst": "reserved GB",
+      "kind": "figure",
+      "fig": "p226:Fig10-1",
+      "signals": []
+    },
+    {
+      "src": "reserved GB",
+      "dst": "reserved GB",
+      "kind": "figure",
+      "fig": "p226:Fig10-1",
+      "signals": []
+    },
+    {
+      "src": "GB DDR Memory Controller",
+      "dst": "GB M_AXI_HPM0_FPD",
+      "kind": "figure",
+      "fig": "p226:Fig10-1",
+      "signals": []
+    },
+    {
+      "src": "GB M_AXI_HPM0_FPD",
+      "dst": "reserved GB",
+      "kind": "figure",
+      "fig": "p226:Fig10-1",
+      "signals": []
+    },
+    {
+      "src": "MB M_AXI_HPM1_FPD",
+      "dst": "Quad-SPI MB",
+      "kind": "figure",
+      "fig": "p226:Fig10-1",
+      "signals": []
+    },
+    {
+      "src": "GB M_AXI_HPM0_FPD",
+      "dst": "GB M_AXI_HPM1_FPD",
+      "kind": "figure",
+      "fig": "p226:Fig10-1",
+      "signals": []
+    },
+    {
+      "src": "GB M_AXI_HPM1_FPD",
+      "dst": "GB PCIe High",
+      "kind": "figure",
+      "fig": "p226:Fig10-1",
+      "signals": []
+    },
+    {
+      "src": "GB PCIe High",
+      "dst": "reserved GB",
+      "kind": "figure",
+      "fig": "p226:Fig10-1",
+      "signals": []
+    },
+    {
+      "src": "DDR Memory Controller",
+      "dst": "MB M_AXI_HPM0_LPD MB",
+      "kind": "figure",
+      "fig": "p226:Fig10-1",
+      "signals": []
+    },
+    {
+      "src": "MB M_AXI_HPM0_LPD MB",
+      "dst": "VCU Slave Interface MB",
+      "kind": "figure",
+      "fig": "p226:Fig10-1",
+      "signals": []
+    },
+    {
+      "src": "DDR Memory Controller",
+      "dst": "MB M_AXI_HPM0_LPD MB",
+      "kind": "figure",
+      "fig": "p226:Fig10-1",
+      "signals": []
+    },
+    {
+      "src": "PS in Boot",
+      "dst": "SOFT RESET",
+      "kind": "figure",
+      "fig": "p273:Fig12-7",
+      "signals": []
+    },
+    {
+      "src": "PS in Boot",
+      "dst": "Secure BSCAN Mode",
+      "kind": "figure",
+      "fig": "p273:Fig12-7",
+      "signals": []
+    },
+    {
+      "src": "Use OP Key",
+      "dst": "Yes",
+      "kind": "figure",
+      "fig": "p295:Fig12-12",
+      "signals": []
+    },
+    {
+      "src": "Use OP Key",
+      "dst": "Yes",
+      "kind": "figure",
+      "fig": "p295:Fig12-12",
+      "signals": []
+    },
+    {
+      "src": "Use Device Key",
+      "dst": "Use OP Key",
+      "kind": "figure",
+      "fig": "p295:Fig12-12",
+      "signals": []
+    },
+    {
+      "src": "Block IV",
+      "dst": "Block Key",
+      "kind": "figure",
+      "fig": "p295:Fig12-12",
+      "signals": []
+    },
+    {
+      "src": "Block IV",
+      "dst": "Block Key",
+      "kind": "figure",
+      "fig": "p295:Fig12-12",
+      "signals": []
+    },
+    {
+      "src": "Block IV",
+      "dst": "Block Key",
+      "kind": "figure",
+      "fig": "p295:Fig12-12",
+      "signals": []
+    },
+    {
+      "src": "Block IV",
+      "dst": "Block Key",
+      "kind": "figure",
+      "fig": "p295:Fig12-12",
+      "signals": []
+    },
+    {
+      "src": "BH Signature",
+      "dst": "BH Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "BH Signature",
+      "dst": "BH Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "BH Signature",
+      "dst": "BH Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "BH Signature",
+      "dst": "Boot Header 0x000-0xEC0",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Boot Header 0x000-0xEC0",
+      "dst": "Header AC BootLoader AC Partition AC Partition AC",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Header AC BootLoader AC Partition AC Partition AC",
+      "dst": "Partition Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Partition Signature",
+      "dst": "Partition Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Partition Signature",
+      "dst": "Partition Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Partition Signature",
+      "dst": "Partition Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Partition Signature",
+      "dst": "SPK Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "SPK Signature",
+      "dst": "SPK Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "SPK Signature",
+      "dst": "SPK Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "SPK Signature",
+      "dst": "SPK Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "AC Header",
+      "dst": "AC Header",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "AC Header",
+      "dst": "AC Header",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "AC Header",
+      "dst": "BH Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "BH Signature",
+      "dst": "BH Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "BH Signature",
+      "dst": "BH Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "BH Signature",
+      "dst": "Boot Header 0x000-0xEC0",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Boot Header 0x000-0xEC0",
+      "dst": "BootLoader (FSBL and PMUFW (opt))",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "BootLoader (FSBL and PMUFW (opt))",
+      "dst": "BootLoader BootLoader AC AC",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "BootLoader BootLoader AC AC",
+      "dst": "Header AC BootLoader AC Partition AC Partition AC",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Header AC BootLoader AC Partition AC Partition AC",
+      "dst": "Header Header AC AC",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Header Header AC AC",
+      "dst": "Image Header Table",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Image Header Table",
+      "dst": "Image Headers (IH1-Ihn)",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Image Headers (IH1-Ihn)",
+      "dst": "PPK",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "PPK",
+      "dst": "PPK",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "PPK",
+      "dst": "PPK",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "PPK",
+      "dst": "Partition",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Partition",
+      "dst": "Partition AC",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Partition AC",
+      "dst": "Partition Header",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Partition Header",
+      "dst": "Partition Header",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Partition Header",
+      "dst": "Partition Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Partition Signature",
+      "dst": "Partition Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Partition Signature",
+      "dst": "Partition Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Partition Signature",
+      "dst": "SPK IDBootLoader",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "SPK IDBootLoader",
+      "dst": "SPK IDHeader",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "SPK IDHeader",
+      "dst": "SPK IDPartition1",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "SPK IDPartition1",
+      "dst": "SPK Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "SPK Signature",
+      "dst": "SPK Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "SPK Signature",
+      "dst": "SPK Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "SPK Signature",
+      "dst": "SPKBootLoader",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "SPKBootLoader",
+      "dst": "SPKHeader",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "SPKHeader",
+      "dst": "SPKPartition1",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "SPKPartition1",
+      "dst": "User Defined Field",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "User Defined Field",
+      "dst": "User Defined Field",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "User Defined Field",
+      "dst": "User Defined Field",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "AC Header",
+      "dst": "BH Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "BH Signature",
+      "dst": "Header AC BootLoader AC Partition AC Partition AC",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Header AC BootLoader AC Partition AC Partition AC",
+      "dst": "PPK",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "PPK",
+      "dst": "Partition Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Partition Signature",
+      "dst": "Partition(n)",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Partition(n)",
+      "dst": "Partition(n) AC",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Partition(n) AC",
+      "dst": "SPK IDPartition(n)",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "SPK IDPartition(n)",
+      "dst": "SPK Signature",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "SPK Signature",
+      "dst": "SPKPartition(n)",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "SPKPartition(n)",
+      "dst": "User Defined Field",
+      "kind": "figure",
+      "fig": "p303:Fig12-16",
+      "signals": []
+    },
+    {
+      "src": "Block1 IV",
+      "dst": "Block1 Key",
+      "kind": "figure",
+      "fig": "p305:Fig12-17",
+      "signals": []
+    },
+    {
+      "src": "APU Cortex-A53 MPCore",
+      "dst": "CPU0",
+      "kind": "figure",
+      "fig": "p313:Fig13-1",
+      "signals": []
+    },
+    {
+      "src": "CPU0",
+      "dst": "VCPU0",
+      "kind": "figure",
+      "fig": "p313:Fig13-1",
+      "signals": []
+    },
+    {
+      "src": "APU Cortex-A53 MPCore",
+      "dst": "CPU0",
+      "kind": "figure",
+      "fig": "p313:Fig13-1",
+      "signals": []
+    },
+    {
+      "src": "CPU0",
+      "dst": "GIC-400",
+      "kind": "figure",
+      "fig": "p313:Fig13-1",
+      "signals": []
+    },
+    {
+      "src": "GIC-400",
+      "dst": "VCPU0",
+      "kind": "figure",
+      "fig": "p313:Fig13-1",
+      "signals": []
+    },
+    {
+      "src": "APU Cortex-A53 MPCore",
+      "dst": "GIC-400",
+      "kind": "figure",
+      "fig": "p313:Fig13-1",
+      "signals": []
+    },
+    {
+      "src": "GIC-400",
+      "dst": "VCPUn CPU0",
+      "kind": "figure",
+      "fig": "p313:Fig13-1",
+      "signals": []
+    },
+    {
+      "src": "APU Cortex-A53 MPCore",
+      "dst": "VCPUn CPU0",
+      "kind": "figure",
+      "fig": "p313:Fig13-1",
+      "signals": []
+    },
+    {
+      "src": "Distributor",
+      "dst": "GIC-400",
+      "kind": "figure",
+      "fig": "p313:Fig13-1",
+      "signals": []
+    },
+    {
+      "src": "CPU Interface",
+      "dst": "Distributor",
+      "kind": "figure",
+      "fig": "p319:Fig13-3",
+      "signals": []
+    },
+    {
+      "src": "FIQEn==1",
+      "dst": "GIC",
+      "kind": "figure",
+      "fig": "p319:Fig13-3",
+      "signals": []
+    },
+    {
+      "src": "GIC",
+      "dst": "System Software",
+      "kind": "figure",
+      "fig": "p319:Fig13-3",
+      "signals": []
+    },
+    {
+      "src": "System Software",
+      "dst": "Virtual CPU Interface",
+      "kind": "figure",
+      "fig": "p319:Fig13-3",
+      "signals": []
+    },
+    {
+      "src": "EnableGrp1",
+      "dst": "Processor",
+      "kind": "figure",
+      "fig": "p319:Fig13-3",
+      "signals": []
+    },
+    {
+      "src": "FIQEn==1",
+      "dst": "Secure Monitor Secure Software",
+      "kind": "figure",
+      "fig": "p319:Fig13-3",
+      "signals": []
+    },
+    {
+      "src": "EnableGrp1",
+      "dst": "System Software",
+      "kind": "figure",
+      "fig": "p319:Fig13-3",
+      "signals": []
+    },
+    {
+      "src": "System Software",
+      "dst": "Virtual CPU Interface",
+      "kind": "figure",
+      "fig": "p319:Fig13-3",
+      "signals": []
+    },
+    {
+      "src": "Group Virtual Interrupt",
+      "dst": "Virtual Distributor",
+      "kind": "figure",
+      "fig": "p319:Fig13-3",
+      "signals": []
+    },
+    {
+      "src": "Channel0 Channel0",
+      "dst": "Channel0 Channel0",
+      "kind": "figure",
+      "fig": "p324:Fig13-5",
+      "signals": []
+    },
+    {
+      "src": "Channel1 Channel1",
+      "dst": "Channel1 Channel1",
+      "kind": "figure",
+      "fig": "p324:Fig13-5",
+      "signals": []
+    },
+    {
+      "src": "CPU Private Timer",
+      "dst": "PPI CPU Private Interrupts",
+      "kind": "figure",
+      "fig": "p336:Fig14-1",
+      "signals": []
+    },
+    {
+      "src": "APU MPcore Global Timer Counter",
+      "dst": "PPI CPU Private Interrupts",
+      "kind": "figure",
+      "fig": "p336:Fig14-1",
+      "signals": []
+    },
+    {
+      "src": "FPD_SWDT",
+      "dst": "MIO and EMIO x2 x4 x4",
+      "kind": "figure",
+      "fig": "p336:Fig14-1",
+      "signals": []
+    },
+    {
+      "src": "FPD_SWDT",
+      "dst": "MIO and EMIO x2 x4 x4",
+      "kind": "figure",
+      "fig": "p336:Fig14-1",
+      "signals": []
+    },
+    {
+      "src": "MIO and EMIO x2 x4 x4",
+      "dst": "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL",
+      "kind": "figure",
+      "fig": "p336:Fig14-1",
+      "signals": []
+    },
+    {
+      "src": "CSU_SWDT",
+      "dst": "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL",
+      "kind": "figure",
+      "fig": "p336:Fig14-1",
+      "signals": []
+    },
+    {
+      "src": "LPD_SWDT",
+      "dst": "MIO and EMIO x2 x4 x4",
+      "kind": "figure",
+      "fig": "p336:Fig14-1",
+      "signals": []
+    },
+    {
+      "src": "MIO and EMIO x2 x4 x4",
+      "dst": "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL",
+      "kind": "figure",
+      "fig": "p336:Fig14-1",
+      "signals": []
+    },
+    {
+      "src": "MIO and EMIO x2 x4 x4",
+      "dst": "System Triple Timer Counter",
+      "kind": "figure",
+      "fig": "p336:Fig14-1",
+      "signals": []
+    },
+    {
+      "src": "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL",
+      "dst": "System Triple Timer Counter",
+      "kind": "figure",
+      "fig": "p336:Fig14-1",
+      "signals": []
+    },
+    {
+      "src": "RPU",
+      "dst": "RPU GIC",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "TBU0",
+      "dst": "TBU1",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "FPD SLCRs",
+      "dst": "FPD configs",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "FPD configs",
+      "dst": "GPU cfg",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "GPU cfg",
+      "dst": "PCIe",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "PCIe",
+      "dst": "SATA",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "Outbound SIOU",
+      "dst": "PCIe",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "Outbound SIOU",
+      "dst": "SATA",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "CCI 2-way 2-way Coherency And Bypass QVN",
+      "dst": "DDR Memory Controller",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "DDR Memory Controller",
+      "dst": "LPD Main To all output Switch ports",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "LPD Main To all output Switch ports",
+      "dst": "SMMU TCU",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "SMMU TCU",
+      "dst": "TBU1",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "TBU1",
+      "dst": "TBU2",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "Outbound SIOU",
+      "dst": "TBU1",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "SMMU TCU",
+      "dst": "TBU1",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "TBU1",
+      "dst": "TBU3",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "TBU4",
+      "dst": "TBU5",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "TBU3",
+      "dst": "TBU4",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "SMMU TCU",
+      "dst": "TBU2",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "RPU",
+      "dst": "TCMs",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "LPD DMA",
+      "dst": "Outbound LPD",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "Outbound LPD",
+      "dst": "USB0 w/DMA",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "Outbound LPD",
+      "dst": "USB1 w/DMA",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "GPU PPs",
+      "dst": "Outbound SIOU",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "Inbound LPD",
+      "dst": "LPD Main To all output Switch ports",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "LPD Main To all output Switch ports",
+      "dst": "Outbound IOP",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "LPD Main To all output Switch ports",
+      "dst": "Outbound LPD",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "OCM Memory",
+      "dst": "OCM Switch",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "LPD Main To all output Switch ports",
+      "dst": "OCM Switch",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "OCM Switch",
+      "dst": "RPU Switch",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "OCM Switch",
+      "dst": "RPU Switch",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "RPU",
+      "dst": "RPU Switch",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "RPU",
+      "dst": "RPU Switch",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "LPD Main To all output Switch ports",
+      "dst": "RPU Switch",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "DDR Memory Controller",
+      "dst": "LPD Main To all output Switch ports",
+      "kind": "figure",
+      "fig": "p366:Fig15-1",
+      "signals": []
+    },
+    {
+      "src": "cnt Up BE Credit Counter cnt Down",
+      "dst": "cnt Up LL Credit Counter cnt Down",
+      "kind": "figure",
+      "fig": "p380:Fig15-4",
+      "signals": []
+    },
+    {
+      "src": "cnt Up BE Credit Counter cnt Down",
+      "dst": "cnt Up LL Credit Counter cnt Down",
+      "kind": "figure",
+      "fig": "p380:Fig15-4",
+      "signals": []
+    },
+    {
+      "src": "CCI-400",
+      "dst": "QoS Controller",
+      "kind": "figure",
+      "fig": "p380:Fig15-4",
+      "signals": []
+    },
+    {
+      "src": "CCI-400",
+      "dst": "QoS Controller",
+      "kind": "figure",
+      "fig": "p380:Fig15-4",
+      "signals": []
+    },
+    {
+      "src": "CCI-400",
+      "dst": "QoS Controller",
+      "kind": "figure",
+      "fig": "p380:Fig15-4",
+      "signals": []
+    },
+    {
+      "src": "CCI-400",
+      "dst": "QoS Controller",
+      "kind": "figure",
+      "fig": "p380:Fig15-4",
+      "signals": []
+    },
+    {
+      "src": "AXI Port Read Port Arbiter Interface (XPI) AXI Read Ports",
+      "dst": "CCI-400",
+      "kind": "figure",
+      "fig": "p380:Fig15-4",
+      "signals": []
+    },
+    {
+      "src": "AXI Port Read Port Arbiter Interface (XPI) AXI Read Ports",
+      "dst": "CCI-400",
+      "kind": "figure",
+      "fig": "p380:Fig15-4",
+      "signals": []
+    },
+    {
+      "src": "AXI Port Read Port Arbiter Interface (XPI) AXI Read Ports",
+      "dst": "CAM Scheduler DDRC Req Req",
+      "kind": "figure",
+      "fig": "p380:Fig15-4",
+      "signals": []
+    },
+    {
+      "src": "RPU",
+      "dst": "RPU GIC",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "Outbound SIOU",
+      "dst": "PCIe",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "FPD SLCRs",
+      "dst": "FPD configs",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "FPD configs",
+      "dst": "GPU cfg",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "GPU cfg",
+      "dst": "PCIe",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "PCIe",
+      "dst": "SATA",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "Outbound SIOU",
+      "dst": "SATA",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "CCI 2-way 2-way Coherency And Bypass QVN",
+      "dst": "DDR Memory Controller",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "DDR Memory Controller",
+      "dst": "LPD Main To all output Switch ports",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "LPD Main To all output Switch ports",
+      "dst": "Outbound SIOU",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "Outbound SIOU",
+      "dst": "SMMU TCU",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "SMMU TCU",
+      "dst": "TBU1",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "TBU1",
+      "dst": "TBU2",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "SMMU TCU",
+      "dst": "TBU2",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "TBU0",
+      "dst": "TBU1",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "SMMU TCU",
+      "dst": "TBU1",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "TBU1",
+      "dst": "TBU3",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "TBU4",
+      "dst": "TBU5",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "TBU3",
+      "dst": "TBU4",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "RPU",
+      "dst": "TCMs",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "LPD DMA",
+      "dst": "Outbound LPD",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "Outbound LPD",
+      "dst": "USB1 w/DMA",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "Outbound LPD",
+      "dst": "USB0 w/DMA",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "GPU PPs",
+      "dst": "Outbound SIOU",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "Inbound LPD",
+      "dst": "LPD Main To all output Switch ports",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "LPD Main To all output Switch ports",
+      "dst": "Outbound IOP",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "LPD Main To all output Switch ports",
+      "dst": "Outbound LPD",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "OCM Switch",
+      "dst": "RPU Switch",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "LPD Main To all output Switch ports",
+      "dst": "OCM Switch",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "OCM Switch",
+      "dst": "RPU Switch",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "OCM Memory",
+      "dst": "OCM Switch",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "RPU",
+      "dst": "RPU Switch",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "LPD Main To all output Switch ports",
+      "dst": "RPU Switch",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "RPU",
+      "dst": "RPU Switch",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "DDR Memory Controller",
+      "dst": "LPD Main To all output Switch ports",
+      "kind": "figure",
+      "fig": "p385:Fig16-1",
+      "signals": []
+    },
+    {
+      "src": "App AArch64 or AArch32",
+      "dst": "Supervisor (Guest OS1) AArch64 or AArch32",
+      "kind": "figure",
+      "fig": "p393:Fig16-2",
+      "signals": []
+    },
+    {
+      "src": "App AArch64 or AArch32",
+      "dst": "Supervisor (Guest OS2) AArch64 or AArch32",
+      "kind": "figure",
+      "fig": "p393:Fig16-2",
+      "signals": []
+    },
+    {
+      "src": "App AArch64 or AArch32",
+      "dst": "Supervisor (Guest OS2) AArch64 or AArch32",
+      "kind": "figure",
+      "fig": "p393:Fig16-2",
+      "signals": []
+    },
+    {
+      "src": "Non-secure State SVC HVC",
+      "dst": "Secure Monitor Mode",
+      "kind": "figure",
+      "fig": "p393:Fig16-2",
+      "signals": []
+    },
+    {
+      "src": "6HFXUH %ULGJH",
+      "dst": "FPD_XMPU",
+      "kind": "figure",
+      "fig": "p400:Fig16-3",
+      "signals": []
+    },
+    {
       "src": "Master ID Lookup",
       "dst": "Match",
       "kind": "figure",
@@ -25663,6 +27175,41 @@
     },
     {
       "src": "SMMU TCU",
+      "dst": "TBU2",
+      "kind": "figure",
+      "fig": "p425:Fig17-1",
+      "signals": []
+    },
+    {
+      "src": "CCI 2-way 2-way Coherency And Bypass QVN",
+      "dst": "DDR Memory Controller",
+      "kind": "figure",
+      "fig": "p425:Fig17-1",
+      "signals": []
+    },
+    {
+      "src": "DDR Memory Controller",
+      "dst": "LPD Main To all output Switch ports",
+      "kind": "figure",
+      "fig": "p425:Fig17-1",
+      "signals": []
+    },
+    {
+      "src": "LPD Main To all output Switch ports",
+      "dst": "SMMU TCU",
+      "kind": "figure",
+      "fig": "p425:Fig17-1",
+      "signals": []
+    },
+    {
+      "src": "SMMU TCU",
+      "dst": "TBU1",
+      "kind": "figure",
+      "fig": "p425:Fig17-1",
+      "signals": []
+    },
+    {
+      "src": "TBU1",
       "dst": "TBU2",
       "kind": "figure",
       "fig": "p425:Fig17-1",
@@ -25727,34 +27274,6 @@
     {
       "src": "TBU1",
       "dst": "TBU3",
-      "kind": "figure",
-      "fig": "p425:Fig17-1",
-      "signals": []
-    },
-    {
-      "src": "CCI 2-way 2-way Coherency And Bypass QVN",
-      "dst": "DDR Memory Controller",
-      "kind": "figure",
-      "fig": "p425:Fig17-1",
-      "signals": []
-    },
-    {
-      "src": "DDR Memory Controller",
-      "dst": "LPD Main To all output Switch ports",
-      "kind": "figure",
-      "fig": "p425:Fig17-1",
-      "signals": []
-    },
-    {
-      "src": "LPD Main To all output Switch ports",
-      "dst": "SMMU TCU",
-      "kind": "figure",
-      "fig": "p425:Fig17-1",
-      "signals": []
-    },
-    {
-      "src": "SMMU TCU",
-      "dst": "TBU1",
       "kind": "figure",
       "fig": "p425:Fig17-1",
       "signals": []
@@ -27723,6 +29242,41 @@
       "signals": []
     },
     {
+      "src": "CCI 2-way 2-way Coherency And Bypass QVN",
+      "dst": "DDR Memory Controller",
+      "kind": "figure",
+      "fig": "p1056:Fig35-1",
+      "signals": []
+    },
+    {
+      "src": "DDR Memory Controller",
+      "dst": "LPD Main To all output Switch ports",
+      "kind": "figure",
+      "fig": "p1056:Fig35-1",
+      "signals": []
+    },
+    {
+      "src": "LPD Main To all output Switch ports",
+      "dst": "SMMU TCU",
+      "kind": "figure",
+      "fig": "p1056:Fig35-1",
+      "signals": []
+    },
+    {
+      "src": "SMMU TCU",
+      "dst": "TBU1",
+      "kind": "figure",
+      "fig": "p1056:Fig35-1",
+      "signals": []
+    },
+    {
+      "src": "TBU1",
+      "dst": "TBU2",
+      "kind": "figure",
+      "fig": "p1056:Fig35-1",
+      "signals": []
+    },
+    {
       "src": "FPD SLCRs",
       "dst": "FPD configs",
       "kind": "figure",
@@ -27781,34 +29335,6 @@
     {
       "src": "TBU1",
       "dst": "TBU3",
-      "kind": "figure",
-      "fig": "p1056:Fig35-1",
-      "signals": []
-    },
-    {
-      "src": "CCI 2-way 2-way Coherency And Bypass QVN",
-      "dst": "DDR Memory Controller",
-      "kind": "figure",
-      "fig": "p1056:Fig35-1",
-      "signals": []
-    },
-    {
-      "src": "DDR Memory Controller",
-      "dst": "LPD Main To all output Switch ports",
-      "kind": "figure",
-      "fig": "p1056:Fig35-1",
-      "signals": []
-    },
-    {
-      "src": "LPD Main To all output Switch ports",
-      "dst": "SMMU TCU",
-      "kind": "figure",
-      "fig": "p1056:Fig35-1",
-      "signals": []
-    },
-    {
-      "src": "SMMU TCU",
-      "dst": "TBU1",
       "kind": "figure",
       "fig": "p1056:Fig35-1",
       "signals": []
@@ -27975,76 +29501,6 @@
       "signals": []
     },
     {
-      "src": "SMMU TCU",
-      "dst": "TBU2",
-      "kind": "figure",
-      "fig": "p1074:Fig35-4",
-      "signals": []
-    },
-    {
-      "src": "Outbound SIOU",
-      "dst": "PCIe",
-      "kind": "figure",
-      "fig": "p1074:Fig35-4",
-      "signals": []
-    },
-    {
-      "src": "FPD SLCRs",
-      "dst": "FPD configs",
-      "kind": "figure",
-      "fig": "p1074:Fig35-4",
-      "signals": []
-    },
-    {
-      "src": "FPD configs",
-      "dst": "GPU cfg",
-      "kind": "figure",
-      "fig": "p1074:Fig35-4",
-      "signals": []
-    },
-    {
-      "src": "GPU cfg",
-      "dst": "PCIe",
-      "kind": "figure",
-      "fig": "p1074:Fig35-4",
-      "signals": []
-    },
-    {
-      "src": "PCIe",
-      "dst": "SATA",
-      "kind": "figure",
-      "fig": "p1074:Fig35-4",
-      "signals": []
-    },
-    {
-      "src": "Outbound SIOU",
-      "dst": "SATA",
-      "kind": "figure",
-      "fig": "p1074:Fig35-4",
-      "signals": []
-    },
-    {
-      "src": "TBU0",
-      "dst": "TBU1",
-      "kind": "figure",
-      "fig": "p1074:Fig35-4",
-      "signals": []
-    },
-    {
-      "src": "SMMU TCU",
-      "dst": "TBU1",
-      "kind": "figure",
-      "fig": "p1074:Fig35-4",
-      "signals": []
-    },
-    {
-      "src": "TBU1",
-      "dst": "TBU3",
-      "kind": "figure",
-      "fig": "p1074:Fig35-4",
-      "signals": []
-    },
-    {
       "src": "APU ACP MPCore",
       "dst": "CCI 2-way 2-way Coherency And Bypass QVN",
       "kind": "figure",
@@ -28080,6 +29536,83 @@
       "signals": []
     },
     {
+      "src": "TBU1",
+      "dst": "TBU2",
+      "kind": "figure",
+      "fig": "p1074:Fig35-4",
+      "signals": []
+    },
+    {
+      "src": "SMMU TCU",
+      "dst": "TBU2",
+      "kind": "figure",
+      "fig": "p1074:Fig35-4",
+      "signals": []
+    },
+    {
+      "src": "Outbound SIOU",
+      "dst": "PCIe",
+      "kind": "figure",
+      "fig": "p1074:Fig35-4",
+      "signals": []
+    },
+    {
+      "src": "FPD SLCRs",
+      "dst": "FPD configs",
+      "kind": "figure",
+      "fig": "p1074:Fig35-4",
+      "signals": []
+    },
+    {
+      "src": "FPD configs",
+      "dst": "GPU cfg",
+      "kind": "figure",
+      "fig": "p1074:Fig35-4",
+      "signals": []
+    },
+    {
+      "src": "GPU cfg",
+      "dst": "PCIe",
+      "kind": "figure",
+      "fig": "p1074:Fig35-4",
+      "signals": []
+    },
+    {
+      "src": "PCIe",
+      "dst": "SATA",
+      "kind": "figure",
+      "fig": "p1074:Fig35-4",
+      "signals": []
+    },
+    {
+      "src": "Outbound SIOU",
+      "dst": "SATA",
+      "kind": "figure",
+      "fig": "p1074:Fig35-4",
+      "signals": []
+    },
+    {
+      "src": "TBU0",
+      "dst": "TBU1",
+      "kind": "figure",
+      "fig": "p1074:Fig35-4",
+      "signals": []
+    },
+    {
+      "src": "SMMU TCU",
+      "dst": "TBU1",
+      "kind": "figure",
+      "fig": "p1074:Fig35-4",
+      "signals": []
+    },
+    {
+      "src": "TBU1",
+      "dst": "TBU3",
+      "kind": "figure",
+      "fig": "p1074:Fig35-4",
+      "signals": []
+    },
+    {
       "src": "Outbound SIOU",
       "dst": "TBU1",
       "kind": "figure",
@@ -28157,6 +29690,20 @@
       "signals": []
     },
     {
+      "src": "LPD Main To all output Switch ports",
+      "dst": "OCM Switch",
+      "kind": "figure",
+      "fig": "p1074:Fig35-4",
+      "signals": []
+    },
+    {
+      "src": "OCM Switch",
+      "dst": "RPU Switch",
+      "kind": "figure",
+      "fig": "p1074:Fig35-4",
+      "signals": []
+    },
+    {
       "src": "OCM Memory",
       "dst": "OCM Switch",
       "kind": "figure",
@@ -28164,35 +29711,14 @@
       "signals": []
     },
     {
-      "src": "LPD Main To all output Switch ports",
-      "dst": "OCM Switch",
-      "kind": "figure",
-      "fig": "p1074:Fig35-4",
-      "signals": []
-    },
-    {
-      "src": "OCM Switch",
-      "dst": "RPU Switch",
-      "kind": "figure",
-      "fig": "p1074:Fig35-4",
-      "signals": []
-    },
-    {
-      "src": "OCM Switch",
-      "dst": "RPU Switch",
-      "kind": "figure",
-      "fig": "p1074:Fig35-4",
-      "signals": []
-    },
-    {
-      "src": "LPD Main To all output Switch ports",
-      "dst": "RPU Switch",
-      "kind": "figure",
-      "fig": "p1074:Fig35-4",
-      "signals": []
-    },
-    {
       "src": "RPU",
+      "dst": "RPU Switch",
+      "kind": "figure",
+      "fig": "p1074:Fig35-4",
+      "signals": []
+    },
+    {
+      "src": "LPD Main To all output Switch ports",
       "dst": "RPU Switch",
       "kind": "figure",
       "fig": "p1074:Fig35-4",
@@ -28271,6 +29797,13 @@
     {
       "src": "SMMU TCU",
       "dst": "TBU1",
+      "kind": "figure",
+      "fig": "p1076:Fig35-5",
+      "signals": []
+    },
+    {
+      "src": "TBU1",
+      "dst": "TBU2",
       "kind": "figure",
       "fig": "p1076:Fig35-5",
       "signals": []
@@ -28509,6 +30042,13 @@
     {
       "src": "SMMU TCU",
       "dst": "TBU1",
+      "kind": "figure",
+      "fig": "p1077:Fig35-6",
+      "signals": []
+    },
+    {
+      "src": "TBU1",
+      "dst": "TBU2",
       "kind": "figure",
       "fig": "p1077:Fig35-6",
       "signals": []
@@ -29456,1511 +30996,6 @@
       "dst": "Cortex-A53 PMU",
       "kind": "figure",
       "fig": "p1167:Fig39-7",
-      "signals": []
-    },
-    {
-      "src": "APU GIC",
-      "dst": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-      "kind": "figure",
-      "fig": "p204:Fig9-4",
-      "signals": []
-    },
-    {
-      "src": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-      "dst": "PMU Global",
-      "kind": "figure",
-      "fig": "p204:Fig9-4",
-      "signals": []
-    },
-    {
-      "src": "CONFIG_REG registers",
-      "dst": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-      "kind": "figure",
-      "fig": "p204:Fig9-4",
-      "signals": []
-    },
-    {
-      "src": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-      "dst": "PS SYSMON",
-      "kind": "figure",
-      "fig": "p204:Fig9-4",
-      "signals": []
-    },
-    {
-      "src": "CONFIG_REG registers",
-      "dst": "PS SYSMON",
-      "kind": "figure",
-      "fig": "p204:Fig9-4",
-      "signals": []
-    },
-    {
-      "src": "CONFIG_REG registers",
-      "dst": "CSU",
-      "kind": "figure",
-      "fig": "p204:Fig9-4",
-      "signals": []
-    },
-    {
-      "src": "CSU",
-      "dst": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-      "kind": "figure",
-      "fig": "p204:Fig9-4",
-      "signals": []
-    },
-    {
-      "src": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-      "dst": "PMU Global",
-      "kind": "figure",
-      "fig": "p204:Fig9-4",
-      "signals": []
-    },
-    {
-      "src": "PMU Global",
-      "dst": "PS SYSMON",
-      "kind": "figure",
-      "fig": "p204:Fig9-4",
-      "signals": []
-    },
-    {
-      "src": "CSU",
-      "dst": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-      "kind": "figure",
-      "fig": "p204:Fig9-4",
-      "signals": []
-    },
-    {
-      "src": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-      "dst": "PS SYSMON",
-      "kind": "figure",
-      "fig": "p204:Fig9-4",
-      "signals": []
-    },
-    {
-      "src": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-      "dst": "PL SYSMON",
-      "kind": "figure",
-      "fig": "p204:Fig9-4",
-      "signals": []
-    },
-    {
-      "src": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-      "dst": "PL SYSMON",
-      "kind": "figure",
-      "fig": "p204:Fig9-4",
-      "signals": []
-    },
-    {
-      "src": "ISR_0 [ps_alm}, [pl_alm] ISR_1 [x_OT]",
-      "dst": "PL SYSMON",
-      "kind": "figure",
-      "fig": "p204:Fig9-4",
-      "signals": []
-    },
-    {
-      "src": "AMS Register Set ISR_1",
-      "dst": "PL Outputs",
-      "kind": "figure",
-      "fig": "p205:Fig9-5",
-      "signals": []
-    },
-    {
-      "src": "PL Outputs",
-      "dst": "PL SYSMON",
-      "kind": "figure",
-      "fig": "p205:Fig9-5",
-      "signals": []
-    },
-    {
-      "src": "AMS Register Set ISR_1",
-      "dst": "PL Outputs",
-      "kind": "figure",
-      "fig": "p205:Fig9-5",
-      "signals": []
-    },
-    {
-      "src": "PL Outputs",
-      "dst": "PL SYSMON",
-      "kind": "figure",
-      "fig": "p205:Fig9-5",
-      "signals": []
-    },
-    {
-      "src": "PL SYSMON",
-      "dst": "PMU Global",
-      "kind": "figure",
-      "fig": "p205:Fig9-5",
-      "signals": []
-    },
-    {
-      "src": "AMS Register Set ISR_1",
-      "dst": "PMU Global",
-      "kind": "figure",
-      "fig": "p205:Fig9-5",
-      "signals": []
-    },
-    {
-      "src": "PMU Global",
-      "dst": "PS SYSMON",
-      "kind": "figure",
-      "fig": "p205:Fig9-5",
-      "signals": []
-    },
-    {
-      "src": "AMS Register Set ISR_1",
-      "dst": "PMU Global",
-      "kind": "figure",
-      "fig": "p205:Fig9-5",
-      "signals": []
-    },
-    {
-      "src": "PMU Global",
-      "dst": "PS SYSMON",
-      "kind": "figure",
-      "fig": "p205:Fig9-5",
-      "signals": []
-    },
-    {
-      "src": "MB CSU, PMU, TCM, OCM",
-      "dst": "reserved GB",
-      "kind": "figure",
-      "fig": "p226:Fig10-1",
-      "signals": []
-    },
-    {
-      "src": "reserved GB",
-      "dst": "reserved GB",
-      "kind": "figure",
-      "fig": "p226:Fig10-1",
-      "signals": []
-    },
-    {
-      "src": "GB DDR Memory Controller",
-      "dst": "GB M_AXI_HPM0_FPD",
-      "kind": "figure",
-      "fig": "p226:Fig10-1",
-      "signals": []
-    },
-    {
-      "src": "GB M_AXI_HPM0_FPD",
-      "dst": "reserved GB",
-      "kind": "figure",
-      "fig": "p226:Fig10-1",
-      "signals": []
-    },
-    {
-      "src": "MB M_AXI_HPM1_FPD",
-      "dst": "Quad-SPI MB",
-      "kind": "figure",
-      "fig": "p226:Fig10-1",
-      "signals": []
-    },
-    {
-      "src": "GB M_AXI_HPM0_FPD",
-      "dst": "GB M_AXI_HPM1_FPD",
-      "kind": "figure",
-      "fig": "p226:Fig10-1",
-      "signals": []
-    },
-    {
-      "src": "GB M_AXI_HPM1_FPD",
-      "dst": "GB PCIe High",
-      "kind": "figure",
-      "fig": "p226:Fig10-1",
-      "signals": []
-    },
-    {
-      "src": "GB PCIe High",
-      "dst": "reserved GB",
-      "kind": "figure",
-      "fig": "p226:Fig10-1",
-      "signals": []
-    },
-    {
-      "src": "DDR Memory Controller",
-      "dst": "MB M_AXI_HPM0_LPD MB",
-      "kind": "figure",
-      "fig": "p226:Fig10-1",
-      "signals": []
-    },
-    {
-      "src": "MB M_AXI_HPM0_LPD MB",
-      "dst": "VCU Slave Interface MB",
-      "kind": "figure",
-      "fig": "p226:Fig10-1",
-      "signals": []
-    },
-    {
-      "src": "DDR Memory Controller",
-      "dst": "MB M_AXI_HPM0_LPD MB",
-      "kind": "figure",
-      "fig": "p226:Fig10-1",
-      "signals": []
-    },
-    {
-      "src": "PS in Boot",
-      "dst": "SOFT RESET",
-      "kind": "figure",
-      "fig": "p273:Fig12-7",
-      "signals": []
-    },
-    {
-      "src": "PS in Boot",
-      "dst": "Secure BSCAN Mode",
-      "kind": "figure",
-      "fig": "p273:Fig12-7",
-      "signals": []
-    },
-    {
-      "src": "Use OP Key",
-      "dst": "Yes",
-      "kind": "figure",
-      "fig": "p295:Fig12-12",
-      "signals": []
-    },
-    {
-      "src": "Use OP Key",
-      "dst": "Yes",
-      "kind": "figure",
-      "fig": "p295:Fig12-12",
-      "signals": []
-    },
-    {
-      "src": "Use Device Key",
-      "dst": "Use OP Key",
-      "kind": "figure",
-      "fig": "p295:Fig12-12",
-      "signals": []
-    },
-    {
-      "src": "Block IV",
-      "dst": "Block Key",
-      "kind": "figure",
-      "fig": "p295:Fig12-12",
-      "signals": []
-    },
-    {
-      "src": "Block IV",
-      "dst": "Block Key",
-      "kind": "figure",
-      "fig": "p295:Fig12-12",
-      "signals": []
-    },
-    {
-      "src": "Block IV",
-      "dst": "Block Key",
-      "kind": "figure",
-      "fig": "p295:Fig12-12",
-      "signals": []
-    },
-    {
-      "src": "Block IV",
-      "dst": "Block Key",
-      "kind": "figure",
-      "fig": "p295:Fig12-12",
-      "signals": []
-    },
-    {
-      "src": "BH Signature",
-      "dst": "BH Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "BH Signature",
-      "dst": "BH Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "BH Signature",
-      "dst": "BH Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "BH Signature",
-      "dst": "Boot Header 0x000-0xEC0",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Boot Header 0x000-0xEC0",
-      "dst": "Header AC BootLoader AC Partition AC Partition AC",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Header AC BootLoader AC Partition AC Partition AC",
-      "dst": "Partition Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Partition Signature",
-      "dst": "Partition Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Partition Signature",
-      "dst": "Partition Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Partition Signature",
-      "dst": "Partition Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Partition Signature",
-      "dst": "SPK Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "SPK Signature",
-      "dst": "SPK Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "SPK Signature",
-      "dst": "SPK Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "SPK Signature",
-      "dst": "SPK Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "AC Header",
-      "dst": "AC Header",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "AC Header",
-      "dst": "AC Header",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "AC Header",
-      "dst": "BH Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "BH Signature",
-      "dst": "BH Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "BH Signature",
-      "dst": "BH Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "BH Signature",
-      "dst": "Boot Header 0x000-0xEC0",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Boot Header 0x000-0xEC0",
-      "dst": "BootLoader (FSBL and PMUFW (opt))",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "BootLoader (FSBL and PMUFW (opt))",
-      "dst": "BootLoader BootLoader AC AC",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "BootLoader BootLoader AC AC",
-      "dst": "Header AC BootLoader AC Partition AC Partition AC",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Header AC BootLoader AC Partition AC Partition AC",
-      "dst": "Header Header AC AC",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Header Header AC AC",
-      "dst": "Image Header Table",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Image Header Table",
-      "dst": "Image Headers (IH1-Ihn)",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Image Headers (IH1-Ihn)",
-      "dst": "PPK",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "PPK",
-      "dst": "PPK",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "PPK",
-      "dst": "PPK",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "PPK",
-      "dst": "Partition",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Partition",
-      "dst": "Partition AC",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Partition AC",
-      "dst": "Partition Header",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Partition Header",
-      "dst": "Partition Header",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Partition Header",
-      "dst": "Partition Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Partition Signature",
-      "dst": "Partition Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Partition Signature",
-      "dst": "Partition Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Partition Signature",
-      "dst": "SPK IDBootLoader",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "SPK IDBootLoader",
-      "dst": "SPK IDHeader",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "SPK IDHeader",
-      "dst": "SPK IDPartition1",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "SPK IDPartition1",
-      "dst": "SPK Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "SPK Signature",
-      "dst": "SPK Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "SPK Signature",
-      "dst": "SPK Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "SPK Signature",
-      "dst": "SPKBootLoader",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "SPKBootLoader",
-      "dst": "SPKHeader",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "SPKHeader",
-      "dst": "SPKPartition1",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "SPKPartition1",
-      "dst": "User Defined Field",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "User Defined Field",
-      "dst": "User Defined Field",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "User Defined Field",
-      "dst": "User Defined Field",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "AC Header",
-      "dst": "BH Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "BH Signature",
-      "dst": "Header AC BootLoader AC Partition AC Partition AC",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Header AC BootLoader AC Partition AC Partition AC",
-      "dst": "PPK",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "PPK",
-      "dst": "Partition Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Partition Signature",
-      "dst": "Partition(n)",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Partition(n)",
-      "dst": "Partition(n) AC",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Partition(n) AC",
-      "dst": "SPK IDPartition(n)",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "SPK IDPartition(n)",
-      "dst": "SPK Signature",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "SPK Signature",
-      "dst": "SPKPartition(n)",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "SPKPartition(n)",
-      "dst": "User Defined Field",
-      "kind": "figure",
-      "fig": "p303:Fig12-16",
-      "signals": []
-    },
-    {
-      "src": "Block1 IV",
-      "dst": "Block1 Key",
-      "kind": "figure",
-      "fig": "p305:Fig12-17",
-      "signals": []
-    },
-    {
-      "src": "APU Cortex-A53 MPCore",
-      "dst": "CPU0",
-      "kind": "figure",
-      "fig": "p313:Fig13-1",
-      "signals": []
-    },
-    {
-      "src": "CPU0",
-      "dst": "VCPU0",
-      "kind": "figure",
-      "fig": "p313:Fig13-1",
-      "signals": []
-    },
-    {
-      "src": "APU Cortex-A53 MPCore",
-      "dst": "CPU0",
-      "kind": "figure",
-      "fig": "p313:Fig13-1",
-      "signals": []
-    },
-    {
-      "src": "CPU0",
-      "dst": "GIC-400",
-      "kind": "figure",
-      "fig": "p313:Fig13-1",
-      "signals": []
-    },
-    {
-      "src": "GIC-400",
-      "dst": "VCPU0",
-      "kind": "figure",
-      "fig": "p313:Fig13-1",
-      "signals": []
-    },
-    {
-      "src": "APU Cortex-A53 MPCore",
-      "dst": "GIC-400",
-      "kind": "figure",
-      "fig": "p313:Fig13-1",
-      "signals": []
-    },
-    {
-      "src": "GIC-400",
-      "dst": "VCPUn CPU0",
-      "kind": "figure",
-      "fig": "p313:Fig13-1",
-      "signals": []
-    },
-    {
-      "src": "APU Cortex-A53 MPCore",
-      "dst": "VCPUn CPU0",
-      "kind": "figure",
-      "fig": "p313:Fig13-1",
-      "signals": []
-    },
-    {
-      "src": "Distributor",
-      "dst": "GIC-400",
-      "kind": "figure",
-      "fig": "p313:Fig13-1",
-      "signals": []
-    },
-    {
-      "src": "CPU Interface",
-      "dst": "Distributor",
-      "kind": "figure",
-      "fig": "p319:Fig13-3",
-      "signals": []
-    },
-    {
-      "src": "FIQEn==1",
-      "dst": "GIC",
-      "kind": "figure",
-      "fig": "p319:Fig13-3",
-      "signals": []
-    },
-    {
-      "src": "GIC",
-      "dst": "System Software",
-      "kind": "figure",
-      "fig": "p319:Fig13-3",
-      "signals": []
-    },
-    {
-      "src": "System Software",
-      "dst": "Virtual CPU Interface",
-      "kind": "figure",
-      "fig": "p319:Fig13-3",
-      "signals": []
-    },
-    {
-      "src": "EnableGrp1",
-      "dst": "Processor",
-      "kind": "figure",
-      "fig": "p319:Fig13-3",
-      "signals": []
-    },
-    {
-      "src": "FIQEn==1",
-      "dst": "Secure Monitor Secure Software",
-      "kind": "figure",
-      "fig": "p319:Fig13-3",
-      "signals": []
-    },
-    {
-      "src": "EnableGrp1",
-      "dst": "System Software",
-      "kind": "figure",
-      "fig": "p319:Fig13-3",
-      "signals": []
-    },
-    {
-      "src": "System Software",
-      "dst": "Virtual CPU Interface",
-      "kind": "figure",
-      "fig": "p319:Fig13-3",
-      "signals": []
-    },
-    {
-      "src": "Group Virtual Interrupt",
-      "dst": "Virtual Distributor",
-      "kind": "figure",
-      "fig": "p319:Fig13-3",
-      "signals": []
-    },
-    {
-      "src": "Channel0 Channel0",
-      "dst": "Channel0 Channel0",
-      "kind": "figure",
-      "fig": "p324:Fig13-5",
-      "signals": []
-    },
-    {
-      "src": "Channel1 Channel1",
-      "dst": "Channel1 Channel1",
-      "kind": "figure",
-      "fig": "p324:Fig13-5",
-      "signals": []
-    },
-    {
-      "src": "CPU Private Timer",
-      "dst": "PPI CPU Private Interrupts",
-      "kind": "figure",
-      "fig": "p336:Fig14-1",
-      "signals": []
-    },
-    {
-      "src": "APU MPcore Global Timer Counter",
-      "dst": "PPI CPU Private Interrupts",
-      "kind": "figure",
-      "fig": "p336:Fig14-1",
-      "signals": []
-    },
-    {
-      "src": "FPD_SWDT",
-      "dst": "MIO and EMIO x2 x4 x4",
-      "kind": "figure",
-      "fig": "p336:Fig14-1",
-      "signals": []
-    },
-    {
-      "src": "FPD_SWDT",
-      "dst": "MIO and EMIO x2 x4 x4",
-      "kind": "figure",
-      "fig": "p336:Fig14-1",
-      "signals": []
-    },
-    {
-      "src": "MIO and EMIO x2 x4 x4",
-      "dst": "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL",
-      "kind": "figure",
-      "fig": "p336:Fig14-1",
-      "signals": []
-    },
-    {
-      "src": "CSU_SWDT",
-      "dst": "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL",
-      "kind": "figure",
-      "fig": "p336:Fig14-1",
-      "signals": []
-    },
-    {
-      "src": "LPD_SWDT",
-      "dst": "MIO and EMIO x2 x4 x4",
-      "kind": "figure",
-      "fig": "p336:Fig14-1",
-      "signals": []
-    },
-    {
-      "src": "MIO and EMIO x2 x4 x4",
-      "dst": "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL",
-      "kind": "figure",
-      "fig": "p336:Fig14-1",
-      "signals": []
-    },
-    {
-      "src": "MIO and EMIO x2 x4 x4",
-      "dst": "System Triple Timer Counter",
-      "kind": "figure",
-      "fig": "p336:Fig14-1",
-      "signals": []
-    },
-    {
-      "src": "System Interrupts LPD_GIC, FPD_GIC, GIC Proxy, PL",
-      "dst": "System Triple Timer Counter",
-      "kind": "figure",
-      "fig": "p336:Fig14-1",
-      "signals": []
-    },
-    {
-      "src": "RPU",
-      "dst": "RPU GIC",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "TBU0",
-      "dst": "TBU1",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "FPD SLCRs",
-      "dst": "FPD configs",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "FPD configs",
-      "dst": "GPU cfg",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "GPU cfg",
-      "dst": "PCIe",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "PCIe",
-      "dst": "SATA",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "Outbound SIOU",
-      "dst": "PCIe",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "Outbound SIOU",
-      "dst": "SATA",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "CCI 2-way 2-way Coherency And Bypass QVN",
-      "dst": "DDR Memory Controller",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "DDR Memory Controller",
-      "dst": "LPD Main To all output Switch ports",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "LPD Main To all output Switch ports",
-      "dst": "SMMU TCU",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "SMMU TCU",
-      "dst": "TBU1",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "TBU1",
-      "dst": "TBU2",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "Outbound SIOU",
-      "dst": "TBU1",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "SMMU TCU",
-      "dst": "TBU1",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "TBU1",
-      "dst": "TBU3",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "TBU4",
-      "dst": "TBU5",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "TBU3",
-      "dst": "TBU4",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "SMMU TCU",
-      "dst": "TBU2",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "RPU",
-      "dst": "TCMs",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "LPD DMA",
-      "dst": "Outbound LPD",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "Outbound LPD",
-      "dst": "USB0 w/DMA",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "Outbound LPD",
-      "dst": "USB1 w/DMA",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "GPU PPs",
-      "dst": "Outbound SIOU",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "Inbound LPD",
-      "dst": "LPD Main To all output Switch ports",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "LPD Main To all output Switch ports",
-      "dst": "Outbound IOP",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "LPD Main To all output Switch ports",
-      "dst": "Outbound LPD",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "OCM Memory",
-      "dst": "OCM Switch",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "LPD Main To all output Switch ports",
-      "dst": "OCM Switch",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "OCM Switch",
-      "dst": "RPU Switch",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "OCM Switch",
-      "dst": "RPU Switch",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "RPU",
-      "dst": "RPU Switch",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "RPU",
-      "dst": "RPU Switch",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "LPD Main To all output Switch ports",
-      "dst": "RPU Switch",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "DDR Memory Controller",
-      "dst": "LPD Main To all output Switch ports",
-      "kind": "figure",
-      "fig": "p366:Fig15-1",
-      "signals": []
-    },
-    {
-      "src": "cnt Up BE Credit Counter cnt Down",
-      "dst": "cnt Up LL Credit Counter cnt Down",
-      "kind": "figure",
-      "fig": "p380:Fig15-4",
-      "signals": []
-    },
-    {
-      "src": "cnt Up BE Credit Counter cnt Down",
-      "dst": "cnt Up LL Credit Counter cnt Down",
-      "kind": "figure",
-      "fig": "p380:Fig15-4",
-      "signals": []
-    },
-    {
-      "src": "CCI-400",
-      "dst": "QoS Controller",
-      "kind": "figure",
-      "fig": "p380:Fig15-4",
-      "signals": []
-    },
-    {
-      "src": "CCI-400",
-      "dst": "QoS Controller",
-      "kind": "figure",
-      "fig": "p380:Fig15-4",
-      "signals": []
-    },
-    {
-      "src": "CCI-400",
-      "dst": "QoS Controller",
-      "kind": "figure",
-      "fig": "p380:Fig15-4",
-      "signals": []
-    },
-    {
-      "src": "CCI-400",
-      "dst": "QoS Controller",
-      "kind": "figure",
-      "fig": "p380:Fig15-4",
-      "signals": []
-    },
-    {
-      "src": "AXI Port Read Port Arbiter Interface (XPI) AXI Read Ports",
-      "dst": "CCI-400",
-      "kind": "figure",
-      "fig": "p380:Fig15-4",
-      "signals": []
-    },
-    {
-      "src": "AXI Port Read Port Arbiter Interface (XPI) AXI Read Ports",
-      "dst": "CCI-400",
-      "kind": "figure",
-      "fig": "p380:Fig15-4",
-      "signals": []
-    },
-    {
-      "src": "AXI Port Read Port Arbiter Interface (XPI) AXI Read Ports",
-      "dst": "CAM Scheduler DDRC Req Req",
-      "kind": "figure",
-      "fig": "p380:Fig15-4",
-      "signals": []
-    },
-    {
-      "src": "RPU",
-      "dst": "RPU GIC",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "Outbound SIOU",
-      "dst": "PCIe",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "FPD SLCRs",
-      "dst": "FPD configs",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "FPD configs",
-      "dst": "GPU cfg",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "GPU cfg",
-      "dst": "PCIe",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "PCIe",
-      "dst": "SATA",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "Outbound SIOU",
-      "dst": "SATA",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "CCI 2-way 2-way Coherency And Bypass QVN",
-      "dst": "DDR Memory Controller",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "DDR Memory Controller",
-      "dst": "LPD Main To all output Switch ports",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "LPD Main To all output Switch ports",
-      "dst": "Outbound SIOU",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "Outbound SIOU",
-      "dst": "SMMU TCU",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "SMMU TCU",
-      "dst": "TBU1",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "TBU1",
-      "dst": "TBU2",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "SMMU TCU",
-      "dst": "TBU2",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "TBU0",
-      "dst": "TBU1",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "SMMU TCU",
-      "dst": "TBU1",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "TBU1",
-      "dst": "TBU3",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "TBU4",
-      "dst": "TBU5",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "TBU3",
-      "dst": "TBU4",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "RPU",
-      "dst": "TCMs",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "LPD DMA",
-      "dst": "Outbound LPD",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "Outbound LPD",
-      "dst": "USB1 w/DMA",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "Outbound LPD",
-      "dst": "USB0 w/DMA",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "GPU PPs",
-      "dst": "Outbound SIOU",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "Inbound LPD",
-      "dst": "LPD Main To all output Switch ports",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "LPD Main To all output Switch ports",
-      "dst": "Outbound IOP",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "LPD Main To all output Switch ports",
-      "dst": "Outbound LPD",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "OCM Switch",
-      "dst": "RPU Switch",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "LPD Main To all output Switch ports",
-      "dst": "OCM Switch",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "OCM Switch",
-      "dst": "RPU Switch",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "OCM Memory",
-      "dst": "OCM Switch",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "RPU",
-      "dst": "RPU Switch",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "LPD Main To all output Switch ports",
-      "dst": "RPU Switch",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "RPU",
-      "dst": "RPU Switch",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "DDR Memory Controller",
-      "dst": "LPD Main To all output Switch ports",
-      "kind": "figure",
-      "fig": "p385:Fig16-1",
-      "signals": []
-    },
-    {
-      "src": "App AArch64 or AArch32",
-      "dst": "Supervisor (Guest OS1) AArch64 or AArch32",
-      "kind": "figure",
-      "fig": "p393:Fig16-2",
-      "signals": []
-    },
-    {
-      "src": "App AArch64 or AArch32",
-      "dst": "Supervisor (Guest OS2) AArch64 or AArch32",
-      "kind": "figure",
-      "fig": "p393:Fig16-2",
-      "signals": []
-    },
-    {
-      "src": "App AArch64 or AArch32",
-      "dst": "Supervisor (Guest OS2) AArch64 or AArch32",
-      "kind": "figure",
-      "fig": "p393:Fig16-2",
-      "signals": []
-    },
-    {
-      "src": "Non-secure State SVC HVC",
-      "dst": "Secure Monitor Mode",
-      "kind": "figure",
-      "fig": "p393:Fig16-2",
-      "signals": []
-    },
-    {
-      "src": "6HFXUH %ULGJH",
-      "dst": "FPD_XMPU",
-      "kind": "figure",
-      "fig": "p400:Fig16-3",
       "signals": []
     },
     {
@@ -33128,211 +33163,246 @@
       "src": "PS:LPD",
       "dst": "PS:PL",
       "kind": "routing",
-      "name": "P2F PMU signal"
+      "name": "P2F PMU signal",
+      "source": "ug1085 p46 Table 2-5"
     },
     {
       "src": "PS:PL",
       "dst": "PS:LPD",
       "kind": "routing",
-      "name": "F2P PMU signal"
+      "name": "F2P PMU signal",
+      "source": "ug1085 p46 Table 2-5"
     },
     {
       "src": "PS:PL",
       "dst": "PS:FPD",
       "kind": "routing",
-      "name": "APU wake up"
+      "name": "APU wake up",
+      "source": "ug1085 p46 Table 2-5"
     },
     {
       "src": "PS:LPD",
       "dst": "PS:PL",
       "kind": "routing",
-      "name": "IRQ P2F PL IPIx _ _ _"
+      "name": "IRQ P2F PL IPIx _ _ _",
+      "source": "ug1085 p46 Table 2-5"
     },
     {
       "src": "PS:PL",
       "dst": "PS:LPD",
       "kind": "routing",
-      "name": "IRQ F2P PL IPIx _ _ _"
+      "name": "IRQ F2P PL IPIx _ _ _",
+      "source": "ug1085 p46 Table 2-5"
     },
     {
       "src": "PS:PL",
       "dst": "PS:LPD, FPD",
       "kind": "routing",
-      "name": "PL IRQs"
+      "name": "PL IRQs",
+      "source": "ug1085 p46 Table 2-5"
     },
     {
       "src": "PS:PL",
       "dst": "PS:LPD",
       "kind": "routing",
-      "name": "RPU CPU IRQs"
+      "name": "RPU CPU IRQs",
+      "source": "ug1085 p46 Table 2-5"
     },
     {
       "src": "PS:PL",
       "dst": "PS:FPD",
       "kind": "routing",
-      "name": "APU CPU IRQs"
+      "name": "APU CPU IRQs",
+      "source": "ug1085 p46 Table 2-5"
     },
     {
       "src": "PS:PS",
       "dst": "PS:PL",
       "kind": "routing",
-      "name": "PS System IRQs"
+      "name": "PS System IRQs",
+      "source": "ug1085 p46 Table 2-5"
     },
     {
       "src": "PS:LPD",
       "dst": "PS:PL",
       "kind": "routing",
-      "name": "LPD IOP interrupts"
+      "name": "LPD IOP interrupts",
+      "source": "ug1085 p46 Table 2-5"
     },
     {
       "src": "PS:FPD",
       "dst": "PS:PL",
       "kind": "routing",
-      "name": "FPD IOP interrupts"
+      "name": "FPD IOP interrupts",
+      "source": "ug1085 p46 Table 2-5"
     },
     {
       "src": "PS:LPD, FPD",
       "dst": "PS:PL",
       "kind": "routing",
-      "name": "Events"
+      "name": "Events",
+      "source": "ug1085 p46 Table 2-5"
     },
     {
       "src": "PS:PS",
       "dst": "PS:PL (and PS)",
       "kind": "routing",
-      "name": "System errors"
+      "name": "System errors",
+      "source": "ug1085 p46 Table 2-5"
     },
     {
       "src": "PS:PMU",
       "dst": "PS:PL (and PS)",
       "kind": "routing",
-      "name": "P2F PMU error"
+      "name": "P2F PMU error",
+      "source": "ug1085 p46 Table 2-5"
     },
     {
       "src": "PS:PL",
       "dst": "PS:PMU",
       "kind": "routing",
-      "name": "F2P PMU error"
+      "name": "F2P PMU error",
+      "source": "ug1085 p46 Table 2-5"
     },
     {
       "src": "PS:GEM, PL",
       "dst": "PS:GEM, PL",
       "kind": "routing",
-      "name": "GEM FIFO"
+      "name": "GEM FIFO",
+      "source": "ug1085 p48 Table 2-5"
     },
     {
       "src": "PS:GEM, PL",
       "dst": "PS:GEM, PL",
       "kind": "routing",
-      "name": "GEM 1588"
+      "name": "GEM 1588",
+      "source": "ug1085 p48 Table 2-5"
     },
     {
       "src": "PS:PL",
       "dst": "PS:FPD",
       "kind": "routing",
-      "name": "DDR Refresh Req"
+      "name": "DDR Refresh Req",
+      "source": "ug1085 p48 Table 2-5"
     },
     {
       "src": "PS:PL",
       "dst": "PS:FPD",
       "kind": "routing",
-      "name": "DDR Refresh Clk"
+      "name": "DDR Refresh Clk",
+      "source": "ug1085 p48 Table 2-5"
     },
     {
       "src": "PS:PL",
       "dst": "PS:CSU",
       "kind": "routing",
-      "name": "SEU error alarm"
+      "name": "SEU error alarm",
+      "source": "ug1085 p48 Table 2-5"
     },
     {
       "src": "PS:PL",
       "dst": "PS:LPD, PL clock, valids, acknowledges",
       "kind": "routing",
-      "name": "LPD DMA flow control"
+      "name": "LPD DMA flow control",
+      "source": "ug1085 p48 Table 2-5"
     },
     {
       "src": "PS:PL",
       "dst": "PS:FPD, PL clock, valids, acknowledges",
       "kind": "routing",
-      "name": "FPD DMA flow control"
+      "name": "FPD DMA flow control",
+      "source": "ug1085 p48 Table 2-5"
     },
     {
       "src": "PS:PS, PL",
       "dst": "PS:PS, PL",
       "kind": "routing",
-      "name": "Audio"
+      "name": "Audio",
+      "source": "ug1085 p49 Table 2-5"
     },
     {
       "src": "PS:PS, PL",
       "dst": "PS:PS, PL",
       "kind": "routing",
-      "name": "Video"
+      "name": "Video",
+      "source": "ug1085 p49 Table 2-5"
     },
     {
       "src": "PS:LPD",
       "dst": "PS:PL",
       "kind": "routing",
-      "name": "PL CLK{0:3} _"
+      "name": "PL CLK{0:3} _",
+      "source": "ug1085 p49 Table 2-5"
     },
     {
       "src": "PS:PL",
       "dst": "PS:LPD",
       "kind": "routing",
-      "name": "F2P clocks"
+      "name": "F2P clocks",
+      "source": "ug1085 p49 Table 2-5"
     },
     {
       "src": "PS:LPD",
       "dst": "PS:LPD",
       "kind": "routing",
-      "name": "RTC clock"
+      "name": "RTC clock",
+      "source": "ug1085 p49 Table 2-5"
     },
     {
       "src": "PS:EMIO, MIO",
       "dst": "PS:LPD",
       "kind": "routing",
-      "name": "TTC{0:3} CLK _"
+      "name": "TTC{0:3} CLK _",
+      "source": "ug1085 p49 Table 2-5"
     },
     {
       "src": "PS:LPD",
       "dst": "PS:EMIO, MIO",
       "kind": "routing",
-      "name": "TTC{0:3} WAVE _"
+      "name": "TTC{0:3} WAVE _",
+      "source": "ug1085 p49 Table 2-5"
     },
     {
       "src": "PS:EMIO, MIO",
       "dst": "PS:LPD",
       "kind": "routing",
-      "name": "WDT0 CLK _"
+      "name": "WDT0 CLK _",
+      "source": "ug1085 p49 Table 2-5"
     },
     {
       "src": "PS:EMIO, MIO",
       "dst": "PS:FPD",
       "kind": "routing",
-      "name": "WDT1 CLK _"
+      "name": "WDT1 CLK _",
+      "source": "ug1085 p49 Table 2-5"
     },
     {
       "src": "PS:LPD",
       "dst": "PS:GICs, EMIO, MIO",
       "kind": "routing",
-      "name": "WDT0 RST _"
+      "name": "WDT0 RST _",
+      "source": "ug1085 p49 Table 2-5"
     },
     {
       "src": "PS:FPD",
       "dst": "PS:GICs, EMIO, MIO",
       "kind": "routing",
-      "name": "WDT1 RST _"
+      "name": "WDT1 RST _",
+      "source": "ug1085 p49 Table 2-5"
     },
     {
       "src": "PS:6 bytes",
       "dst": "PS:0x0180C2000001",
       "kind": "routing",
-      "name": ""
+      "name": "",
+      "source": "ug1085 p1030 Table 2-5"
     },
     {
       "src": "PS:6 bytes",
       "dst": "PS:0x0180C2000001",
       "kind": "routing",
-      "name": ""
+      "name": "",
+      "source": "ug1085 p1032 Table 2-5"
     },
     {
       "src": "clk:I0",
