@@ -5,14 +5,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this is
 
 A **C-as-RTL hardware design framework**. C code IS the hardware specification — not a
-generator of Verilog, not a simulator, not a wrapper. The **active work** is a ground-up v3
-transcription of the **Xilinx XCZU19EG** (Zynq UltraScale+ MPSoC) into a complete C model of
-the device, driven entirely by tools that read the vendor docs.
+generator of Verilog, not a simulator, not a wrapper. The **active work** is **V4: transcribing
+UNISIM cells from Verilog to C**, building an accurate, discipline-enforced parts catalog for
+the **Xilinx XCZU19EG** (Zynq UltraScale+ MPSoC).
 
-- **`v3_staging/`** — ACTIVE. The v3 toolchain, extraction artifacts, and realization.
-- **`archive/`** — v1/v2 (`.bbhft`, `.hft_staging`): the legacy HFT-module system + the
-  `gate.sh`/`graduate.sh`/`.hft` vault workflow. Historical reference only; do not revive.
-- **`engr.md`** — the operating persona + a re-read-before-acting reminder of the laws below.
+- **`v4/`** — ACTIVE. UNISIM transcription, C specification language, enforcement gates.
+- **`archive/`** — v1/v2/v3: legacy toolchains. Historical reference only; do not revive.
 - **`memory/`** (under `~/.claude/projects/.../memory/`) — binding conduct laws; `MEMORY.md` indexes them.
 
 ## Immutable laws (binding — violations are rejected)
@@ -43,60 +41,78 @@ the device, driven entirely by tools that read the vendor docs.
    of our tools (the harness runs/observes them). "Agents" means parallel tool processes, NOT
    manual labor by multiple agents. Proceed decisively; no optional A/B vibe questions.
 
-## The pipeline: extract once → parse → realize
+## V4: Exact Digital Replicas of Real FPGA Hardware in C (binding discipline)
 
-**Extraction is one-time and committed.** `cache/*.jsonl` (one JSON per page: text, tables,
-Verilog regions, vector shapes) is the canonical parse input for every doc and is checked in.
-`extract.py` is idempotent (skips a doc whose cache exists; `--force` to re-extract). Source
-PDFs are NOT committed — re-acquire with `fetch_docs.sh` only to re-extract or run `figblocks`.
+**READ FIRST:** `v4/HANDOFF.md` and `v4/lib/verilog.h`. These are the executable spec.
 
-```
-PDF --extract--> cache/<doc>.jsonl --+-- catalog.py   -> catalog.json (parts list, layered)
-                                     +-- richtext.py  -> registers/fields/DRP/routing (sharded)
-                                     +-- psports.py   -> PS interface blocks (UG1085)
-                                     +-- txports.py   -> transceiver ports (UG576/578)
-                                     +-- figparse.py / figblocks.py -> figure connectivity
-                          board_net.json (Z19) + ds_resources.json (DS891) join in
-                                     |
-                          hierarchy.py -> hierarchy.json + hierarchy.html + device_tree/
-                                          (the hierarchical netlist; physical proof of extraction)
-                                     |
-                          realize.py (P1..P6) -> the device C model
-```
+**What this is:** 
 
-The v3 library pipeline (for realized primitives): `templates.py` decomposition builders →
-`assemble.py` → `library.json` → `netc.py` (validate/render → `device.json`).
+The UNISIM Verilog cell library is the **SPEC of the real Xilinx FPGA** — it describes actual
+physical hardware (real gates, flip-flops, circuits). V4 creates **EXACT DIGITAL REPLICAS** of
+that real hardware **IN C**. The C replicas must match the Verilog spec faithfully, or the entire
+design falls apart.
 
-## Realization phases (canonical, in `realize.py` — roadmap as code, not memory)
+C IS the hardware description language (like Verilog is for the real FPGA).
 
-`V3_REALIZATION_ROADMAP.md` is the canonical doc; `realize.py` is its executable form and
-measures progress from disk artifacts. P1 primitive library (physical elements + config-map) →
-P2 container casting (tiles arrayed at DS891 counts) → P3 interconnect (clock fabric transcribed
-+ logic PIP crossbar synthesized) → P4 PS (UG1085) → P5 load design → P6 unify/boot/validate.
-Phases gate in order; full authentic counts; protect against monolithic files (code is O(tile
-*types*), counts live in static arrays).
+**The model:**
+- Real FPGA: physical circuits, transistors, actual hardware behavior
+- Verilog spec: describes that real hardware precisely
+- Our C replicas: must describe the same hardware, using C primitives we build
+- C primitives: exact digital replicas of real components (NAND, gates, flip-flops, etc.)
 
-## Common commands
+**The task is NOT interpretation or decomposition.** We are REPLICATING real hardware.
+
+**How it works:**
+1. Read the Verilog spec — understand what real hardware it describes
+2. Use our C library of primitives (built as exact digital replicas of real components)
+3. Describe each UNISIM cell in C, faithfully matching the Verilog spec
+4. Result: C code that accurately describes the same real hardware
+
+**Copy the Verilog text exactly** because:
+- The text IS the spec of real hardware
+- We cannot change it (it must match exactly or it breaks)
+- Our C primitives ARE what Verilog constructs refer to (gates, storage, routing)
+
+**Example:**
+- Verilog spec: `assign Y = A & B;` → describes a real AND gate in the FPGA
+- Our C: copies the text exactly; `&` is defined in our library as referring to our AND gate replica
+- Result: C describes the exact same hardware as the spec
+
+**Hard rules (violations fail — accuracy is non-negotiable):**
+1. Copy the `.v` exactly — names, ports, parameters, assignments. No changes.
+2. No invented signals, ports, parameters. Spec is spec.
+3. Description + revisions inherited from `.v`, never rewritten.
+4. Every construct uses verilog.h definitions (which refer to our C primitives).
+5. C must accurately match `.v` — ports, parameters, behavior. No interpretation allowed.
+
+**Enforcement: READ FIRST**
+- CLAUDE.md (this section) — binding law
+- v4/HANDOFF.md (full spec) — how to transcribe correctly
+- v4/lib/verilog.h (definitions) — what each construct means
+
+No re-explanation. Rules are locked. Accuracy is non-negotiable.
+
+**Location:** `v4/HANDOFF.md` (full spec), `v4/lib/verilog.h` (C primitives), glbl.c (reference template).
+
+---
+
+## V4 Build Pipeline
+
+**Current phase:** Transcribe UNISIM cells (249 total, GND.c reference done).
 
 ```sh
-cd v3_staging/tools
+cd v4
 
-python3 realize.py status              # canonical phase progress, measured from disk
-python3 realize.py plan P1             # a phase's canonical steps + gate + parallelism
-python3 realize.py worklist P1         # concrete pending items of a phase
-
-python3 build.py                       # run the full extraction/parse pipeline (idempotent)
-python3 extract.py ../../<doc>.pdf     # extract one doc to cache (--force to re-extract)
-./fetch_docs.sh                        # re-download source PDFs from the mirror on demand
-
-python3 catalog.py                     # rebuild the parts catalogue from the full cache
-python3 richtext.py cache/<doc>.jsonl --pages A-B   # shard a doc; --merge out.json shards...
-python3 figblocks.py ../../<doc>.pdf --pages A-B    # block-diagram connectivity (shard by page)
-python3 hierarchy.py --materialize     # rebuild the hierarchical netlist + device_tree/ folders
+python3 build.py
+  → Gate 0: Transcribe unisim_src/verilog/src/unisims/*.v → clib/unisims/*.c
+  → Gate 1: Compile each .c with cc -c (C syntax valid, verilog.h complete)
+  → Gate 2: Lint spec (lint_spec.py: architectural discipline rules)
+  → Gate 3: Architecture (arch_check.py: C matches .v sources)
+  → Report: X pass, Y fail (all gates must pass)
 ```
 
-**Sharding pattern** (used for richtext/figblocks): launch N `--pages A-B` copies in the
-background, `wait`, then `--merge` (or a dict-union) — the harness observes the processes.
+All gates are **automatic** — no human interpretation. Violations fail the build.
+See `v4/HANDOFF.md` (spec), `v4/lib/verilog.h` (definitions), `v4/tools/` (gates).
 
 ## Key artifacts & docs
 

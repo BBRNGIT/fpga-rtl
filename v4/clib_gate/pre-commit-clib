@@ -1,0 +1,38 @@
+#!/bin/sh
+# pre-commit-clib — block any UNISIM C-twin (.c under v4/clib/) from being committed
+# unless it PASSES its replica gate (compile + annotations + NAND-floor + spec-vector
+# behaviour). The gate is the CARRY8 process, enforced. A broken/incomplete twin
+# cannot land. Founder override: FOUNDER_OVERRIDE=1 (logged).
+#
+# Install:  ln -sf ../../v4/clib_gate/pre-commit-clib .git/hooks/pre-commit
+#   (or merge into an existing pre-commit hook)
+set -e
+ROOT=$(git rev-parse --show-toplevel)
+GATE="$ROOT/v4/clib_gate/gate_library.py"
+
+# staged .c files under v4/clib (skip .test.c)
+STAGED=$(git diff --cached --name-only --diff-filter=ACM | grep '^v4/clib/.*\.c$' | grep -v '\.test\.c$' || true)
+[ -z "$STAGED" ] && exit 0
+
+# pass absolute paths to the gate
+ABS=$(echo "$STAGED" | sed "s|^|$ROOT/|")
+
+if python3 "$GATE" --staged $ABS; then
+    exit 0
+fi
+
+if [ "$FOUNDER_OVERRIDE" = "1" ]; then
+    echo "$(date '+%F %T') OVERRIDE clib-gate user=$(git config user.name) files:$STAGED" \
+        >> "$ROOT/v4/clib_gate/.overrides.log"
+    echo "  [clib-gate] FOUNDER_OVERRIDE=1 — committing ungated twin (LOGGED)" >&2
+    exit 0
+fi
+
+cat >&2 <<EOF
+
+[BLOCKED] A UNISIM C-twin failed its replica gate — commit blocked.
+  Each .c must reproduce its .v (compile + annotations + NAND-floor + spec test).
+  Run:  python3 v4/clib_gate/gate_replica.py <NAME>
+  Sanctioned WIP:  FOUNDER_OVERRIDE=1 git commit ...
+EOF
+exit 1

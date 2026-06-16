@@ -1,0 +1,199 @@
+name: CI — Build & Validate V4 Cells
+
+on:
+  push:
+    branches: [ main, master, develop ]
+    paths:
+      - 'v4/**'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    branches: [ main, master, develop ]
+    paths:
+      - 'v4/**'
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Compile & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up build environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential clang
+          clang --version
+          cc --version
+
+      - name: Compile components library
+        run: |
+          cd v4
+          cc -c lib/components.c -o /tmp/components.o -I . 2>&1 | tee /tmp/compile.log
+          if [ ${PIPESTATUS[0]} -ne 0 ]; then
+            echo "❌ components.c compilation failed"
+            cat /tmp/compile.log
+            exit 1
+          fi
+          echo "✓ components.o built successfully"
+
+      - name: Run VCC component test
+        run: |
+          cd v4
+          cc test_vcc.c /tmp/components.o -o /tmp/test_vcc -I . 2>&1 | tee /tmp/test_compile.log
+          if [ ${PIPESTATUS[0]} -ne 0 ]; then
+            echo "❌ test_vcc.c compilation failed"
+            cat /tmp/test_compile.log
+            exit 1
+          fi
+          /tmp/test_vcc
+          if [ $? -ne 0 ]; then
+            echo "❌ test_vcc execution failed"
+            exit 1
+          fi
+          echo "✓ VCC component verified"
+
+      - name: Compile all transcribed cells
+        run: |
+          cd v4
+          if [ -d clib/unisims ]; then
+            for cell_c in clib/unisims/*.c; do
+              if [ -f "$cell_c" ]; then
+                cell_name=$(basename "$cell_c" .c)
+                echo "Compiling $cell_name..."
+                cc -c "$cell_c" -o "/tmp/${cell_name}.o" -I . 2>&1 | tee "/tmp/${cell_name}.log"
+                if [ ${PIPESTATUS[0]} -ne 0 ]; then
+                  echo "❌ $cell_c failed to compile"
+                  cat "/tmp/${cell_name}.log"
+                  exit 1
+                fi
+              fi
+            done
+            echo "✓ All cells compiled successfully"
+          else
+            echo "⚠ No cells directory found (first run?)"
+          fi
+
+      - name: Type safety check
+        run: |
+          cd v4
+          # Verify no undefined types (net_t, etc.)
+          if grep -r "net_t\|_t[^a-z]" clib/unisims/*.c lib/*.h 2>/dev/null | grep -v "typedef"; then
+            echo "❌ Type safety check failed: found deprecated _t suffixes"
+            exit 1
+          fi
+          echo "✓ Type safety check passed"
+
+      - name: Semantic validation
+        run: |
+          # Verify port/parameter counts match Verilog spec
+          cd v4
+          if [ -d clib/unisims ]; then
+            for cell_c in clib/unisims/*.c; do
+              if [ -f "$cell_c" ]; then
+                cell_name=$(basename "$cell_c" .c)
+                verilog_file="../unisim_src/verilog/src/unisims/${cell_name}.v"
+                if [ -f "$verilog_file" ]; then
+                  v_params=$(grep -c "parameter " "$verilog_file" || echo 0)
+                  c_params=$(grep -c "parameter " "$cell_c" || echo 0)
+                  if [ "$v_params" -ne "$c_params" ]; then
+                    echo "⚠ $cell_name: parameter count mismatch (V=$v_params, C=$c_params)"
+                  fi
+                fi
+              fi
+            done
+            echo "✓ Semantic validation complete"
+          fi
+
+      - name: Report build status
+        if: success()
+        run: |
+          echo ""
+          echo "=========================================="
+          echo "✓ CI PASSED"
+          echo "=========================================="
+          echo ""
+          echo "Artifacts validated:"
+          echo "  - components.c compiles"
+          echo "  - test_vcc passes"
+          echo "  - All cells compile"
+          echo "  - Type safety verified"
+          echo ""
+
+      - name: Report build failure
+        if: failure()
+        run: |
+          echo ""
+          echo "=========================================="
+          echo "❌ CI FAILED"
+          echo "=========================================="
+          echo ""
+          echo "Check logs above for details."
+          exit 1
+
+  lint:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check file naming conventions
+        run: |
+          cd v4/clib/unisims
+          # Verify cell .c files have uppercase names matching .v
+          for cell_c in *.c; do
+            cell_name=$(basename "$cell_c" .c)
+            if [[ ! "$cell_name" =~ ^[A-Z] ]]; then
+              echo "⚠ Warning: cell file $cell_c should start with uppercase"
+            fi
+          done
+          echo "✓ File naming check complete"
+
+      - name: Check include paths
+        run: |
+          cd v4/clib/unisims
+          # Verify all .c files include verilog.h
+          for cell_c in *.c; do
+            if ! grep -q '#include.*verilog.h' "$cell_c"; then
+              echo "❌ $cell_c missing #include verilog.h"
+              exit 1
+            fi
+          done
+          echo "✓ Include paths verified"
+
+      - name: Check for hand-written components
+        run: |
+          cd v4/clib/unisims
+          # Verify no cell defines nand/not/and/or directly (should use verilog.h)
+          for cell_c in *.c; do
+            if grep -q "^void nand_settle\|^void not_settle" "$cell_c" 2>/dev/null; then
+              echo "⚠ Warning: $cell_c may contain hand-written components"
+            fi
+          done
+          echo "✓ Component check complete"
+
+  summary:
+    name: Build Summary
+    runs-on: ubuntu-latest
+    needs: [ build, lint ]
+    if: always()
+
+    steps:
+      - name: CI Status
+        run: |
+          if [ "${{ needs.build.result }}" = "success" ] && [ "${{ needs.lint.result }}" = "success" ]; then
+            echo "✅ All checks passed"
+            exit 0
+          else
+            echo "❌ Some checks failed"
+            exit 1
+          fi

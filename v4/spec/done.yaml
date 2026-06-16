@@ -1,0 +1,41 @@
+# done.yaml — the DEFINITION OF DONE per layer. The external test enforces these.
+# A thing is not "done" because an agent says so — it is done iff it passes the
+# check for its layer. No judgment, no interpretation.
+#
+# version: 0.1  | founder decision: DONE = a module built from its logical primitives
+#                into its composed spec — fully C, fully wired, fully working.
+
+cell:                       # LAYER 0 — done when:
+  - exists_in: cells.yaml
+  - has_defined_interface: true        # in/out pins listed
+  - digital_is_boolean: true           # digital cell reduces to AND/OR/NOT/XOR/DFF (no native +-*)
+  - analog_is_boundary: true           # analog cell is a behavioral boundary, NOT gate-decomposed, and cited
+
+primitive:                  # LAYER 1 — done when:
+  - ports_match_db: true               # its ports == the db port table at ports_source (exact)
+  - every_port_has_width: true         # each port carries name+dir+WIDTH (width=1 wire, >1 lane). MANDATORY.
+  - widths_match_db: true               # each port's width == the db 'Width' column (exact). no flattening.
+  - cited: true                        # ports_source is a real (doc,page) in the db
+  - composed_only_of_cells: true       # every internal element is in cells.yaml (or PENDING, an open item)
+  - lane_widths_consistent: true       # a lane of width N wires to a width-N lane; mismatches = fail
+  - no_fabricated_decomposition: true  # decomposition is db-derived or PENDING — never invented
+
+module:                     # LAYER 2 — done when:  (DONE LIVES HERE)
+  - fully_c: true                      # the module is expressed entirely in C
+  - fully_wired: true                  # every primitive instance's pins connect (single-writer, no floating)
+  - fully_working: true                # it compiles branchless and its tick runs (POST passes)
+  - composed_only_of_done_primitives: true   # every primitive it uses passed LAYER 1
+  - cited: true                        # traces to the reference
+
+device:                     # LAYER 3 — done when:
+  - all_modules_done: true
+  - counts_match_ds891: true
+  - signs_off: true                    # passes the full sign-off suite + clean-room rebuild
+
+# INVARIANTS — apply at every layer, always:
+invariants:
+  - branchless: "no if/?:/switch/for/while and no native + - * / % in any tick"
+  - single_writer: "each net has exactly one driver"
+  - cited: "every fact traces to a (doc,page) in cache.db, or is universal Boolean logic"
+  - conserved: "nothing dropped; totals balance; open items are PENDING, not hidden"
+  - tools_build_not_hands: "C is generated from the spec, never hand-written; no agent fabricates"

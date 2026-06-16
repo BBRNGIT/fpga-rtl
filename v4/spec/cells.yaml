@@ -1,0 +1,71 @@
+# cells.yaml — LAYER 0: the cell library. The CLOSED set of atomic units.
+# Everything in the device is composed from these. No primitive, module, or device
+# may use a cell not listed here. This is the standard-cell-library workflow: build
+# the bricks once, then everything above is composition.
+#
+# DIGITAL cells = first-principles Boolean logic (universal; no datasheet needed —
+#   all digital hardware reduces to these).
+# ANALOG cells = behavioral boundaries the reference device documents. They are NOT
+#   decomposed into Boolean gates (physics: they are continuous-time). They are
+#   recognized cells with a defined interface; each is db-cited.
+#
+# version: 0.1  | locked decisions: unit = cell; done = working composed module.
+
+digital:
+  combinational:
+    - name: AND   ; in: [A, B] ; out: [O] ; fn: "O = A & B"
+    - name: OR    ; in: [A, B] ; out: [O] ; fn: "O = A | B"
+    - name: NOT   ; in: [A]    ; out: [O] ; fn: "O = ~A"
+    - name: XOR   ; in: [A, B] ; out: [O] ; fn: "O = A ^ B"
+    # derived combinational (compositions, listed for convenience; each = the gates above)
+    - name: NAND  ; in: [A, B] ; out: [O] ; fn: "O = ~(A & B)"      ; from: [AND, NOT]
+    - name: NOR   ; in: [A, B] ; out: [O] ; fn: "O = ~(A | B)"      ; from: [OR, NOT]
+    - name: XNOR  ; in: [A, B] ; out: [O] ; fn: "O = ~(A ^ B)"      ; from: [XOR, NOT]
+    - name: MUX2  ; in: [A, B, S] ; out: [O] ; fn: "O = (A&~S)|(B&S)" ; from: [AND, OR, NOT]
+  sequential:
+    - name: DFF   ; in: [D, CLK, CE] ; out: [Q] ; fn: "Q <= D on CLK edge if CE"  # the 1-bit memory (the original 0/1)
+    - name: LATCH ; in: [D, G]       ; out: [Q] ; fn: "Q = D while G"
+  arithmetic:               # built FROM Boolean cells — NEVER native + - * (gate-level law)
+    - name: FULLADD ; in: [A, B, CI] ; out: [S, CO] ; fn: "S = A^B^CI ; CO = (A&B)|(CI&(A^B))" ; from: [XOR, AND, OR]
+
+# ANALOG cells — behavioral boundaries, NOT gate-decomposed. Each cited to the
+# reference (db). The fabric drives/reads them; they are sources/sinks, not logic.
+analog:
+  - name: VCO          ; kind: boundary ; role: "voltage-controlled oscillator (clock generation)" ; source: "ug572 p35"
+  - name: PFD          ; kind: boundary ; role: "phase-frequency detector"                          ; source: "ug572 p35"
+  - name: CHARGE_PUMP  ; kind: boundary ; role: "charge pump (PLL loop)"                             ; source: "ug572 p35"
+  - name: LOOP_FILTER  ; kind: boundary ; role: "PLL loop filter"                                    ; source: "ug1085 p807"
+  - name: LOCK_DETECT  ; kind: boundary ; role: "PLL/clock lock detector"                            ; source: "ug1085 p123"
+  - name: CDR          ; kind: boundary ; role: "clock-data recovery (transceiver)"                  ; source: "ug1085 p800"
+  - name: EQUALIZER    ; kind: boundary ; role: "transceiver analog equalizer (AFE)"                 ; source: "ds891 p30"
+  - name: ADC          ; kind: boundary ; role: "SYSMON analog-to-digital converter"                ; source: "ds891 p3"
+
+# --- PORT / LANE REPRESENTATION (the missing piece) ---------------------------
+# A port is NOT a bare name. It is a structured object. WIDTH is what distinguishes
+# a single wire from a lane/bus. Every port the db documents carries these fields;
+# the spec must carry them too (read from the db port table, cited).
+port_model:
+  fields:
+    name:   "the port identifier, base name with the bus suffix stripped (CO<7:0> -> CO)"
+    dir:    "in | out | inout  (from the Direction/Dir/I-O column)"
+    width:  "integer bit-count. width=1 -> a WIRE. width>1 -> a LANE/BUS of N parallel bits."
+    bus:    "true if width>1 (a lane). the bit range from the name suffix, e.g. <7:0>"
+    # optional fields the db documents for some ports (carried when present, cited):
+    clock_domain: "from a 'clock domain' column, if the table has one"
+    init:         "reset/SRVAL value, if documented (srval/init columns)"
+    sense:        "from a 'sense' column, if present"
+    unused:       "handling-if-unused, if documented"
+  example_CARRY8:        # from ug974 p241 — the real, complete representation
+    - { name: CI,     dir: in,  width: 1, bus: false }
+    - { name: CI_TOP, dir: in,  width: 1, bus: false }
+    - { name: CO,     dir: out, width: 8, bus: true, range: "7:0" }   # an 8-bit LANE
+    - { name: DI,     dir: in,  width: 8, bus: true, range: "7:0" }
+    - { name: O,      dir: out, width: 8, bus: true, range: "7:0" }
+    - { name: S,      dir: in,  width: 8, bus: true, range: "7:0" }
+  wiring_rule: "a connection is legal only if the two ports' widths match. an 8-bit
+                lane connects to an 8-bit lane; a wire to a wire. width mismatch = error.
+                a lane of width N is N instances of the underlying single-bit cell."
+
+# RULE (enforced by the test): a primitive may ONLY instantiate names from this file.
+# Any cell reference outside this catalog = spec violation = test fails.
+# A port's {name,dir,width} MUST equal its db port-table row (cited). Width is mandatory.
