@@ -68,31 +68,50 @@ C IS the hardware description language (like Verilog is for the real FPGA).
 3. Describe each UNISIM cell in C, faithfully matching the Verilog spec
 4. Result: C code that accurately describes the same real hardware
 
-**Copy the Verilog text exactly** because:
-- The text IS the spec of real hardware
-- We cannot change it (it must match exactly or it breaks)
-- Our C primitives ARE what Verilog constructs refer to (gates, storage, routing)
+**TWO CELL TYPES, TWO TRANSCRIPTION RULES:**
+
+### Type A: Combinational Cells (LUTs, carry chains, muxes, simple gates)
+**Strategy: Copy Verilog STRUCTURE exactly.**
+- Copy port declarations, parameters, assign statements (structural only)
+- Every construct uses verilog.h definitions (module, parameter, wire, assign, etc.)
+- NO behavioral blocks (no `always`, `generate`, procedural assignments)
+- Output is 100% declarative/structural
+- **Template/Reference:** `glbl.c`, `VCC.c`
 
 **Example:**
-- Verilog spec: `assign Y = A & B;` → describes a real AND gate in the FPGA
-- Our C: copies the text exactly; `&` is defined in our library as referring to our AND gate replica
-- Result: C describes the exact same hardware as the spec
+- Verilog: `assign Y = A & B;` → describes a real AND gate
+- C copy: Same, using verilog.h macros for structural syntax
+- Result: C describes the exact gate connections
+
+### Type B: Sequential Cells (flip-flops: FDRE, FDSE, FDCE, FDPE; latches)
+**Strategy: NEVER copy behavioral Verilog. Use C primitives instead.**
+
+**BINDING LAW (violation = fail):**
+- NEVER transcribe `always @(...)`, `generate`, `@(posedge)`, procedural assignments
+- Reason: Behavioral code describes SIMULATION EXECUTION, not hardware STRUCTURE
+- Instead: Use real primitives from components.h (`dff`, `reg`, `latch`, `edge_pos`, `settle`)
+- Wire the components using verilog.h macros grounded in component operations
+- Example: `always @(posedge C)` becomes `if (edge_pos(&clock)) { dff_settle(&my_ff); }`
+
+**Template/Reference:** `v4/FLIP_FLOP_PATTERN.md` (CRITICAL — read before any flip-flop transcription)
 
 **Hard rules (violations fail — accuracy is non-negotiable):**
-1. Copy the `.v` exactly — names, ports, parameters, assignments. No changes.
-2. No invented signals, ports, parameters. Spec is spec.
-3. Description + revisions inherited from `.v`, never rewritten.
-4. Every construct uses verilog.h definitions (which refer to our C primitives).
-5. C must accurately match `.v` — ports, parameters, behavior. No interpretation allowed.
+1. **Combinational:** Copy structural Verilog exactly. Every construct in verilog.h.
+2. **Flip-flops:** Use components.h primitives. Wire structurally. Zero behavioral code.
+3. No invented signals, ports, parameters. Spec is spec.
+4. Every construct grounded in C primitives (verilog.h ↔ components.h).
+5. C must accurately match `.v` STRUCTURE — ports, params, connectivity emerge from wired components.
 
-**Enforcement: READ FIRST**
+**Enforcement: READ FIRST (in order)**
 - CLAUDE.md (this section) — binding law
-- v4/HANDOFF.md (full spec) — how to transcribe correctly
-- v4/lib/verilog.h (definitions) — what each construct means
+- v4/HANDOFF.md (full spec) — detailed rules
+- v4/FLIP_FLOP_PATTERN.md — flip-flop transcription template (MANDATORY before transcribing FDRE/FDSE/FDCE/FDPE)
+- v4/lib/verilog.h (definitions) — structural constructs
+- v4/lib/components.h (types) — available primitives (dff, latch, edge_pos, settle, etc.)
 
 No re-explanation. Rules are locked. Accuracy is non-negotiable.
 
-**Location:** `v4/HANDOFF.md` (full spec), `v4/lib/verilog.h` (C primitives), glbl.c (reference template).
+**Location:** `v4/HANDOFF.md` (full spec), `v4/FLIP_FLOP_PATTERN.md` (flip-flop template), `v4/lib/verilog.h` (C primitives), glbl.c (combinational reference).
 
 ---
 

@@ -88,27 +88,56 @@ no "doing your own thing" — every line must mean what it says.**
 
 ## 3. The hard rules (these are why past devs were rejected)
 
-1. **Copy the `.v` exactly as written.** Same names, ports, directions, parameters,
-   connections, expressions. The `.c` reads like the `.v`.
-2. **No NAND. No gate decomposition. No component wiring. No "verbs."** Those are
-   BUILD acts for a LATER phase. A parts list does not decompose a part into NANDs,
-   exactly as a Xilinx parts list doesn't. Operators stay as written (`~`, `^`, `&`,
-   `|`); they are the *description*, not something to realize now.
-3. **Invent nothing.** No ports, counts, fields, defaults, or behavior the `.v`
+### CRITICAL: Two Cell Types, Two Transcription Rules
+
+**Type A: Combinational Cells (LUTs, carry chains, muxes, simple gates)**
+- Copy the `.v` STRUCTURE exactly (ports, parameters, assign statements)
+- Every construct must be in `verilog.h` (or added to it)
+- NO behavioral blocks (`always`, `generate`, `@(posedge)`, procedural code)
+- Template: `glbl.c`, `VCC.c`
+
+**Type B: Sequential Cells (flip-flops: FDRE, FDSE, FDCE, FDPE; latches)**
+- **NEVER copy behavioral Verilog** (`always @(posedge)`, `generate`, `@(*)`, `<=`)
+- Reason: Behavioral code describes SIMULATION, not hardware STRUCTURE
+- Instead: Use C primitives from `components.h` (dff, reg, latch, edge_pos, settle)
+- Wire components structurally using `verilog.h` macros
+- **MANDATORY READ:** `v4/FLIP_FLOP_PATTERN.md` before transcribing any flip-flop
+- Template: See `FLIP_FLOP_PATTERN.md` (NOT the Verilog behavioral code)
+
+### General Rules (both types)
+
+1. **For COMBINATIONAL cells: Copy the `.v` STRUCTURE exactly.** Same names, ports,
+   directions, parameters, connections, expressions. The `.c` reads like the `.v`.
+
+2. **For FLIP-FLOP cells: Copy STRUCTURE, USE COMPONENTS for behavior.** Use `dff`,
+   `latch`, etc. from `components.h`. Wire them structurally. Zero behavioral code.
+   Async control (reset/set/clear) as combinational logic. Sync control (clock enable)
+   as part of component wiring.
+
+3. **No NAND. No gate decomposition into primitives.** Those are BUILD acts for a
+   LATER phase. In a parts list, operators stay as written (`~`, `^`, `&`, `|`);
+   they are the *description*, not something to realize now. (Exception: flip-flops
+   use `dff`/`latch` components from `components.h` because behavioral code can't be
+   transcribed to C — this is structural wiring of pre-built components, not decomposition.)
+
+4. **Invent nothing.** No ports, counts, fields, defaults, or behavior the `.v`
    doesn't state. Missing info ⇒ STOP and ask the human. Deriving from what the `.v`
    says is fine; fabricating is not.
-4. **Drop nothing, summarize nothing, comment-out nothing.** Every part of the cell's
+
+5. **Drop nothing, summarize nothing, comment-out nothing.** Every part of the cell's
    description is present. (The big license/banner comment block at the top of each
    `.v` IS dropped — the human asked for that. Keep the Description and Revision.)
-5. **It must compile as C.** Verbatim Verilog tokens are not C. We bridge that with
+
+6. **It must compile as C.** Verbatim Verilog tokens are not C. We bridge that with
    `lib/verilog.h` (see §4). The `.c` reads like Verilog and compiles.
-6. **Do not interpret or paraphrase the architecture.** Write exactly what the `.v` states.
-   If the `.v` says `always @(posedge clk) Q <= D;`, you write that (using verilog.h).
-   You do NOT write "this is a latch" or "this is a DFF" — those are implementations.
-   You describe the behavior exactly, and verilog.h defines what it means.
-7. **Do not over-ask.** The form is settled (§5). Read the `.v`, transcribe it, grow
-   `verilog.h` only when a genuinely new construct appears, show the result. Don't
-   turn each cell into a design debate.
+
+7. **Do not interpret or paraphrase the architecture (for combinational cells).** Write
+   exactly what the `.v` states. For flip-flops: use the PATTERN from `FLIP_FLOP_PATTERN.md`,
+   which structures the hardware using `components.h` primitives.
+
+8. **Do not over-ask.** The form is settled (§5 and `FLIP_FLOP_PATTERN.md`). Read the
+   `.v`, transcribe it correctly per the rules, grow `verilog.h` only when a genuinely
+   new STRUCTURAL construct appears. Don't turn each cell into a design debate.
 
 ---
 

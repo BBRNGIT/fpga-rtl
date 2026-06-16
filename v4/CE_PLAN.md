@@ -1,8 +1,11 @@
 # CE Plan: V4 UNISIM Cell Transcription (249 cells)
 
+**⚠ CRITICAL UPDATE (2026-06-16):**
+**Flip-flop transcription strategy changed.** DO NOT copy behavioral Verilog (`always @(posedge)`, `generate`, etc.) for flip-flop cells. Instead, use C primitives from `components.h` (`dff`, `latch`) and wire them structurally. See `v4/FLIP_FLOP_PATTERN.md` (MANDATORY) before transcribing FDRE/FDSE/FDCE/FDPE or any sequential cell. This is BINDING.
+
 **Prepared:** 2026-06-16  
-**Scope:** Transcribe all 249 UNISIM Verilog cells to C (faithful copy, no decomposition)  
-**Success Criterion:** 249/249 cells compile + pass type checking + semantic fidelity 100%  
+**Scope:** Transcribe all 249 UNISIM Verilog cells to C per type-specific rules (combinational = copy structure; sequential = use components)  
+**Success Criterion:** 249/249 cells compile + pass type checking + semantic fidelity 100% + follow discipline (no behavioral code in flip-flops)  
 **Timeline:** 40–50 days at 5–6 cells/day (or parallel agents at 30+ cells/day)
 
 ---

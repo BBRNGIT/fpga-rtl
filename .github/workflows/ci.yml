@@ -91,6 +91,33 @@ jobs:
           fi
           echo "✓ Type safety check passed"
 
+      - name: Flip-flop discipline check
+        run: |
+          cd v4
+          # BINDING RULE: flip-flops must NOT contain behavioral code
+          # Detect FDRE, FDSE, FDCE, FDPE, LDCE, LDPE and scan for violations
+          FLIP_FLOPS="FDRE FDSE FDCE FDPE LDCE LDPE"
+          VIOLATIONS=0
+
+          for cell in $FLIP_FLOPS; do
+            if [ -f "clib/unisims/${cell}.c" ]; then
+              # Check for behavioral keywords that should NEVER appear in flip-flop cells
+              if grep -E "always|generate|@\(|deassign|<=" "clib/unisims/${cell}.c" 2>/dev/null; then
+                echo "❌ ${cell}.c: BINDING VIOLATION — contains behavioral code"
+                echo "   Flip-flop cells must use components.h primitives (dff, latch)"
+                echo "   See v4/FLIP_FLOP_PATTERN.md for the correct pattern"
+                VIOLATIONS=$((VIOLATIONS + 1))
+              fi
+            fi
+          done
+
+          if [ $VIOLATIONS -gt 0 ]; then
+            echo ""
+            echo "❌ Flip-flop discipline check FAILED: $VIOLATIONS violation(s)"
+            exit 1
+          fi
+          echo "✓ Flip-flop discipline check passed"
+
       - name: Semantic validation
         run: |
           # Verify port/parameter counts match Verilog spec
